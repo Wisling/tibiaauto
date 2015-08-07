@@ -186,6 +186,9 @@
     <ProjectReference Include="..\..\tre\win32\tre.vcxproj">
       <Project>{2fa575e7-e44f-46ff-b593-a90cef2323dc}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\mod_playerinfo\mod_playerinfo.vcxproj">
+      <Project>{27fe69e6-9f28-43d2-9703-ffd3267e9f3b}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

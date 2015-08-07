@@ -209,11 +209,6 @@ char *CMod_playerinfoApp::getConfigParamName(int nr)
 	}
 }
 
-void* CMod_playerinfoApp::GetPlayerInfo()
-{
-	return &playerInfo;
-}
-
 void CMod_playerinfoApp::getNewSkin(CSkin newSkin)
 {
 	skin = newSkin;

@@ -1,4 +1,4 @@
 #include "StdAfx.h"
 #include "playerInfo.h"
 
-mod_playerinfo playerInfo;
+__declspec(dllexport) mod_playerinfo playerInfo;

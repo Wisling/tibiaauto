@@ -120,7 +120,7 @@ int playersCount;       //T4: First is reserved for self
 player playersInfo[MAX_PLAYERS];
 int monstersCount;
 monster monstersInfo[MAX_MONSTERS];
-mod_playerinfo *playerInfo;
+__declspec(dllimport) mod_playerinfo playerInfo;
 
 int Player_Vocation2VocID(char* resVoc)
 {
@@ -441,71 +441,71 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	//T4: Char info
 	if (!_strcmpi(tagName, "mana"))
 	{
-		sprintf(svalue, "%d", playerInfo->mana);
+		sprintf(svalue, "%d", playerInfo.mana);
 	}
 	else if (!_strcmpi(tagName, "maxmana"))
 	{
-		sprintf(svalue, "%d", playerInfo->maxMana);
+		sprintf(svalue, "%d", playerInfo.maxMana);
 	}
 	else if (!_strcmpi(tagName, "voc"))
 	{
-		sprintf(svalue, "%s", playerInfo->voc);
+		sprintf(svalue, "%s", playerInfo.voc);
 		for (int i = strlen(svalue) - 1; i >= 0; i--)
 			svalue[i] = toupper(svalue[i]);
 	}
 	else if (!_strcmpi(tagName, "capacity"))
 	{
-		sprintf(svalue, "%d.%02d", (int)playerInfo->capacity, (int)((playerInfo->capacity - (int)playerInfo->capacity) * 100));
+		sprintf(svalue, "%d.%02d", (int)playerInfo.capacity, (int)((playerInfo.capacity - (int)playerInfo.capacity) * 100));
 	}
 	else if (!_strcmpi(tagName, "stamina"))
 	{
-		sprintf(svalue, "%d:%02d", (int)(playerInfo->stamina / 60), (int)(playerInfo->stamina % 60));
+		sprintf(svalue, "%d:%02d", (int)(playerInfo.stamina / 60), (int)(playerInfo.stamina % 60));
 	}
 	else if (!_strcmpi(tagName, "maxcapacity"))
 	{
-		sprintf(svalue, "%d", playerInfo->maxCapacity);
+		sprintf(svalue, "%d", playerInfo.maxCapacity);
 	}
 	else if (!_strcmpi(tagName, "soulpoints"))
 	{
-		sprintf(svalue, "%d", playerInfo->soulPoints);
+		sprintf(svalue, "%d", playerInfo.soulPoints);
 
 		//T4: Char stats
 	}
 	else if (!_strcmpi(tagName, "exp"))
 	{
-		sprintf(svalue, "%d", playerInfo->expCurrent);
+		sprintf(svalue, "%d", playerInfo.expCurrent);
 	}
 	else if (!_strcmpi(tagName, "expleft"))
 	{
-		sprintf(svalue, "%d", playerInfo->expLeft);
+		sprintf(svalue, "%d", playerInfo.expLeft);
 	}
 	else if (!_strcmpi(tagName, "expperh"))
 	{
-		if (playerInfo->expPerHour)
-			sprintf(svalue, "%d", playerInfo->expPerHour);
+		if (playerInfo.expPerHour)
+			sprintf(svalue, "%d", playerInfo.expPerHour);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "level"))
 	{
-		sprintf(svalue, "%d", playerInfo->skill[SKILL_LEVEL].lvl);
+		sprintf(svalue, "%d", playerInfo.skill[SKILL_LEVEL].lvl);
 	}
 	else if (!_strcmpi(tagName, "level%"))
 	{
-		sprintf(svalue, "%d%%", playerInfo->skill[SKILL_LEVEL].percLeft);
+		sprintf(svalue, "%d%%", playerInfo.skill[SKILL_LEVEL].percLeft);
 	}
 	else if (!_strcmpi(tagName, "levelperh"))
 	{
-		if (playerInfo->skill[SKILL_LEVEL].percPerHour > 0.001)
-			sprintf(svalue, "%.02f%%/h", playerInfo->skill[SKILL_LEVEL].percPerHour);
+		if (playerInfo.skill[SKILL_LEVEL].percPerHour > 0.001)
+			sprintf(svalue, "%.02f%%/h", playerInfo.skill[SKILL_LEVEL].percPerHour);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "levelupin"))
 	{
-		if (playerInfo->skill[SKILL_LEVEL].percPerHour > 0.001)
+		if (playerInfo.skill[SKILL_LEVEL].percPerHour > 0.001)
 		{
-			float fHour        = float(float(playerInfo->skill[SKILL_LEVEL].percLeft) / float(playerInfo->skill[SKILL_LEVEL].percPerHour));
+			float fHour        = float(float(playerInfo.skill[SKILL_LEVEL].percLeft) / float(playerInfo.skill[SKILL_LEVEL].percPerHour));
 			unsigned long hour = long(floor(fHour));
 			unsigned long min  = long(60 * (fHour - hour));
 
@@ -518,24 +518,24 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	}
 	else if (!_strcmpi(tagName, "magiclevel"))
 	{
-		sprintf(svalue, "%d", playerInfo->skill[SKILL_MAGICLEVEL].lvl);
+		sprintf(svalue, "%d", playerInfo.skill[SKILL_MAGICLEVEL].lvl);
 	}
 	else if (!_strcmpi(tagName, "magiclevel%"))
 	{
-		sprintf(svalue, "%d%%", playerInfo->skill[SKILL_MAGICLEVEL].percLeft);
+		sprintf(svalue, "%d%%", playerInfo.skill[SKILL_MAGICLEVEL].percLeft);
 	}
 	else if (!_strcmpi(tagName, "magiclevelperh"))
 	{
-		if (playerInfo->skill[SKILL_MAGICLEVEL].percPerHour > 0.001)
-			sprintf(svalue, "%.02f%%/h", playerInfo->skill[SKILL_MAGICLEVEL].percPerHour);
+		if (playerInfo.skill[SKILL_MAGICLEVEL].percPerHour > 0.001)
+			sprintf(svalue, "%.02f%%/h", playerInfo.skill[SKILL_MAGICLEVEL].percPerHour);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "magiclevelupin"))
 	{
-		if (playerInfo->skill[SKILL_MAGICLEVEL].percPerHour > 0.001)
+		if (playerInfo.skill[SKILL_MAGICLEVEL].percPerHour > 0.001)
 		{
-			float fHour        = float(float(playerInfo->skill[SKILL_MAGICLEVEL].percLeft) / float(playerInfo->skill[SKILL_MAGICLEVEL].percPerHour));
+			float fHour        = float(float(playerInfo.skill[SKILL_MAGICLEVEL].percLeft) / float(playerInfo.skill[SKILL_MAGICLEVEL].percPerHour));
 			unsigned long hour = long(floor(fHour));
 			unsigned long min  = long(60 * (fHour - hour));
 
@@ -550,48 +550,48 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	}
 	else if (!_strcmpi(tagName, "skillsword"))
 	{
-		sprintf(svalue, "%d", playerInfo->skill[SKILL_SWORD].lvl);
+		sprintf(svalue, "%d", playerInfo.skill[SKILL_SWORD].lvl);
 	}
 	else if (!_strcmpi(tagName, "skillaxe"))
 	{
-		sprintf(svalue, "%d", playerInfo->skill[SKILL_AXE].lvl);
+		sprintf(svalue, "%d", playerInfo.skill[SKILL_AXE].lvl);
 	}
 	else if (!_strcmpi(tagName, "skillclub"))
 	{
-		sprintf(svalue, "%d", playerInfo->skill[SKILL_CLUB].lvl);
+		sprintf(svalue, "%d", playerInfo.skill[SKILL_CLUB].lvl);
 	}
 	else if (!_strcmpi(tagName, "skillshield"))
 	{
-		sprintf(svalue, "%d", playerInfo->skill[SKILL_SHIELD].lvl);
+		sprintf(svalue, "%d", playerInfo.skill[SKILL_SHIELD].lvl);
 	}
 	else if (!_strcmpi(tagName, "skilldistance"))
 	{
-		sprintf(svalue, "%d", playerInfo->skill[SKILL_DIST].lvl);
+		sprintf(svalue, "%d", playerInfo.skill[SKILL_DIST].lvl);
 	}
 	else if (!_strcmpi(tagName, "skillfishing"))
 	{
-		sprintf(svalue, "%d", playerInfo->skill[SKILL_FISH].lvl);
+		sprintf(svalue, "%d", playerInfo.skill[SKILL_FISH].lvl);
 	}
 	else if (!_strcmpi(tagName, "skillfist"))
 	{
-		sprintf(svalue, "%d", playerInfo->skill[SKILL_FIST].lvl);
+		sprintf(svalue, "%d", playerInfo.skill[SKILL_FIST].lvl);
 	}
 	else if (!_strcmpi(tagName, "skillsword%"))
 	{
-		sprintf(svalue, "%d%%", playerInfo->skill[SKILL_SWORD].percLeft);
+		sprintf(svalue, "%d%%", playerInfo.skill[SKILL_SWORD].percLeft);
 	}
 	else if (!_strcmpi(tagName, "skillswordperh"))
 	{
-		if (playerInfo->skill[SKILL_SWORD].percPerHour > 0.001)
-			sprintf(svalue, "%.02f%%/h", playerInfo->skill[SKILL_SWORD].percPerHour);
+		if (playerInfo.skill[SKILL_SWORD].percPerHour > 0.001)
+			sprintf(svalue, "%.02f%%/h", playerInfo.skill[SKILL_SWORD].percPerHour);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "skillswordupin"))
 	{
-		if (playerInfo->skill[SKILL_SWORD].percPerHour > 0.001)
+		if (playerInfo.skill[SKILL_SWORD].percPerHour > 0.001)
 		{
-			float fHour        = float(float(playerInfo->skill[SKILL_SWORD].percLeft) / float(playerInfo->skill[SKILL_SWORD].percPerHour));
+			float fHour        = float(float(playerInfo.skill[SKILL_SWORD].percLeft) / float(playerInfo.skill[SKILL_SWORD].percPerHour));
 			unsigned long hour = long(floor(fHour));
 			unsigned long min  = long(60 * (fHour - hour));
 
@@ -604,20 +604,20 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	}
 	else if (!_strcmpi(tagName, "skillaxe%"))
 	{
-		sprintf(svalue, "%d%%", playerInfo->skill[SKILL_AXE].percLeft);
+		sprintf(svalue, "%d%%", playerInfo.skill[SKILL_AXE].percLeft);
 	}
 	else if (!_strcmpi(tagName, "skillaxeperh"))
 	{
-		if (playerInfo->skill[SKILL_AXE].percPerHour > 0.001)
-			sprintf(svalue, "%.02f%%/h", playerInfo->skill[SKILL_AXE].percPerHour);
+		if (playerInfo.skill[SKILL_AXE].percPerHour > 0.001)
+			sprintf(svalue, "%.02f%%/h", playerInfo.skill[SKILL_AXE].percPerHour);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "skillaxeupin"))
 	{
-		if (playerInfo->skill[SKILL_AXE].percPerHour > 0.001)
+		if (playerInfo.skill[SKILL_AXE].percPerHour > 0.001)
 		{
-			float fHour        = float(float(playerInfo->skill[SKILL_AXE].percLeft) / float(playerInfo->skill[SKILL_AXE].percPerHour));
+			float fHour        = float(float(playerInfo.skill[SKILL_AXE].percLeft) / float(playerInfo.skill[SKILL_AXE].percPerHour));
 			unsigned long hour = long(floor(fHour));
 			unsigned long min  = long(60 * (fHour - hour));
 
@@ -630,20 +630,20 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	}
 	else if (!_strcmpi(tagName, "skillclub%"))
 	{
-		sprintf(svalue, "%d%%", playerInfo->skill[SKILL_CLUB].percLeft);
+		sprintf(svalue, "%d%%", playerInfo.skill[SKILL_CLUB].percLeft);
 	}
 	else if (!_strcmpi(tagName, "skillclubperh"))
 	{
-		if (playerInfo->skill[SKILL_CLUB].percPerHour > 0.001)
-			sprintf(svalue, "%.02f%%/h", playerInfo->skill[SKILL_CLUB].percPerHour);
+		if (playerInfo.skill[SKILL_CLUB].percPerHour > 0.001)
+			sprintf(svalue, "%.02f%%/h", playerInfo.skill[SKILL_CLUB].percPerHour);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "skillclubupin"))
 	{
-		if (playerInfo->skill[SKILL_CLUB].percPerHour > 0.001)
+		if (playerInfo.skill[SKILL_CLUB].percPerHour > 0.001)
 		{
-			float fHour        = float(float(playerInfo->skill[SKILL_CLUB].percLeft) / float(playerInfo->skill[SKILL_CLUB].percPerHour));
+			float fHour        = float(float(playerInfo.skill[SKILL_CLUB].percLeft) / float(playerInfo.skill[SKILL_CLUB].percPerHour));
 			unsigned long hour = long(floor(fHour));
 			unsigned long min  = long(60 * (fHour - hour));
 
@@ -656,20 +656,20 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	}
 	else if (!_strcmpi(tagName, "skillshield%"))
 	{
-		sprintf(svalue, "%d%%", playerInfo->skill[SKILL_SHIELD].percLeft);
+		sprintf(svalue, "%d%%", playerInfo.skill[SKILL_SHIELD].percLeft);
 	}
 	else if (!_strcmpi(tagName, "skillshieldperh"))
 	{
-		if (playerInfo->skill[SKILL_SHIELD].percPerHour > 0.001)
-			sprintf(svalue, "%.02f%%/h", playerInfo->skill[SKILL_SHIELD].percPerHour);
+		if (playerInfo.skill[SKILL_SHIELD].percPerHour > 0.001)
+			sprintf(svalue, "%.02f%%/h", playerInfo.skill[SKILL_SHIELD].percPerHour);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "skillshieldupin"))
 	{
-		if (playerInfo->skill[SKILL_SHIELD].percPerHour > 0.001)
+		if (playerInfo.skill[SKILL_SHIELD].percPerHour > 0.001)
 		{
-			float fHour        = float(float(playerInfo->skill[SKILL_SHIELD].percLeft) / float(playerInfo->skill[SKILL_SHIELD].percPerHour));
+			float fHour        = float(float(playerInfo.skill[SKILL_SHIELD].percLeft) / float(playerInfo.skill[SKILL_SHIELD].percPerHour));
 			unsigned long hour = long(floor(fHour));
 			unsigned long min  = long(60 * (fHour - hour));
 
@@ -682,20 +682,20 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	}
 	else if (!_strcmpi(tagName, "skilldistance%"))
 	{
-		sprintf(svalue, "%d%%", playerInfo->skill[SKILL_DIST].percLeft);
+		sprintf(svalue, "%d%%", playerInfo.skill[SKILL_DIST].percLeft);
 	}
 	else if (!_strcmpi(tagName, "skilldistanceperh"))
 	{
-		if (playerInfo->skill[SKILL_DIST].percPerHour > 0.001)
-			sprintf(svalue, "%.02f%%/h", playerInfo->skill[SKILL_DIST].percPerHour);
+		if (playerInfo.skill[SKILL_DIST].percPerHour > 0.001)
+			sprintf(svalue, "%.02f%%/h", playerInfo.skill[SKILL_DIST].percPerHour);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "skilldistanceupin"))
 	{
-		if (playerInfo->skill[SKILL_DIST].percPerHour > 0.001)
+		if (playerInfo.skill[SKILL_DIST].percPerHour > 0.001)
 		{
-			float fHour        = float(float(playerInfo->skill[SKILL_DIST].percLeft) / float(playerInfo->skill[SKILL_DIST].percPerHour));
+			float fHour        = float(float(playerInfo.skill[SKILL_DIST].percLeft) / float(playerInfo.skill[SKILL_DIST].percPerHour));
 			unsigned long hour = long(floor(fHour));
 			unsigned long min  = long(60 * (fHour - hour));
 
@@ -708,20 +708,20 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	}
 	else if (!_strcmpi(tagName, "skillfishing%"))
 	{
-		sprintf(svalue, "%d%%", playerInfo->skill[SKILL_FISH].percLeft);
+		sprintf(svalue, "%d%%", playerInfo.skill[SKILL_FISH].percLeft);
 	}
 	else if (!_strcmpi(tagName, "skillfishingperh"))
 	{
-		if (playerInfo->skill[SKILL_FISH].percPerHour > 0.001)
-			sprintf(svalue, "%.02f%%/h", playerInfo->skill[SKILL_FISH].percPerHour);
+		if (playerInfo.skill[SKILL_FISH].percPerHour > 0.001)
+			sprintf(svalue, "%.02f%%/h", playerInfo.skill[SKILL_FISH].percPerHour);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "skillfishingupin"))
 	{
-		if (playerInfo->skill[SKILL_FISH].percPerHour > 0.001)
+		if (playerInfo.skill[SKILL_FISH].percPerHour > 0.001)
 		{
-			float fHour        = float(float(playerInfo->skill[SKILL_FISH].percLeft) / float(playerInfo->skill[SKILL_FISH].percPerHour));
+			float fHour        = float(float(playerInfo.skill[SKILL_FISH].percLeft) / float(playerInfo.skill[SKILL_FISH].percPerHour));
 			unsigned long hour = long(floor(fHour));
 			unsigned long min  = long(60 * (fHour - hour));
 
@@ -734,20 +734,20 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	}
 	else if (!_strcmpi(tagName, "skillfist%"))
 	{
-		sprintf(svalue, "%d%%", playerInfo->skill[SKILL_FIST].percLeft);
+		sprintf(svalue, "%d%%", playerInfo.skill[SKILL_FIST].percLeft);
 	}
 	else if (!_strcmpi(tagName, "skillfistperh"))
 	{
-		if (playerInfo->skill[SKILL_FIST].percPerHour > 0.001)
-			sprintf(svalue, "%.02f%%/h", playerInfo->skill[SKILL_FIST].percPerHour);
+		if (playerInfo.skill[SKILL_FIST].percPerHour > 0.001)
+			sprintf(svalue, "%.02f%%/h", playerInfo.skill[SKILL_FIST].percPerHour);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "skillfistupin"))
 	{
-		if (playerInfo->skill[SKILL_FIST].percPerHour > 0.001)
+		if (playerInfo.skill[SKILL_FIST].percPerHour > 0.001)
 		{
-			float fHour        = float(float(playerInfo->skill[SKILL_FIST].percLeft) / float(playerInfo->skill[SKILL_FIST].percPerHour));
+			float fHour        = float(float(playerInfo.skill[SKILL_FIST].percLeft) / float(playerInfo.skill[SKILL_FIST].percPerHour));
 			unsigned long hour = long(floor(fHour));
 			unsigned long min  = long(60 * (fHour - hour));
 
@@ -762,29 +762,29 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	}
 	else if (!_strcmpi(tagName, "timehaste"))
 	{
-		if (playerInfo->spell[SPELL_HASTE].remaining > 0)
-			sprintf(svalue, "%d", playerInfo->spell[SPELL_HASTE].remaining);
+		if (playerInfo.spell[SPELL_HASTE].remaining > 0)
+			sprintf(svalue, "%d", playerInfo.spell[SPELL_HASTE].remaining);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "timestronghaste"))
 	{
-		if (playerInfo->spell[SPELL_STRONGHASTE].remaining > 0)
-			sprintf(svalue, "%d", playerInfo->spell[SPELL_STRONGHASTE].remaining);
+		if (playerInfo.spell[SPELL_STRONGHASTE].remaining > 0)
+			sprintf(svalue, "%d", playerInfo.spell[SPELL_STRONGHASTE].remaining);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "timeinvisible"))
 	{
-		if (playerInfo->spell[SPELL_INVISIBLE].remaining > 0)
-			sprintf(svalue, "%d", playerInfo->spell[SPELL_INVISIBLE].remaining);
+		if (playerInfo.spell[SPELL_INVISIBLE].remaining > 0)
+			sprintf(svalue, "%d", playerInfo.spell[SPELL_INVISIBLE].remaining);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "timeshield"))
 	{
-		if (playerInfo->spell[SPELL_SHIELD].remaining > 0)
-			sprintf(svalue, "%d", playerInfo->spell[SPELL_SHIELD].remaining);
+		if (playerInfo.spell[SPELL_SHIELD].remaining > 0)
+			sprintf(svalue, "%d", playerInfo.spell[SPELL_SHIELD].remaining);
 		else
 			lstrcpy(svalue, "");
 		//V: creature statisticsx
@@ -1340,24 +1340,6 @@ void ReadPipeInfo()
 	}
 }
 
-int PlayerInfo_Init()
-{
-	GPIPROC GetPlayerInfo;
-	HMODULE hPlayerInfo;
-
-	hPlayerInfo = GetModuleHandle("mod_playerinfo.dll");
-	if (hPlayerInfo)
-	{
-		GetPlayerInfo = (GPIPROC)GetProcAddress(hPlayerInfo, "GetPlayerInfo");
-		if (GetPlayerInfo)
-		{
-			playerInfo = (mod_playerinfo*)GetPlayerInfo();
-			return (!IsBadReadPtr(playerInfo, sizeof(mod_playerinfo)));
-		}
-	}
-	return 0;
-}
-
 void Monster_GetName(char *sCreature, char *out)
 {
 	int i;
@@ -1423,14 +1405,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		Expression_PreParse(config->self2, &selfLine2);
 		Expression_PreParse(config->selfWindow, &selfLineWindow);
 		Expression_PreParse(config->selfTray, &selfLineTray);
-
-		//T4: Init PlayerInfo structure
-		if (!PlayerInfo_Init())
-		{
-			AfxMessageBox("Problem with PlayerInfo module");
-			toolThreadShouldStop = 0;
-			return 0;
-		}
 	}
 
 	// map with creatures seen
