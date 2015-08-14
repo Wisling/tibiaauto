@@ -10,6 +10,11 @@
 #endif // _MSC_VER > 1000
 
 #include "TibiaMapPoint.h"
+#define MAX_WAYPOINTCOUNT 1000
+#define MAX_IGNORECOUNT 1000
+#define MAX_MONSTERLISTCOUNT 1000
+#define MAX_DEPOTTRIGGERCOUNT 10000
+#define MAX_DROPLISTCOUNT 100
 
 class CConfigData
 {
@@ -19,14 +24,14 @@ public:
 		char itemName[64];
 		int when;
 		int remain;
-	} depotTrigger[100];
+	} depotTrigger[MAX_DEPOTTRIGGERCOUNT];
 
 	CConfigData();
 	virtual ~CConfigData();
 
-	char monsterList[1000][64];
+	char monsterList[MAX_MONSTERLISTCOUNT][64];
 	int monsterCount;
-	char ignoreList[1000][64];
+	char ignoreList[MAX_IGNORECOUNT][64];
 	int ignoreCount;
 	int autoFollow;
 	int attackAllMonsters;
@@ -35,7 +40,7 @@ public:
 	int lootWorms;
 	int mode;
 	int suspendOnEnemy;
-	point waypointList[1000];
+	point waypointList[MAX_WAYPOINTCOUNT];
 	int mapUsed;
 	int suspendOnNoMove;
 	int waypointSelectMode;
@@ -75,7 +80,7 @@ public:
 	int radius;
 
 	int dropNotLooted;
-	char dropList[100][64];
+	char dropList[MAX_DROPLISTCOUNT][64];
 	int dropListCount;
 	int dropWhenCapacityLimitReached;
 	int dropOnlyLooted;

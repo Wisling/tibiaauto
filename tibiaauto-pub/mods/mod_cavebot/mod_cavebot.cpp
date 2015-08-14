@@ -283,7 +283,7 @@ int depotCheckCanGo(CConfigData *config)
 	CUIntArray depotListObjects;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	int i;
-	for (i = 0; i < 100 && strlen(config->depotTrigger[i].itemName); i++)
+	for (i = 0; i < MAX_DEPOTTRIGGERCOUNT && config->depotTrigger[i].itemName[0] > 0; i++)
 	{
 		int objectId = itemProxy.getItemId(config->depotTrigger[i].itemName);
 		//Track the items we check here so we do not check them again in looted item list
@@ -2409,7 +2409,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	}
 
 	int waypointsCount = 0;
-	for (i = 0; i < 100; i++)
+	for (i = 0; i < MAX_WAYPOINTCOUNT; i++)
 	{
 		if (config->waypointList[i].x || config->waypointList[i].y || config->waypointList[i].z)  //y==z==-1 if a delay
 			waypointsCount++;
@@ -3109,9 +3109,13 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				if (config->attackAllMonsters && ch->tibiaId >= 0x40001000)
 					creatureList[crNr].listPriority = 1;
 				// scan creature list to find its priority
-				for (monstListNr = 0; monstListNr < config->monsterCount; monstListNr++)
+				for (monstListNr = 0; monstListNr < min(config->monsterCount, MAX_MONSTERLISTCOUNT); monstListNr++)
 				{
-					if (!_strcmpi(config->monsterList[monstListNr], creatureList[crNr].name))
+					if (config->monsterList[monstListNr][0] == 0)
+					{
+						break;
+					}
+					else if (!_strcmpi(config->monsterList[monstListNr], creatureList[crNr].name))
 					{
 						creatureList[crNr].listPriority = config->monsterCount - monstListNr + 1;//2 is last item in list, 1 is for 'attackAllMonster' monsters, 0 means not in attack list
 						break;
@@ -3119,7 +3123,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				}
 
 				// scan ignore list
-				for (monstListNr = 0; monstListNr < config->ignoreCount; monstListNr++)
+				for (monstListNr = 0; monstListNr < min(MAX_IGNORECOUNT, config->ignoreCount); monstListNr++)
 				{
 					if (!_strcmpi(config->ignoreList[monstListNr], creatureList[crNr].name))
 					{
@@ -4335,7 +4339,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue)
 		if (m_currentWaypointNr == 0)
 		{
 			int i;
-			for (i = 0; i < 1000; i++)
+			for (i = 0; i < MAX_WAYPOINTCOUNT; i++)
 			{
 				m_configData->waypointList[i].x = 0;
 				m_configData->waypointList[i].y = 0;
@@ -4353,8 +4357,20 @@ void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue)
 	{
 		if (m_currentMonsterNr == 0)
 			m_configData->monsterCount = 0;
-		strcpy(m_configData->monsterList[m_currentMonsterNr], paramValue);
-		m_configData->monsterCount++;
+		if (m_currentMonsterNr < MAX_MONSTERLISTCOUNT)
+		{
+			strcpy(m_configData->monsterList[m_currentMonsterNr], paramValue);
+			m_configData->monsterCount++;
+		}
+		else
+		{
+			if (m_currentMonsterNr == MAX_MONSTERLISTCOUNT)
+			{
+				char buf[256];
+				sprintf(buf, "You cannot add more than %d monsters to the cavebot attack list.", MAX_MONSTERLISTCOUNT);
+				AfxMessageBox(buf);
+			}
+		}
 		m_currentMonsterNr++;
 	}
 	if (!strcmp(paramName, "attack/ignore"))
@@ -4678,7 +4694,7 @@ void CMod_cavebotApp::resetMultiParamAccess(char *paramName)
 		m_currentDepotEntryNr = 0;
 	if (!strcmp(paramName, "attack/ignore"))
 		m_currentIgnoreNr = 0;
-	if (!strcmp(paramName, "attack/ignore"))
+	if (!strcmp(paramName, "loot/other/dropList"))
 		m_currentDroplistEntryNr = 0;
 }
 

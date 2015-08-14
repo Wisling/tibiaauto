@@ -388,7 +388,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_depotCap.SetWindowText(buf);
 	while (m_waypointList.GetCount())
 		m_waypointList.DeleteString(0);
-	for (i = 0; i < 1000; i++)
+	for (i = 0; i < MAX_WAYPOINTCOUNT; i++)
 	{
 		//y==-1 and z==-1 means waypoint is a delay
 		if (configData->waypointList[i].y == -1 && configData->waypointList[i].z == -1)
@@ -417,7 +417,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 		m_depotEntryList.DeleteString(0);
 	reloadDepotItems();
 	reloadTrainingItems();
-	for (i = 0; i < 100; i++)
+	for (i = 0; i < MAX_DEPOTTRIGGERCOUNT; i++)
 	{
 		if (strlen(configData->depotTrigger[i].itemName))
 		{
@@ -488,28 +488,54 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->debug             = m_debug.GetCheck();
 	int i;
 	newConfigData->monsterCount = m_monsterList.GetCount();
-	for (i = 0; i < 100; i++)
+	for (i = 0; i < MAX_MONSTERLISTCOUNT; i++)
 		newConfigData->monsterList[i][0] = 0;
 	for (i = 0; i < m_monsterList.GetCount(); i++)
 	{
-		int j;
-		m_monsterList.GetText(i, newConfigData->monsterList[i]);
-		int len = strlen(newConfigData->monsterList[i]);
-		for (j = 0; j < len; j++)
-			newConfigData->monsterList[i][j] = tolower(newConfigData->monsterList[i][j]);
+		if (i < MAX_MONSTERLISTCOUNT)
+		{
+			int j;
+			m_monsterList.GetText(i, newConfigData->monsterList[i]);
+			int len = strlen(newConfigData->monsterList[i]);
+			for (j = 0; j < len; j++)
+				newConfigData->monsterList[i][j] = tolower(newConfigData->monsterList[i][j]);
+		}
+		else
+		{
+			if (i == MAX_MONSTERLISTCOUNT)
+			{
+				char buf[256];
+				sprintf(buf, "You cannot add more than %d monsters to the cavebot attack list.", MAX_MONSTERLISTCOUNT);
+				AfxMessageBox(buf);
+			}
+			m_monsterList.DeleteString(i);
+		}
 	};
 	newConfigData->ignoreCount = m_ignoreList.GetCount();
-	for (i = 0; i < 100; i++)
+	for (i = 0; i < MAX_IGNORECOUNT; i++)
 		newConfigData->ignoreList[i][0] = 0;
 	for (i = 0; i < m_ignoreList.GetCount(); i++)
 	{
-		int j;
-		m_ignoreList.GetText(i, newConfigData->ignoreList[i]);
-		int len = strlen(newConfigData->ignoreList[i]);
-		for (j = 0; j < len; j++)
-			newConfigData->ignoreList[i][j] = tolower(newConfigData->ignoreList[i][j]);
+		if (i < MAX_IGNORECOUNT)
+		{
+			int j;
+			m_ignoreList.GetText(i, newConfigData->ignoreList[i]);
+			int len = strlen(newConfigData->ignoreList[i]);
+			for (j = 0; j < len; j++)
+				newConfigData->ignoreList[i][j] = tolower(newConfigData->ignoreList[i][j]);
+		}
+		else
+		{
+			if (i == MAX_IGNORECOUNT)
+			{
+				char buf[256];
+				sprintf(buf, "You cannot add more than %d ignored monsters to the cavebot list.", MAX_IGNORECOUNT);
+				AfxMessageBox(buf);
+			}
+			m_ignoreList.DeleteString(i);
+		}
 	};
-	for (i = 0; i < 1000; i++)
+	for (i = 0; i < MAX_WAYPOINTCOUNT; i++)
 	{
 		newConfigData->waypointList[i].x = 0;
 		newConfigData->waypointList[i].y = 0;
@@ -517,23 +543,35 @@ CConfigData * CConfigDialog::controlsToConfig()
 	}
 	for (i = 0; i < m_waypointList.GetCount(); i++)
 	{
-		m_waypointList.GetText(i, buf);
-		int curX = 0, curY = 0, curZ = 0;
-		sscanf(buf, "(%d,%d,%d)", &curX, &curY, &curZ);
+		if (i < MAX_WAYPOINTCOUNT){
+			m_waypointList.GetText(i, buf);
+			int curX = 0, curY = 0, curZ = 0;
+			sscanf(buf, "(%d,%d,%d)", &curX, &curY, &curZ);
 
-		if (curX == 0 && curY == 0 && curZ == 0)
-		{
-			int delay = 0;
-			sscanf(buf, "Delay %d sec", &delay);
-			newConfigData->waypointList[i].x = delay;
-			newConfigData->waypointList[i].y = -1;
-			newConfigData->waypointList[i].z = -1;
+			if (curX == 0 && curY == 0 && curZ == 0)
+			{
+				int delay = 0;
+				sscanf(buf, "Delay %d sec", &delay);
+				newConfigData->waypointList[i].x = delay;
+				newConfigData->waypointList[i].y = -1;
+				newConfigData->waypointList[i].z = -1;
+			}
+			else
+			{
+				newConfigData->waypointList[i].x = curX;
+				newConfigData->waypointList[i].y = curY;
+				newConfigData->waypointList[i].z = curZ;
+			}
 		}
 		else
 		{
-			newConfigData->waypointList[i].x = curX;
-			newConfigData->waypointList[i].y = curY;
-			newConfigData->waypointList[i].z = curZ;
+			if (i == MAX_WAYPOINTCOUNT)
+			{
+				char buf[256];
+				sprintf(buf, "You cannot add more than %d waypoints.", MAX_WAYPOINTCOUNT);
+				AfxMessageBox(buf);
+			}
+			m_waypointList.DeleteString(i);
 		}
 	};
 	newConfigData->suspendOnNoMove    = m_nomoveSuspended.GetCheck();
@@ -547,25 +585,38 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->lootWhileKill = m_lootWhileKill.GetCheck();
 	newConfigData->lootInBags    = m_lootinBags.GetCheck();
 
-	for (i = 0; i < 100; i++)
+	for (i = 0; i < MAX_DEPOTTRIGGERCOUNT; i++)
 		newConfigData->depotTrigger[i].itemName[0] = '\0';
 	for (i = 0; i < m_depotEntryList.GetCount(); i++)
 	{
-		char paramString[128];
-		m_depotEntryList.GetText(i, newConfigData->depotTrigger[i].itemName);
-		// from depotEntryList we got 'Apple Pie 128->64'
-		// and we convert it to Apple Pie + 128->64
-		int j;
-		for (j = strlen(newConfigData->depotTrigger[i].itemName) - 1; j > 0; j--)
+		if (i < MAX_DEPOTTRIGGERCOUNT)
 		{
-			if (newConfigData->depotTrigger[i].itemName[j] == ' ')
+			char paramString[128];
+			m_depotEntryList.GetText(i, newConfigData->depotTrigger[i].itemName);
+			// from depotEntryList we got 'Apple Pie 128->64'
+			// and we convert it to Apple Pie + 128->64
+			int j;
+			for (j = strlen(newConfigData->depotTrigger[i].itemName) - 1; j > 0; j--)
 			{
-				memcpy(paramString, newConfigData->depotTrigger[i].itemName + j + 1, strlen(newConfigData->depotTrigger[i].itemName) - j);
-				newConfigData->depotTrigger[i].itemName[j] = '\0';
-				break;
+				if (newConfigData->depotTrigger[i].itemName[j] == ' ')
+				{
+					memcpy(paramString, newConfigData->depotTrigger[i].itemName + j + 1, strlen(newConfigData->depotTrigger[i].itemName) - j);
+					newConfigData->depotTrigger[i].itemName[j] = '\0';
+					break;
+				}
 			}
+			sscanf(paramString, "%d->%d", &newConfigData->depotTrigger[i].when, &newConfigData->depotTrigger[i].remain);
 		}
-		sscanf(paramString, "%d->%d", &newConfigData->depotTrigger[i].when, &newConfigData->depotTrigger[i].remain);
+		else
+		{
+			if (i == MAX_DEPOTTRIGGERCOUNT)
+			{
+				char buf[256];
+				sprintf(buf, "You cannot add more than %d depot triggers.", MAX_DEPOTTRIGGERCOUNT);
+				AfxMessageBox(buf);
+			}
+			m_depotEntryList.DeleteString(i);
+		}
 	}
 
 	newConfigData->fightWhenSurrounded       = m_fightWhenSurrounded.GetCheck();
@@ -934,7 +985,7 @@ void CConfigDialog::OnToolAutoattackRemoveWaypoint()
 void CConfigDialog::OnToolAutoattackAddWaypoint()
 {
 	// max 1000 waypoints may be defined
-	if (m_waypointList.GetCount() >= 999)
+	if (!(m_waypointList.GetCount() < MAX_WAYPOINTCOUNT))
 		return;
 	char buf[256];
 	int curX, curY, curZ;
@@ -960,7 +1011,7 @@ void CConfigDialog::OnToolAutoattackAddWaypoint()
 void CConfigDialog::OnAddDelay()
 {
 	// max 1000 waypoints may be defined
-	if (m_waypointList.GetCount() >= 999)
+	if (!(m_waypointList.GetCount() < MAX_WAYPOINTCOUNT))
 		return;
 	char buf[256];
 	m_delay.GetWindowText(buf, 255);
@@ -1000,7 +1051,7 @@ void CConfigDialog::OnToolAutoattackAddMonster()
 {
 	char buf[128];
 	m_monster.GetWindowText(buf, 128);
-	if (strlen(buf) && m_monsterList.GetCount() < 32)
+	if (strlen(buf) && m_monsterList.GetCount() < MAX_MONSTERLISTCOUNT)
 		m_monsterList.SetCurSel(m_monsterList.AddString(buf));
 	m_monster.SetWindowText("");
 }
@@ -1114,7 +1165,7 @@ void CConfigDialog::OnToolAutoattackAddIgnore()
 {
 	char buf[128];
 	m_ignore.GetWindowText(buf, 128);
-	if (strlen(buf) && m_ignoreList.GetCount() < 32)
+	if (strlen(buf) && m_ignoreList.GetCount() < MAX_IGNORECOUNT)
 		m_ignoreList.AddString(buf);
 	m_ignore.SetWindowText("");
 	m_ignoreList.SetCurSel(m_ignoreList.GetCount() - 1);

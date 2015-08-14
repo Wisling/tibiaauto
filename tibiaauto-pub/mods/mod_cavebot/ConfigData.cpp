@@ -19,15 +19,21 @@ static char THIS_FILE[] = __FILE__;
 CConfigData::CConfigData()
 {
 	int i;
-	for (i = 0; i < 1000; i++)
+	for (i = 0; i < MAX_WAYPOINTCOUNT; i++)
 	{
 		waypointList[i].x = 0;
 		waypointList[i].y = 0;
 		waypointList[i].z = 0;
-		monsterList[i][0] = 0;
-		ignoreList[i][0]  = 0;
 	}
-	for (i = 0; i < 100; i++)
+	for (i = 0; i < MAX_MONSTERLISTCOUNT; i++)
+	{
+		monsterList[i][0] = 0;
+	}
+	for (i = 0; i < MAX_IGNORECOUNT; i++)
+	{
+		ignoreList[i][0] = 0;
+	}
+	for (i = 0; i < MAX_DEPOTTRIGGERCOUNT; i++)
 	{
 		depotTrigger[i].itemName[0] = 0;
 	}
