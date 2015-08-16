@@ -178,7 +178,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 		//container->???=CMemUtil::GetMemIntValue(addrCont+0x38,0);
 		//container->???=CMemUtil::GetMemIntValue(addrCont+0x3C,0);
 		container->size        = CMemUtil::GetMemIntValue(addrCont + 0x40, 0);
-		container->itemsInside = CMemUtil::GetMemIntValue(addrCont + 0x44, 0);
+		container->itemsInside = min(CMemUtil::GetMemIntValue(addrCont + 0x44, 0), container->size);
 		long addrItems = CMemUtil::GetMemIntValue(addrCont + 0x4C, 0);
 
 		try //if returns error then addrItems is most likely not a valid address anymore
