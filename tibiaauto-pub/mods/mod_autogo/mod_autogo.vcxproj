@@ -63,7 +63,7 @@
       <WarningLevel>Level3</WarningLevel>
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\sdk\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\mods\;$(SolutionDir)tibiaauto-kernel\tibiaauto_util\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
       <PrecompiledHeaderOutputFile>.\Debug\mod_autogo.pch</PrecompiledHeaderOutputFile>
@@ -94,10 +94,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <ImportLibrary>.\Debug\mod_autogo.lib</ImportLibrary>
-      <AdditionalDependencies>xerces-c_3.lib;WINMM.LIB;libjpeg.lib;libpng.lib;zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>
+      </ImportLibrary>
+      <AdditionalDependencies>xerces-c_3.lib;WINMM.LIB;libjpeg.lib;libpng16.lib;zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\mod_autogo.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -109,7 +111,7 @@
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\sdk\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\mods\;$(SolutionDir)tibiaauto-kernel\tibiaauto_util\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
       <PrecompiledHeaderOutputFile>.\Release\mod_autogo.pch</PrecompiledHeaderOutputFile>
@@ -138,39 +140,34 @@
       <SubSystem>Windows</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <ImportLibrary>.\Release\mod_autogo.lib</ImportLibrary>
+      <ImportLibrary>
+      </ImportLibrary>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>xerces-c_3.lib;WINMM.LIB;libjpeg.lib;libpng.lib;zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>xerces-c_3.lib;WINMM.LIB;libjpeg.lib;libpng16.lib;zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\mod_autogo.def</ModuleDefinitionFile>
+      <ShowProgress>NotSet</ShowProgress>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Alarm.cpp" />
     <ClCompile Include="alarmdialog.cpp" />
-    <ClCompile Include="..\..\sdk\BtnST.cpp" />
-    <ClCompile Include="..\..\sdk\ComboBoxSuper.cpp" />
     <ClCompile Include="ConfigData.cpp" />
     <ClCompile Include="ConfigDialog.cpp" />
     <ClCompile Include="CustomSpellDialog.cpp" />
     <ClCompile Include="exports.cpp" />
     <ClCompile Include="GeneralConfigDialog.cpp" />
-    <ClCompile Include="..\..\sdk\GroupBoxEx.cpp" />
     <ClCompile Include="ImageButtonWithStyle.cpp" />
     <ClCompile Include="mod_autogo.cpp" />
-    <ClCompile Include="..\..\sdk\MyDialog.cpp" />
-    <ClCompile Include="proxy.cpp" />
-    <ClCompile Include="..\..\sdk\Skin.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="TibiaItem_impl.cpp" />
     <ClCompile Include="Trigger.cpp" />
     <ClCompile Include="VisualStylesXP.cpp" />
     <ClCompile Include="WhiteList.cpp" />
-    <ClCompile Include="..\..\sdk\XTabCtrl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mod_autogo.def" />
@@ -182,7 +179,6 @@
   <ItemGroup>
     <ClInclude Include="Alarm.h" />
     <ClInclude Include="alarmdialog.h" />
-    <ClInclude Include="..\..\sdk\ComboBoxSuper.h" />
     <ClInclude Include="ConfigData.h" />
     <ClInclude Include="ConfigDialog.h" />
     <ClInclude Include="CustomSpellDialog.h" />
@@ -195,7 +191,6 @@
     <ClInclude Include="Trigger.h" />
     <ClInclude Include="VisualStylesXP.h" />
     <ClInclude Include="WhiteList.h" />
-    <ClInclude Include="..\..\sdk\XTabCtrl.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Attack.bmp" />
@@ -233,6 +228,11 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="sound\incorrec.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\tibiaauto-kernel\tibiaauto_util\tibiaauto_util.vcxproj">
+      <Project>{585f1e97-1bf0-4d07-a047-cbd5643b7b0a}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

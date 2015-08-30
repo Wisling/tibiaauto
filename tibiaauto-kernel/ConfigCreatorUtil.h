@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "ModuleProxy.h"
+#include "ModuleLoader.h"
 #include "ConfigCreatorUtilMultiParams.h"
 #include "PythonScript.h"
 
@@ -31,12 +31,12 @@ class CConfigCreatorUtil
 {
 public:
 	void parseConfigFromNode(CPythonScript *pythonScript, DOMNode *node, char *paramName);
-	void parseConfigFromNode(CModuleProxy *module, DOMNode *node, char *paramName);
-	DOMNode * getConfigForModule(DOMElement *root, char *moduleName);
+	void parseConfigFromNode(IModuleInterface *module, DOMNode *node, char *paramName);
+	DOMNode * getConfigForModule(DOMElement *root, const char *moduleName);
 	void releaseConfig(DOMNode *modConfig);
 	void addParamToConfig(DOMNode *node, char *paramName, char *paramValue);
 	void serializeConfigForModule(DOMNode *modNode, FILE *f);
-	DOMNode * getEmptyConfigForModule(char *moduleName);
+	DOMNode * getEmptyConfigForModule(const char *moduleName);
 	CConfigCreatorUtil();
 	virtual ~CConfigCreatorUtil();
 

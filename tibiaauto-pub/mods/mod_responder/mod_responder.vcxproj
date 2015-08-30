@@ -60,7 +60,7 @@
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\sdk\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\mods\;$(SolutionDir)tibiaauto-kernel\tibiaauto_util\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderOutputFile>.\Release\mod_responder.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -88,7 +88,8 @@
       <SubSystem>Windows</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <ImportLibrary>.\Release\mod_responder.lib</ImportLibrary>
+      <ImportLibrary>
+      </ImportLibrary>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
       <AdditionalDependencies>xerces-c_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\mod_responder.def</ModuleDefinitionFile>
@@ -104,7 +105,7 @@
       <WarningLevel>Level3</WarningLevel>
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\sdk\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\mods\;$(SolutionDir)tibiaauto-kernel\tibiaauto_util\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderOutputFile>.\Debug\mod_responder.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -134,7 +135,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <ImportLibrary>.\Debug\mod_responder.lib</ImportLibrary>
+      <ImportLibrary>
+      </ImportLibrary>
       <AdditionalDependencies>xerces-c_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\mod_responder.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
@@ -143,21 +145,15 @@
   <ItemGroup>
     <ClCompile Include="AutoResponderParser.cpp" />
     <ClCompile Include="AutoResponderParserContext.cpp" />
-    <ClCompile Include="..\..\sdk\BtnST.cpp" />
     <ClCompile Include="ConfigData.cpp" />
     <ClCompile Include="exports.cpp" />
-    <ClCompile Include="..\..\sdk\GroupBoxEx.cpp" />
     <ClCompile Include="mod_responder.cpp" />
-    <ClCompile Include="..\..\sdk\MyDialog.cpp" />
-    <ClCompile Include="proxy.cpp" />
-    <ClCompile Include="..\..\sdk\Skin.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="TibiaItem_impl.cpp" />
     <ClCompile Include="ToolAutoRespond.cpp" />
     <ClCompile Include="ToolAutoResponderMessage.cpp" />
     <ClCompile Include="ToolAutoResponderThreadConfig.cpp" />
@@ -180,6 +176,17 @@
     <ClInclude Include="ToolAutoRespond.h" />
     <ClInclude Include="ToolAutoResponderMessage.h" />
     <ClInclude Include="ToolAutoResponderThreadConfig.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\tibiaauto-kernel\tibiaauto_util\tibiaauto_util.vcxproj">
+      <Project>{585f1e97-1bf0-4d07-a047-cbd5643b7b0a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\alice\alice.vcxproj">
+      <Project>{ec3640a4-2b98-4adc-a671-05dd06f60b15}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\tre\win32\tre.vcxproj">
+      <Project>{2fa575e7-e44f-46ff-b593-a90cef2323dc}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

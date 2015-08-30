@@ -5,7 +5,8 @@
 #include "stdafx.h"
 #include "mod_addressfinder.h"
 #include "AddressFinder.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
+#include <MemUtil.h>
 #include <List>
 
 #ifdef _DEBUG
@@ -174,11 +175,11 @@ bool AddressFinder::getExpComp()
 bool AddressFinder::getTibiaFileChunk(int size)
 {
 	bool result = false;
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 
 	for (int loop = 0; loop < size; loop++)
 	{
-		TibiaFile.push_back(reader.getMemIntValue(0x401000 + loop));
+		TibiaFile.push_back((byte)CMemUtil::GetMemIntValue(0x401000 + loop));
 	}
 
 	if (TibiaFile.size() == size)
@@ -191,7 +192,7 @@ long AddressFinder::doComparison()
 {
 	long foundAddress = -1;
 	int index = 0x401000 + TibiaFile.size();
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	while (index < 0x5b0ffe)
 	{
 		FileIterator       = TibiaFile.begin();
@@ -213,7 +214,7 @@ long AddressFinder::doComparison()
 		else
 		{
 			TibiaFile.pop_front();
-			TibiaFile.push_back(reader.getMemIntValue(++index));
+			TibiaFile.push_back((byte)CMemUtil::GetMemIntValue(++index));
 		}
 	}
 	return foundAddress;

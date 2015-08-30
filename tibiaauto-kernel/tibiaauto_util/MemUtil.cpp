@@ -23,13 +23,6 @@ long CMemUtil::m_prevBaseAddr        = NULL;
 long CMemUtil::m_globalProcessId     = -1L;
 long CMemUtil::m_globalBaseAddr      = NULL;
 
-CMemUtil::CMemUtil()
-{
-}
-
-CMemUtil::~CMemUtil()
-{
-}
 
 BOOL CMemUtil::AdjustPrivileges()
 {
@@ -149,7 +142,7 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 		if (::GetLastError() == ERROR_PARTIAL_COPY)
 		{
 			//Possibly Tibia has been killed
-			//Test valid address; tareader.getMemIntValue(-1)
+			//Test valid address; taCMemUtil::GetMemIntValue(-1)
 			void *ptrTest = (void*)(0x0410000 + GetProcessBaseAddr(processId));
 			int resultTest;
 			if (!ReadProcessMemory(dwHandle, ptrTest, &resultTest, 4, NULL))

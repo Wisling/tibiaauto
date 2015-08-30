@@ -15,19 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sdk\BtnST.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sdk\ComboBoxSuper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConfigData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="exports.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sdk\GroupBoxEx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ItemConfig.cpp">
@@ -36,19 +27,7 @@
     <ClCompile Include="mod_itemconfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sdk\MyDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="proxy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sdk\Skin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StdAfx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TibiaItem_impl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ToolItemConfig.cpp">
@@ -64,25 +43,16 @@
     <ClInclude Include="ConfigData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sdk\GroupBoxEx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ItemConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mod_itemconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sdk\MyDialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StdAfx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\sdk\TibiaStructures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ToolItemConfig.h">

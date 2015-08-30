@@ -5,13 +5,13 @@
 #include "stdafx.h"
 #include "mod_responder.h"
 #include "AutoResponderParser.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "Util.h"
-#include "PackSenderProxy.h"
-#include "MemReaderProxy.h"
+#include <PackSender.h>
+#include <MemReader.h>
 #include "TibiaCharacter.h"
-#include "AliceProxy.h"
 
+__declspec(dllimport) char *kernelRespond(char *text, char *id);
 
 XERCES_CPP_NAMESPACE_USE
 
@@ -68,7 +68,7 @@ void CAutoResponderParser::parseThread(DOMNode *node, CAutoResponderParserContex
 void CAutoResponderParser::processNodeSay(DOMNode *node, CAutoResponderParserContext *context)
 {
 	registerDebug("DEBUG: action: say", context);
-	CPackSenderProxy sender;
+
 	int useAlice      = 0;
 	char *sayText     = CUtil::getNodeAttribute(node, "text");
 	char *channelText = CUtil::getNodeAttribute(node, "channel");
@@ -81,10 +81,9 @@ void CAutoResponderParser::processNodeSay(DOMNode *node, CAutoResponderParserCon
 
 	if (useAlice)
 	{
-		CAliceProxy alice;
-		registerDebug("DEBUG: action: calling Aliece", context);
+		registerDebug("DEBUG: action: calling Alice", context);
 
-		char *resp = alice.respond(context->message, context->playerName);
+		char *resp = kernelRespond(context->message, context->playerName);
 		sprintf(sayText, resp);
 		delete resp;
 	}
@@ -94,12 +93,12 @@ void CAutoResponderParser::processNodeSay(DOMNode *node, CAutoResponderParserCon
 	if (strlen(channelText) == 0 || !strcmp(channelText, "say"))
 	{
 		chanHit = 1;
-		sender.say(sayText);
+		CPackSender::say(sayText);
 		if (context->localEcho)
 		{
 			char *senderBuf = (char *)malloc(MAX_STRING_LEN);
 			sprintf(senderBuf, "[responder] {say} %s", sayText);
-			sender.sendTAMessage(senderBuf);
+			CPackSender::sendTAMessage(senderBuf);
 			free(senderBuf);
 		}
 	}
@@ -108,12 +107,12 @@ void CAutoResponderParser::processNodeSay(DOMNode *node, CAutoResponderParserCon
 		chanHit = 1;
 		char *playerText = CUtil::getNodeAttribute(node, "player");
 		replaceSpecialStrings(playerText, context);
-		sender.tell(sayText, playerText);
+		CPackSender::tell(sayText, playerText);
 		if (context->localEcho)
 		{
 			char *senderBuf = (char *)malloc(MAX_STRING_LEN);
 			sprintf(senderBuf, "[responder] {%s} %s", playerText, sayText);
-			sender.sendTAMessage(senderBuf);
+			CPackSender::sendTAMessage(senderBuf);
 			free(senderBuf);
 		}
 		if (!strlen(playerText))
@@ -305,16 +304,16 @@ void CAutoResponderParser::processNodeSetvariable(DOMNode *node, CAutoResponderP
 void CAutoResponderParser::processNodeDance(DOMNode *node, CAutoResponderParserContext *context)
 {
 	registerDebug("DEBUG: action: dance", context);
-	CPackSenderProxy sender;
+
 	char *countText = CUtil::getNodeAttribute(node, "count");
 	int count       = atoi(countText);
 	free(countText);
 	int i;
 	for (i = 0; i < count; i++)
 	{
-		sender.turnLeft();
+		CPackSender::turnLeft();
 		Sleep(250);
-		sender.turnRight();
+		CPackSender::turnRight();
 		Sleep(250);
 	}
 }
@@ -474,7 +473,7 @@ int CAutoResponderParser::processNodeBoolChannel(DOMNode *node, CAutoResponderPa
 	char *buf       = (char *)malloc(MAX_STRING_LEN);
 	char *matchText = CUtil::getNodeAttribute(node, "match");
 	replaceSpecialStrings(matchText, context);
-	if (regexpProxy.match(context->channel, matchText))
+	if (CModuleUtil::RegexMatch(context->channel, matchText))
 	{
 		sprintf(buf, "DEBUG: channel match '%s' against '%s': true", context->channel, matchText);
 		registerDebug(buf, context);
@@ -497,7 +496,7 @@ int CAutoResponderParser::processNodeBoolPlayername(DOMNode *node, CAutoResponde
 	char *buf       = (char *)malloc(MAX_STRING_LEN);
 	char *matchText = CUtil::getNodeAttribute(node, "match");
 	replaceSpecialStrings(matchText, context);
-	if (regexpProxy.match(context->playerName, matchText))
+	if (CModuleUtil::RegexMatch(context->playerName, matchText))
 	{
 		sprintf(buf, "DEBUG: message match '%s' against '%s': true", context->playerName, matchText);
 		registerDebug(buf, context);
@@ -608,7 +607,7 @@ int CAutoResponderParser::processNodeBoolMessage(DOMNode *node, CAutoResponderPa
 	char *buf       = (char *)malloc(MAX_STRING_LEN);
 	char *matchText = CUtil::getNodeAttribute(node, "match");
 	replaceSpecialStrings(matchText, context);
-	if (regexpProxy.match(context->message, matchText))
+	if (CModuleUtil::RegexMatch(context->message, matchText))
 	{
 		sprintf(buf, "DEBUG: message match '%s' against '%s': true", context->message, matchText);
 		registerDebug(buf, context);
@@ -660,7 +659,7 @@ void CAutoResponderParser::replaceSpecialStrings(char *msg, CAutoResponderParser
 	}
 	if (strstr(msg, "$s"))
 	{
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		strcpy(bufStart, msg);
 		bufStart[strstr(msg, "$s") - msg] = 0;

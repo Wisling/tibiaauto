@@ -26,10 +26,10 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
-#include "ModuleUtil.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
+#include <ModuleUtil.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -57,10 +57,10 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 
 	while (!toolThreadShouldStop)
@@ -74,15 +74,15 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		if (config->moveFromHandToCont)
 		{
 			// left hand
-			CTibiaItem *item = reader.readItem(memConstData.m_memAddressLeftHand);
+			CTibiaItem *item = reader.readItem(reader.m_memAddressLeftHand);
 			int contNr;
 			CTibiaContainer *cont;
-			if (item->objectId == itemProxy.getValueForConst("fish"))
+			if (item->objectId == CTibiaItem::getValueForConst("fish"))
 			{
 				// fish in left hand - move to first open container
 				int openContNr  = 0;
 				int openContMax = reader.readOpenContainerCount();
-				for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+				for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 				{
 					cont = reader.readContainer(contNr);
 					if (cont->flagOnOff)
@@ -90,8 +90,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						openContNr++;
 						if (cont->itemsInside < cont->size)
 						{
-							sender.moveObjectBetweenContainers(item->objectId, 0x06, 0, 0x40 + contNr, 0, item->quantity ? item->quantity : 1);
-							contNr = memConstData.m_memMaxContainers;
+							CPackSender::moveObjectBetweenContainers(item->objectId, 0x06, 0, 0x40 + contNr, 0, item->quantity ? item->quantity : 1);
+							contNr = reader.m_memMaxContainers;
 						}
 					}
 					delete cont;
@@ -100,13 +100,13 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 			// right hand
 			delete item;
-			item = reader.readItem(memConstData.m_memAddressRightHand);
-			if (item->objectId == itemProxy.getValueForConst("fish"))
+			item = reader.readItem(reader.m_memAddressRightHand);
+			if (item->objectId == CTibiaItem::getValueForConst("fish"))
 			{
 				// fish in right hand - move to first open container
 				int openContNr  = 0;
 				int openContMax = reader.readOpenContainerCount();
-				for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+				for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 				{
 					cont = reader.readContainer(contNr);
 					if (cont->flagOnOff)
@@ -114,8 +114,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						openContNr++;
 						if (cont->itemsInside < cont->size)
 						{
-							sender.moveObjectBetweenContainers(item->objectId, 0x05, 0, 0x40 + contNr, 0, item->quantity ? item->quantity : 1);
-							contNr = memConstData.m_memMaxContainers;
+							CPackSender::moveObjectBetweenContainers(item->objectId, 0x05, 0, 0x40 + contNr, 0, item->quantity ? item->quantity : 1);
+							contNr = reader.m_memMaxContainers;
 						}
 					}
 					delete cont;
@@ -135,8 +135,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		if (config->fishOnlyWhenWorms)
 		{
 			CUIntArray itemsAccepted;
-			itemsAccepted.Add(itemProxy.getValueForConst("worms"));
-			for (int contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++)
+			itemsAccepted.Add(CTibiaItem::getValueForConst("worms"));
+			for (int contNr = 0; contNr < reader.m_memMaxContainers; contNr++)
 			{
 				CTibiaItem *item = CModuleUtil::lookupItem(contNr, &itemsAccepted);
 				if (item->objectId)
@@ -145,20 +145,20 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					break;
 				}
 				delete item;
-				if (contNr == memConstData.m_memMaxContainers - 1)
+				if (contNr == reader.m_memMaxContainers - 1)
 					continueFishing = 0;
 			}
 		}
 
 		int fishingRodCont    = 0xa;
 		int fishingRodPos     = 0;
-		CTibiaItem *itemArrow = reader.readItem(memConstData.m_memAddressSlotArrow);
-		if (itemArrow->objectId != itemProxy.getValueForConst("fishingRod"))
+		CTibiaItem *itemArrow = reader.readItem(reader.m_memAddressSlotArrow);
+		if (itemArrow->objectId != CTibiaItem::getValueForConst("fishingRod"))
 		{
 			CUIntArray itemsAccepted;
 			int contNr;
-			itemsAccepted.Add(itemProxy.getValueForConst("fishingRod"));
-			for (contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++)
+			itemsAccepted.Add(CTibiaItem::getValueForConst("fishingRod"));
+			for (contNr = 0; contNr < reader.m_memMaxContainers; contNr++)
 			{
 				CTibiaItem *item = CModuleUtil::lookupItem(contNr, &itemsAccepted);
 				if (item->objectId)
@@ -169,7 +169,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					break;
 				}
 				delete item;
-				if (contNr == memConstData.m_memMaxContainers - 1)
+				if (contNr == reader.m_memMaxContainers - 1)
 					continueFishing = 0;
 			}
 		}
@@ -186,16 +186,16 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				offsetY = rand() % 11 - 5;
 				int tileId = reader.mapGetPointItemId(point(offsetX, offsetY, 0), 0);
 
-				if (randomMiss && tileId >= itemProxy.getValueForConst("waterWithFishStart") + 12 && tileId <= itemProxy.getValueForConst("waterWithFishEnd") + 12)
+				if (randomMiss && tileId >= CTibiaItem::getValueForConst("waterWithFishStart") + 12 && tileId <= CTibiaItem::getValueForConst("waterWithFishEnd") + 12)
 					break;
-				else if (!randomMiss && tileId >= itemProxy.getValueForConst("waterWithFishStart") && tileId <= itemProxy.getValueForConst("waterWithFishEnd"))
+				else if (!randomMiss && tileId >= CTibiaItem::getValueForConst("waterWithFishStart") && tileId <= CTibiaItem::getValueForConst("waterWithFishEnd"))
 					break;
 			}
 			if (randLoopCount > 0)
 			{
 				int tileId = reader.mapGetPointItemId(point(offsetX, offsetY, 0), 0);
-				sender.useWithObjectFromContainerOnFloor(
-				        itemProxy.getValueForConst("fishingRod"), fishingRodCont, fishingRodPos, tileId, self->x + offsetX, self->y + offsetY, self->z);
+				CPackSender::useWithObjectFromContainerOnFloor(
+				        CTibiaItem::getValueForConst("fishingRod"), fishingRodCont, fishingRodPos, tileId, self->x + offsetX, self->y + offsetY, self->z);
 			}
 		}
 

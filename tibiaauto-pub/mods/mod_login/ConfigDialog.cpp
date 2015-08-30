@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "mod_login.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 #include <queue>
 
 #ifdef _DEBUG
@@ -194,7 +194,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 		switch (reader.getConnectionState())
 		{
 		case 0:

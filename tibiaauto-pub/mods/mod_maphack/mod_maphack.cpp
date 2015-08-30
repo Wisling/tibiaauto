@@ -27,11 +27,11 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "TAMiniMapProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
-#include "ModuleUtil.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
+#include <TileReader.h>
+#include <ModuleUtil.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -59,17 +59,13 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTAMiniMapProxy taMiniMap;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
 	CConfigData *config        = (CConfigData *)lpParam;
 	int iter                   = 0;
 	time_t mountTm             = 0;
 	int mountStarted           = 0;
 
-	sender.enableCName(1);
+	CPackSender::enableCName(1);
 	while (!toolThreadShouldStop)
 	{
 		iter++;
@@ -90,7 +86,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					for (y = -5; y <= 5; y++)
 					{
 						int tileId = reader.mapGetPointItemId(point(x, y, 0), 0);
-						if (tileId >= itemProxy.getValueForConst("waterWithFishStart") + 12 && tileId <= itemProxy.getValueForConst("waterWithFishEnd") + 12)
+						if (tileId >= CTibiaItem::getValueForConst("waterWithFishStart") + 12 && tileId <= CTibiaItem::getValueForConst("waterWithFishEnd") + 12)
 							reader.mapSetPointItemId(point(x, y, 0), 0, 727);
 					}
 				}
@@ -106,7 +102,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		{
 			/*
 			   int creatureNr=0;
-			   for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++)
+			   for (creatureNr=0;creatureNr<reader.m_memMaxCreatures;creatureNr++)
 			   {
 			        CTibiaCharacter *cr=reader.readVisibleCreature(creatureNr);
 			        if (cr->monsterType==
@@ -126,7 +122,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				}
 				if (mountStarted && time(NULL) >= mountTm)
 				{
-					sender.sendMount();
+					CPackSender::sendMount();
 					mountStarted = 0;
 				}
 			}
@@ -198,7 +194,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									continue;
 								}                                        //reached top of relevant tiles
 
-								CTibiaTile *tileData = reader.getTibiaTile(tileId);
+								CTibiaTile *tileData = CTileReader::getTileReader().getTile(tileId);
 								if (tileData->minimapColor && mapColour == -1)
 									mapColour = tileData->minimapColor;
 								if (tileData->speed && tileData->speed < 256 && mapSpeed == -1)
@@ -242,7 +238,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									continue;
 								}                                        //reached top of relevant tiles
 
-								CTibiaTile *tileData = reader.getTibiaTile(tileId);
+								CTibiaTile *tileData = CTileReader::getTileReader().getTile(tileId);
 								if (tileData->minimapColor && mapColour == -1)
 									mapColour = tileData->minimapColor;
 								if (tileData->speed && tileData->speed < 256 && mapSpeed == -1)
@@ -288,7 +284,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									continue;
 								}                                        //reached top of relevant tiles
 
-								CTibiaTile *tileData = reader.getTibiaTile(tileId);
+								CTibiaTile *tileData = CTileReader::getTileReader().getTile(tileId);
 								if (tileData->minimapColor && mapColour == -1)
 									mapColour = tileData->minimapColor;
 								if (tileData->speed && tileData->speed < 256 && mapSpeed == -1)
@@ -349,7 +345,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		}
 	}
 
-	sender.enableCName(0);
+	CPackSender::enableCName(0);
 	reader.writeDisableRevealCName();
 	toolThreadShouldStop = 0;
 	return 0;

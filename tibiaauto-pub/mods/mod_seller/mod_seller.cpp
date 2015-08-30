@@ -26,11 +26,11 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
-#include "ModuleUtil.h"
-#include "TibiaMapProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
+#include <ModuleUtil.h>
+#include <VariableStore.h>
 #include <Tlhelp32.h>
 
 #ifdef _DEBUG
@@ -88,7 +88,7 @@ int sumAllExpenses(CConfigData *config);
 // Required to be run more often than the return value is expected to change
 int donaAttackingAndLooting()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	static int lastAttackTm = 0;
 	int ret                 = GetTickCount() - lastAttackTm > 3 * 1000 && !reader.getAttackedCreature();
 	if (reader.getAttackedCreature())
@@ -105,8 +105,8 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
+	CMemReader& reader = CMemReader::getMemReader();
+
 
 	CConfigData *config       = (CConfigData *)lpParam;
 	int allAtOnce             = 0;
@@ -114,7 +114,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	int persistentShouldGo    = 0;
 	time_t lastPathNotFoundTm = 0;
 	unsigned int modRuns      = 0;
-	reader.setGlobalVariable("banker_suggestion", "");
+	CVariableStore::setVariable("banker_suggestion", "");
 	time_t lastSellerSuccessTm  = 0;
 	int sellerPauseAfterSuccess = 5;
 
@@ -166,10 +166,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			int goldNeeded = sumAllExpenses(config);
 			char buf[128];
 			sprintf(buf, "%d", goldNeeded);
-			reader.setGlobalVariable("banker_suggestion", buf);
+			CVariableStore::setVariable("banker_suggestion", buf);
 		}
 
-		const char* controller = reader.getGlobalVariable("walking_control");
+		const char* controller = CVariableStore::getVariable("walking_control");
 		if (!persistentShouldGo && shouldGo(config))
 			persistentShouldGo = 1;
 		if (!persistentShouldGo
@@ -181,7 +181,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			persistentShouldGo = 0;
 
 		bool control          = strcmp(controller, "seller") == 0;
-		int modpriority       = atoi(reader.getGlobalVariable("walking_priority"));
+		int modpriority       = atoi(CVariableStore::getVariable("walking_priority"));
 		int wantsControl      = 0;
 		int foundPathToSeller = 0;
 		// if wants control
@@ -195,8 +195,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					if (atoi(config->modPriorityStr) > modpriority)
 					{
-						reader.setGlobalVariable("walking_control", "seller");
-						reader.setGlobalVariable("walking_priority", config->modPriorityStr);
+						CVariableStore::setVariable("walking_control", "seller");
+						CVariableStore::setVariable("walking_priority", config->modPriorityStr);
 					}
 					else
 					{
@@ -210,8 +210,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				//if has control, give it up
 				if (control)
 				{
-					reader.setGlobalVariable("walking_control", "");
-					reader.setGlobalVariable("walking_priority", "0");
+					CVariableStore::setVariable("walking_control", "");
+					CVariableStore::setVariable("walking_priority", "0");
 				}
 			}
 		}
@@ -221,12 +221,12 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			//if has control, give it up
 			if (control)
 			{
-				reader.setGlobalVariable("walking_control", "");
-				reader.setGlobalVariable("walking_priority", "0");
+				CVariableStore::setVariable("walking_control", "");
+				CVariableStore::setVariable("walking_priority", "0");
 			}
 		}
 
-		if (donaAttackingAndLooting() && strcmp(reader.getGlobalVariable("walking_control"), "seller") == 0)
+		if (donaAttackingAndLooting() && strcmp(CVariableStore::getVariable("walking_control"), "seller") == 0)
 		{
 			allAtOnce = 1;
 			for (int i = buyOrSell; i < MAX_SELLERS; i++)
@@ -239,8 +239,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						if (moveToSeller(config, i))
 						{
 							// High Priority Task
-							reader.setGlobalVariable("walking_control", "seller");
-							reader.setGlobalVariable("walking_priority", "9");
+							CVariableStore::setVariable("walking_control", "seller");
+							CVariableStore::setVariable("walking_priority", "9");
 
 							globalSellerState = CToolSellerState_talking;
 							config->targetX   = config->targetY = config->targetZ = 0;
@@ -248,8 +248,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							buyItems(config, i);
 							buyOrSell++;
 
-							reader.setGlobalVariable("walking_control", "seller");
-							reader.setGlobalVariable("walking_priority", config->modPriorityStr);
+							CVariableStore::setVariable("walking_control", "seller");
+							CVariableStore::setVariable("walking_priority", config->modPriorityStr);
 						}
 						else
 						{
@@ -268,12 +268,12 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 	}
-	if (strcmp(reader.getGlobalVariable("walking_control"), "seller") == 0)
+	if (strcmp(CVariableStore::getVariable("walking_control"), "seller") == 0)
 	{
-		reader.setGlobalVariable("walking_control", "");
-		reader.setGlobalVariable("walking_priority", "0");
+		CVariableStore::setVariable("walking_control", "");
+		CVariableStore::setVariable("walking_priority", "0");
 	}
-	reader.setGlobalVariable("banker_suggestion", "");
+	CVariableStore::setVariable("banker_suggestion", "");
 	globalSellerState    = CToolSellerState_notRunning;
 	toolThreadShouldStop = 0;
 	return 0;
@@ -1012,7 +1012,7 @@ void CMod_SellerApp::resetMultiParamAccess(char *paramName)
 
 int findSeller(CConfigData *config, int traderNum)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z)
 	{
@@ -1042,10 +1042,10 @@ int findSeller(CConfigData *config, int traderNum)
 int shouldKeepWalking()
 {
 	static time_t lastAttackTime = 0;
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	if (!reader.getAttackedCreature())
 	{
-		const char *var = reader.getGlobalVariable("autolooterTm");
+		const char *var = CVariableStore::getVariable("autolooterTm");
 		if (strcmp(var, "") == 0)
 		{
 			if (lastAttackTime < time(NULL) - 3)
@@ -1060,8 +1060,8 @@ int shouldKeepWalking()
 
 int moveToSeller(CConfigData *config, int traderNum)
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 
 	static int positionFound = 0;
 	if (shouldKeepWalking())
@@ -1077,7 +1077,7 @@ int moveToSeller(CConfigData *config, int traderNum)
 		}
 		else     //Approach NPC after finding them
 		{
-			for (int i = 0; i < memConstData.m_memMaxCreatures; i++)
+			for (int i = 0; i < reader.m_memMaxCreatures; i++)
 			{
 				CTibiaCharacter* mon = reader.readVisibleCreature(i);
 				if (mon->tibiaId == 0)
@@ -1131,29 +1131,29 @@ int moveToSeller(CConfigData *config, int traderNum)
 
 int sellItems(CConfigData *config, int traderNum)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+
+	
+	
 	CTibiaContainer *cont;
 	int itemCount;
 	int done = -1;
 
-	if (itemProxy.getItemId(config->sellItem[traderNum].tradeItem[0].itemName) == 0)
+	if (CTibiaItem::getItemId(config->sellItem[traderNum].tradeItem[0].itemName) == 0)
 		return 1;
 
 	Sleep(RandomTimeSellerSay(strlen("hi")));
-	sender.say("hi");
+	CPackSender::say("hi");
 	Sleep(800); //Give time for NPC window to open
 	Sleep(RandomTimeSellerSay(strlen("trade")));
-	sender.sayNPC("trade");
+	CPackSender::sayNPC("trade");
 	Sleep(RandomTimeSeller());
 	for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 	{
-		int objectId    = itemProxy.getItemId(config->sellItem[traderNum].tradeItem[j].itemName);
+		int objectId    = CTibiaItem::getItemId(config->sellItem[traderNum].tradeItem[j].itemName);
 		int openContNr  = 0;
 		int openContMax = reader.readOpenContainerCount();
-		for (int contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+		for (int contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 		{
 			cont = reader.readContainer(contNr);
 			if (cont->flagOnOff)
@@ -1169,7 +1169,7 @@ int sellItems(CConfigData *config, int traderNum)
 						while (itemCount > 0)
 						{
 							CTibiaCharacter *self = reader.readSelfCharacter();
-							sender.npcSell(objectId, min(itemCount, MAX_BUYSELL_ITEMS));
+							CPackSender::npcSell(objectId, min(itemCount, MAX_BUYSELL_ITEMS));
 							itemCount -= min(itemCount, MAX_BUYSELL_ITEMS);
 							Sleep(RandomTimeSeller());
 							if (CModuleUtil::waitForCapsChange(self->cap))
@@ -1194,35 +1194,35 @@ int sellItems(CConfigData *config, int traderNum)
 
 int buyItems(CConfigData *config, int traderNum)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
+	CMemReader& reader = CMemReader::getMemReader();
+
+	
 	int itemCount, goldCount;
 	int done = -1;
 
-	if (itemProxy.getItemId(config->buyItem[traderNum].tradeItem[0].itemName) == 0)
+	if (CTibiaItem::getItemId(config->buyItem[traderNum].tradeItem[0].itemName) == 0)
 		return 1;
 
 	int objectId;
 	//char buf[64];
 	Sleep(RandomTimeSellerSay(strlen("hi")));
-	sender.say("hi");
+	CPackSender::say("hi");
 	Sleep(800); //Give time for NPC window to open
 	Sleep(RandomTimeSellerSay(strlen("trade")));
-	sender.sayNPC("trade");
+	CPackSender::sayNPC("trade");
 	Sleep(RandomTimeSeller());
 	for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 	{
-		objectId = itemProxy.getItemId(config->buyItem[traderNum].tradeItem[j].itemName);
+		objectId = CTibiaItem::getItemId(config->buyItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Item Name: %s", config->buyItem[traderNum].tradeItem[j].itemName);
 		//AfxMessageBox(buf);
 		if (objectId)
 			itemCount = countAllItemsOfType(objectId, true);
 		else
 			break;
-		goldCount  = countAllItemsOfType(itemProxy.getValueForConst("GP"), true);
-		goldCount += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"), true) * 100;
-		goldCount += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"), true) * 10000;
+		goldCount  = countAllItemsOfType(CTibiaItem::getValueForConst("GP"), true);
+		goldCount += countAllItemsOfType(CTibiaItem::getValueForConst("PlatinumCoin"), true) * 100;
+		goldCount += countAllItemsOfType(CTibiaItem::getValueForConst("CrystalCoin"), true) * 10000;
 		itemCount  = config->buyItem[traderNum].tradeItem[j].quantityBuySell - itemCount;
 		itemCount  = goldCount / config->buyItem[traderNum].tradeItem[j].salePrice >= itemCount ? itemCount : goldCount / config->buyItem[traderNum].tradeItem[j].salePrice;
 		//sprintf(buf, "Item: %d\nGold: %d\nCount: %d",objectId, goldCount, itemCount);
@@ -1231,7 +1231,7 @@ int buyItems(CConfigData *config, int traderNum)
 		while (itemCount > 0)
 		{
 			CTibiaCharacter *self = reader.readSelfCharacter();
-			sender.npcBuy(objectId, min(itemCount, MAX_BUYSELL_ITEMS), 0, 0);
+			CPackSender::npcBuy(objectId, min(itemCount, MAX_BUYSELL_ITEMS), 0, 0);
 			itemCount -= min(itemCount, MAX_BUYSELL_ITEMS);
 			Sleep(RandomTimeSeller());
 			if (CModuleUtil::waitForCapsChange(self->cap))
@@ -1282,21 +1282,21 @@ int isCavebotOn()
 
 int isDepositing()
 {
-	CMemReaderProxy reader;
-	const char *var = reader.getGlobalVariable("cavebot_depositing");
+	CMemReader& reader = CMemReader::getMemReader();
+	const char *var = CVariableStore::getVariable("cavebot_depositing");
 	return strcmp(var, "true") == 0;
 }
 
 int sumAllExpenses(CConfigData *config)
 {
-	CTibiaItemProxy itemProxy;
-	CMemReaderProxy reader;
+	
+	CMemReader& reader = CMemReader::getMemReader();
 	int totalCost = 0;
 	for (int i = 0; i < MAX_SELLERS; i++)
 	{
 		for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 		{
-			int objectId = itemProxy.getItemId(config->buyItem[i].tradeItem[j].itemName);
+			int objectId = CTibiaItem::getItemId(config->buyItem[i].tradeItem[j].itemName);
 			if (objectId)
 				totalCost += max(0, (config->buyItem[i].tradeItem[j].quantityBuySell - countAllItemsOfType(objectId, true)) * config->buyItem[i].tradeItem[j].salePrice);
 			else
@@ -1308,13 +1308,13 @@ int sumAllExpenses(CConfigData *config)
 
 int countAllItemsOfType(int objectId, bool includeSlots)
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	int contNr;
 	int ret         = 0;
 	int openContNr  = 0;
 	int openContMax = reader.readOpenContainerCount();
-	for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+	for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 	{
 		CTibiaContainer *cont = reader.readContainer(contNr);
 
@@ -1327,10 +1327,10 @@ int countAllItemsOfType(int objectId, bool includeSlots)
 	}
 	if (includeSlots)
 	{
-		CMemConstData memConstData = reader.getMemConstData();
+		
 		for (int slotNr = 0; slotNr < 10; slotNr++)   // Loops through all 10 inventory slots(backwards)
 		{
-			CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow + slotNr * memConstData.m_memLengthItem);
+			CTibiaItem *item = reader.readItem(reader.m_memAddressSlotArrow + slotNr * reader.m_memLengthItem);
 			if (item->objectId == objectId)
 				ret += item->quantity ? item->quantity : 1;
 			delete item;
@@ -1342,8 +1342,8 @@ int countAllItemsOfType(int objectId, bool includeSlots)
 bool shouldGo(CConfigData *config)
 {
 	//char buf[64];
-	CTibiaItemProxy itemProxy;
-	CMemReaderProxy reader;
+	
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
 
@@ -1364,7 +1364,7 @@ bool shouldGo(CConfigData *config)
 		}
 		for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 		{
-			int objectId = itemProxy.getItemId(config->sellItem[i].tradeItem[j].itemName);
+			int objectId = CTibiaItem::getItemId(config->sellItem[i].tradeItem[j].itemName);
 			if (objectId)
 			{
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
@@ -1380,16 +1380,16 @@ bool shouldGo(CConfigData *config)
 		}
 		for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 		{
-			int objectId = itemProxy.getItemId(config->buyItem[i].tradeItem[j].itemName);
+			int objectId = CTibiaItem::getItemId(config->buyItem[i].tradeItem[j].itemName);
 			if (objectId)
 			{
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
 				//AfxMessageBox(buf);
 				if (moneycount == -1)
 				{
-					moneycount  = countAllItemsOfType(itemProxy.getValueForConst("GP"), true);
-					moneycount += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"), true) * 100;
-					moneycount += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"), true) * 10000;
+					moneycount  = countAllItemsOfType(CTibiaItem::getValueForConst("GP"), true);
+					moneycount += countAllItemsOfType(CTibiaItem::getValueForConst("PlatinumCoin"), true) * 100;
+					moneycount += countAllItemsOfType(CTibiaItem::getValueForConst("CrystalCoin"), true) * 10000;
 				}
 
 				if (countAllItemsOfType(objectId, true) < config->buyItem[i].tradeItem[j].triggerQuantity && moneycount >= config->buyItem[i].tradeItem[j].salePrice)
@@ -1408,8 +1408,8 @@ bool shouldGo(CConfigData *config)
 
 bool canGo(CConfigData *config)
 {
-	CTibiaItemProxy itemProxy;
-	CMemReaderProxy reader;
+	
+	CMemReader& reader = CMemReader::getMemReader();
 
 	int count = 0;
 	for (int i = 0; i < MAX_SELLERS; i++)
@@ -1417,7 +1417,7 @@ bool canGo(CConfigData *config)
 		//see if there's anything to
 		for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 		{
-			int objectId = itemProxy.getItemId(config->sellItem[i].tradeItem[j].itemName);
+			int objectId = CTibiaItem::getItemId(config->sellItem[i].tradeItem[j].itemName);
 			if (objectId)
 			{
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
@@ -1429,14 +1429,14 @@ bool canGo(CConfigData *config)
 		}
 		for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 		{
-			int objectId = itemProxy.getItemId(config->buyItem[i].tradeItem[j].itemName);
+			int objectId = CTibiaItem::getItemId(config->buyItem[i].tradeItem[j].itemName);
 			if (objectId)
 			{
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
 				//AfxMessageBox(buf);
-				count  = countAllItemsOfType(itemProxy.getValueForConst("GP"), true);
-				count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"), true) * 100;
-				count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"), true) * 10000;
+				count  = countAllItemsOfType(CTibiaItem::getValueForConst("GP"), true);
+				count += countAllItemsOfType(CTibiaItem::getValueForConst("PlatinumCoin"), true) * 100;
+				count += countAllItemsOfType(CTibiaItem::getValueForConst("CrystalCoin"), true) * 10000;
 
 				if (countAllItemsOfType(objectId, true) < config->buyItem[i].tradeItem[j].quantityBuySell && count >= config->buyItem[i].tradeItem[j].salePrice)
 					return true;
@@ -1450,12 +1450,12 @@ bool canGo(CConfigData *config)
 int individualShouldGo(CConfigData *config, int traderNum)
 {
 	//char buf[64];
-	CTibiaItemProxy itemProxy;
-	CMemReaderProxy reader;
+	
+	CMemReader& reader = CMemReader::getMemReader();
 	int ret = NOGO;
 	for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 	{
-		int objectId = itemProxy.getItemId(config->sellItem[traderNum].tradeItem[j].itemName);
+		int objectId = CTibiaItem::getItemId(config->sellItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
 		if (objectId)
@@ -1474,14 +1474,14 @@ int individualShouldGo(CConfigData *config, int traderNum)
 	int count = -1;
 	for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 	{
-		int objectId = itemProxy.getItemId(config->buyItem[traderNum].tradeItem[j].itemName);
+		int objectId = CTibiaItem::getItemId(config->buyItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
 		if (count == -1)
 		{
-			count  = countAllItemsOfType(itemProxy.getValueForConst("GP"), true);
-			count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"), true) * 100;
-			count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"), true) * 10000;
+			count  = countAllItemsOfType(CTibiaItem::getValueForConst("GP"), true);
+			count += countAllItemsOfType(CTibiaItem::getValueForConst("PlatinumCoin"), true) * 100;
+			count += countAllItemsOfType(CTibiaItem::getValueForConst("CrystalCoin"), true) * 10000;
 		}
 		if (objectId)
 		{
@@ -1508,14 +1508,14 @@ int individualShouldGo(CConfigData *config, int traderNum)
 
 int spaceAvailable()
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 
 	int contNr;
 	int hasSpace    = 0;
 	int openContNr  = 0;
 	int openContMax = reader.readOpenContainerCount();
-	for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+	for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 	{
 		CTibiaContainer *cont = reader.readContainer(contNr);
 

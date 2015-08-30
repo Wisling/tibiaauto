@@ -2,6 +2,8 @@
 
 #include "mod_showmap.h"
 
-CMod_showmapApp module;
-
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_showmapApp();
+}

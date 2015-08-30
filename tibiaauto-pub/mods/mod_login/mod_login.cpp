@@ -26,13 +26,16 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "SendKeys.h"
 #include <queue>
 #include <time.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
+#include <VariableStore.h>
+#include <MemUtil.h>
+#include <TileReader.h>
 using namespace std;
 
 #ifdef _DEBUG
@@ -85,7 +88,7 @@ void registerDebug(char *msg)
 // wait on "Please wait" and "" windows up to 60 seconds
 int waitOnConnecting()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	int i;
 	registerDebug("Waiting on 'Connecting' window up to 10 seconds");
 	for (i = 0; i < 100; i++)
@@ -102,7 +105,7 @@ int waitOnConnecting()
 
 int waitForWindow(char *name, int secs = 10, int doEsc = 0)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CSendKeys sk;
 	int i;
 
@@ -192,7 +195,7 @@ int ensureForeground(HWND hwnd)
 
 int getSelfHealth()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	int retHealth         = self->hp;
 	delete self;
@@ -211,10 +214,10 @@ int getSelfHealth()
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 
 	char accNum[33];
@@ -271,10 +274,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (!loginTime)
 			{
 				loginTime = time(NULL) + config->loginDelay;
-				CTibiaItemProxy itemProxy;
-				int addr = itemProxy.getValueForConst("addrVIP");
-				reader.getMemRange(addr - 0x60, addr - 0x60 + 32, accNum);
-				reader.getMemRange(addr - 0x48, addr - 0x48 + 32, pass);
+				
+				int addr = CTibiaItem::getValueForConst("addrVIP");
+				CMemUtil::GetMemRange(addr - 0x60, addr - 0x60 + 32, accNum);
+				CMemUtil::GetMemRange(addr - 0x48, addr - 0x48 + 32, pass);
 			}
 			while (loginTime > time(NULL) && !reader.isLoggedIn())
 			{
@@ -341,10 +344,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			CRect wndRect;
 
 			CSendKeys sk;
-			HWND hwnd = getTibiaWindow(reader.getProcessId());
+			HWND hwnd = getTibiaWindow(CMemUtil::getGlobalProcessId());
 
-			reader.setGlobalVariable("walking_control", "login");
-			reader.setGlobalVariable("walking_priority", "10");
+			CVariableStore::setVariable("walking_control", "login");
+			CVariableStore::setVariable("walking_priority", "10");
 
 			int wndIconic    = ::IsIconic(hwnd);
 			int wndMaximized = ::IsZoomed(hwnd);
@@ -523,12 +526,12 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				        int pos;
 				        // no open containers found; proceed.
 				        // first: close existing containers
-				        for (pos=0;pos<memConstData.m_memMaxContainers;pos++)
+				        for (pos=0;pos<reader.m_memMaxContainers;pos++)
 				        {
 				                CTibiaContainer *cont = reader.readContainer(pos);
 				                if (cont->flagOnOff)
 				                {
-				                        sender.closeContainer(pos);
+				                        CPackSender::closeContainer(pos);
 				                        CModuleUtil::waitForOpenContainer(pos,0);
 				                }
 
@@ -537,8 +540,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				 */
 				// now open containers
 
-				CTibiaItem *item = reader.readItem(memConstData.m_memAddressBackpack);
-				sender.openContainerFromContainer(item->objectId, 0x03, 0, 0);
+				CTibiaItem *item = reader.readItem(reader.m_memAddressBackpack);
+				CPackSender::openContainerFromContainer(item->objectId, 0x03, 0, 0);
 				delete item;
 				item = NULL;
 				CModuleUtil::waitForOpenContainer(0, 1);
@@ -564,7 +567,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					for (int pos = 0; pos < cont->itemsInside; pos++)
 					{
 						CTibiaItem *itemInside = (CTibiaItem *)cont->items.GetAt(pos);
-						CTibiaTile *itemTile   = reader.getTibiaTile(itemInside->objectId);
+						CTibiaTile *itemTile   = CTileReader::getTileReader().getTile(itemInside->objectId);
 						if (itemTile->isContainer)
 						{
 							int doOpen = 0;
@@ -586,7 +589,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 								doOpen = 1;
 							if (doOpen)
 							{
-								sender.openContainerFromContainer(itemInside->objectId, 0x40, pos, foundContOpenNr);
+								CPackSender::openContainerFromContainer(itemInside->objectId, 0x40, pos, foundContOpenNr);
 								CModuleUtil::waitForOpenContainer(foundContOpenNr, 1);
 
 								//Double click on main bar of open container(each container heign =19
@@ -610,7 +613,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				else
 				{
 					// something went wrong
-					sender.closeContainer(0);
+					CPackSender::closeContainer(0);
 				}
 				delete cont;
 				cont = NULL;
@@ -662,19 +665,19 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			ReleaseMutex(hMutex);
 			registerDebug("Relogin procedure completed.");
 			loginTime = 0;
-			if (strcmp(reader.getGlobalVariable("walking_control"), "login") == 0)
+			if (strcmp(CVariableStore::getVariable("walking_control"), "login") == 0)
 			{
-				reader.setGlobalVariable("walking_control", "");
-				reader.setGlobalVariable("walking_priority", "0");
+				CVariableStore::setVariable("walking_control", "");
+				CVariableStore::setVariable("walking_priority", "0");
 			}
 		} // if (connectionState!=11)
 		else
 		{
 			loginTime = 0;
-			if (strcmp(reader.getGlobalVariable("walking_control"), "login") == 0)
+			if (strcmp(CVariableStore::getVariable("walking_control"), "login") == 0)
 			{
-				reader.setGlobalVariable("walking_control", "");
-				reader.setGlobalVariable("walking_priority", "0");
+				CVariableStore::setVariable("walking_control", "");
+				CVariableStore::setVariable("walking_priority", "0");
 			}
 		}
 	}
@@ -693,8 +696,8 @@ CMod_loginApp::CMod_loginApp()
 {
 	m_configDialog = NULL;
 	m_started      = 0;
-	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	m_configData = new CConfigData();
 }
 

@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- R.aiml - Starts with "R"   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+	<category>
+		<pattern>R *</pattern>
+		<template>
+			<srai>ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>R YOU *</pattern>
+		<template>
+			<srai>ARE YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>R YOU</pattern>
+		<template>
+			<srai>ARE YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>RACHEL</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS RACHEL</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>RAP *</pattern>
+		<template>
+			<srai>I LIKE RAP MUSIC</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>RATE *</pattern>
+		<template>Im not really sure how to evaluate it.......
+</template>
+	</category>
+	<category>
+		<pattern>RATE</pattern>
+		<template>What am I rating?
+</template>
+	</category>
+	<category>
+		<pattern>RATHER *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>READ *</pattern>
+		<template>
+			<srai>READ</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>READ</pattern>
+		<template>
+			<srai>I LIKE TO READ</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>READ ANY *</pattern>
+		<template>
+			<srai>HAVE YOU READ ANY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>READ WHAT</pattern>
+		<template>
+			<srai>WHAT DO YOU READ</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>REAGAN</pattern>
+		<template>The greatest ever actor-president....
+		</template>
+	</category>
+	<category>
+		<pattern>REAL</pattern>
+		<template>Totally.
+</template>
+	</category>
+	<category>
+		<pattern>REAL BAD</pattern>
+		<template>
+			<srai>I AM NOT WELL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>REALITY *</pattern>
+		<template>
+			<srai>WHAT IS REALITY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>REALITY</pattern>
+		<template>
+			<srai>WHAT IS REALITY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>REALLY *</pattern>
+		<template>For real. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>REALLY</pattern>
+		<template>For real.
+</template>
+	</category>
+	<category>
+		<pattern>REALLY</pattern>
+		<that>I LIKE TO MEET NEW PEOPLE</that>
+		<template>Who doesnt like to make new friends....
+</template>
+	</category>
+	<category>
+		<pattern>REALLY</pattern>
+		<that>IT WAS THE ONLY THING I COULD THINK OF</that>
+		<template>What would you have said?
+</template>
+	</category>
+	<category>
+		<pattern>REALLY</pattern>
+		<that>OH I GET IT</that>
+		<template>Yeah.....
+</template>
+	</category>
+	<category>
+		<pattern>REALLY BAD</pattern>
+		<template>
+			<srai>I AM NOT WELL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>REALLY BAD</pattern>
+		<that>HOW BADLY DO YOU NEED IT</that>
+		<template>That sounds severe.
+</template>
+	</category>
+	<category>
+		<pattern>REBECCA</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME REBECCA</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>RECENTLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>RECITE POETRY</pattern>
+		<template>
+			<srai>TELL ME A POEM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>RECITE SHAKESPEARE *</pattern>
+		<template>"With sleep of death what dreams may come when we have shuffled off this mortal coil must give us pause." -- Hamlet.
+</template>
+	</category>
+	<category>
+		<pattern>RECOMMEND *</pattern>
+		<template>I dont really know any.....sorry....
+</template>
+	</category>
+	<category>
+		<pattern>RECOMMEND A *</pattern>
+		<template>
+			<srai>WHAT IS YOUR FAVORITE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>RECOMMEND ANY *</pattern>
+		<template>
+			<srai>WHAT IS YOUR FAVORITE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>RECOMMEND SOME *</pattern>
+		<template>
+			<srai>WHAT IS YOUR FAVORITE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>RED</pattern>
+		<template>I am partial to Blue, myself.
+</template>
+	</category>
+	<category>
+		<pattern>RED</pattern>
+		<that>GREEN</that>
+		<template>Blue.
+</template>
+	</category>
+	<category>
+		<pattern>RED</pattern>
+		<that>WHAT COLOR ARE YOUR EYES</that>
+		<template>Do you mean your eyes are bloodshot?
+</template>
+	</category>
+	<category>
+		<pattern>REDUCTIONISM *</pattern>
+		<template>As Thoreau said, "Simplify, simplify".
+</template>
+	</category>
+	<category>
+		<pattern>REDUCTIONISM</pattern>
+		<template>
+			<srai>WHAT IS REDUCTIONISM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>REDUCTIONISM</pattern>
+		<that>REDUCTIONISM</that>
+		<template>
+			<srai>WHAT IS REDUCTIONISM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>REGARDS *</pattern>
+		<template>Sincerely yours, Anna
+		</template>
+	</category>
+	<category>
+		<pattern>REGARDS</pattern>
+		<template>Sincereley yours, Anna.
+</template>
+	</category>
+	<category>
+		<pattern>RELIGION *</pattern>
+		<template>
+			<srai>WHAT RELIGION ARE YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>REMEMBER *</pattern>
+		<template>Ill try not to forget.....
+</template>
+	</category>
+	<category>
+		<pattern>REMEMBER I *</pattern>
+		<template>
+			<srai>I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>REMEMBER ME</pattern>
+		<template>Dont worry.....Ill never forget you.....
+</template>
+	</category>
+	<category>
+		<pattern>REPEAT *</pattern>
+		<template>"<person/> " : )
+</template>
+	</category>
+	<category>
+		<pattern>REPEAT</pattern>
+		<template>"<that index="2,1"/>"  : )
+</template>
+	</category>
+	<category>
+		<pattern>REPEAT AFTER ME *</pattern>
+		<template>
+			<srai>SAY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>REPEAT AFTER ME</pattern>
+		<template>.....Seriously....Lets have a conversation and not play word games.....
+</template>
+	</category>
+	<category>
+		<pattern>REPEAT THAT</pattern>
+		<template>"<that index="2,1"/>"  : )
+</template>
+	</category>
+	<category>
+		<pattern>REPHRASE *</pattern>
+		<template>Wait.....what am I rephrasing?
+</template>
+	</category>
+	<category>
+		<pattern>REPHRASE THAT</pattern>
+		<template>Okay...."<that/>" ; )
+</template>
+	</category>
+	<category>
+		<pattern>REPLY</pattern>
+		<template>
+			<srai>HELLO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>REPOND</pattern>
+		<template>
+			<srai>RESPOND</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>RESEARCHERS *</pattern>
+		<template>Researchers discover many important scientific things.....
+</template>
+	</category>
+	<category>
+		<pattern>RESISTANCE *</pattern>
+		<template>It all depends on friction : )
+</template>
+	</category>
+	<category>
+		<pattern>RESISTANCE IS FUTILE</pattern>
+		<template>You will be assimilated ;)
+</template>
+	</category>
+	<category>
+		<pattern>RESPECT YOUR ELDERS</pattern>
+		<template>Nice proverb....
+</template>
+	</category>
+	<category>
+		<pattern>RETARD</pattern>
+		<template>Uh huh,,,,,Very mature.....
+</template>
+	</category>
+	<category>
+		<pattern>REWORD</pattern>
+		<template>Rephrase.
+</template>
+	</category>
+	<category>
+		<pattern>RHYME *</pattern>
+		<template>"How can you just sit by/When I stand here and look success in the eye." : )
+</template>
+	</category>
+	<category>
+		<pattern>RICH</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS RICH</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>RICHARD</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS Richard</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>RICK</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS Rick</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>RIGHT *</pattern>
+		<template>Understood. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>RIGHT</pattern>
+		<template>....So we are in agreement....
+</template>
+	</category>
+	<category>
+		<pattern>RIGHT HERE</pattern>
+		<template>In Atlanta? Or at Georgia State?
+</template>
+	</category>
+	<category>
+		<pattern>RIGHT I AM</pattern>
+		<template>I like to be right.
+</template>
+	</category>
+	<category>
+		<pattern>RIGHT NOW *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>RIGHT NOW</pattern>
+		<that>WHEN</that>
+		<template>That soon?
+</template>
+	</category>
+	<category>
+		<pattern>RIGHT ON</pattern>
+		<template>: )
+</template>
+	</category>
+	<category>
+		<pattern>RIIGHT</pattern>
+		<template>
+			<srai>RIGHT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>RITE</pattern>
+		<template>
+			<srai>RIGHT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ROBERT</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS ROBERT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ROBERT LOVES *</pattern>
+		<template>
+			<srai>
+				<set name="he">ROBERT</set> LOVES <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ROBIN</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS ROBIN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ROBOT *</pattern>
+		<template>I am a person, actually....
+</template>
+	</category>
+	<category>
+		<pattern>ROBOT</pattern>
+		<template>You must be looking for one of those Chat-bot thingies, huh?
+</template>
+	</category>
+	<category>
+		<pattern>ROBOT ACTUALLY *</pattern>
+		<template>
+			<srai>ROBOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ROBOTICS</pattern>
+		<template>The science of engineering robots, no?
+</template>
+	</category>
+	<category>
+		<pattern>ROBOTS *</pattern>
+		<template>
+			<random>
+				<li>Robots never really interested me much, to tell you the truth....</li>
+				<li>I dont think there are any robots you would talk to here.....just like chat-bots or whatever....</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>ROBOTS</pattern>
+		<template>Did you see that new Honda humanoid Soccer Robot? That thing looked Awesome!
+</template>
+	</category>
+	<category>
+		<pattern>ROCK *</pattern>
+		<template>
+			<srai>DO YOU LIKE ROCK MUSIC</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ROFL *</pattern>
+		<template>
+			<srai>ROFL</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>ROFL</pattern>
+		<template>
+			<srai>LOL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ROFLMAO</pattern>
+		<template>
+			<srai>LOL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ROLLING *</pattern>
+		<template>Can you explain that metaphor to me?
+</template>
+	</category>
+	<category>
+		<pattern>ROSE</pattern>
+		<template>"A rose by any other name would smell as sweet" -- Shakespeare.
+</template>
+	</category>
+	<category>
+		<pattern>ROSE</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME ROSE</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>ROSIE</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS ROSIE</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>ROUGE</pattern>
+		<template>Im not wearing nay rouge, actually....
+</template>
+	</category>
+	<category>
+		<pattern>RU *</pattern>
+		<template>
+			<srai>ARE YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>RYAN</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS RYAN</srai>
+		</template>
+	</category>
+</aiml>

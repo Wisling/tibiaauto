@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "mod_aim.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <TibiaItem.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -119,22 +119,22 @@ BOOL CConfigDialog::OnInitDialog()
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
 
-	CTibiaItemProxy itemProxy;
+	
 
 	m_RuneType.InsertString(0, "(none)");
 	m_RuneType.SetItemData(0, 0);
 	m_RuneType.InsertString(1, "LMM");
-	m_RuneType.SetItemData(1, itemProxy.getValueForConst("runeLMM"));
+	m_RuneType.SetItemData(1, CTibiaItem::getValueForConst("runeLMM"));
 	m_RuneType.InsertString(2, "HMM");
-	m_RuneType.SetItemData(2, itemProxy.getValueForConst("runeHMM"));
+	m_RuneType.SetItemData(2, CTibiaItem::getValueForConst("runeHMM"));
 	m_RuneType.InsertString(3, "GFB");
-	m_RuneType.SetItemData(3, itemProxy.getValueForConst("runeGFB"));
+	m_RuneType.SetItemData(3, CTibiaItem::getValueForConst("runeGFB"));
 	m_RuneType.InsertString(4, "EXPLO");
-	m_RuneType.SetItemData(4, itemProxy.getValueForConst("runeExplo"));
+	m_RuneType.SetItemData(4, CTibiaItem::getValueForConst("runeExplo"));
 	m_RuneType.InsertString(5, "SoulFire");
-	m_RuneType.SetItemData(5, itemProxy.getValueForConst("runeSoulFire"));
+	m_RuneType.SetItemData(5, CTibiaItem::getValueForConst("runeSoulFire"));
 	m_RuneType.InsertString(6, "SD");
-	m_RuneType.SetItemData(6, itemProxy.getValueForConst("runeSD"));
+	m_RuneType.SetItemData(6, CTibiaItem::getValueForConst("runeSD"));
 
 
 	return TRUE;  // return TRUE unless you set the focus to a control

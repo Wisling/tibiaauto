@@ -24,10 +24,10 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
-#include "ModuleUtil.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
+#include <ModuleUtil.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -62,9 +62,9 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
+	CMemReader& reader = CMemReader::getMemReader();
+
+	
 	CConfigData *config = (CConfigData *)lpParam;
 
 	int offeredItems = 0;
@@ -89,7 +89,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					randTimeTrade = RandomTimeTrademon(config->channelInterval);
 					channelTime   = time(NULL);
-					sender.sayOnChan(config->message, 7, 5);
+					CPackSender::sayOnChan(config->message, 7, 5);
 				}
 			}
 			if (config->yell)
@@ -99,7 +99,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					randTimeYell = RandomTimeTrademon(config->yellInterval);
 					yellTime     = time(NULL);
-					sender.sayYell(config->message);
+					CPackSender::sayYell(config->message);
 				}
 			}
 
@@ -110,7 +110,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					randTimeSay = RandomTimeTrademon(config->sayInterval);
 					sayTime     = time(NULL);
-					sender.say(config->message);
+					CPackSender::say(config->message);
 				}
 			}
 		}
@@ -143,14 +143,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (itemsCount[i])
 					{
 						char buf[500];
-						sprintf(buf, "%s [%d]", itemProxy.getItemName(i), itemsCount[i]);
+						sprintf(buf, "%s [%d]", CTibiaItem::getItemName(i), itemsCount[i]);
 						if (i)
 							strcat(strbuf, ", ");
 						strcat(strbuf, buf);
 						strbuf[1000] = 0;
 					}
 				}
-				sender.sendTAMessage(strbuf);
+				CPackSender::sendTAMessage(strbuf);
 				free(strbuf);
 				free(itemsCount);
 			}

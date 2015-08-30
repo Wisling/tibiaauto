@@ -1,25 +1,33 @@
-// TibiaMap.h: interface for the CTibiaMap class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_TIBIAMAP_H__D128DE5B_B472_4E61_B805_B3BF714E9099__INCLUDED_)
-#define AFX_TIBIAMAP_H__D128DE5B_B472_4E61_B805_B3BF714E9099__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+#include "tibiaauto_util.h"
 
-#include <map>
 #include "TibiaMapPoint.h"
 
 using namespace std;
 
+enum MapPointType
+{
+	MAP_POINT_TYPE_SELF = -2,
+	MAP_POINT_TYPE_CLEAR = -1,
+	MAP_POINT_TYPE_AVAILABLE = 0,
+	MAP_POINT_TYPE_OPEN_HOLE = 101,
+	MAP_POINT_TYPE_CLOSED_HOLE = 102,
+	MAP_POINT_TYPE_CRATE = 103,
+	MAP_POINT_TYPE_ROPE = 201,
+	MAP_POINT_TYPE_MAGICROPE = 202,
+	MAP_POINT_TYPE_LADDER = 203,
+	MAP_POINT_TYPE_STAIRS = 204,
+	MAP_POINT_TYPE_DEPOT = 301,
+	MAP_POINT_TYPE_TELEPORT = 302,
+	MAP_POINT_TYPE_BLOCK = 303,
+	MAP_POINT_TYPE_USABLE_TELEPORT = 304,
+};
 
 struct pointData
 {
 public:
 	int available;
-	int updown;
+	MapPointType type;
 	int prevX;
 	int prevY;
 	int prevZ;
@@ -36,7 +44,7 @@ public:
 	void clear()
 	{
 		available = 0;
-		updown    = 0;
+		type      = MAP_POINT_TYPE_AVAILABLE;
 		prevX     = 0;
 		prevY     = 0;
 		prevZ     = 0;
@@ -47,18 +55,28 @@ public:
 	}
 };
 
-class CTibiaMap
+class TIBIAAUTOUTIL_API CTibiaMap
 {
+private:
+	CTibiaMap();
+	virtual ~CTibiaMap();
+	CTibiaMap(CTibiaMap const&);
+	void operator=(CTibiaMap const&);
 public:
-	int getPointTypeNoProh(int x, int y, int z);
+	static CTibiaMap& getTibiaMap()
+	{
+		static CTibiaMap singleton;
+		return singleton;
+	}
+	MapPointType getPointTypeNoProh(int x, int y, int z);
 	int isPointAvailableNoProh(int x, int y, int z);
 	struct point getPointByNr(int nr);
 	int size();
 	void removePointAvailable(int x, int y, int z);
 	void prohPointClear();
 	void prohPointAdd(int x, int y, int z);
-	int getPointType(int x, int y, int z);
-	void setPointType(int x, int y, int z, int updown);
+	MapPointType getPointType(int x, int y, int z);
+	void setPointType(int x, int y, int z, MapPointType type);
 	void loadFromDisk(FILE *f);
 	void saveToDisk(FILE *f);
 	int getPrevPointZ(int x, int y, int z);
@@ -82,8 +100,6 @@ public:
 	int calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ);
 	void setPointLocked(int x, int y, int z, int locked);
 	int isPointLocked(int x, int y, int z);
-	CTibiaMap();
-	virtual ~CTibiaMap();
 
 private:
 	void enlarge();
@@ -98,4 +114,3 @@ private:
 	CMap<point *, point *, pointData *, pointData *> tibiaMap2;
 };
 
-#endif // !defined(AFX_TIBIAMAP_H__D128DE5B_B472_4E61_B805_B3BF714E9099__INCLUDED_)

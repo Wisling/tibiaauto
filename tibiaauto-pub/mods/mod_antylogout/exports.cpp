@@ -2,6 +2,8 @@
 
 #include "mod_antylogout.h"
 
-CMod_antylogoutApp module;
-
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_antylogoutApp();
+}

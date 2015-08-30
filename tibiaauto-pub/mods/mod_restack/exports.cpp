@@ -2,5 +2,8 @@
 
 #include "mod_restack.h"
 
-CMod_restackApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_restackApp();
+}

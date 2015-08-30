@@ -5,7 +5,7 @@
 #include "tibiaauto.h"
 #include "EnterCode.h"
 #include "MemUtil.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 #include "md5class.h"
 
 #ifdef _DEBUG
@@ -56,8 +56,6 @@ void CEnterCode::OnOK()
 	{
 		PostQuitMessage(0);
 		CMemUtil::setGlobalProcessId(GetCurrentProcessId());
-		CMemReaderProxy reader;
-		reader.setProcessId(GetCurrentProcessId());
 		PostQuitMessage(0);
 	}
 	else

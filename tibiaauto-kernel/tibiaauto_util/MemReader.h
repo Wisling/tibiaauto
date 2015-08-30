@@ -1,16 +1,8 @@
-// MemReader.h: interface for the CMemReader class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_MEMREADER_H__520F2B59_0B82_4188_9DE0_9362EB4062E7__INCLUDED_)
-#define AFX_MEMREADER_H__520F2B59_0B82_4188_9DE0_9362EB4062E7__INCLUDED_
-
-#include "TibiaCharacter.h"     // Added by ClassView
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
+#include "tibiaauto_util.h"
 #include "TibiaContainer.h"
+#include "TibiaCharacter.h"
 #include "TibiaMapTile.h"
 #include "TibiaMapPoint.h"
 #include "MemConstData.h"
@@ -19,12 +11,19 @@
 #include "TibiaMiniMapLabel.h"
 #include "TibiaVIPEntry.h"
 
-class CMemReader : public CMemConstData
+class TIBIAAUTOUTIL_API CMemReader : public CMemConstData
 {
-public:
+private:
 	CMemReader();
 	virtual ~CMemReader();
+	CMemReader(CMemReader const&);
+	void operator=(CMemReader const&);
 public:
+	static CMemReader& getMemReader()
+	{
+		static CMemReader singleton;
+		return singleton;
+	}
 	int getCreatureDeltaY(int creatureNr);
 	int getCreatureDeltaX(int creatureNr);
 
@@ -114,4 +113,3 @@ private:
 	int mapIsPointInScope(point p, int relToCell);
 };
 
-#endif // !defined(AFX_MEMREADER_H__520F2B59_0B82_4188_9DE0_9362EB4062E7__INCLUDED_)

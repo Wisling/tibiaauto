@@ -4,10 +4,12 @@
 #include "stdafx.h"
 #include "mod_autogo.h"
 #include "AlarmDialog.h"
-#include "TibiaItemProxy.h"
-#include "MemReaderProxy.h"
-#include "ModuleUtil.h"
 #include "CustomSpellDialog.h"
+#include <TibiaItem.h>
+#include <MemReader.h>
+#include <ModuleUtil.h>
+#include <TibiaTile.h>
+#include <TileReader.h>
 #include <Tlhelp32.h>
 #include <MMSystem.h>
 #include <math.h>
@@ -380,20 +382,20 @@ void CAlarmDialog::OnSelchangeAlarmType()
 		{
 			m_attribute.ResetContent();
 			m_attribute.SetItemImage(m_attribute.AddString("Food"), 39);
-			CTibiaItemProxy itemProxy;
-			CMemReaderProxy reader;
+			
+			CMemReader& reader = CMemReader::getMemReader();
 			for (int j = 0; j < 26; j++)
 			{
-				itemProxy.fillTypedItemIdArray((int)pow(2, j));
-				int count = itemProxy.getTypedItemCount();
+				CTibiaItem::fillTypedItemIdArray((int)pow(2, j));
+				int count = CTibiaItem::getTypedItemCount();
 				int index;
 				for (int i = 0; i < count; i++)
 				{
-					int objectId     = itemProxy.getTypedItemIdAtIndex(i);
-					CTibiaTile *tile = reader.getTibiaTile(objectId);
+					int objectId     = CTibiaItem::getTypedItemIdAtIndex(i);
+					CTibiaTile *tile = CTileReader::getTileReader().getTile(objectId);
 					if (tile)
 					{
-						text  = itemProxy.getTypedItemNameAtIndex(i);
+						text  = CTibiaItem::getTypedItemNameAtIndex(i);
 						index = m_attribute.AddString(text);
 						switch ((int)pow(2, j))
 						{
@@ -582,7 +584,7 @@ BOOL CAlarmDialog::OnInitDialog()
 
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
-	strcat(path, "\\mods\\sound\\*.wav");
+	strcat(path, "\\data\\sound\\*.wav");
 
 	CFileFind finder;
 	BOOL bWorking = finder.FindFile(path);
@@ -805,7 +807,7 @@ BOOL CAlarmDialog::OnInitDialog()
 
 void CAlarmDialog::OnSelchangeAttribute()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 
 	int selected = m_alarmType.GetCurSel();
 	switch (selected)

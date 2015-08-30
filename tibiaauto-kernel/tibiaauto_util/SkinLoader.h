@@ -1,18 +1,8 @@
-// SkinLoader.h: interface for the CSkinLoader class.
-//
-//////////////////////////////////////////////////////////////////////
+#pragma once
 
-#if !defined(AFX_SKINLOADER_H__E5968AC4_92D5_4046_B7FB_746657C492EF__INCLUDED_)
-#define AFX_SKINLOADER_H__E5968AC4_92D5_4046_B7FB_746657C492EF__INCLUDED_
-
+#include "tibiaauto_util.h"
 #include "Skin.h"
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
-bool saveSkin(CString, CSkin, bool);
-CSkin loadCurrentSkin(CString);
-CSkin loadSkin(CString);
-
-#endif // !defined(AFX_SKINLOADER_H__E5968AC4_92D5_4046_B7FB_746657C492EF__INCLUDED_)
+TIBIAAUTOUTIL_API bool saveSkin(CString, CSkin, bool);
+TIBIAAUTOUTIL_API CSkin loadCurrentSkin(CString);
+TIBIAAUTOUTIL_API CSkin loadSkin(CString);

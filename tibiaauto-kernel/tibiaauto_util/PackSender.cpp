@@ -6,6 +6,7 @@
 #include "PackSender.h"
 #include "MemReader.h"
 #include "MemUtil.h"
+#include "IpcMessage.h"
 #include "Util.h"
 #include "time.h"
 #include <stdio.h>
@@ -15,47 +16,9 @@
 static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif // ifdef _DEBUG
+#include "ModuleUtil.h"
 
 //////////////////////////////////////////////////////////////////////
-HANDLE hPipe = INVALID_HANDLE_VALUE;
-struct ipcMessage
-{
-	int messageType;
-	char payload[1024];
-	time_t tm;
-public:
-	ipcMessage()
-	{
-		messageType = 0;
-		memset(payload, 0, 1024);
-		tm = 0;
-	}
-
-	void send()
-	{
-		this->tm = time(NULL);
-		DWORD cbWritten;
-		BOOL fSuccess = WriteFile(
-		        hPipe,
-		        this,
-		        sizeof(struct ipcMessage),
-		        &cbWritten,
-		        NULL);
-	}
-};
-
-
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
-CPackSender::CPackSender()
-{
-}
-
-CPackSender::~CPackSender()
-{
-}
 
 void CPackSender::sendPacket(char *buf)
 {
@@ -73,7 +36,7 @@ void CPackSender::sendPacket(char *buf, int method)
 		hiB += 256;
 	int len = lowB + hiB * 256 + 2;
 
-	struct ipcMessage mess;
+	CIpcMessage mess;
 
 	mess.messageType = method;
 	memcpy(mess.payload, buf, len);
@@ -154,7 +117,6 @@ void CPackSender::useItem(int objectId)
 
 void CPackSender::useItemInContainer(int objectId, int contNr, int pos)
 {
-	CMemReader reader;
 	char retbuf[256];
 
 	retbuf[0] = 10;
@@ -170,15 +132,14 @@ void CPackSender::useItemInContainer(int objectId, int contNr, int pos)
 	retbuf[8]  = objectId & 0xff;
 	retbuf[9]  = (objectId >> 8) & 0xff;
 	retbuf[10] = pos;
-	retbuf[11] = reader.findNextClosedContainer();
+	retbuf[11] = CMemReader::getMemReader().findNextClosedContainer();
 
 	sendPacket(retbuf);
 }
 
 int CPackSender::openAutoContainerFromFloor(int objectId, int x, int y, int z)
 {
-	CMemReader reader;
-	int targetBag = reader.findNextClosedContainer();
+	int targetBag = CMemReader::getMemReader().findNextClosedContainer();
 	openContainerFromFloor(objectId, x, y, z, targetBag);
 	return targetBag;
 }
@@ -186,9 +147,8 @@ int CPackSender::openAutoContainerFromFloor(int objectId, int x, int y, int z)
 void CPackSender::openContainerFromFloor(int objectId, int x, int y, int z, int targetBag)
 {
 	char retbuf[256];
-	CMemReader reader;
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int targetInd         = max(0, reader.getItemIndex(x - self->x, y - self->y, objectId));
+	CTibiaCharacter *self = CMemReader::getMemReader().readSelfCharacter();
+	int targetInd         = max(0, CMemReader::getMemReader().getItemIndex(x - self->x, y - self->y, objectId));
 	delete self;
 
 	retbuf[0] = 10;
@@ -255,15 +215,14 @@ void CPackSender::useWithObjectSend(int sourceObjectId, int sourceX, int sourceY
 	int sourceInd_Pos = sourceZ_Pos;
 	int targetInd_Pos = targetZ_Pos;
 
-	//if using a floor location then use Ind_Pos=reader.getItemIndex(x,y,z)
+	//if using a floor location then use Ind_Pos=CMemReader::getMemReader().getItemIndex(x,y,z)
 	if (sourceX != 0xffff || targetX != 0xffff)
 	{
-		CMemReader reader;
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter *self = CMemReader::getMemReader().readSelfCharacter();
 		if (sourceX != 0xffff)
-			sourceInd_Pos = max(0, reader.getItemIndex(sourceX - self->x, sourceY_Cont - self->y, sourceObjectId));
+			sourceInd_Pos = max(0, CMemReader::getMemReader().getItemIndex(sourceX - self->x, sourceY_Cont - self->y, sourceObjectId));
 		if (targetX != 0xffff)
-			targetInd_Pos = max(0, reader.getItemIndex(targetX - self->x, targetY_Cont - self->y, targetObjectId));
+			targetInd_Pos = max(0, CMemReader::getMemReader().getItemIndex(targetX - self->x, targetY_Cont - self->y, targetObjectId));
 		delete self;
 	}
 
@@ -295,69 +254,68 @@ void CPackSender::useWithObjectSend(int sourceObjectId, int sourceX, int sourceY
 
 void CPackSender::stepRight()
 {
-	int i[1] = {1};
+	uint8_t i[1] = { STEP_EAST };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepUpRight()
 {
-	int i[1] = {2};
+	uint8_t i[1] = { STEP_NORTHEAST };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepUp()
 {
-	int i[1] = {3};
+	uint8_t i[1] = { STEP_NORTH };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepUpLeft()
 {
-	int i[1] = {4};
+	uint8_t i[1] = { STEP_NORTHWEST };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepLeft()
 {
-	int i[1] = {5};
+	uint8_t i[1] = { STEP_WEST };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepDownLeft()
 {
-	int i[1] = {6};
+	uint8_t i[1] = { STEP_SOUTHWEST };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepDown()
 {
-	int i[1] = {7};
+	uint8_t i[1] = { STEP_SOUTH };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepDownRight()
 {
-	int i[1] = {8};
+	uint8_t i[1] = { STEP_SOUTHEAST };
 	stepMulti(i, 1);
 }
 
 // Tibia client sends single steps instead of multisteps of distance 1
-void CPackSender::stepMulti(int *direction, int size)
+void CPackSender::stepMulti(uint8_t* direction, int size)
 {
-	CMemReader reader;
 	int i;
 
 	//Manage Tibia's memory
-	int pathIndAddr   = reader.m_memAddressCurrentTileToGo;
-	int pathLenAddr   = reader.m_memAddressTilesToGo;
-	int pathStartAddr = reader.m_memAddressPathToGo;
+	int pathIndAddr = CMemReader::getMemReader().m_memAddressCurrentTileToGo;
+	int pathLenAddr = CMemReader::getMemReader().m_memAddressTilesToGo;
+	int pathStartAddr = CMemReader::getMemReader().m_memAddressPathToGo;
 	CMemUtil::SetMemIntValue(pathIndAddr, 0x0);
 	CMemUtil::SetMemIntValue(pathLenAddr, size);
 	for (i = 0; i < size && i < 10; i++)
 	{
 		CMemUtil::SetMemIntValue(pathStartAddr + 4 * i, direction[i]);
 	}
-	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature + reader.m_memLengthCreature * reader.getLoggedCharNr() + 80, 1);
+	CMemUtil::SetMemIntValue(CMemReader::getMemReader().m_memAddressFirstCreature + CMemReader::getMemReader().m_memLengthCreature * CMemReader::getMemReader().getLoggedCharNr() + 80, 1);
 
 	char sendbuf[1000];
 
@@ -367,28 +325,28 @@ void CPackSender::stepMulti(int *direction, int size)
 		sendbuf[1] = 0;
 		switch (direction[0])
 		{
-		case 3:
+		case STEP_NORTH:
 			sendbuf[2] = 0x65;
 			break;
-		case 1:
+		case STEP_EAST:
 			sendbuf[2] = 0x66;
 			break;
-		case 7:
+		case STEP_SOUTH:
 			sendbuf[2] = 0x67;
 			break;
-		case 5:
+		case STEP_WEST:
 			sendbuf[2] = 0x68;
 			break;
-		case 2:
+		case STEP_NORTHEAST:
 			sendbuf[2] = 0x6A;
 			break;
-		case 8:
+		case STEP_SOUTHEAST:
 			sendbuf[2] = 0x6B;
 			break;
-		case 6:
+		case STEP_SOUTHWEST:
 			sendbuf[2] = 0x6C;
 			break;
-		case 4:
+		case STEP_NORTHWEST:
 			sendbuf[2] = 0x6D;
 			break;
 		}
@@ -407,10 +365,9 @@ void CPackSender::stepMulti(int *direction, int size)
 
 void CPackSender::attack(int tibiaCharId)
 {
-	CMemReader reader;
-	reader.setAttackedCreature(tibiaCharId);
-	reader.setFollowedCreature(0);
-	int cnt = reader.getNextPacketCount();
+	CMemReader::getMemReader().setAttackedCreature(tibiaCharId);
+	CMemReader::getMemReader().setFollowedCreature(0);
+	int cnt = CMemReader::getMemReader().getNextPacketCount();
 
 
 	char sendbuf[11];
@@ -432,10 +389,9 @@ void CPackSender::attack(int tibiaCharId)
 
 void CPackSender::follow(int tibiaCharId)
 {
-	CMemReader reader;
-	reader.setFollowedCreature(tibiaCharId);
-	reader.setAttackedCreature(0);
-	int cnt = reader.getNextPacketCount();
+	CMemReader::getMemReader().setFollowedCreature(tibiaCharId);
+	CMemReader::getMemReader().setAttackedCreature(0);
+	int cnt = CMemReader::getMemReader().getNextPacketCount();
 
 	char sendbuf[11];
 	sendbuf[0] = 9;
@@ -551,9 +507,8 @@ void CPackSender::useItemOnCreatureSend(int objectId, int x, int y_Cont, int z_P
 {
 	char retbuf[256];
 
-	CMemReader reader;
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int targetInd_Pos     = ((x & 0xffff) == x) ? z_Pos : max(0, reader.getItemIndex(x - self->x, y_Cont - self->y, objectId));//Decide if using floor or bag
+	CTibiaCharacter *self = CMemReader::getMemReader().readSelfCharacter();
+	int targetInd_Pos = ((x & 0xffff) == x) ? z_Pos : max(0, CMemReader::getMemReader().getItemIndex(x - self->x, y_Cont - self->y, objectId));//Decide if using floor or bag
 	delete self;
 
 	retbuf[0] = 13;
@@ -626,7 +581,7 @@ void CPackSender::revealFish(int enable)
 
 void CPackSender::sendTAMessage(char *msg)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 
 	mess.messageType = 3;
 	strcpy(mess.payload, msg);
@@ -638,9 +593,8 @@ void CPackSender::moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, i
 {
 	char retbuf[256];
 
-	CMemReader reader;
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int targetInd         = max(0, reader.getItemIndex(srcX - self->x, srcY - self->y, objectId));
+	CTibiaCharacter *self = CMemReader::getMemReader().readSelfCharacter();
+	int targetInd         = max(0, CMemReader::getMemReader().getItemIndex(srcX - self->x, srcY - self->y, objectId));
 	delete self;
 
 	retbuf[0] = 15;
@@ -672,9 +626,8 @@ void CPackSender::moveObjectFromFloorToContainer(int objectId, int sourceX, int 
 {
 	char retbuf[256];
 
-	CMemReader reader;
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int targetInd         = max(0, reader.getItemIndex(sourceX - self->x, sourceY - self->y, objectId));
+	CTibiaCharacter *self = CMemReader::getMemReader().readSelfCharacter();
+	int targetInd         = max(0, CMemReader::getMemReader().getItemIndex(sourceX - self->x, sourceY - self->y, objectId));
 	delete self;
 
 	retbuf[0] = 15;
@@ -762,8 +715,7 @@ void CPackSender::moveObjectFromContainerToFloor(int objectId, int contNr, int p
 
 int CPackSender::openAutoContainerFromContainer(int objectId, int contNrFrom, int contPosFrom)
 {
-	CMemReader reader;
-	int targetBag = reader.findNextClosedContainer();
+	int targetBag = CMemReader::getMemReader().findNextClosedContainer();
 	openContainerFromContainer(objectId, contNrFrom, contPosFrom, targetBag);
 	return targetBag;
 }
@@ -794,9 +746,8 @@ void CPackSender::useItemOnFloor(int objectId, int x, int y, int z)
 {
 	char retbuf[256];
 
-	CMemReader reader;
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int targetInd         = max(0, reader.getItemIndex(x - self->x, y - self->y, objectId));
+	CTibiaCharacter *self = CMemReader::getMemReader().readSelfCharacter();
+	int targetInd         = max(0, CMemReader::getMemReader().getItemIndex(x - self->x, y - self->y, objectId));
 	delete self;
 
 	retbuf[0] = 10;
@@ -812,7 +763,7 @@ void CPackSender::useItemOnFloor(int objectId, int x, int y, int z)
 	retbuf[8]  = objectId & 0xff;
 	retbuf[9]  = (objectId >> 8) & 0xff;
 	retbuf[10] = targetInd;
-	retbuf[11] = reader.findNextClosedContainer();
+	retbuf[11] = CMemReader::getMemReader().findNextClosedContainer();
 
 	sendPacket(retbuf);
 }
@@ -954,7 +905,7 @@ void CPackSender::turnDown()
 
 void CPackSender::sendAttackedCreatureToAutoAim(int attackedCreature)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	mess.messageType = 100;
 	memcpy(mess.payload, &attackedCreature, sizeof(int));
 	mess.send();
@@ -962,7 +913,7 @@ void CPackSender::sendAttackedCreatureToAutoAim(int attackedCreature)
 
 void CPackSender::sendCreatureInfo(char *name, char *info1, char *info2)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 
 	if (strlen(info1) > 499)
 		info1[499] = '\0';
@@ -979,7 +930,7 @@ void CPackSender::sendCreatureInfo(char *name, char *info1, char *info2)
 
 void CPackSender::printText(CPoint pos, int red, int green, int blue, char* message)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	int messLen = strlen(message);
 	mess.messageType = 307;
 	memcpy(mess.payload, &pos.x, sizeof(int));
@@ -994,7 +945,7 @@ void CPackSender::printText(CPoint pos, int red, int green, int blue, char* mess
 
 void CPackSender::registerInpacketRegex(int handle, char* regExp, int regLen)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	regLen           = min(regLen, 1024 - 12);
 	mess.messageType = 308;
 	int type = 1;
@@ -1007,7 +958,7 @@ void CPackSender::registerInpacketRegex(int handle, char* regExp, int regLen)
 
 void CPackSender::unregisterInpacketRegex(int handle)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	mess.messageType = 308;
 	int type = 2;
 	memcpy(mess.payload, &type, sizeof(int));
@@ -1019,9 +970,8 @@ void CPackSender::look(int x, int y, int z, int objectId)
 {
 	char retbuf[256];
 
-	CMemReader reader;
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int targetInd         = max(0, reader.getItemIndex(x - self->x, y - self->y, objectId));
+	CTibiaCharacter *self = CMemReader::getMemReader().readSelfCharacter();
+	int targetInd         = max(0, CMemReader::getMemReader().getItemIndex(x - self->x, y - self->y, objectId));
 	delete self;
 
 	retbuf[0] = 9;
@@ -1043,7 +993,7 @@ void CPackSender::look(int x, int y, int z, int objectId)
 void CPackSender::ignoreLook(time_t end)
 {
 	unsigned int truncEnd = (unsigned int)end;
-	struct ipcMessage mess;
+	CIpcMessage mess;
 
 	mess.messageType = 302;
 	memcpy(mess.payload, &truncEnd, 4);
@@ -1053,7 +1003,7 @@ void CPackSender::ignoreLook(time_t end)
 
 void CPackSender::sendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	mess.messageType = 303;
 	memcpy(mess.payload, &active, 4);
 	memcpy(mess.payload + 4, &onlyCreatures, 4);
@@ -1064,7 +1014,7 @@ void CPackSender::sendAutoAimConfig(int active, int onlyCreatures, int aimPlayer
 
 void CPackSender::sendClearCreatureInfo()
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	mess.messageType = 304;
 	mess.send();
 }

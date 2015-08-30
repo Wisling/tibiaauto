@@ -2,6 +2,8 @@
 
 #include "mod_responder.h"
 
-CMod_responderApp module;
-
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_responderApp();
+}

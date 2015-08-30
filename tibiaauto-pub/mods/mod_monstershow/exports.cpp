@@ -2,6 +2,8 @@
 
 #include "mod_monstershow.h"
 
-CMod_monstershowApp module;
-
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_monstershowApp();
+}

@@ -6,20 +6,18 @@
 #include "tibiaauto.h"
 #include "tibiaautoDlg.h"
 #include "MemUtil.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "CharDialog.h"
-#include "MemReaderProxy.h"
-#include "TibiaMapProxy.h"
-#include "TAMiniMapProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <TibiaItem.h>
 #include "TibiaCharacter.h"
-#include "ModuleProxy.h"
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include "ModuleLoader.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "ConfigCreatorUtil.h"
 #include "DonationDialog.h"
-#include "IPCBackPipeProxy.h"
-#include "TibiaItemProxy.h"
+#include <IPCBackPipe.h>
+#include <TibiaItem.h>
 #include "EnterCode.h"
 #include "md5class.h"
 #include "OptionsDialog.h"
@@ -30,6 +28,9 @@
 #include "url.h"
 #include <iostream>
 #include <fstream>
+#include <TibiaMap.h>
+#include <TAMiniMap.h>
+#include <TileReader.h>
 
 
 HANDLE hPipe   = INVALID_HANDLE_VALUE;
@@ -41,10 +42,6 @@ extern volatile char *checksum;
 
 int globalProcessId;
 NOTIFYICONDATA currentIconData;
-
-// other externs
-CTibiaMapProxy tibiaMap;
-
 
 // xerces things
 #include <xercesc/util/PlatformUtils.hpp>
@@ -94,14 +91,14 @@ static char THIS_FILE[] = __FILE__;
 
 void InitTibiaHandle()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
 	while (tibiaHWND)
 	{
 		DWORD pid;
 		DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
 
-		if (pid == reader.getProcessId())
+		if (pid == CMemUtil::getGlobalProcessId())
 			break;
 		tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
 	}
@@ -122,7 +119,7 @@ LRESULT CTibiaautoDlg::DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam
 	{
 		if (uMessage == s_uTaskbarRestart)
 		{
-			CMemReaderProxy reader;
+			CMemReader& reader = CMemReader::getMemReader();
 			setShellTray();
 		}
 	}
@@ -306,8 +303,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 	unsigned char buf[5];
 	int versionOk = 0;
-	CTibiaItemProxy itemProxy;
-	int m_memAddressRevealCName1 = itemProxy.getValueForConst("addrFunRevealCName1");
+	
+	int m_memAddressRevealCName1 = CTibiaItem::getValueForConst("addrFunRevealCName1");
 	buf[0] = buf[1] = 0;
 	CMemUtil::GetMemRange(m_processId, m_memAddressRevealCName1, m_memAddressRevealCName1 + 2, (char *)buf, 1);
 	if (buf[0] == 0x90 && buf[1] == 0x90)
@@ -331,10 +328,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 	InitialiseIPC();
 
-	CMemReaderProxy reader;
-	reader.setProcessId(m_processId);
-	CPackSenderProxy sender;
-	sender.setPipeHandle(hPipe);
+	CMemReader& reader = CMemReader::getMemReader();
+	CMemUtil::setGlobalProcessId(m_processId);
 
 	// shutdownCounter is anti-hack protection
 	shutdownCounter = rand() % 100;
@@ -359,37 +354,37 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	m_pythonScriptsDialog = new CPythonScriptsDialog();
 	m_pythonScriptsDialog->Create(IDD_PYTHON_SCRIPTS);
 
-	m_moduleLooter     = new CModuleProxy("mod_looter", 0);
-	m_moduleLight      = new CModuleProxy("mod_light", 0);
-	m_modulePlayerInfo = new CModuleProxy("mod_playerinfo", 0);
+	m_moduleLooter     = CModuleLoader::LoadModule("mod_looter", 0);
+	m_moduleLight      = CModuleLoader::LoadModule("mod_light", 0);
+	m_modulePlayerInfo = CModuleLoader::LoadModule("mod_playerinfo", 0);
 	m_modulePlayerInfo->start();
-	m_moduleUH           = new CModuleProxy("mod_uh", 0);
-	m_moduleGrouping     = new CModuleProxy("mod_grouping", 0);
-	m_moduleRestack      = new CModuleProxy("mod_restack", 0);
-	m_moduleFluid        = new CModuleProxy("mod_fluid", 0);
-	m_moduleAim          = new CModuleProxy("mod_aim", 0);
-	m_moduleFisher       = new CModuleProxy("mod_fisher", 0);
-	m_moduleSpellCaster  = new CModuleProxy("mod_spellcaster", 0);
-	m_moduleTradeMon     = new CModuleProxy("mod_trademon", 0);
-	m_moduleMemDebug     = new CModuleProxy("mod_memdebug", 0);
-	m_moduleMapShow      = new CModuleProxy("mod_showmap", 0);
-	m_moduleMonsterShow  = new CModuleProxy("mod_monstershow", 0);
-	m_moduleItemConfig   = new CModuleProxy("mod_itemconfig", 0);
-	m_moduleAutoGo       = new CModuleProxy("mod_autogo", 0);
-	m_moduleAutoAttack   = new CModuleProxy("mod_cavebot", 0);
-	m_moduleRuneMaker    = new CModuleProxy("mod_runemaker", 0);
-	m_moduleEater        = new CModuleProxy("mod_eater", 0);
-	m_moduleCreatureInfo = new CModuleProxy("mod_creatureinfo", 0);
-	m_moduleResponder    = new CModuleProxy("mod_responder", 0);
-	m_moduleMapHack      = new CModuleProxy("mod_maphack", 0);
-	m_moduleTeam         = new CModuleProxy("mod_team", 0);
-	m_moduleAntylogout   = new CModuleProxy("mod_antylogout", 0);
-	m_moduleFps          = new CModuleProxy("mod_fps", 0);
-	m_moduleLogin        = new CModuleProxy("mod_login", 0);
-	m_moduleXRay         = new CModuleProxy("mod_xray", 0);
-	m_moduleSorter       = new CModuleProxy("mod_sorter", 0);
-	m_moduleBanker       = new CModuleProxy("mod_banker", 0);
-	m_moduleSeller       = new CModuleProxy("mod_seller", 0);
+	m_moduleUH           = CModuleLoader::LoadModule("mod_uh", 0);
+	m_moduleGrouping     = CModuleLoader::LoadModule("mod_grouping", 0);
+	m_moduleRestack      = CModuleLoader::LoadModule("mod_restack", 0);
+	m_moduleFluid        = CModuleLoader::LoadModule("mod_fluid", 0);
+	m_moduleAim          = CModuleLoader::LoadModule("mod_aim", 0);
+	m_moduleFisher       = CModuleLoader::LoadModule("mod_fisher", 0);
+	m_moduleSpellCaster  = CModuleLoader::LoadModule("mod_spellcaster", 0);
+	m_moduleTradeMon     = CModuleLoader::LoadModule("mod_trademon", 0);
+	m_moduleMemDebug     = CModuleLoader::LoadModule("mod_memdebug", 0);
+	m_moduleMapShow      = CModuleLoader::LoadModule("mod_showmap", 0);
+	m_moduleMonsterShow  = CModuleLoader::LoadModule("mod_monstershow", 0);
+	m_moduleItemConfig   = CModuleLoader::LoadModule("mod_itemconfig", 0);
+	m_moduleAutoGo       = CModuleLoader::LoadModule("mod_autogo", 0);
+	m_moduleAutoAttack   = CModuleLoader::LoadModule("mod_cavebot", 0);
+	m_moduleRuneMaker    = CModuleLoader::LoadModule("mod_runemaker", 0);
+	m_moduleEater        = CModuleLoader::LoadModule("mod_eater", 0);
+	m_moduleCreatureInfo = CModuleLoader::LoadModule("mod_creatureinfo", 0);
+	m_moduleResponder    = CModuleLoader::LoadModule("mod_responder", 0);
+	m_moduleMapHack      = CModuleLoader::LoadModule("mod_maphack", 0);
+	m_moduleTeam         = CModuleLoader::LoadModule("mod_team", 0);
+	m_moduleAntylogout   = CModuleLoader::LoadModule("mod_antylogout", 0);
+	m_moduleFps          = CModuleLoader::LoadModule("mod_fps", 0);
+	m_moduleLogin        = CModuleLoader::LoadModule("mod_login", 0);
+	m_moduleXRay         = CModuleLoader::LoadModule("mod_xray", 0);
+	m_moduleSorter       = CModuleLoader::LoadModule("mod_sorter", 0);
+	m_moduleBanker       = CModuleLoader::LoadModule("mod_banker", 0);
+	m_moduleSeller       = CModuleLoader::LoadModule("mod_seller", 0);
 	refreshToolInfo();
 
 
@@ -540,7 +535,7 @@ void CTibiaautoDlg::OnChangeEditValue()
 
 void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 
 	if (nIDEvent == 1001)
 	{
@@ -586,9 +581,9 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 	{
 		static unsigned int enabledModules = 0xffffffff;
 		unsigned int modCheck              = 0;
-		for (int i = 0; i < CModuleProxy::allModulesCount && i < 32; i++)
+		for (int i = 0; i < CModuleLoader::allModulesCount && i < 32; i++)
 		{
-			modCheck |= CModuleProxy::allModules[i]->isStarted() << i;
+			modCheck |= CModuleLoader::allModules[i]->isStarted() << i;
 		}
 		if (modCheck != enabledModules)
 		{
@@ -596,7 +591,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 			char path[1024];
 			CModuleUtil::getInstallPath(path);
 			char pathBuf[2048];
-			sprintf(pathBuf, "%s\\tascripts\\module %d statistics.txt", path, reader.getProcessId());
+			sprintf(pathBuf, "%s\\tascripts\\module %d statistics.txt", path, CMemUtil::getGlobalProcessId());
 			std::ofstream fout(pathBuf, std::ios::out | std::ios::app | std::ios::binary);
 			time_t tm = time(NULL);
 			fout.write((char*)&tm, 4);
@@ -626,7 +621,7 @@ void CTibiaautoDlg::OnLight()
 
 void CTibiaautoDlg::setShellTray()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	ZeroMemory(&currentIconData, sizeof(NOTIFYICONDATA));
 	currentIconData.cbSize = sizeof(NOTIFYICONDATA);
 	currentIconData.hWnd   = GetSafeHwnd();
@@ -640,23 +635,49 @@ void CTibiaautoDlg::setShellTray()
 	Shell_NotifyIcon(NIM_ADD, &currentIconData);
 }
 
-int CTibiaautoDlg::injectDll(HANDLE process, char* path)
+int CTibiaautoDlg::setDllLoadDir(HANDLE process, const char* dllLoadDir)
 {
-	LPVOID addr = (LPVOID)GetProcAddress(GetModuleHandle("kernel32.dll"), "LoadLibraryA");
-	if (addr == NULL)
+	LPVOID addrSetDllDir = (LPVOID)GetProcAddress(GetModuleHandle("kernel32.dll"), "SetDllDirectoryA");
+	if (addrSetDllDir == NULL)
 		return -1;
 
-	LPVOID arg = (LPVOID)VirtualAllocEx(process, NULL, strlen(path), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
-	if (arg == NULL)
-		return -1;
+	LPVOID setDllDirArg = (LPVOID)VirtualAllocEx(process, NULL, strlen(dllLoadDir) + 1, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+	if (setDllDirArg == NULL)
+		return -2;
 
-	int n = WriteProcessMemory(process, arg, path, strlen(path), NULL);
+	int n = WriteProcessMemory(process, setDllDirArg, dllLoadDir, strlen(dllLoadDir) + 1, NULL);
 	if (n == 0)
-		return -1;
+		return -3;
 
-	HANDLE threadID = CreateRemoteThread(process, NULL, 0, (LPTHREAD_START_ROUTINE)addr, arg, NULL, NULL);
+	HANDLE threadID = CreateRemoteThread(process, NULL, 0, (LPTHREAD_START_ROUTINE)addrSetDllDir, setDllDirArg, NULL, NULL);
 	if (threadID == NULL)
+		return -4;
+	WaitForSingleObject(threadID, -1);
+	CloseHandle(threadID);
+
+	return 0;
+}
+
+int CTibiaautoDlg::injectDll(HANDLE process, const char* dllPath)
+{
+	LPVOID addrLibLoad = (LPVOID)GetProcAddress(GetModuleHandle("kernel32.dll"), "LoadLibraryA");
+	if (addrLibLoad == NULL)
 		return -1;
+	
+	LPVOID libLoadArg = (LPVOID)VirtualAllocEx(process, NULL, strlen(dllPath) + 1, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+	if (libLoadArg == NULL)
+		return -2;
+
+	int n = WriteProcessMemory(process, libLoadArg, dllPath, strlen(dllPath) + 1, NULL);
+	if (n == 0)
+		return -3;
+	
+	HANDLE threadID = CreateRemoteThread(process, NULL, 0, (LPTHREAD_START_ROUTINE)addrLibLoad, libLoadArg, NULL, NULL);
+	if (threadID == NULL)
+		return -4;
+	WaitForSingleObject(threadID, -1);
+	CloseHandle(threadID);
+
 	return 0;
 }
 
@@ -689,7 +710,6 @@ void CTibiaautoDlg::InitialiseIPC()
 	HANDLE procHandle = OpenProcess(PROCESS_ALL_ACCESS, true, m_processId);
 
 	char installPath[1024];
-	char path[1024];
 	unsigned long installPathLen = 1023;
 	installPath[0] = '\0';
 	HKEY hkey = NULL;
@@ -704,16 +724,22 @@ void CTibiaautoDlg::InitialiseIPC()
 		PostQuitMessage(-1);
 		return;
 	}
-
-	sprintf(path, "%s\\%s", installPath, "tibiaautoinject2.dll");
-	if (injectDll(procHandle, path) != 0)
+	int status = setDllLoadDir(procHandle, installPath);
+	if (status != 0)
 	{
-		sprintf(buf, "dll injection failed: %d", GetLastError());
+		sprintf(buf, "DLL load dir setup failed. Ret: %d, lastError: %d", status, GetLastError());
 		AfxMessageBox(buf);
 		PostQuitMessage(1);
 		return;
 	}
-
+	status = injectDll(procHandle, "tibiaautoinject2.dll");
+	if (status != 0)
+	{
+		sprintf(buf, "DLL injection failed. Ret: %d, lastError: %d", status, GetLastError());
+		AfxMessageBox(buf);
+		PostQuitMessage(1);
+		return;
+	}
 	CloseHandle(procHandle);
 
 	BOOL fConnected = ConnectNamedPipe(hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
@@ -727,18 +753,17 @@ void CTibiaautoDlg::InitialiseIPC()
 		return;
 	}
 
-
+	CIpcMessage::hPipe = hPipe;
 	// send my pid to the dll
 	int myProcessId = GetCurrentProcessId();
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	mess.messageType = 4;
 	memcpy(mess.payload, &myProcessId, sizeof(int));
-	mess.send(hPipe);
+	mess.send();
 
 	// wait for incoming IPC connection from the dll
 
-	CIPCBackPipeProxy backPipe;
-	backPipe.InitialiseIPC();
+	CIPCBackPipe::InitialiseIPC();
 
 	// now hook keys
 	HINSTANCE hinstDLL = NULL;
@@ -873,7 +898,7 @@ void CTibiaautoDlg::refreshToolInfo()
 
 void CTibiaautoDlg::OnSave()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	char fName[128];
 	char loggedCharName[65];
 	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
@@ -896,9 +921,9 @@ void CTibiaautoDlg::OnSave()
 		fprintf(f, "<configfile>\n");
 		int modNr;
 		int someModuleRunning = 0;
-		for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
+		for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
 		{
-			CModuleProxy * module = CModuleProxy::allModules[modNr];
+			IModuleInterface * module = CModuleLoader::allModules[modNr];
 			if (module->isStarted())
 			{
 				someModuleRunning = 1;
@@ -911,9 +936,9 @@ void CTibiaautoDlg::OnSave()
 			if (AfxMessageBox("Some modules are running.\nWould you like to save a list of running modules?", MB_YESNO) == IDYES)
 			{
 				fprintf(f, "<startedModules>\n");
-				for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
+				for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
 				{
-					CModuleProxy * module = CModuleProxy::allModules[modNr];
+					IModuleInterface * module = CModuleLoader::allModules[modNr];
 					if (module->isStarted())
 						fprintf(f, "<module name = \"%s\"/>", module->getModuleName());
 				}
@@ -930,12 +955,12 @@ void CTibiaautoDlg::OnSave()
 		}
 
 		// save "normal" modules
-		for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
+		for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
 		{
-			CModuleProxy * module = CModuleProxy::allModules[modNr];
-			char* nme             = module->getName();
-			if (module->isLoaded())
+			IModuleInterface* module = CModuleLoader::allModules[modNr];
+			if (module != NULL)
 			{
+				char* nme = module->getName();
 				CConfigCreatorUtil configCreator;
 				if (!module->isStarted())
 					module->controlsToConfig();
@@ -1042,17 +1067,17 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 	parser = new XercesDOMParser();
 	CConfigDialogStatus * m_configDialogStatus = ((struct loadThreadParam *)lpParam)->configDialogStatus;
 
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CConfigCreatorUtil configCreator;
 
 
 	char logBuf[16384];
 
 	int modNr;
-	int *restartedModulesTab = new int[CModuleProxy::allModulesCount];
-	for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
+	int *restartedModulesTab = new int[CModuleLoader::allModulesCount];
+	for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
 	{
-		CModuleProxy * module = CModuleProxy::allModules[modNr];
+		IModuleInterface * module = CModuleLoader::allModules[modNr];
 		restartedModulesTab[modNr] = module->isStarted();
 	}
 
@@ -1063,9 +1088,9 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 	m_configDialogStatus->msgAddToLog(logBuf);
 
 	//Modules
-	for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
+	for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
 	{
-		CModuleProxy * module = CModuleProxy::allModules[modNr];
+		IModuleInterface * module = CModuleLoader::allModules[modNr];
 		if (restartedModulesTab[modNr])
 		{
 			sprintf(logBuf, "Stopping module %s ...", module->getModuleName());
@@ -1088,12 +1113,12 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 	xercesc::DOMDocument *doc = parser->getDocument();
 	DOMElement *root          = doc->getDocumentElement();
 
-	for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
+	for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
 	{
-		CModuleProxy * module = CModuleProxy::allModules[modNr];
-		if (module->isLoaded())
+		IModuleInterface * module = CModuleLoader::allModules[modNr];
+		if (module != NULL)
 		{
-			char *moduleName      = module->getModuleName();
+			const char *moduleName      = module->getModuleName();
 			DOMNode *moduleConfig = configCreator.getConfigForModule(root, moduleName);
 			if (moduleConfig)
 			{
@@ -1147,9 +1172,9 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 						{
 							char nodeValue[1024];
 							wcstombs(nodeValue, attrNode->getNodeValue(), 1024);
-							for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
+							for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
 							{
-								CModuleProxy * module = CModuleProxy::allModules[modNr];
+								IModuleInterface * module = CModuleLoader::allModules[modNr];
 								if (!strcmp(nodeValue, module->getModuleName()))
 								{
 									sprintf(logBuf, "Starting module %s ...", module->getModuleName());
@@ -1203,9 +1228,9 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 	}
 	if (!otherModulesLoaded)
 	{
-		for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
+		for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
 		{
-			CModuleProxy * module = CModuleProxy::allModules[modNr];
+			IModuleInterface * module = CModuleLoader::allModules[modNr];
 			if (restartedModulesTab[modNr])
 			{
 				sprintf(logBuf, "Starting module %s ...", module->getModuleName());
@@ -1254,16 +1279,16 @@ void CTibiaautoDlg::OnLoad()
 {
 	int someModuleRunning = 0;
 	int modNr;
-	for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
+	for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
 	{
-		CModuleProxy * module = CModuleProxy::allModules[modNr];
+		IModuleInterface * module = CModuleLoader::allModules[modNr];
 		if (module->isStarted())
 			someModuleRunning = 1;
 	}
 	if (someModuleRunning)
 		if (AfxMessageBox("Some modules are running. Are you sure you want to load new configuration?", MB_YESNO) == IDNO)
 			return;
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 
 	char fName[128];
 	char loggedCharName[65];
@@ -1318,17 +1343,10 @@ void CTibiaautoDlg::OnExit()
 	DisconnectNamedPipe(hPipe);
 	Shell_NotifyIcon(NIM_DELETE, &currentIconData);
 
-	CTAMiniMapProxy taMiniMap;
-	taMiniMap.unloadMiniMaps();
-
-	CTibiaItemProxy tibiaItem;
-	tibiaItem.cleanup();
-
-	CTibiaMapProxy tibiaMap;
-	tibiaMap.clear();
-
-	CMemReaderProxy reader;
-	reader.cleanupTibiaTiles();
+	CTAMiniMap::getTAMiniMap().unloadMiniMaps();
+	CTibiaItem::cleanup();
+	CTibiaMap::getTibiaMap().clear();
+	CTileReader::getTileReader().cleanup();
 
 	delete m_loadedModules;
 	delete m_pythonScriptsDialog;
@@ -1592,7 +1610,7 @@ void CTibiaautoDlg::OnSize(UINT nType, int cx, int cy)
 
 LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	if (message == WM_APP + 1 && lParam == WM_LBUTTONDOWN)
 	{
 		if (!tibiaHWND)
@@ -1641,13 +1659,13 @@ void CTibiaautoDlg::reportUsage()
 	if (f)
 	{
 		time_t tm = time(NULL);
-		int count = CModuleProxy::allModulesCount;
+		int count = CModuleLoader::allModulesCount;
 		int pos;
 		int checksum = tm % 177;
-		fprintf(f, "version=2.61.1 tm=%d,", tm);
+		fprintf(f, "version=2.62.0 tm=%d,", tm);
 		for (pos = 0; pos < count; pos++)
 		{
-			CModuleProxy *mod = CModuleProxy::allModules[pos];
+			IModuleInterface *mod = CModuleLoader::allModules[pos];
 			fprintf(f, "%s=%d,", mod->getName(), mod->isStarted());
 			checksum = checksum * 3 + strlen(mod->getName()) * 9 + mod->isStarted() * 13;
 		}
@@ -1663,7 +1681,7 @@ void CTibiaautoDlg::OnToolXray()
 
 void CTibiaautoDlg::OnButton1()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 
 	int i;
 	for (i = 0; i < 100000; i++)
@@ -1700,11 +1718,11 @@ BOOL CTibiaautoDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 		m_pythonScriptsDialog->Invalidate();
 		m_loadedModules->Invalidate();
 
-		int count = CModuleProxy::allModulesCount;
+		int count = CModuleLoader::allModulesCount;
 		int pos;
 		for (pos = 0; pos < count; pos++)
 		{
-			CModuleProxy *mod = CModuleProxy::allModules[pos];
+			IModuleInterface *mod = CModuleLoader::allModules[pos];
 			mod->getNewSkin(skin);
 		}
 	}

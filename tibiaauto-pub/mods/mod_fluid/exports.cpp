@@ -2,5 +2,8 @@
 
 #include "mod_fluid.h"
 
-CMod_fluidApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_fluidApp();
+}

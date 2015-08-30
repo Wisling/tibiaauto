@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "mod_looter.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -226,7 +226,7 @@ BOOL CConfigDialog::OnInitDialog()
 void CConfigDialog::refreshContainerStatus()
 {
 	char buf[128];
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 
 	CTibiaContainer *cont;
 

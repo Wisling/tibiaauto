@@ -21,10 +21,9 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "ModuleUtil.h"
-#include "TibiaMapProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <ModuleUtil.h>
 #include "TibiaMapPoint.h"
 
 #ifdef _DEBUG

@@ -2,5 +2,8 @@
 
 #include "mod_light.h"
 
-Cmod_lightApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new Cmod_lightApp();
+}

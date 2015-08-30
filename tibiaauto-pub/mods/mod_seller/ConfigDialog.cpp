@@ -3,10 +3,11 @@
 
 #include "stdafx.h"
 #include "mod_seller.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <TibiaItem.h>
+#include <VariableStore.h>
 #include <fstream>
 #include <stdio.h>
 
@@ -338,7 +339,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 
 		char buf[256];
 		switch (globalSellerState)
@@ -347,7 +348,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_stateSeller.SetWindowText("Not running");
 			break;
 		case CToolSellerState_halfSleep:
-			sprintf(buf, "Module sleep by %s:%s", reader.getGlobalVariable("walking_control"), reader.getGlobalVariable("walking_priority"));
+			sprintf(buf, "Module sleep by %s:%s", CVariableStore::getVariable("walking_control"), CVariableStore::getVariable("walking_priority"));
 			m_stateSeller.SetWindowText(buf);
 			break;
 		case CToolSellerState_noPathFound:
@@ -365,9 +366,9 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_stateSeller.SetWindowText("Unknown state");
 			break;
 		}
-		if (atoi(reader.getGlobalVariable("banker_suggestion")))
+		if (atoi(CVariableStore::getVariable("banker_suggestion")))
 		{
-			sprintf(buf, "(%s gold)", reader.getGlobalVariable("banker_suggestion"));
+			sprintf(buf, "(%s gold)", CVariableStore::getVariable("banker_suggestion"));
 			m_bankerSuggestion.SetWindowText(buf);
 		}
 		else
@@ -417,7 +418,7 @@ void CConfigDialog::activateEnableButton(int enable)
 
 void CConfigDialog::reloadSellers()
 {
-	CTibiaItemProxy itemProxy;
+	
 	while (m_Seller[0].GetCount() > 0)
 		m_Seller[0].DeleteString(0);
 	while (m_Seller[1].GetCount() > 0)
@@ -444,7 +445,7 @@ int initalizeSellers()
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];
-	sprintf(pathBuf, "%s\\mods\\tibiaauto-sellers.csv", installPath);
+	sprintf(pathBuf, "%s\\data\\tibiaauto-sellers.csv", installPath);
 
 	ifstream sellerFile(pathBuf, ios::in);
 	if (!sellerFile.is_open())
@@ -479,7 +480,7 @@ void saveSellers()
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];
-	sprintf(pathBuf, "%s\\mods\\tibiaauto-sellers.csv", installPath);
+	sprintf(pathBuf, "%s\\data\\tibiaauto-sellers.csv", installPath);
 
 	ofstream sellerFile(pathBuf, ios::out);
 	if (!sellerFile.is_open())
@@ -499,12 +500,12 @@ void saveSellers()
 
 void CConfigDialog::reloadSaleItems()
 {
-	CTibiaItemProxy itemProxy;
+	
 	while (m_tradeItemList.GetCount() > 0)
 		m_tradeItemList.DeleteString(0);
-	int count = itemProxy.getItemCount();
+	int count = CTibiaItem::getItemCount();
 	for (int i = 0; i < count; i++)
-		m_tradeItemList.AddString(itemProxy.getItemNameAtIndex(i));
+		m_tradeItemList.AddString(CTibiaItem::getItemNameAtIndex(i));
 	m_tradeItemList.SetCurSel(0);
 }
 
@@ -696,13 +697,13 @@ void CConfigDialog::onSellOnCap()
 
 void CConfigDialog::OnAddSeller()
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	char buf[128];
 	m_addName.GetWindowText(buf, 127);
 	int sellerFound = 0;
 	int i;
-	for (i = 0; i < memConstData.m_memMaxCreatures; i++)
+	for (i = 0; i < reader.m_memMaxCreatures; i++)
 	{
 		CTibiaCharacter* mon = reader.readVisibleCreature(i);
 		if (mon->tibiaId == 0)

@@ -1,22 +1,2 @@
 EXPORTS
-	getName @1
-	start @2
-	stop @3
-	isStarted @4
-	showConfigDialog @5
-	configToControls @6
-	controlsToConfig @7
-	disableControls @8
-	enableControls @9
-	getVersion @10
-	resetConfig @11
-	loadConfigParam @12
-	saveConfigParam @13
-	getConfigParamName @14
-	resetMultiParamAccess @15
-	isMultiParam @16
-	validateConfig @17
-	GetPlayerInfo @18
-	init @19
-	activate @20
-	getNewSkin @21
+	initModuleInstance @1

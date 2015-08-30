@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "tibiaauto.h"
 #include "LoadedModules.h"
-#include "ModuleProxy.h"
+#include "ModuleLoader.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -101,37 +101,40 @@ void CLoadedModules::refreshModulesInformation()
 {
 	int i;
 	//m_list.DeleteAllItems();
-	for (i = 0; i < CModuleProxy::allModulesCount; i++)
+	for (i = 0; i < CModuleLoader::allModulesCount; i++)
 	{
 		char buf[128], buf2[128];
 		if (i >= m_list.GetItemCount())
 			m_list.InsertItem(i, "");
 
-		sprintf(buf, "%s", CModuleProxy::allModules[i]->getModuleName());
-		memset(buf2, 0, 128);
-		m_list.GetItemText(i, 0, buf2, 127);
-		if (strcmp(buf, buf2))
-			m_list.SetItemText(i, 0, buf);
-
-		sprintf(buf, "%s", CModuleProxy::allModules[i]->isLoaded() ? "yes" : "no");
+		sprintf(buf, "%s", (CModuleLoader::allModules[i] != NULL) ? "yes" : "no");
 		memset(buf2, 0, 128);
 		m_list.GetItemText(i, 1, buf2, 127);
 		if (strcmp(buf, buf2))
 			m_list.SetItemText(i, 1, buf);
 
-		sprintf(buf, "%s", CModuleProxy::allModules[i]->getName());
+		if (CModuleLoader::allModules[i] == NULL)
+			continue;
+
+		sprintf(buf, "%s", CModuleLoader::allModules[i]->getModuleName());
+		memset(buf2, 0, 128);
+		m_list.GetItemText(i, 0, buf2, 127);
+		if (strcmp(buf, buf2))
+			m_list.SetItemText(i, 0, buf);
+
+		sprintf(buf, "%s", CModuleLoader::allModules[i]->getName());
 		memset(buf2, 0, 128);
 		m_list.GetItemText(i, 2, buf2, 127);
 		if (strcmp(buf, buf2))
 			m_list.SetItemText(i, 2, buf);
 
-		sprintf(buf, "%s", CModuleProxy::allModules[i]->getVersion());
+		sprintf(buf, "%s", CModuleLoader::allModules[i]->getVersion());
 		memset(buf2, 0, 128);
 		m_list.GetItemText(i, 3, buf2, 127);
 		if (strcmp(buf, buf2))
 			m_list.SetItemText(i, 3, buf);
 
-		sprintf(buf, "%s", CModuleProxy::allModules[i]->isStarted() ? "yes" : "no");
+		sprintf(buf, "%s", CModuleLoader::allModules[i]->isStarted() ? "yes" : "no");
 		memset(buf2, 0, 128);
 		m_list.GetItemText(i, 4, buf2, 127);
 		if (strcmp(buf, buf2))
@@ -178,7 +181,7 @@ BOOL CLoadedModules::OnCommand(WPARAM wParam, LPARAM lParam)
 		while (pos)
 		{
 			int modNr                = m_list.GetNextSelectedItem(pos);
-			IModuleInterface *module = CModuleProxy::allModules[modNr];
+			IModuleInterface *module = CModuleLoader::allModules[modNr];
 			switch (wParam)
 			{
 			case ID_STOPMODULE_STOPMODULE:
@@ -214,7 +217,7 @@ BOOL CLoadedModules::OnCommand(WPARAM wParam, LPARAM lParam)
 		if (fd.DoModal() == IDOK)
 		{
 			CString pathName = fd.GetPathName();
-			new CModuleProxy(pathName.GetBuffer(128), 1);
+			CModuleLoader::LoadModule(pathName.GetBuffer(128), 1);
 		}
 	}
 

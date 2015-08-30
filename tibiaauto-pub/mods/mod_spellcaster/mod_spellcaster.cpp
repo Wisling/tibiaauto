@@ -27,14 +27,14 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
-#include "ModuleUtil.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
+#include <ModuleUtil.h>
 #include "time.h"
 #include <fstream>
 #include <map>
-#include "IPCBackPipeProxy.h"
+#include <IPCBackPipe.h>
 
 using namespace std;
 
@@ -80,7 +80,7 @@ static map<int*, int> setHp;
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
 int RandomVariableMana(int& pt, int command, CConfigData *config)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter* self = reader.readSelfCharacter();
 	int val               = pt < 0 ? max(self->maxMana + pt, self->maxMana / 10) : pt;
 	if (!config->randomCast)
@@ -100,7 +100,7 @@ int RandomVariableMana(int& pt, int command, CConfigData *config)
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
 int RandomVariableHp(int &pt, int command, CConfigData *config)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter* self = reader.readSelfCharacter();
 	int val               = pt < 0 ? max(self->maxHp + pt, self->maxHp / 10) : pt;
 	if (!config->randomCast)
@@ -121,7 +121,7 @@ int RandomVariableHp(int &pt, int command, CConfigData *config)
 //Creates a random percentage based off of another player's stats that will not change until MAKE is used(GET creates a number if none already present)
 int RandomVariableHpPercent(int &pt, int maxHp, int command, CConfigData *config)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter* self = reader.readSelfCharacter();
 	int val               = pt < 0 ? max(maxHp + pt, maxHp / 10) : pt;
 	if (!config->randomCast)
@@ -164,9 +164,9 @@ int OnList(char whiteList[32], char name[])
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 	int currentMonsterNumber   = 0;
 	time_t lastCastTime        = 0;
@@ -175,7 +175,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	char whiteText[32]         = {0};
 	int best                   = 0;
 	size_t loop;
-	CTibiaItemProxy itemProxy;
+	
 	for (loop = 0; loop < config->timedSpellList.size(); loop++)
 		config->timedSpellList[loop].triggerTime = config->timedSpellList[loop].delay + time(NULL);
 
@@ -208,40 +208,40 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (config->customSpell && self->hp <= lifeHp && self->mana >= config->lifeSpellMana)
 			{
 				RandomVariableHp(config->lifeHp, MAKE, config);
-				sender.say(config->lifeSpell);
+				CPackSender::say(config->lifeSpell);
 				Sleep(820);
 				;
 			}
 			else if (config->vitaSpell && self->hp < vitaHp && self->mana >= config->vitaSpellMana)
 			{
 				RandomVariableHp(config->vitaHp, MAKE, config);
-				sender.say("exura vita");
+				CPackSender::say("exura vita");
 				Sleep(820);
 				;
 			}
 			else if (config->granSpell && self->hp <= granHp && self->mana >= config->granSpellMana)
 			{
 				RandomVariableHp(config->granHp, MAKE, config);
-				sender.say("exura gran");
+				CPackSender::say("exura gran");
 				Sleep(820);
 				;
 			}
 			else if (config->exuraSpell && self->hp <= exuraHp && self->mana >= config->exuraSpellMana)
 			{
 				RandomVariableHp(config->exuraHp, MAKE, config);
-				sender.say("exura");
+				CPackSender::say("exura");
 				Sleep(820);
 				;
 			}
 			else if (config->paralysisSpell && (flags & 32) == 32)
 			{
-				sender.say("exura");
+				CPackSender::say("exura");
 				Sleep(820);
 				;
 			}
 			else if (config->paralysisIco && (flags & 32) == 32)
 			{
-				sender.say("exura ico");
+				CPackSender::say("exura ico");
 				Sleep(820);
 				;
 			}
@@ -252,7 +252,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				if (time(NULL) - lastWarning >= 15 || !lastWarning)
 				{
 					lastWarning = time(NULL);
-					sender.sendTAMessage("WARNING!!! Not enough mana to Heal!!!");
+					CPackSender::sendTAMessage("WARNING!!! Not enough mana to Heal!!!");
 				}
 			}
 			delete self;
@@ -260,20 +260,19 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		}
 		else if (config->poisonSpell && (flags & 1))
 		{
-			CIPCBackPipeProxy backPipe;
-			struct ipcMessage mess;
-			if (backPipe.readFromPipe(&mess, 1101))
+			CIpcMessage mess;
+			if (CIPCBackPipe::readFromPipe(&mess, 1101))
 			{
 				int pointLoss;
 				memcpy(&pointLoss, mess.payload, sizeof(int));
 				if (pointLoss >= config->minPoisonDmg && pointLoss != 5)
-					sender.say("exana pox");
+					CPackSender::say("exana pox");
 			}
 		}
 		else if (config->sioSpell && self->mana >= config->sioSpellMana)
 		{
 			int chNr;
-			for (chNr = 0; chNr < memConstData.m_memMaxCreatures; chNr++)
+			for (chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 			{
 				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
 				if (ch->tibiaId == 0)
@@ -288,7 +287,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						config->healList[loop].randTriggerHP = RandomVariableHpPercent(config->healList[loop].triggerHP, config->healList[loop].maxHP, MAKE, config);
 						char buf[256];
 						sprintf(buf, "exura sio \"%s\"", ch->name);
-						sender.say(buf);
+						CPackSender::say(buf);
 						Sleep(820);
 						;
 					}
@@ -299,9 +298,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		else
 		{
 			//clean up pipe messages
-			CIPCBackPipeProxy backPipe;
-			struct ipcMessage mess;
-			while (backPipe.readFromPipe(&mess, 1101))
+			CIpcMessage mess;
+			while (CIPCBackPipe::readFromPipe(&mess, 1101))
 			{
 			};
 		}
@@ -313,7 +311,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		if (config->summon)
 		{
 			int chNr;
-			for (chNr = 0; chNr < memConstData.m_memMaxCreatures; chNr++)
+			for (chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 			{
 				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
 				if (ch->tibiaId == 0)
@@ -395,7 +393,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				}
 				if (strlen(spellname) > 0)
 				{
-					sender.say(spellname);
+					CPackSender::say(spellname);
 					lastCastTime = time(NULL);
 					Sleep(820);
 					;
@@ -493,11 +491,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							}
 							else
 							{
-								sender.sendTAMessage("WARNING!!! No appropriate strike spell configured!");
+								CPackSender::sendTAMessage("WARNING!!! No appropriate strike spell configured!");
 							}
 							if (strlen(spellname) > 0)
 							{
-								sender.say(spellname);
+								CPackSender::say(spellname);
 								lastCastTime = time(NULL);
 								Sleep(820);
 								;
@@ -514,7 +512,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			// we should summon something
 			char buf[256];
 			sprintf(buf, "utevo res \"%s\"", config->summonName);
-			sender.say(buf);
+			CPackSender::say(buf);
 			Sleep(820);
 			;
 		}
@@ -522,7 +520,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		else if (config->mana && self->mana >= manaMana)
 		{
 			RandomVariableMana(config->manaMana, MAKE, config);
-			sender.say(config->manaSpell);
+			CPackSender::say(config->manaSpell);
 			Sleep(820);
 		}
 		else if (config->timedSpell)
@@ -533,7 +531,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					RandomVariableMana(config->timedSpellList[loop].randMana, MAKE, config);
 					config->timedSpellList[loop].triggerTime = time(NULL) + config->timedSpellList[loop].delay;
-					sender.say(config->timedSpellList[loop].spell);
+					CPackSender::say(config->timedSpellList[loop].spell);
 					Sleep(820);
 					;
 				}
@@ -542,13 +540,13 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					int contNr;
 					CUIntArray itemArray;
 					if (self->lvl > 80)
-						itemArray.Add(itemProxy.getValueForConst("fluidManaG"));
+						itemArray.Add(CTibiaItem::getValueForConst("fluidManaG"));
 					if (self->lvl > 50)
-						itemArray.Add(itemProxy.getValueForConst("fluidManaS"));
-					itemArray.Add(itemProxy.getValueForConst("fluidMana"));
+						itemArray.Add(CTibiaItem::getValueForConst("fluidManaS"));
+					itemArray.Add(CTibiaItem::getValueForConst("fluidMana"));
 					int openContNr  = 0;
 					int openContMax = reader.readOpenContainerCount();
-					for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+					for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 					{
 						CTibiaContainer *cont = reader.readContainer(contNr);
 						if (cont->flagOnOff)
@@ -557,7 +555,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							CTibiaItem *item = CModuleUtil::lookupItem(contNr, &itemArray);
 							if (item->objectId)
 							{
-								sender.useItemFromContainerOnCreature(item->objectId, 0x40 + contNr, item->pos, self->tibiaId);
+								CPackSender::useItemFromContainerOnCreature(item->objectId, 0x40 + contNr, item->pos, self->tibiaId);
 								delete item;
 								delete cont;
 								break;
@@ -610,9 +608,8 @@ int CMod_spellcasterApp::isStarted()
 	if (!m_started)
 	{
 		// if not started then regularly consume standard messages from the queue
-		CIPCBackPipeProxy backPipe;
-		struct ipcMessage mess;
-		backPipe.readFromPipe(&mess, 1101);
+		CIpcMessage mess;
+		CIPCBackPipe::readFromPipe(&mess, 1101);
 	}
 	return m_started;
 }
@@ -1349,7 +1346,7 @@ int initalizeCreatures()
 
 	char pathBuf[2048];
 
-	sprintf(pathBuf, "%s\\mods\\tibiaauto-creatureWeakness.csv", installPath);
+	sprintf(pathBuf, "%s\\data\\tibiaauto-creatureWeakness.csv", installPath);
 
 	ifstream creatureFile(pathBuf, ios::in);
 	if (!creatureFile.is_open())
@@ -1467,7 +1464,7 @@ int getcurrentMonsterNumberFromName(char *match)
 
 void turnForAOEFiring(int face[4])
 {
-	CPackSenderProxy sender;
+
 	int turn = DOWN;
 	if (face[RIGHT] > turn)
 		turn = RIGHT;
@@ -1479,16 +1476,16 @@ void turnForAOEFiring(int face[4])
 	switch (turn)
 	{
 	case DOWN:
-		sender.turnDown();
+		CPackSender::turnDown();
 		break;
 	case RIGHT:
-		sender.turnRight();
+		CPackSender::turnRight();
 		break;
 	case UP:
-		sender.turnUp();
+		CPackSender::turnUp();
 		break;
 	case LEFT:
-		sender.turnLeft();
+		CPackSender::turnLeft();
 		break;
 	default:
 		break;
@@ -1497,9 +1494,9 @@ void turnForAOEFiring(int face[4])
 
 int aoeShouldFire(CConfigData *config)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+
+	
 	CTibiaCharacter *self      = reader.readSelfCharacter();
 
 	// note that each of the int vars here must be = 0 as otherwise only the last one will be = 0
@@ -1507,7 +1504,7 @@ int aoeShouldFire(CConfigData *config)
 	int deltaX       = 0, deltaY = 0;
 	int chNr         = 0, returnSpell = 0, faceDir = 0;
 	int facing[6][4] = {0};
-	for (chNr = 0; chNr < memConstData.m_memMaxCreatures; chNr++)
+	for (chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 	{
 		CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
 		if (ch->tibiaId == 0)

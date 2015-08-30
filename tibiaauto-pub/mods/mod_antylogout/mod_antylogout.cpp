@@ -24,12 +24,12 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "ModuleUtil.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <ModuleUtil.h>
 #include "MemConstData.h"
-#include "TibiaItemProxy.h"
-#include "ModuleUtil.h"
+#include <TibiaItem.h>
+#include <ModuleUtil.h>
 #include <time.h>
 
 #ifdef _DEBUG
@@ -92,8 +92,8 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
+	CMemReader& reader = CMemReader::getMemReader();
+
 	CConfigData *config  = (CConfigData *)lpParam;
 	int iter             = 0;
 	int randomSeconds    = RandomTimeAntylogout();
@@ -127,26 +127,26 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			switch (r)
 			{
 			case 0:
-				sender.ignoreLook(time(NULL) + 1);
-				sender.look(self->x, self->y, self->z, 0);
+				CPackSender::ignoreLook(time(NULL) + 1);
+				CPackSender::look(self->x, self->y, self->z, 0);
 				break;
 			case 1:
 				if (self->lookDirection == 0)
-					sender.turnUp();
+					CPackSender::turnUp();
 				else if (self->lookDirection == 1)
-					sender.turnRight();
+					CPackSender::turnRight();
 				else if (self->lookDirection == 2)
-					sender.turnDown();
+					CPackSender::turnDown();
 				else if (self->lookDirection == 3)
-					sender.turnLeft();
+					CPackSender::turnLeft();
 				break;
 				//case 2:
-				//sender.sendDirectPacket("\x69"); // cancels walk, this is abnormal and shouldn't be used.
+				//CPackSender::sendDirectPacket("\x69"); // cancels walk, this is abnormal and shouldn't be used.
 				//case 3:
 				//stopAll(); //halts a few actions so this was removed.
 				//case 3:
 				//Request list of channels
-				//	sender.sendDirectPacket("\x97"); creates a window that gets in the way of the user
+				//	CPackSender::sendDirectPacket("\x97"); creates a window that gets in the way of the user
 			}
 			delete self;
 		}

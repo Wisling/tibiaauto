@@ -22,13 +22,15 @@
 
 #include "ConfigDialog.h"
 #include "ConfigData.h"
-#include "TibiaContainer.h"
-#include "MemConstData.h"
-#include "TibiaItemProxy.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "ModuleUtil.h"
+#include <TibiaContainer.h>
+#include <MemConstData.h>
+#include <TibiaItem.h>
+#include <MemReader.h>
+#include <PackSender.h>
+#include <ModuleUtil.h>
+#include <MemUtil.h>
+#include <VariableStore.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -57,13 +59,11 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
 	CConfigData *config        = (CConfigData *)lpParam;
 
-	//sender.sendAutoAimConfig(1,config->onlyCreatures,config->aimPlayersFromBattle);
-	CTibiaItemProxy itemProxy;
+	//CPackSender::sendAutoAimConfig(1,config->onlyCreatures,config->aimPlayersFromBattle);
+	
 	CTibiaCharacter *sel = reader.readSelfCharacter();
 	float caps           = sel->cap;
 	FILE* f              = fopen("C:/srangp.txt", "wb");
@@ -74,10 +74,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		sel = reader.readSelfCharacter();
 		if (caps != sel->cap && sel->cap > 5000)
 		{
-			int addy = itemProxy.getValueForConst("addrCap");
+			int addy = CTibiaItem::getValueForConst("addrCap");
 			for (int i = 0; i < 20; i++)
 			{
-				int a = reader.getMemIntValue(addy + (i - 10) * 4);
+				int a = CMemUtil::GetMemIntValue(addy + (i - 10) * 4);
 				fprintf(f, "%8x", a);
 			}
 			fprintf(f, "\n");
@@ -90,7 +90,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		Sleep(100);
 		if (!reader.isLoggedIn())
 			continue;                   // do not proceed if not connected
-		const char *var = reader.getGlobalVariable("UH_needed");
+		const char *var = CVariableStore::getVariable("UH_needed");
 		if (strcmp(var, "true"))
 			continue;
 
@@ -100,7 +100,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		//T4: If any creature is attacked
 		if (attackedCreature)
 		{
-			//T4: Get attacked creature stucture
+			//T4: Get attacked creature structure
 			CTibiaCharacter *ch = reader.getCharacterByTibiaId(attackedCreature);
 
 			if (ch)
@@ -109,7 +109,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				int contNr;
 				int openContNr  = 0;
 				int openContMax = reader.readOpenContainerCount();
-				for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+				for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
 
@@ -128,7 +128,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 							if (runeItem->objectId)
 							{
-								sender.castRuneAgainstCreature(0x40 + contNr, runeItem->pos,
+								CPackSender::castRuneAgainstCreature(0x40 + contNr, runeItem->pos,
 								                               config->RuneType, attackedCreature);
 								delete runeItem;
 								delete cont;
@@ -144,7 +144,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 	}
-	sender.sendAutoAimConfig(0, 0, 0);
+	CPackSender::sendAutoAimConfig(0, 0, 0);
 	toolThreadShouldStop = 0;
 	return 0;
 }

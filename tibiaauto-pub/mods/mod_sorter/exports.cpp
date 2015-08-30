@@ -2,5 +2,8 @@
 
 #include "mod_sorter.h"
 
-CMod_sorterApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_sorterApp();
+}

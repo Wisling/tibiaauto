@@ -2,5 +2,8 @@
 
 #include "mod_login.h"
 
-CMod_loginApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_loginApp();
+}

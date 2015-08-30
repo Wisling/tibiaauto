@@ -4,9 +4,10 @@
 #include "stdafx.h"
 #include "mod_banker.h"
 #include "ConfigDialog.h"
-#include "ModuleUtil.h"
-#include "MemReaderProxy.h"
+#include <ModuleUtil.h>
+#include <MemReader.h>
 #include <fstream>
+#include <VariableStore.h>
 
 using namespace std;
 
@@ -171,7 +172,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 
 		char buf[256];
 		switch (globalBankerState)
@@ -180,7 +181,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_stateBanker.SetWindowText("Not running");
 			break;
 		case CToolBankerState_halfSleep:
-			sprintf(buf, "Module sleep by %s:%s", reader.getGlobalVariable("walking_control"), reader.getGlobalVariable("walking_priority"));
+			sprintf(buf, "Module sleep by %s:%s", CVariableStore::getVariable("walking_control"), CVariableStore::getVariable("walking_priority"));
 			m_stateBanker.SetWindowText(buf);
 			break;
 		case CToolBankerState_noPathFound:
@@ -256,7 +257,7 @@ int initalizeBankers()
 
 	char pathBuf[2048];
 
-	sprintf(pathBuf, "%s\\mods\\tibiaauto-bankers.csv", installPath);
+	sprintf(pathBuf, "%s\\data\\tibiaauto-bankers.csv", installPath);
 
 	ifstream bankerFile(pathBuf, ios::in);
 	if (!bankerFile.is_open())

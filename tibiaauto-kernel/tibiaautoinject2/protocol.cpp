@@ -2,15 +2,15 @@
 //
 #include "stdafx.h"
 #include "protocol.h"
-#include "ModuleUtil.h"
-#include "ModuleProxy.h"
-#include "MemReaderProxy.h"
+#include <ModuleUtil.h>
+#include "ModuleLoader.h"
+#include <MemReader.h>
+#include <MemUtil.h>
 #include "IPCPipeBack.h"
 #include <fstream>
 #include "time.h"
-#include "ipcm.h"
-#include "deelx.h"
 #include <string>
+#include "deelx.h"
 
 extern CIPCPipeBack ipcPipeBack;
 
@@ -303,7 +303,7 @@ void NetworkMessage::AddBytes(const char* bytes, int size)
 
 void Protocol::outputPacket(NetworkMessage &msg)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	unsigned char recvbyte = msg.PeekByte();
 	NetworkMessage msgNew  = NetworkMessage();
 	switch (recvbyte)
@@ -450,7 +450,7 @@ void Protocol::outputPacket(NetworkMessage &msg)
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
 	char pathBuf[2048];
-	sprintf(pathBuf, "%s\\tascripts\\botting %d statistics.txt", path, reader.getProcessId());
+	sprintf(pathBuf, "%s\\tascripts\\botting %d statistics.txt", path, CMemUtil::getGlobalProcessId());
 	std::ofstream fout(pathBuf, std::ios::out | std::ios::app | std::ios::binary);
 	time_t tm = time(NULL);
 	fout.write((char*)&tm, 4);
@@ -461,7 +461,7 @@ void Protocol::outputPacket(NetworkMessage &msg)
 
 void Protocol::parsePacketIn(NetworkMessage &msg)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	unsigned char recvbyte = msg.GetByte();
 	switch (recvbyte)
 	{
@@ -480,7 +480,7 @@ void Protocol::parsePacketIn(NetworkMessage &msg)
 			if (res.IsMatched())
 			{
 				int hpLost = atoi(text.substr(res.GetGroupStart(1), res.GetGroupEnd(1) - res.GetGroupStart(1)).c_str());
-				struct ipcMessage mess;
+				CIpcMessage mess;
 				memcpy(mess.payload, &hpLost, sizeof(int));
 				mess.messageType = 1101;
 				ipcPipeBack.send(mess);
@@ -491,7 +491,7 @@ void Protocol::parsePacketIn(NetworkMessage &msg)
 			   if(res.IsMatched()){
 			        int hpLost=atoi(text.substr(res.GetGroupStart(1),res.GetGroupEnd(1)-res.GetGroupStart(1)).c_str());
 			        std::string attackerName = text.substr(res.GetGroupStart(2),res.GetGroupEnd(2)-res.GetGroupStart(2));
-			        struct ipcMessage mess;
+			        CIpcMessage mess;
 			        memcpy(mess.payload,&hpLost,sizeof(int));
 			        strncpy(mess.payload+4,attackerName.c_str(),min(attackerName.length()+1,sizeof(mess.payload)-4));
 			        mess.payload[sizeof(mess.payload)-1] = 0;
@@ -508,14 +508,14 @@ void Protocol::parsePacketIn(NetworkMessage &msg)
 			MatchResult res = reFollowNoWay.Match(text.c_str());
 			if (res.IsMatched())
 			{
-				struct ipcMessage mess;
+				CIpcMessage mess;
 				mess.messageType = 1103;
 				ipcPipeBack.send(mess);
 			}
 			break;
 		}
 		case 0x1E:                // 30
-			break;                 //disable since ipcMessage is too slow
+			break;                 //disable since CIpcMessage is too slow
 			{
 				std::string text = msg.GetString();
 				static CRegexpT <char> reLootMessage("Loot of (.*): (.*)", IGNORECASE);
@@ -526,7 +526,7 @@ void Protocol::parsePacketIn(NetworkMessage &msg)
 					char lootString[400];
 					_snprintf(lootCreatureName, 399, "%s", text.substr(res.GetGroupStart(1), res.GetGroupEnd(1) - res.GetGroupStart(1)).c_str());
 					_snprintf(lootString, 399, "%s", text.substr(res.GetGroupStart(2), res.GetGroupEnd(2) - res.GetGroupStart(2)).c_str());
-					struct ipcMessage mess;
+					CIpcMessage mess;
 					unsigned int tm = reader.getCurrentTm();
 					memcpy(mess.payload, &tm, 4);
 					memcpy(mess.payload + 4, lootCreatureName, 400);
@@ -549,7 +549,7 @@ void Protocol::parsePacketIn(NetworkMessage &msg)
 extern void sendTAMessage(char* message);
 void Protocol::parsePacketOut(NetworkMessage &msg)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	unsigned char recvbyte = msg.GetByte();
 	CString description    = "";
 	char tmpbuf[2048];

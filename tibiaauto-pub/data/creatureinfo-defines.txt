@@ -1,0 +1,88 @@
+All:
+<hp>	d
+<maxhp>	d
+<type>	s
+<relz>	d
+
+TibiaInternals:
+<tibiaid>	d
+<x>	d
+<y>	d
+<z>	d
+<outfitid>	d
+<moving>	d
+<monstertype>	d
+<hppercleft>	d
+<nr>	d
+<lookdir>	d
+<colorhead>	d
+<colorbody>	d
+<colorlegs>	d
+<colorfoot>	d
+<walkspeed>	d
+<skulls>	d
+<shields>	d
+
+Player&Self:
+<guildname>	s
+<guildrank>	s
+<guilddescription>	s
+<level>	d
+<voc>	s(2 letters only)
+<vocation>	s	
+<speedmodif> s
+
+SelfOnly:
+<mana>	d
+<maxmana>	d
+<capacity>	d
+<stamina>	d
+<maxcapacity>	d
+<soulpoints>	d
+<exp>	d
+<expleft>	d
+<expperh>	d
+<level>	d
+<level%>	d
+<levelperh>	d
+<levelupin> s
+<magiclevel>	d
+<magiclevel%>	d
+<magiclevelperh>	d
+<magiclevelupin>	s
+<skillsword>	d
+<skillsword%>	d
+<skillswordperh>	d
+<skillswordupin>	s
+<skillaxe>	d
+<skillaxe%>	d
+<skillaxeperh>	d
+<skillaxeupin>	s
+<skillclub>	d
+<skillclub%>	d
+<skillclubperh>	d
+<skillclubupin>	s
+<skillshield>	d
+<skillshield%>	d
+<skillshieldperh>	d
+<skillshieldupin>	s
+<skilldistance>	d
+<skilldistance%>	d
+<skilldistanceperh>	d
+<skilldistanceupin>	s
+<skillfishing>	d
+<skillfishing%>	d
+<skillfishingperh>	d
+<skillfishingupin>	s
+<skillfist>	d
+<skillfist%>	d
+<skillfistperh>	d
+<skillfistupin>	s
+<timehaste>	d
+<timestronghaste>	d
+<timeinvisible>	d
+<timeshield>	d
+
+Monsters&NPC:
+<exp>	d
+<description>	s

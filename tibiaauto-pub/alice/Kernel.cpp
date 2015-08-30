@@ -227,7 +227,7 @@ Kernel::Kernel()
 	Handler::init();
 	Kernel::loadSubstitutions();
 	char pathBuf[2048];
-	sprintf(pathBuf, "%s\\mods\\std-startup.xml", installPath);
+	sprintf(pathBuf, "%s\\data\\std-startup.xml", installPath);
 	if (!Kernel::load(pathBuf))
 	{
 		getStream("Console")->Write("Shutting down (cannot run without std-startup.xml file)");
@@ -410,7 +410,7 @@ void Kernel::loadSubstitutions()
 	}
 
 	char pathBuf[2048];
-	sprintf(pathBuf, "%s\\mods\\substitutions.xml", installPath);
+	sprintf(pathBuf, "%s\\data\\substitutions.xml", installPath);
 	ifstream fin;
 	PElement root;
 	fin.open(pathBuf, ios::in | ios::binary);

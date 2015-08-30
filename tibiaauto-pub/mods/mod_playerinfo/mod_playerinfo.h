@@ -37,7 +37,6 @@ public:
 
 public:
 	void getNewSkin(CSkin);
-	void* GetPlayerInfo();
 	int validateConfig(int showAlerts);
 	// functions from IModuleInterface
 	char * getName();

@@ -4,14 +4,14 @@
 #include "stdafx.h"
 #include "mod_responder.h"
 #include "ToolAutoRespond.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 
 #include "AutoResponderParser.h"
 #include "AutoResponderParserContext.h"
 #include "ToolAutoResponderThreadConfig.h"
 #include "ToolAutoResponderMessage.h"
-#include "IPCBackPipeProxy.h"
-#include "MemReaderProxy.h"
+#include <IPCBackPipe.h>
+#include <MemReader.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -32,7 +32,7 @@ int toolThreadAutoResponderShouldStop = 0;
 DWORD WINAPI toolThreadAutoResponderProc(LPVOID lpParam)
 {
 	srand((unsigned int)time(NULL));
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CToolAutoResponderThreadConfig *config = (CToolAutoResponderThreadConfig *)lpParam;
 	while (!toolThreadAutoResponderShouldStop)
 	{
@@ -185,9 +185,8 @@ void CToolAutoRespond::OnTimer(UINT nIDEvent)
 
 void CToolAutoRespond::readInfo()
 {
-	CIPCBackPipeProxy backPipe;
-	struct ipcMessage mess;
-	if (backPipe.readFromPipe(&mess, 1001))
+	CIpcMessage mess;
+	if (CIPCBackPipe::readFromPipe(&mess, 1001))
 	{
 		int infoType;
 		int chanType;
@@ -374,7 +373,7 @@ void CToolAutoRespond::start()
 	threadCount = 0;
 	try
 	{
-		sprintf(pathBuf, "%s\\mods\\tibiaauto-responder.xml", installPath);
+		sprintf(pathBuf, "%s\\data\\tibiaauto-responder.xml", installPath);
 		parser->parse(pathBuf);
 		doc = parser->getDocument();
 		for (size_t rootNr = 0; rootNr < doc->getChildNodes()->getLength(); rootNr++)
@@ -410,7 +409,7 @@ void CToolAutoRespond::start()
 		}
 		char scriptBuf[1024 * 200];
 		memset(scriptBuf, 0, 1024 * 200);
-		sprintf(pathBuf, "%s\\mods\\tibiaauto-responder.xml", installPath);
+		sprintf(pathBuf, "%s\\data\\tibiaauto-responder.xml", installPath);
 		FILE *f = fopen(pathBuf, "rb");
 		fread(scriptBuf, 1, 1024 * 200 - 1, f);
 		fclose(f);

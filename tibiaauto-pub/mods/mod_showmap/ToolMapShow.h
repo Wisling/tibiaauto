@@ -22,7 +22,7 @@ class CToolMapShow : public MyDialog
 public:
 	void setTileDetails(int, int, int);
 	void showTileDetails(int x, int y);
-	void mapPointClicked(int realX, int realY, int realZ, int tileVal);
+	void mapPointClicked(int realX, int realY, int realZ, MapPointType tileVal);
 	void ShowMapConfig(int, int);
 	void refreshVisibleMap();
 	void DoSetButtonSkin();

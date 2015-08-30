@@ -1,6 +1,8 @@
 #include <stdafx.h>
 #include <cstdio>
 
+#include "tibiaautoinject3.h"
+
 static HHOOK hhookKeyb;
 //keyboard hook functions
 int count = 0;

@@ -4,17 +4,17 @@
 #include "stdafx.h"
 #include "mod_autogo.h"
 #include "GeneralConfigDialog.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 #include "WhiteList.h"
+#include <ModuleUtil.h>
+#include <MemReader.h>
+#include <MemUtil.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
-
-#include "ModuleUtil.h"
-#include "MemReaderProxy.h"
 
 static HWND tibiaHwnd = NULL;
 
@@ -160,7 +160,7 @@ void WriteBMPFileLoc(HBITMAP bitmap, CString filename, HDC hDC)
 
 CString capturePosition(CString name)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	if (!tibiaHwnd)
 	{
 		tibiaHwnd = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
@@ -169,7 +169,7 @@ CString capturePosition(CString name)
 			DWORD pid;
 			DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHwnd, &pid);
 
-			if (pid == reader.getProcessId())
+			if (pid == CMemUtil::getGlobalProcessId())
 				break;
 			tibiaHwnd = FindWindowEx(NULL, tibiaHwnd, "TibiaClient", NULL);
 		}
@@ -457,7 +457,7 @@ void GeneralConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent == 1001)
 	{
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		CString buf;
 		if (lastX != self->x || lastY != self->y || lastZ != self->z)

@@ -4,13 +4,15 @@
 #include "stdafx.h"
 #include "mod_playerinfo.h"
 #include "CharInfoDialog.h"
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "TibiaCharacter.h"
-#include "IPCBackPipeProxy.h"
+#include <IPCBackPipe.h>
 #include <math.h>
 
 #include "playerInfo.h"
+
+extern mod_playerinfo playerInfo;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -105,7 +107,7 @@ END_MESSAGE_MAP()
 
 void CCharInfoDialog::resetCounters()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *ch = reader.readSelfCharacter();
 
 	playerInfo.timeStart = time(NULL);
@@ -194,7 +196,7 @@ void CCharInfoDialog::OnResetCounters()
 
 void CCharInfoDialog::dataCalc()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *ch = reader.readSelfCharacter();
 
 	//T4: Exp calculation
@@ -274,10 +276,9 @@ void CCharInfoDialog::dataCalc()
 	int secRemainingMagicShield = 0;
 
 	//detect spell spell casting and record time
-	CIPCBackPipeProxy backPipe;
-	struct ipcMessage mess;
+	CIpcMessage mess;
 
-	if (backPipe.readFromPipe(&mess, 1004))
+	if (CIPCBackPipe::readFromPipe(&mess, 1004))
 	{
 		int infoType;
 		int chanType;
@@ -299,7 +300,7 @@ void CCharInfoDialog::dataCalc()
 		if ((infoType == 1) && (strcmp(nickBuf, ch->name) == 0) && (strcmp(nickBuf, "Tibia Auto") != 0))
 		{
 //			sprintf(buf,"nick: '%s', msg: '%s', name: '%s', type: '%d'", nickBuf, msgBuf, ch->name, infoType);
-//			sender.sendTAMessage(buf);
+//			CPackSender::sendTAMessage(buf);
 
 			if ((_strcmpi(msgBuf, "utana vid ") == 0) || (strcmp(msgBuf, "test invis") == 0))  //invisible
 			{
@@ -324,7 +325,7 @@ void CCharInfoDialog::dataCalc()
 		}
 	}
 
-	CPackSenderProxy sender;
+
 	char spellName[4][32] = {"Invisible", "Haste", "Strong Haste", "Magic Shield"};
 	char buffer[260];
 
@@ -335,7 +336,7 @@ void CCharInfoDialog::dataCalc()
 		{
 			sprintf(buffer, "%s will wear off in %d seconds.", spellName[i], playerInfo.spell[i].remaining);
 			if (config->enableTimers)
-				sender.sendTAMessage(buffer);
+				CPackSender::sendTAMessage(buffer);
 			if (playerInfo.spell[i].remaining <= WARNING1)
 				playerInfo.spell[i].warning |= 0x01;
 			if (playerInfo.spell[i].remaining <= WARNING2)

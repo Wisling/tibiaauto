@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "tibiaauto.h"
 #include "ConfigCreatorUtil.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "Util.h"
 
 #ifdef _DEBUG
@@ -65,7 +65,7 @@ CConfigCreatorUtil::~CConfigCreatorUtil()
 	delete multiParams;
 }
 
-DOMNode * CConfigCreatorUtil::getEmptyConfigForModule(char *moduleName)
+DOMNode * CConfigCreatorUtil::getEmptyConfigForModule(const char *moduleName)
 {
 	try
 	{
@@ -166,7 +166,7 @@ void CConfigCreatorUtil::addParamFromNode(xercesc::DOMDocument *doc, DOMNode *no
 	}
 }
 
-DOMNode * CConfigCreatorUtil::getConfigForModule(DOMElement *root, char *moduleName)
+DOMNode * CConfigCreatorUtil::getConfigForModule(DOMElement *root, const char *moduleName)
 {
 	DOMNodeList *childNodes = root->getElementsByTagName(X("module"));
 	int i;
@@ -185,7 +185,7 @@ DOMNode * CConfigCreatorUtil::getConfigForModule(DOMElement *root, char *moduleN
 	return NULL;
 }
 
-void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module, DOMNode *node, char *paramName)
+void CConfigCreatorUtil::parseConfigFromNode(IModuleInterface *module, DOMNode *node, char *paramName)
 {
 	int isLeaf = 1;
 	//DOMNodeList *childNodes = node->getChildNodes();

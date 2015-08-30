@@ -4,10 +4,11 @@
 #include "stdafx.h"
 #include "mod_memdebug.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
-#include "PackSenderProxy.h"
-#include "ModuleUtil.h"
+#include <MemReader.h>
+#include <MemUtil.h>
+#include <TibiaItem.h>
+#include <PackSender.h>
+#include <ModuleUtil.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -76,9 +77,9 @@ void CConfigDialog::OnTest()
 {
 	UpdateData(FALSE);
 
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 
-	reader.setMemIntValue(0x00400000 + m_address, m_val);
+	CMemUtil::SetMemIntValue(0x00400000 + m_address, m_val);
 }
 
 void CConfigDialog::OnTest2()
@@ -107,13 +108,13 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent == 1000)
 	{
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 
 		char buf[128];
 
 		UpdateData(true);
 
-		int value = reader.getMemIntValue(0x00400000 + m_address);
+		int value = CMemUtil::GetMemIntValue(0x00400000 + m_address);
 
 
 		m_addressResDec = value;

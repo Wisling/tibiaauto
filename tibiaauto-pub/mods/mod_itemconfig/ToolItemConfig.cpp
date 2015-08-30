@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "mod_itemconfig.h"
 #include "TibiaItem.h"
-#include "TibiaItemProxy.h"
+#include <TibiaItem.h>
 #include "ToolItemConfig.h"
 
 #include "TibiaStructures.h"
@@ -98,22 +98,22 @@ END_MESSAGE_MAP()
 
 void CToolItemConfig::OnOK()
 {
-	CTibiaItemProxy itemProxy;
+	
 	ControlsToConfig();
 
-	itemProxy.saveItemLists();
-	itemProxy.refreshItemLists();
+	CTibiaItem::saveItemLists();
+	CTibiaItem::refreshItemLists();
 	ShowWindow(SW_HIDE);
 }
 
 void CToolItemConfig::ControlsToConfig()
 {
-	CTibiaItemProxy itemProxy;
-	itemProxy.setItemsTree(NULL);//deletes old tree and makes blank one
-	CTibiaTree* dataTree = itemProxy.getItemsTree();
+	
+	CTibiaItem::setItemsTree(NULL);//deletes old tree and makes blank one
+	CTibiaTree* dataTree = CTibiaItem::getItemsTree();
 	CreateDataTree(dataTree, &m_itemsTree, TVI_ROOT);
 
-	itemProxy.clearFoodList();
+	CTibiaItem::clearFoodList();
 	int count = m_foodList.GetCount();
 	for (int i = 0; i < count; i++)
 	{
@@ -122,7 +122,7 @@ void CToolItemConfig::ControlsToConfig()
 		int id      = parseId(text);
 		char* name  = parseName(text);
 		int eatTime = m_foodList.GetItemData(i);
-		itemProxy.addFood(name, id, eatTime);
+		CTibiaItem::addFood(name, id, eatTime);
 		free(name);
 	}
 }
@@ -258,22 +258,22 @@ void CToolItemConfig::ConfigToControls()
 {
 	CancelTwoStepOperations();
 	char buf[16384];
-	CTibiaItemProxy itemProxy;
+	
 
 	//Create Food List
 	while (m_foodList.GetCount())
 		m_foodList.DeleteString(0);
-	int size = itemProxy.getFoodCount();
+	int size = CTibiaItem::getFoodCount();
 	for (int i = 0; i < size; i++)
 	{
-		sprintf(buf, "%s[%d]", itemProxy.getFoodNameAtIndex(i), itemProxy.getFoodIdAtIndex(i));
+		sprintf(buf, "%s[%d]", CTibiaItem::getFoodNameAtIndex(i), CTibiaItem::getFoodIdAtIndex(i));
 		int ind = m_foodList.AddString(buf);
-		m_foodList.SetItemData(ind, itemProxy.getFoodTimeAtIndex(i));
+		m_foodList.SetItemData(ind, CTibiaItem::getFoodTimeAtIndex(i));
 	}
 
 	//Create Item Tree
 	m_itemsTree.ModifyStyle(TVS_DISABLEDRAGDROP, TVS_HASLINES | TVS_HASBUTTONS | TVS_LINESATROOT | TVS_TRACKSELECT);
-	CTibiaTree* itemsTree = (CTibiaTree*)itemProxy.getItemsTree();
+	CTibiaTree* itemsTree = (CTibiaTree*)CTibiaItem::getItemsTree();
 	DeleteGUITreeItem(&m_itemsTree, TVI_ROOT);
 	CreateGUITree(&m_itemsTree, TVI_ROOT, itemsTree);
 	m_itemsTree.SelectItem(m_itemsTree.GetRootItem());
@@ -282,8 +282,8 @@ void CToolItemConfig::ConfigToControls()
 
 void CToolItemConfig::OnToolItemconfigRefresh()
 {
-	CTibiaItemProxy itemProxy;
-	itemProxy.refreshItemLists();
+	
+	CTibiaItem::refreshItemLists();
 	ConfigToControls();
 }
 

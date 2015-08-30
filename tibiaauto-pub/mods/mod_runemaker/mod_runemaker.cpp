@@ -26,10 +26,10 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
-#include "ModuleUtil.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
+#include <ModuleUtil.h>
 #include <map>
 
 using namespace std;
@@ -63,7 +63,7 @@ const int minSecondsOpen = 20;
 static map<int*, int> setMana;
 int RandomVariableMana(int &pt, int command, CConfigData *config)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 
 	CTibiaCharacter* self = reader.readSelfCharacter();
 	int val               = pt < 0 ? max(self->maxMana + pt, self->maxMana / 10) : pt;
@@ -76,12 +76,12 @@ int RandomVariableMana(int &pt, int command, CConfigData *config)
 		command = MAKE;
 	if (command == MAKE)
 	{
-		CPackSenderProxy sender;
+	
 		// within 10% of number with a cutoff at maxMana
 		setMana[&pt] = CModuleUtil::randomFormula(val, (int)(val * 0.1), val, max(self->maxMana, val + 1));
 		char buf[111];
 		sprintf(buf, "%d", setMana[&pt]);
-		sender.sendTAMessage(buf);
+		CPackSender::sendTAMessage(buf);
 	}
 	delete self;
 	return setMana[&pt];
@@ -95,10 +95,10 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 
 	while (!toolThreadShouldStop)
@@ -111,16 +111,16 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		int blanksCount = 0;
 		int openContNr  = 0;
 		int openContMax = reader.readOpenContainerCount();
-		for (int i = 0; i < memConstData.m_memMaxContainers && openContNr < openContMax; i++)
+		for (int i = 0; i < reader.m_memMaxContainers && openContNr < openContMax; i++)
 		{
 			CTibiaContainer *container = reader.readContainer(i);
 			if (container->flagOnOff)
 			{
 				openContNr++;
 				if (config->useSpear)
-					blanksCount += container->countItemsOfType(itemProxy.getValueForConst("spear"));
+					blanksCount += container->countItemsOfType(CTibiaItem::getValueForConst("spear"));
 				else
-					blanksCount += container->countItemsOfType(itemProxy.getValueForConst("runeBlank"));
+					blanksCount += container->countItemsOfType(CTibiaItem::getValueForConst("runeBlank"));
 			};
 			delete container;
 		}
@@ -133,7 +133,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					RandomVariableMana(config->makeNow ? config->mana : (config->manaLimit > config->mana) ? config->manaLimit : config->mana, MAKE, config);
 					// cast spell
-					sender.say((LPCTSTR)config->spell);
+					CPackSender::say((LPCTSTR)config->spell);
 					CModuleUtil::waitForManaDecrease(myself->mana);
 					if (!config->maxUse)
 						break; //even if we have the mana and blank runes/spears do not continue casting

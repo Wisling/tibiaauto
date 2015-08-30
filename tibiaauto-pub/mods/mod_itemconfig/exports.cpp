@@ -2,6 +2,8 @@
 
 #include "mod_itemconfig.h"
 
-CMod_itemconfigApp module;
-
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_itemconfigApp();
+}

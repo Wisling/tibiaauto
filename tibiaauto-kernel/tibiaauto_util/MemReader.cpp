@@ -6,7 +6,6 @@
 #include "MemReader.h"
 #include "PackSender.h"
 #include "MemUtil.h"
-#include "TibiaItemProxy.h"
 #include "TibiaTile.h"
 #include "TileReader.h"
 #include "SkinLoader.h"
@@ -116,10 +115,9 @@ long findContainer(int i, long addrCurr, long addrHead, int depth = 0)
 	//Returns 1 if the object has restructured itself and needs to be re-read
 	if (depth > 0 && 0)
 	{
-		CPackSender sender;
 		char buf[111];
 		sprintf(buf, "%d", depth);
-		sender.sendTAMessage(buf);
+		CPackSender::sendTAMessage(buf);
 	}
 	if (addrCurr != addrHead && CMemUtil::GetMemIntValue(addrCurr + 0x10, 0) == i)
 		return addrCurr;
@@ -180,7 +178,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 		//container->???=CMemUtil::GetMemIntValue(addrCont+0x38,0);
 		//container->???=CMemUtil::GetMemIntValue(addrCont+0x3C,0);
 		container->size        = CMemUtil::GetMemIntValue(addrCont + 0x40, 0);
-		container->itemsInside = CMemUtil::GetMemIntValue(addrCont + 0x44, 0);
+		container->itemsInside = min(CMemUtil::GetMemIntValue(addrCont + 0x44, 0), container->size);
 		long addrItems = CMemUtil::GetMemIntValue(addrCont + 0x4C, 0);
 
 		try //if returns error then addrItems is most likely not a valid address anymore
@@ -192,8 +190,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 					CTibiaItem *item = new CTibiaItem();
 					item->objectId = CMemUtil::GetMemIntValue(addrItems + i * m_memLengthItem + 8, 0);
 					item->quantity = CMemUtil::GetMemIntValue(addrItems + i * m_memLengthItem + 4, 0);
-					CTileReader tileReader;
-					CTibiaTile *tile = tileReader.getTile(item->objectId);
+					CTibiaTile *tile = CTileReader::getTileReader().getTile(item->objectId);
 					if (!tile)
 					{
 						delete item;
@@ -325,8 +322,7 @@ CTibiaItem * CMemReader::readItem(int locationAddress)
 
 	item->objectId = CMemUtil::GetMemIntValue(locationAddress + 8);
 	item->quantity = CMemUtil::GetMemIntValue(locationAddress + 4);
-	CTileReader tileReader;
-	CTibiaTile *tile = tileReader.getTile(item->objectId);
+	CTibiaTile *tile = CTileReader::getTileReader().getTile(item->objectId);
 	if (tile && !tile->stackable && item->quantity > 1)
 		item->quantity = 1;
 
@@ -477,7 +473,6 @@ int CMemReader::getNextPacketCount()
 
 CTibiaCharacter *CMemReader::getCharacterByTibiaId(int tibiaId)
 {
-	CMemReader reader;
 	int i;
 	for (i = 0; i < m_memMaxCreatures; i++)
 	{
@@ -504,8 +499,7 @@ CTibiaItem * CMemReader::getTradeItemSelf(int nr)
 	CTibiaItem *item = new CTibiaItem();
 	item->objectId = CMemUtil::GetMemIntValue(m_memAddressTradeFirstItemSelf + nr * m_memLengthItem + 8);
 	item->quantity = CMemUtil::GetMemIntValue(m_memAddressTradeFirstItemSelf + nr * m_memLengthItem + 4);
-	CTileReader tileReader;
-	CTibiaTile *tile = tileReader.getTile(item->objectId);
+	CTibiaTile *tile = CTileReader::getTileReader().getTile(item->objectId);
 	if (tile && !tile->stackable && item->quantity > 1)
 		item->quantity = 1;
 	item->pos = nr;
@@ -517,8 +511,7 @@ CTibiaItem * CMemReader::getTradeItemPartner(int nr)
 	CTibiaItem *item = new CTibiaItem();
 	item->objectId = CMemUtil::GetMemIntValue(m_memAddressTradeFirstItemPartner + nr * m_memLengthItem + 8);
 	item->quantity = CMemUtil::GetMemIntValue(m_memAddressTradeFirstItemPartner + nr * m_memLengthItem + 4);
-	CTileReader tileReader;
-	CTibiaTile *tile = tileReader.getTile(item->objectId);
+	CTibiaTile *tile = CTileReader::getTileReader().getTile(item->objectId);
 	if (tile && !tile->stackable && item->quantity > 1)
 		item->quantity = 1;
 	item->pos = nr;
@@ -565,8 +558,6 @@ int CMemReader::getLoggedCharNr()
 
 void CMemReader::writeGotoCoords(int x, int y, int z)
 {
-	CMemReader reader;
-
 	int chNr = getLoggedCharNr();
 	CMemUtil::SetMemIntValue(m_memAddressGoX, x);
 	CMemUtil::SetMemIntValue(m_memAddressGoY, y);
@@ -586,53 +577,45 @@ void CMemReader::cancelAttackCoords()
 
 int CMemReader::readCreatureLightPower(int creatureNr)
 {
-	CMemReader reader;
-	return CMemUtil::GetMemIntValue(reader.m_memAddressFirstCreature + creatureNr * reader.m_memLengthCreature + 124);
+	return CMemUtil::GetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 124);
 }
 
 int CMemReader::readCreatureLightColor(int creatureNr)
 {
-	CMemReader reader;
-	return CMemUtil::GetMemIntValue(reader.m_memAddressFirstCreature + creatureNr * reader.m_memLengthCreature + 128);
+	return CMemUtil::GetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 128);
 }
 
 void CMemReader::writeCreatureLightPower(int creatureNr, int value)
 {
-	CMemReader reader;
-	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature + creatureNr * reader.m_memLengthCreature + 124, value);
+	CMemUtil::SetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 124, value);
 }
 
 void CMemReader::writeCreatureLightColor(int creatureNr, int value)
 {
-	CMemReader reader;
-	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature + creatureNr * reader.m_memLengthCreature + 128, value);
+	CMemUtil::SetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 128, value);
 }
 
 int CMemReader::readSelfLightPower()
 {
-	CMemReader reader;
-	int loggedCharNr = reader.getLoggedCharNr();
+	int loggedCharNr = getLoggedCharNr();
 	return readCreatureLightPower(loggedCharNr);
 }
 
 int CMemReader::readSelfLightColor()
 {
-	CMemReader reader;
-	int loggedCharNr = reader.getLoggedCharNr();
+	int loggedCharNr = getLoggedCharNr();
 	return readCreatureLightColor(loggedCharNr);
 }
 
 void CMemReader::writeSelfLightPower(int value)
 {
-	CMemReader reader;
-	int loggedCharNr = reader.getLoggedCharNr();
+	int loggedCharNr = getLoggedCharNr();
 	writeCreatureLightPower(loggedCharNr, value);
 }
 
 void CMemReader::writeSelfLightColor(int value)
 {
-	CMemReader reader;
-	int loggedCharNr = reader.getLoggedCharNr();
+	int loggedCharNr = getLoggedCharNr();
 	writeCreatureLightColor(loggedCharNr, value);
 }
 
@@ -972,20 +955,18 @@ void CMemReader::writeDisableRevealCName()
 
 void CMemReader::setRemainingTilesToGo(int val)
 {
-	CTibiaItemProxy itemProxy;
-	int offset = itemProxy.getValueForConst("addrOffset");
+	int offset = CTibiaItem::getValueForConst("addrOffset");
 	CMemUtil::SetMemIntValue(m_memAddressTilesToGo, val);
-	CMemUtil::SetMemIntValue(offset + itemProxy.getValueForConst("addrCurrentTileToGo"), val);
+	CMemUtil::SetMemIntValue(offset + CTibiaItem::getValueForConst("addrCurrentTileToGo"), val);
 }
 
 CTibiaMiniMap * CMemReader::readMiniMap(int nr)
 {
-	CTibiaItemProxy itemProxy;
 	if (nr < 0 || nr > 9)
 		return NULL;
 	CTibiaMiniMap *retMap = new CTibiaMiniMap();
 
-	int offset = itemProxy.getValueForConst("addrMiniMapStart") + itemProxy.getValueForConst("lengthMiniMap") * nr;
+	int offset = CTibiaItem::getValueForConst("addrMiniMapStart") + CTibiaItem::getValueForConst("lengthMiniMap") * nr;
 
 	retMap->x              = CMemUtil::GetMemIntValue(offset + 0);
 	retMap->y              = CMemUtil::GetMemIntValue(offset + 4);
@@ -999,14 +980,13 @@ CTibiaMiniMap * CMemReader::readMiniMap(int nr)
 
 CTibiaMiniMapLabel * CMemReader::readMiniMapLabel(int mapNr, int pointNr)
 {
-	CTibiaItemProxy itemProxy;
 	if (mapNr < 0 || mapNr > 9)
 		return NULL;
 	if (pointNr < 0)
 		return NULL;
 	CTibiaMiniMapLabel *retPoint = new CTibiaMiniMapLabel();
 
-	int mapOffset = itemProxy.getValueForConst("addrMiniMapStart") + itemProxy.getValueForConst("lengthMiniMap") * mapNr;
+	int mapOffset = CTibiaItem::getValueForConst("addrMiniMapStart") + CTibiaItem::getValueForConst("lengthMiniMap") * mapNr;
 	if (pointNr >= CMemUtil::GetMemIntValue(mapOffset + 131236))
 	{
 		// point out of range exception
@@ -1014,7 +994,7 @@ CTibiaMiniMapLabel * CMemReader::readMiniMapLabel(int mapNr, int pointNr)
 		return NULL;
 	}
 	int mapPointAddr   = CMemUtil::GetMemIntValue(mapOffset + 131232);
-	int mapPointOffset = mapPointAddr + pointNr * itemProxy.getValueForConst("lengthMiniMapLabel");
+	int mapPointOffset = mapPointAddr + pointNr * CTibiaItem::getValueForConst("lengthMiniMapLabel");
 	retPoint->x    = CMemUtil::GetMemIntValue(mapPointOffset + 0, 0);
 	retPoint->y    = CMemUtil::GetMemIntValue(mapPointOffset + 4, 0);
 	retPoint->type = CMemUtil::GetMemIntValue(mapPointOffset + 8, 0);
@@ -1025,11 +1005,10 @@ CTibiaMiniMapLabel * CMemReader::readMiniMapLabel(int mapNr, int pointNr)
 
 CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int x, int y, int z)
 {
-	CTibiaItemProxy itemProxy;
 	CTibiaMiniMapPoint* bogusPoint = new CTibiaMiniMapPoint(x, y, z, 0, 250);
 	for (int nr = 0; nr < 10; nr++)
 	{
-		int mapOffset      = itemProxy.getValueForConst("addrMiniMapStart") + itemProxy.getValueForConst("lengthMiniMap") * nr + 20;
+		int mapOffset      = CTibiaItem::getValueForConst("addrMiniMapStart") + CTibiaItem::getValueForConst("lengthMiniMap") * nr + 20;
 		CTibiaMiniMap *map = readMiniMap(nr);
 		if (map->z == z && map->x == (int)(x / 256) && map->y == (int)(y / 256))
 		{
@@ -1078,12 +1057,10 @@ CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int x, int y, int z)
 void CMemReader::writeMiniMapPoint(int x, int y, int z, int col, int spd)
 {
 	//AfxMessageBox("write started");
-	CTibiaItemProxy itemProxy;
-
 	int xMap = (int)(x / 256), yMap = (int)(y / 256), zMap = z;
 	for (int nr = 0; nr < 10; nr++)
 	{
-		int mapOffset      = itemProxy.getValueForConst("addrMiniMapStart") + itemProxy.getValueForConst("lengthMiniMap") * nr + 20;
+		int mapOffset      = CTibiaItem::getValueForConst("addrMiniMapStart") + CTibiaItem::getValueForConst("lengthMiniMap") * nr + 20;
 		CTibiaMiniMap *map = readMiniMap(nr);
 
 		//char buf[1111];
@@ -1189,35 +1166,30 @@ void CMemReader::setMainTrayText(char *text)
 
 int CMemReader::getPlayerModeAttackType()
 {
-	CTibiaItemProxy itemProxy;
-	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrModeAttackType"));
+	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrModeAttackType"));
 }
 
 int CMemReader::getPlayerModeFollow()
 {
-	CTibiaItemProxy itemProxy;
-	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrModeFollow"));
+	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrModeFollow"));
 }
 
 int CMemReader::getPlayerModeAttackPlayers()
 {
-	CTibiaItemProxy itemProxy;
-	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrModeAttackPlayers")) & 1;
+	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrModeAttackPlayers")) & 1;
 }
 
 int CMemReader::getPlayerModePVP()
 {
-	CTibiaItemProxy itemProxy;
-	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrModePVP")) & 1;
+	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrModePVP")) & 1;
 }
 
 char * CMemReader::getOpenWindowName()
 {
-	CTibiaItemProxy itemProxy;
 	int ptr2 = 0;
 	static char nameBuf[128];
 	memset(nameBuf, 0, 128);
-	ptr2 = CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrCurrentWindow"));
+	ptr2 = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrCurrentWindow"));
 	if (ptr2)
 		CMemUtil::GetMemRange(ptr2 + 84, ptr2 + 84 + 128, nameBuf, 0);//this address comes from Tibia itself and need not be shifted
 	return nameBuf;
@@ -1225,34 +1197,29 @@ char * CMemReader::getOpenWindowName()
 
 int CMemReader::getConnectionState()
 {
-	CTibiaItemProxy itemProxy;
-	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrConnectionState"));
+	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrConnectionState"));
 }
 
 int CMemReader::isLoggedIn()
 {
-	CTibiaItemProxy itemProxy;
-	DWORD addr = itemProxy.getValueForConst("addrConnectionState");
+	DWORD addr = CTibiaItem::getValueForConst("addrConnectionState");
 	return CMemUtil::GetMemIntValue(addr) == 11;
 }
 
 void CMemReader::setXRayValues(int v1, int v2)
 {
-	CTibiaItemProxy itemProxy;
-	CMemUtil::SetMemIntValue(itemProxy.getValueForConst("addrXRay1"), v1);
-	CMemUtil::SetMemIntValue(itemProxy.getValueForConst("addrXRay2"), v2);
+	CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrXRay1"), v1);
+	CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrXRay2"), v2);
 }
 
 int CMemReader::getXRayValue1()
 {
-	CTibiaItemProxy itemProxy;
-	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrXRay1"));
+	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrXRay1"));
 }
 
 int CMemReader::getXRayValue2()
 {
-	CTibiaItemProxy itemProxy;
-	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrXRay2"));
+	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrXRay2"));
 }
 
 void CMemReader::writeCreatureDeltaXY(int creatureNr, int deltaX, int deltaY)
@@ -1273,19 +1240,16 @@ int CMemReader::getCreatureDeltaY(int creatureNr)
 
 int CMemReader::itemOnTopIndex(int x, int y, int z /*=0*/)//Now uses Tibia's own indexing system found in memory to determine this
 {
-	CMemReader reader;
-	CPackSender sender;
-	CTileReader tileReader;
 	int pos;
 
-	int stackCount      = reader.mapGetPointItemsCount(point(x, y, z));
+	int stackCount      = mapGetPointItemsCount(point(x, y, z));
 	int immoveableItems = 0;//count the number of items placed in middle of array but aren't top
 	int newCount        = stackCount;
 	for (pos = 0; pos < stackCount; pos++)
 	{
-		int stackInd     = reader.mapGetPointStackIndex(point(x, y, z), pos);
-		int tileId       = reader.mapGetPointItemId(point(x, y, z), pos);
-		CTibiaTile *tile = tileReader.getTile(tileId);
+		int stackInd     = mapGetPointStackIndex(point(x, y, z), pos);
+		int tileId       = mapGetPointItemId(point(x, y, z), pos);
+		CTibiaTile *tile = CTileReader::getTileReader().getTile(tileId);
 		//decrease the index we want to find by 1 if we found a creature or an overhanging object
 		if (tile)
 			newCount -= (tileId == 99 || tile->moreAlwaysOnTop == 3) ? 1 : 0;
@@ -1297,12 +1261,11 @@ int CMemReader::itemOnTopIndex(int x, int y, int z /*=0*/)//Now uses Tibia's own
 
 int CMemReader::isItemOnTop(int x, int y, int *itemArr, int itemArrSize)
 {
-	CMemReader reader;
 	int topPos = itemOnTopIndex(x, y);
 	if (topPos == -1)
 		return 0;
 
-	int tileId = reader.mapGetPointItemId(point(x, y, 0), topPos);
+	int tileId = mapGetPointItemId(point(x, y, 0), topPos);
 	for (int i = 0; i < itemArrSize; i++)
 	{
 		if (tileId == itemArr[i])
@@ -1313,18 +1276,16 @@ int CMemReader::isItemOnTop(int x, int y, int *itemArr, int itemArrSize)
 
 int CMemReader::isItemCovered(int x, int y, int *itemArr, int itemArrSize)
 {
-	CMemReader reader;
-
 	int topPos = itemOnTopIndex(x, y);
 	if (topPos == -1)
 		return 0;
 
-	int stackCount = reader.mapGetPointItemsCount(point(x, y, 0));
+	int stackCount = mapGetPointItemsCount(point(x, y, 0));
 	if (topPos >= stackCount)
 		return 0;
 	for (int pos = (topPos + 1) % stackCount; pos != topPos; pos = (pos + 1) % stackCount)
 	{
-		int tileId = reader.mapGetPointItemId(point(x, y, 0), pos);
+		int tileId = mapGetPointItemId(point(x, y, 0), pos);
 		for (int i = 0; i < itemArrSize; i++)
 		{
 			if (tileId == itemArr[i])
@@ -1336,12 +1297,11 @@ int CMemReader::isItemCovered(int x, int y, int *itemArr, int itemArrSize)
 
 int CMemReader::isItemOnTop(int x, int y, CUIntArray& itemArr)
 {
-	CMemReader reader;
 	int topPos = itemOnTopIndex(x, y);
 	if (topPos == -1)
 		return 0;
 
-	int tileId = reader.mapGetPointItemId(point(x, y, 0), topPos);
+	int tileId = mapGetPointItemId(point(x, y, 0), topPos);
 	int size   = itemArr.GetSize();
 	for (int i = 0; i < size; i++)
 	{
@@ -1353,18 +1313,16 @@ int CMemReader::isItemOnTop(int x, int y, CUIntArray& itemArr)
 
 int CMemReader::isItemCovered(int x, int y, CUIntArray& itemArr)
 {
-	CMemReader reader;
-
 	int topPos = itemOnTopIndex(x, y);
 	if (topPos == -1)
 		return 0;
 
-	int stackCount = reader.mapGetPointItemsCount(point(x, y, 0));
+	int stackCount = mapGetPointItemsCount(point(x, y, 0));
 	if (topPos >= stackCount)
 		return 0;
 	for (int pos = (topPos + 1) % stackCount; pos != topPos; pos = (pos + 1) % stackCount)
 	{
-		int tileId = reader.mapGetPointItemId(point(x, y, 0), pos);
+		int tileId = mapGetPointItemId(point(x, y, 0), pos);
 		int size   = itemArr.GetSize();
 		for (int i = 0; i < size; i++)
 		{
@@ -1389,41 +1347,37 @@ int CMemReader::isItemCovered(int x, int y, int itemId)
 
 int CMemReader::getItemIndex(int x, int y, int itemId)
 {
-	CMemReader reader;
-
 	int topPos = itemOnTopIndex(x, y);
 	if (topPos == -1)
 		return -1;
 
-	int stackCount = reader.mapGetPointItemsCount(point(x, y, 0));
+	int stackCount = mapGetPointItemsCount(point(x, y, 0));
 	int pos;
 	for (pos = topPos; stackCount && pos != (topPos - 1) % stackCount; pos = (pos + 1) % stackCount)
 	{
-		if (itemId == reader.mapGetPointItemId(point(x, y, 0), pos))
+		if (itemId == mapGetPointItemId(point(x, y, 0), pos))
 			return pos;
 	}
-	if (itemId == reader.mapGetPointItemId(point(x, y, 0), pos))
+	if (itemId == mapGetPointItemId(point(x, y, 0), pos))
 		return pos;
 	return -1;
 }
 
 int CMemReader::itemOnTopCode(int x, int y)
 {
-	CMemReader reader;
 	int pos = itemOnTopIndex(x, y);
 	if (pos != -1)
-		return reader.mapGetPointItemId(point(x, y, 0), pos);
+		return mapGetPointItemId(point(x, y, 0), pos);
 	return 0;
 }
 
 int CMemReader::itemSeenOnTopIndex(int x, int y, int z /*=0*/)
 {
-	CMemReader reader;
 	int pos;
-	int stackCount = reader.mapGetPointItemsCount(point(x, y, z));
+	int stackCount = mapGetPointItemsCount(point(x, y, z));
 	for (pos = 0; pos < stackCount; pos++)
 	{
-		int stackInd = reader.mapGetPointStackIndex(point(x, y, z), pos);
+		int stackInd = mapGetPointStackIndex(point(x, y, z), pos);
 		if (stackInd == stackCount - 1)
 			return pos;
 	}
@@ -1432,33 +1386,29 @@ int CMemReader::itemSeenOnTopIndex(int x, int y, int z /*=0*/)
 
 int CMemReader::itemSeenOnTopCode(int x, int y)
 {
-	CMemReader reader;
 	int pos = itemSeenOnTopIndex(x, y);
 	if (pos != -1)
-		return reader.mapGetPointItemId(point(x, y, 0), pos);
+		return mapGetPointItemId(point(x, y, 0), pos);
 	return 0;
 }
 
 int CMemReader::itemOnTopQty(int x, int y)
 {
-	CMemReader reader;
 	int pos = itemOnTopIndex(x, y);
 	if (pos == -1)
 		return 0;
 
-	int qty = reader.mapGetPointItemExtraInfo(point(x, y, 0), itemOnTopIndex(x, y), 1);
+	int qty = mapGetPointItemExtraInfo(point(x, y, 0), itemOnTopIndex(x, y), 1);
 	return qty ? qty : 1;
 }
 
 int CMemReader::findNextClosedContainer(int afterCont /*=-1*/)
 {
-	CMemReader reader;
-	CPackSender sender;
 	CTibiaContainer *container;
 	int targetBag;
-	for (targetBag = afterCont + 1; targetBag < reader.m_memMaxContainers; targetBag++)
+	for (targetBag = afterCont + 1; targetBag < m_memMaxContainers; targetBag++)
 	{
-		container = reader.readContainer(targetBag);
+		container = readContainer(targetBag);
 		if (!container->flagOnOff)
 		{
 			delete container;
@@ -1467,10 +1417,10 @@ int CMemReader::findNextClosedContainer(int afterCont /*=-1*/)
 		delete container;
 	}
 
-	if (targetBag == reader.m_memMaxContainers)
+	if (targetBag == m_memMaxContainers)
 	{
-		targetBag = reader.m_memMaxContainers - 1;
-		sender.closeContainer(targetBag);
+		targetBag = m_memMaxContainers - 1;
+		CPackSender::closeContainer(targetBag);
 	}
 	return targetBag;
 }

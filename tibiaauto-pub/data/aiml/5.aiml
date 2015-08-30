@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- 5.aiml - Number 5 related        -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL      -->
+	<!-- Fork of 9/26/2001 ALICE        -->
+	<category>
+		<pattern>5</pattern>
+		<template>Five
+</template>
+	</category>
+</aiml>

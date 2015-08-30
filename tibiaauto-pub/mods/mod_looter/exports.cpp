@@ -2,5 +2,8 @@
 
 #include "mod_looter.h"
 
-CMod_looterApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_looterApp();
+}

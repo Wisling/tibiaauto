@@ -5,12 +5,12 @@
 #include "stdafx.h"
 #include "mod_autogo.h"
 #include "Alarm.h"
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
-#include "IPCBackPipeProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
+#include <IPCBackPipe.h>
 #include "TibiaContainer.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include <math.h>
 
 #ifdef _DEBUG
@@ -298,7 +298,7 @@ bool Alarm::getPermanent()
 void Alarm::initializeCharacter()
 {
 	//Initialize the character's starting info
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	lvlInit         = self->lvl;
 	mlvlInit        = self->mlvl;
@@ -319,7 +319,7 @@ void Alarm::initializeCharacter()
 bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg)
 {
 	bool retval = false;
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	if (currentLoc.x != self->x || currentLoc.y != self->y || currentLoc.z != self->z)
 	{
@@ -805,11 +805,11 @@ bool Alarm::keepPersistent(bool isDestinationReached, bool isLoggedOut)
 
 int Alarm::spaceAvailable()
 {
-	CTibiaItemProxy itemProxy;
-	CMemReaderProxy reader;
+	
+	CMemReader& reader = CMemReader::getMemReader();
 	int space = 0;
 
-	for (int contNr = 0; contNr < itemProxy.getValueForConst("maxContainers"); contNr++)
+	for (int contNr = 0; contNr < CTibiaItem::getValueForConst("maxContainers"); contNr++)
 	{
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		if (cont->flagOnOff)
@@ -821,12 +821,12 @@ int Alarm::spaceAvailable()
 
 int Alarm::onScreenCheck(char whiteList[100][32], int options)
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	CTibiaCharacter *self      = reader.readSelfCharacter();
 
 	int retval = 0;
-	for (int creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++)
+	for (int creatureNr = 0; creatureNr < reader.m_memMaxCreatures; creatureNr++)
 	{
 		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
 		if (ch->tibiaId == 0)
@@ -885,8 +885,8 @@ int Alarm::onScreenCheck(char whiteList[100][32], int options)
 
 bool Alarm::vipOnline(int iconIndex, bool checkOnline /*=true*/)
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	CTibiaVIPEntry *vip;
 
 	for (int vipNr = 0; strcmp((vip = reader.readVIPEntry(vipNr))->name, ""); vipNr++)
@@ -905,8 +905,8 @@ bool Alarm::vipOnline(int iconIndex, bool checkOnline /*=true*/)
 
 bool Alarm::vipNameOnline(CString name, bool checkOnline /*=true*/)
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	CTibiaVIPEntry *vip;
 
 	for (int vipNr = 0; strcmp((vip = reader.readVIPEntry(vipNr))->name, ""); vipNr++)
@@ -929,12 +929,12 @@ bool Alarm::vipNameOnline(CString name, bool checkOnline /*=true*/)
 
 int Alarm::countAllItemsOfType(int objectId)
 {
-	CTibiaItemProxy itemProxy;
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	int itemCount              = 0;
 
-	for (int contNr = 0; contNr < itemProxy.getValueForConst("maxContainers"); contNr++)
+	for (int contNr = 0; contNr < CTibiaItem::getValueForConst("maxContainers"); contNr++)
 	{
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		if (cont->flagOnOff)
@@ -943,7 +943,7 @@ int Alarm::countAllItemsOfType(int objectId)
 	}
 	for (int slotNr = 0; slotNr < 10; slotNr++)   // Loops through all 10 inventory slots(backwards)
 	{
-		CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow + slotNr * memConstData.m_memLengthItem);
+		CTibiaItem *item = reader.readItem(reader.m_memAddressSlotArrow + slotNr * reader.m_memLengthItem);
 		if (item->objectId == objectId)
 			itemCount += item->quantity ? item->quantity : 1;
 		delete item;
@@ -953,14 +953,14 @@ int Alarm::countAllItemsOfType(int objectId)
 
 int Alarm::countAllFood()
 {
-	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	int foodCount = 0;
 
-	CUIntArray* foods = itemProxy.getFoodIdArrayPtr();//unsure whether this is needed to be called
-	for (int i = 0; i < itemProxy.getFoodCount(); i++)
+	CUIntArray* foods = CTibiaItem::getFoodIdArrayPtr();//unsure whether this is needed to be called
+	for (int i = 0; i < CTibiaItem::getFoodCount(); i++)
 	{
-		foodCount += countAllItemsOfType(itemProxy.getFoodIdAtIndex(i));
+		foodCount += countAllItemsOfType(CTibiaItem::getFoodIdAtIndex(i));
 	}
 
 	return foodCount;

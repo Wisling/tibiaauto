@@ -115,8 +115,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tibiaautoinject3", "tibiaau
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tre", "tibiaauto-pub\tre\win32\tre.vcxproj", "{2FA575E7-E44F-46FF-B593-A90CEF2323DC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sdk", "tibiaauto-pub\sdk\sdk.vcxproj", "{BFCF9054-676F-4B94-B189-D96016AD0028}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -271,8 +269,6 @@ Global
 		{2FA575E7-E44F-46FF-B593-A90CEF2323DC}.Debug|Win32.Build.0 = Debug|Win32
 		{2FA575E7-E44F-46FF-B593-A90CEF2323DC}.Release|Win32.ActiveCfg = Release|Win32
 		{2FA575E7-E44F-46FF-B593-A90CEF2323DC}.Release|Win32.Build.0 = Release|Win32
-		{BFCF9054-676F-4B94-B189-D96016AD0028}.Debug|Win32.ActiveCfg = Debug|Win32
-		{BFCF9054-676F-4B94-B189-D96016AD0028}.Release|Win32.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

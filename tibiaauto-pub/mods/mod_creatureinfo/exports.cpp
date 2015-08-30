@@ -2,7 +2,8 @@
 
 #include "mod_creatureinfo.h"
 
-CMod_creatureinfoApp module;
-
-#include <IModuleInterface.cpp>
-#include <CreaturesReaderProxy.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_creatureinfoApp();
+}

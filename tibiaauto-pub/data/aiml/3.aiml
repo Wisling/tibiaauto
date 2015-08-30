@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- 3.aiml - Number 3 related        -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL      -->
+	<!-- Fork of 9/26/2001 ALICE        -->
+	<category>
+		<pattern>3 *</pattern>
+		<template>Just three?
+</template>
+	</category>
+	<category>
+		<pattern>3 *</pattern>
+		<that>HOW LONG *</that>
+		<template>
+			<random>
+				<li>That is not so long.</li>
+				<li>It could be longer.</li>
+				<li>It seems longer than it is.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>3</pattern>
+		<template>Three what?
+</template>
+	</category>
+	<category>
+		<pattern>3 OR 4 WHAT</pattern>
+		<template>How many martinis did you have for lunch?.....hahaha.....just kidding.
+</template>
+	</category>
+	<category>
+		<pattern>30</pattern>
+		<template>
+			<srai>I am 30 years old</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>30 MINUTES</pattern>
+		<template>Ok, a half hour.
+</template>
+	</category>
+	<category>
+		<pattern>32</pattern>
+		<template>I remember from physics that the effect gravity is like 32 feet per second.
+					</template>
+	</category>
+</aiml>

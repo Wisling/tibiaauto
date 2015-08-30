@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "mod_cavebot.h"
 #include "DropLootDialog.h"
-#include "TibiaItemProxy.h"
+#include <TibiaItem.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -160,14 +160,14 @@ BOOL CDropLootDialog::OnInitDialog()
 
 void CDropLootDialog::LoadItemList()
 {
-	CTibiaItemProxy itemProxy;
+	
 
 	// load items for item list combo box
-	int count = itemProxy.getItemCount();
+	int count = CTibiaItem::getItemCount();
 	int i;
 	for (i = 0; i < count; i++)
 	{
-		m_itemList.AddString(itemProxy.getItemNameAtIndex(i));
+		m_itemList.AddString(CTibiaItem::getItemNameAtIndex(i));
 	}
 	m_itemList.SetCurSel(0);
 

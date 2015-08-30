@@ -1,93 +1,86 @@
-// PackSender.h: interface for the CPackSender class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_PACKSENDER_H__A8C435EC_72BC_417E_9C2E_AF2A3F40133F__INCLUDED_)
-#define AFX_PACKSENDER_H__A8C435EC_72BC_417E_9C2E_AF2A3F40133F__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
-class CPackSender
+#include "tibiaauto_util.h"
+#include <cstdint>
+
+class TIBIAAUTOUTIL_API CPackSender
 {
 public:
-	void stopAll();
-	void enableCName(int enable);
-	void ignoreLook(time_t end);
-	void look(int x, int y, int z, int objectId);
-	void sendCreatureInfo(char *name, char *info1, char *info2);
-	void moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ, int quantity);
-	void moveObjectFromFloorToContainer(int objectId, int sourceX, int sourceY, int sourceZ, int targetContNr, int targetPos, int quantity);
-	void moveObjectBetweenContainers(int objectId, int sourceContNr, int sourcePos, int targetContNr, int targetPos, int qty);
-	void moveObjectFromContainerToFloor(int objectId, int contNr, int pos, int x, int y, int z, int quantity);
-	void sendAttackedCreatureToAutoAim(int attackedCreature);
-	void turnDown();
-	void turnUp();
-	void turnRight();
-	void turnLeft();
-	void tell(char *msg, char *playerName);
-	void sayOnChan(char *msg, int channelId1, int channelId2);
-	void sayNPC(char *msg);
-	void useItemOnFloor(int objectId, int x, int y, int z);
-	int openAutoContainerFromContainer(int objectId, int contNrFrom, int contPosFrom);
-	void openContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag);
-	void sendTAMessage(char *msg);
-	void revealFish(int enable);
-	void attackMode(int attack, int follow, int attlock, int PVPMode);
-	void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ, int method);
-	void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ);
-	void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int creatureId);
-	void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int creatureId, int method);
-	void closeContainer(int contNr);
-	void attack(int tibiaCharId);
-	void follow(int tibiaCharId);
-	void stepMulti(int *direction, int size);
-	void stepRight();
-	void stepLeft();
-	void stepDown();
-	void stepUp();
-	void stepDownRight();
-	void stepUpRight();
-	void stepDownLeft();
-	void stepUpLeft();
-	void logout();
-	void useItemInContainer(int objectId, int contNr, int pos);
-	int openAutoContainerFromFloor(int objectId, int x, int y, int z);
-	void openContainerFromFloor(int objectId, int x, int y, int z, int targetBag);
-	void say(const char *buf);
-	void sayWhisper(const char *buf);
-	void sayYell(const char *buf);
-	void useWithObjectFromFloorOnFloor(int sourceObjectId, int sourceX, int sourceY, int sourceZ, int targetObjectId, int targetX, int targetY, int targetZ, int method = 2);
-	void useWithObjectFromFloorInContainer(int sourceObjectId, int sourceX, int sourceY, int sourceZ, int targetObjectId, int targetContNr, int targetPos, int method = 2);
-	void useWithObjectFromContainerInContainer(int sourceObjectId, int sourceContNr, int sourcePos, int targetObjectId, int targetContNr, int targetPos, int method = 2);
-	void useWithObjectFromContainerOnFloor(int sourceObjectId, int sourceContNr, int sourcePos, int targetObjectId, int targetX, int targetY, int targetZ, int method = 2);
-	void sendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle);
-	void sendClearCreatureInfo();
-	void sendMount();
-	void sendDismount();
-	void sendDirectPacket(const char* buf, int len);
+	static void stopAll();
+	static void enableCName(int enable);
+	static void ignoreLook(time_t end);
+	static void look(int x, int y, int z, int objectId);
+	static void sendCreatureInfo(char *name, char *info1, char *info2);
+	static void moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ, int quantity);
+	static void moveObjectFromFloorToContainer(int objectId, int sourceX, int sourceY, int sourceZ, int targetContNr, int targetPos, int quantity);
+	static void moveObjectBetweenContainers(int objectId, int sourceContNr, int sourcePos, int targetContNr, int targetPos, int qty);
+	static void moveObjectFromContainerToFloor(int objectId, int contNr, int pos, int x, int y, int z, int quantity);
+	static void sendAttackedCreatureToAutoAim(int attackedCreature);
+	static void turnDown();
+	static void turnUp();
+	static void turnRight();
+	static void turnLeft();
+	static void tell(char *msg, char *playerName);
+	static void sayOnChan(char *msg, int channelId1, int channelId2);
+	static void sayNPC(char *msg);
+	static void useItemOnFloor(int objectId, int x, int y, int z);
+	static int openAutoContainerFromContainer(int objectId, int contNrFrom, int contPosFrom);
+	static void openContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag);
+	static void sendTAMessage(char *msg);
+	static void revealFish(int enable);
+	static void attackMode(int attack, int follow, int attlock, int PVPMode);
+	static void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ, int method);
+	static void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ);
+	static void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int creatureId);
+	static void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int creatureId, int method);
+	static void closeContainer(int contNr);
+	static void attack(int tibiaCharId);
+	static void follow(int tibiaCharId);
+	static void stepMulti(uint8_t* direction, int size);
+	static void stepRight();
+	static void stepLeft();
+	static void stepDown();
+	static void stepUp();
+	static void stepDownRight();
+	static void stepUpRight();
+	static void stepDownLeft();
+	static void stepUpLeft();
+	static void logout();
+	static void useItemInContainer(int objectId, int contNr, int pos);
+	static int openAutoContainerFromFloor(int objectId, int x, int y, int z);
+	static void openContainerFromFloor(int objectId, int x, int y, int z, int targetBag);
+	static void say(const char *buf);
+	static void sayWhisper(const char *buf);
+	static void sayYell(const char *buf);
+	static void useWithObjectFromFloorOnFloor(int sourceObjectId, int sourceX, int sourceY, int sourceZ, int targetObjectId, int targetX, int targetY, int targetZ, int method = 2);
+	static void useWithObjectFromFloorInContainer(int sourceObjectId, int sourceX, int sourceY, int sourceZ, int targetObjectId, int targetContNr, int targetPos, int method = 2);
+	static void useWithObjectFromContainerInContainer(int sourceObjectId, int sourceContNr, int sourcePos, int targetObjectId, int targetContNr, int targetPos, int method = 2);
+	static void useWithObjectFromContainerOnFloor(int sourceObjectId, int sourceContNr, int sourcePos, int targetObjectId, int targetX, int targetY, int targetZ, int method = 2);
+	static void sendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle);
+	static void sendClearCreatureInfo();
+	static void sendMount();
+	static void sendDismount();
+	static void sendDirectPacket(const char* buf, int len);
 
-	void useItem(int objectId);
-	void useWithObjectOnFloor(int sourceObjectId, int targetObjectId, int targetX, int targetY, int targetZ, int method = 2);
-	void useWithObjectInContainer(int sourceObjectId, int targetObjectId, int contNr, int itemPos, int method = 2);
-	void useWithObjectSend(int sourceObjectId, int sourceX, int sourceY_Cont, int sourceZ_Pos, int targetObjectId, int targetX, int targetY_Cont, int targetZ_Pos, int method = 2);
+	static void useItem(int objectId);
+	static void useWithObjectOnFloor(int sourceObjectId, int targetObjectId, int targetX, int targetY, int targetZ, int method = 2);
+	static void useWithObjectInContainer(int sourceObjectId, int targetObjectId, int contNr, int itemPos, int method = 2);
+	static void useWithObjectSend(int sourceObjectId, int sourceX, int sourceY_Cont, int sourceZ_Pos, int targetObjectId, int targetX, int targetY_Cont, int targetZ_Pos, int method = 2);
 
-	void useItemOnCreatureSend(int objectId, int x, int y_Cont, int z_Pos, int creatureId);
-	void useItemOnCreature(int objectId, int creatureId);
-	void useItemFromContainerOnCreature(int objectId, int contNr, int itemPos, int creatureId);
-	void useItemFromFloorOnCreature(int objectId, int x, int y, int z, int creatureId);
+	static void useItemOnCreatureSend(int objectId, int x, int y_Cont, int z_Pos, int creatureId);
+	static void useItemOnCreature(int objectId, int creatureId);
+	static void useItemFromContainerOnCreature(int objectId, int contNr, int itemPos, int creatureId);
+	static void useItemFromFloorOnCreature(int objectId, int x, int y, int z, int creatureId);
 
-	void npcBuy(int objectId, int qty, int ignoreCap, int withBackpack);
-	void npcSell(int objectId, int qty);
-	void CPackSender::printText(CPoint pos, int red, int green, int blue, char* message);
-	void CPackSender::registerInpacketRegex(int handle, char* regExp, int regLen);
-	void CPackSender::unregisterInpacketRegex(int handle);
-	CPackSender();
-	virtual ~CPackSender();
+	static void npcBuy(int objectId, int qty, int ignoreCap, int withBackpack);
+	static void npcSell(int objectId, int qty);
+	static void CPackSender::printText(CPoint pos, int red, int green, int blue, char* message);
+	static void CPackSender::registerInpacketRegex(int handle, char* regExp, int regLen);
+	static void CPackSender::unregisterInpacketRegex(int handle);
 private:
-	void sendPacket(char *buf);
-	void sendPacket(char *buf, int method);
+	static void sendPacket(char *buf);
+	static void sendPacket(char *buf, int method);
+	CPackSender() {};
+	virtual ~CPackSender() {};
 };
 
-#endif // !defined(AFX_PACKSENDER_H__A8C435EC_72BC_417E_9C2E_AF2A3F40133F__INCLUDED_)

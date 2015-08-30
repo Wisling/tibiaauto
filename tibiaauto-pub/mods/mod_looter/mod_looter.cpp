@@ -25,10 +25,11 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "ModuleUtil.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <ModuleUtil.h>
+#include <TibiaItem.h>
+#include <TileReader.h>
 #include "SendStats.h"
 
 #ifdef _DEBUG
@@ -80,7 +81,7 @@ END_MESSAGE_MAP()
 int containerNotFull(int containerNr)
 {
 	int ret;
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaContainer *cont = reader.readContainer(containerNr);
 	ret = (cont->size > cont->itemsInside && cont->flagOnOff);
 	delete cont;
@@ -111,9 +112,9 @@ CUIntArray lootCreatures;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;
-	CPackSenderProxy sender;
+	CMemReader& reader = CMemReader::getMemReader();
+	
+
 	CConfigData *config     = (CConfigData *)lpParam;
 	int lastAttackedMonster = 0;
 	Corpse *corpseQueue;
@@ -168,7 +169,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					{
 						if (lastLootContNr[i] != -1)
 						{
-							sender.closeContainer(lastLootContNr[i]);
+							CPackSender::closeContainer(lastLootContNr[i]);
 							CModuleUtil::waitForOpenContainer(lastLootContNr[i], 0);
 							lastLootContNr[i] = -1;
 						}
@@ -191,10 +192,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					{
 						CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
 						int corpseId     = reader.itemOnTopCode(attackedCh->x - self->x, attackedCh->y - self->y);
-						CTibiaTile *tile = reader.getTibiaTile(corpseId);
+						CTibiaTile *tile = CTileReader::getTileReader().getTile(corpseId);
 						if (corpseId && tile->isContainer)
 						{
-							sender.openContainerFromFloor(corpseId, attackedCh->x, attackedCh->y, attackedCh->z, lastLootContNr[0]);
+							CPackSender::openContainerFromFloor(corpseId, attackedCh->x, attackedCh->y, attackedCh->z, lastLootContNr[0]);
 							CModuleUtil::waitForOpenContainer(lastLootContNr[0], 1);
 							cont[0] = reader.readContainer(lastLootContNr[0]);
 							if (cont[0]->flagOnOff)
@@ -204,9 +205,9 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 								for (itemNr = 0; itemNr < cont[0]->itemsInside && currentExtraContainerNr < 3; itemNr++)
 								{
 									CTibiaItem *item = (CTibiaItem *)cont[0]->items.GetAt(itemNr);
-									if (item->objectId == itemProxy.getValueForConst("bagbrown"))
+									if (item->objectId == CTibiaItem::getValueForConst("bagbrown"))
 									{
-										sender.openContainerFromContainer(item->objectId, 0x40 + lastLootContNr[0], itemNr, lastLootContNr[currentExtraContainerNr]);
+										CPackSender::openContainerFromContainer(item->objectId, 0x40 + lastLootContNr[0], itemNr, lastLootContNr[currentExtraContainerNr]);
 										CModuleUtil::waitForOpenContainer(lastLootContNr[currentExtraContainerNr], 1);
 										cont[currentExtraContainerNr] = reader.readContainer(lastLootContNr[currentExtraContainerNr]);
 										currentExtraContainerNr++;
@@ -337,13 +338,13 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			CUIntArray acceptedItems;
 
 			if (config->m_lootFood)
-				acceptedItems.Append(*itemProxy.getFoodIdArrayPtr());
+				acceptedItems.Append(*CTibiaItem::getFoodIdArrayPtr());
 			if (config->m_lootGp)
-				acceptedItems.Add(itemProxy.getValueForConst("GP"));
+				acceptedItems.Add(CTibiaItem::getValueForConst("GP"));
 			if (config->m_lootWorms)
-				acceptedItems.Add(itemProxy.getValueForConst("worms"));
+				acceptedItems.Add(CTibiaItem::getValueForConst("worms"));
 			if (config->m_lootCustom)
-				acceptedItems.Append(*itemProxy.getLootItemIdArrayPtr());
+				acceptedItems.Append(*CTibiaItem::getLootItemIdArrayPtr());
 
 
 			int extraSleep = 0;

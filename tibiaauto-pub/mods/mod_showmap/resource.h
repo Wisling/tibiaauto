@@ -1,5 +1,5 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by mod_showmap.rc
 //
 #define IDD_TOOL_MAPSHOW                144
@@ -82,14 +82,15 @@
 #define ID_SHOWMAPOPTIONS_SET_AS_GROUND 32784
 #define ID_SHOWMAPOPTIONS_BLOCK         32785
 #define ID_SHOWMAPOPTIONS_LOCKTILE      32786
+#define ID_SHOWMAPOPTIONS_USETELE       32788
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3018
-#define _APS_NEXT_COMMAND_VALUE         32787
+#define _APS_NEXT_COMMAND_VALUE         32789
 #define _APS_NEXT_CONTROL_VALUE         3054
 #define _APS_NEXT_SYMED_VALUE           3000
-#endif // ifndef APSTUDIO_READONLY_SYMBOLS
-#endif // ifdef APSTUDIO_INVOKED
+#endif
+#endif

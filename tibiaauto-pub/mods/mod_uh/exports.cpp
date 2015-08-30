@@ -2,5 +2,8 @@
 
 #include "mod_uh.h"
 
-CMod_uhApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_uhApp();
+}

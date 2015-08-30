@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "mod_fisher.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <TibiaItem.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -162,23 +162,23 @@ void CConfigDialog::activateEnableButton(int enable)
 
 void CConfigDialog::refreshFishStatus()
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaItemProxy itemProxy;
+	CMemReader& reader = CMemReader::getMemReader();
+	
+	
 
 	int totalFishQty = 0;
 
 	int contNr;
 	int openContNr  = 0;
 	int openContMax = reader.readOpenContainerCount();
-	for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+	for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 	{
 		CTibiaContainer *container = reader.readContainer(contNr);
 
 		if (container->flagOnOff)
 		{
 			openContNr++;
-			totalFishQty += container->countItemsOfType(itemProxy.getValueForConst("fish"));
+			totalFishQty += container->countItemsOfType(CTibiaItem::getValueForConst("fish"));
 		}
 
 		delete container;
@@ -202,7 +202,7 @@ void CConfigDialog::refreshFishStatus()
 		for (y = -5; y <= 5; y++)
 		{
 			int tileId = reader.mapGetPointItemId(point(x, y, 0), 0);
-			if (tileId >= itemProxy.getValueForConst("waterWithFishStart") && tileId <= itemProxy.getValueForConst("waterWithFishEnd"))
+			if (tileId >= CTibiaItem::getValueForConst("waterWithFishStart") && tileId <= CTibiaItem::getValueForConst("waterWithFishEnd"))
 				fishyWaterCount++;
 		}
 	}

@@ -26,10 +26,11 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
-#include "ModuleUtil.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
+#include <TileReader.h>
+#include <ModuleUtil.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -59,10 +60,10 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 	char buf[256];
 	while (!toolThreadShouldStop)
@@ -80,12 +81,12 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				//AfxMessageBox(buf);
 				if (!strlen(config->sortBags[i].slotNr[j].itemName))
 					break;
-				int sortItem = itemProxy.getItemId(config->sortBags[i].slotNr[j].itemName);
+				int sortItem = CTibiaItem::getItemId(config->sortBags[i].slotNr[j].itemName);
 				//sprintf(buf, "ObjectID: %d",  sortItem);
 				//AfxMessageBox(buf);
 				int openContNr  = 0;
 				int openContMax = reader.readOpenContainerCount();
-				for (int contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+				for (int contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 				{
 					if (contNr == i)
 						contNr++;
@@ -111,7 +112,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									int sourcePos    = itemNr;
 									int targetPos    = destCont->size - 1;
 									int moved        = item->quantity ? item->quantity : 1;
-									CTibiaTile *tile = reader.getTibiaTile(item->objectId);
+									CTibiaTile *tile = CTileReader::getTileReader().getTile(item->objectId);
 									CTibiaItem *stackedItem;
 									if (tile->stackable)
 									{
@@ -130,7 +131,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									}
 									//sprintf(buf, "Item: %d  Quantity: %d\nSource Container: %d  Slot: %d\nDestination Container: %d  Slot: %d\n Original item quantity: %d",  sortItem, moved, contNr, sourcePos, i, targetPos, item->quantity);
 									//AfxMessageBox(buf);
-									sender.moveObjectBetweenContainers(sortItem, 0x40 + contNr, sourcePos, 0x40 + i, targetPos, moved);
+									CPackSender::moveObjectBetweenContainers(sortItem, 0x40 + contNr, sourcePos, 0x40 + i, targetPos, moved);
 									if (item->quantity == moved)
 									{
 										CModuleUtil::waitForItemsInsideChange(contNr, sortCont->itemsInside);
@@ -155,7 +156,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 								{
 									int found = 0;
 									int findItem;
-									CTibiaItemProxy proxy;
 									CTibiaContainer *fullCont = reader.readContainer(i);
 									for (int l = 0; l < fullCont->itemsInside; l++)
 									{
@@ -164,7 +164,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 										{
 											for (int n = 0; n < 32; n++)
 											{
-												findItem = itemProxy.getItemId(config->sortBags[m].slotNr[n].itemName);
+												findItem = CTibiaItem::getItemId(config->sortBags[m].slotNr[n].itemName);
 												if (item->objectId == findItem && findItem != sortItem && m != i)
 													found = 1;
 												//break;
@@ -177,7 +177,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									//AfxMessageBox(buf);
 									if (!found)
 									{
-										CTibiaItemProxy orphanedItem;
 										sprintf(buf, "No more bags configured for %s sorting!!!\nPlease Close bag %d!\nOpen a new bag and press OK", config->sortBags[i].slotNr[j].itemName, i + 1);
 										AfxMessageBox(buf);
 									}
@@ -448,9 +447,9 @@ int CMod_sorterApp::initializeLootBags()
 
 int isStackable(int sortItem, int contNr)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaContainer *cont = reader.readContainer(contNr);
-	CTibiaTile *tile      = reader.getTibiaTile(sortItem);
+	CTibiaTile *tile      = CTileReader::getTileReader().getTile(sortItem);
 	if (tile->stackable)
 	{
 		for (int stackedItemPos = 0; stackedItemPos < cont->itemsInside; stackedItemPos++)

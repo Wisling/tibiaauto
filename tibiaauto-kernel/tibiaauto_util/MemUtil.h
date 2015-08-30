@@ -1,16 +1,11 @@
-// MemUtil.h: interface for the CMemUtil class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_MEMUTIL_H__590B7536_2457_414C_8296_16D5CD2F9AF6__INCLUDED_)
-#define AFX_MEMUTIL_H__590B7536_2457_414C_8296_16D5CD2F9AF6__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
-class CMemUtil
+#include "tibiaauto_util.h"
+
+class TIBIAAUTOUTIL_API CMemUtil
 {
+	CMemUtil() {};
+	virtual ~CMemUtil() {};
 public:
 	static int SetMemRange(int processId, DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddress);
 	static int SetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddress = 1);
@@ -23,9 +18,6 @@ public:
 	static void GetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *ret, int addBaseAddress = 1);
 	static int GetMemRange(long processId, DWORD memAddressStart, DWORD memAddressEnd, char *result, int addBaseAddress);
 	static int GetProcessBaseAddr(int processId);
-	CMemUtil();
-	virtual ~CMemUtil();
-
 
 	static void setGlobalProcessId(int procId)
 	{
@@ -53,4 +45,3 @@ private:
 	static int writememory(int processId, int memAddress, int* value, int size, int addBaseAddress);
 };
 
-#endif // !defined(AFX_MEMUTIL_H__590B7536_2457_414C_8296_16D5CD2F9AF6__INCLUDED_)

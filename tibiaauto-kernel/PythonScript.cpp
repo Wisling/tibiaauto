@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "tibiaauto.h"
 #include "PythonScript.h"
-#include "PackSenderProxy.h"
+#include <PackSender.h>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -115,7 +115,7 @@ void CPythonScript::addFunDef(int type, int interval, PyObject *fun)
 void CPythonScript::addFunDef(int type, char *matchExpr, int regLen, PyObject *fun)
 {
 	static int handleNum = 1;
-	CPackSenderProxy sender;
+
 	reallocFunDef();
 
 	PyObject *py_name = PyObject_GetAttrString(fun, "__name__");
@@ -130,7 +130,7 @@ void CPythonScript::addFunDef(int type, char *matchExpr, int regLen, PyObject *f
 	funDefTab[funDefCount].tmNextExec      = 0;
 	funDefTab[funDefCount].tmLastExec      = 0;
 	funDefTab[funDefCount].scriptNr        = scriptNr;
-	sender.registerInpacketRegex(funDefTab[funDefCount].matchExprHandle, matchExpr, regLen);
+	CPackSender::registerInpacketRegex(funDefTab[funDefCount].matchExprHandle, matchExpr, regLen);
 	handleNum++;
 
 	Py_XINCREF(fun);

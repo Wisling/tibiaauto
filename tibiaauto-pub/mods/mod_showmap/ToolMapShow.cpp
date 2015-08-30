@@ -4,21 +4,20 @@
 #include "stdafx.h"
 #include "ToolMapShow.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "TibiaCharacter.h"
 #include "MapButton.h"
 #include "resource.h"
-#include "TibiaMapProxy.h"
 #include "TibiaMapPoint.h"
+#include <TibiaMap.h>
+#include <TileReader.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
-
-CTibiaMapProxy tibiaMap;
 
 /////////////////////////////////////////////////////////////////////////////
 // CONSTANTS
@@ -165,7 +164,8 @@ BOOL CToolMapShow::OnEraseBkgnd(CDC* pDC)
 
 void CToolMapShow::refreshVisibleMap()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	int x;
 	int y;
 
@@ -193,10 +193,10 @@ void CToolMapShow::refreshVisibleMap()
 				if (avail)
 				{
 					int locked             = tibiaMap.isPointLocked(x + self->x - 10, y + self->y - 10, self->z);
-					MapPointType updownSel = (MapPointType)tibiaMap.getPointType(x + self->x - 10, y + self->y - 10, self->z);
+					MapPointType pointType = tibiaMap.getPointType(x + self->x - 10, y + self->y - 10, self->z);
 					int changedToImage     = -1;
 
-					switch (updownSel)
+					switch (pointType)
 					{
 					case MAP_POINT_TYPE_AVAILABLE:
 						changedToImage = locked ? IDB_MAP_SAMEFLOOR_LOCK : IDB_MAP_SAMEFLOOR;
@@ -240,6 +240,13 @@ void CToolMapShow::refreshVisibleMap()
 						else
 							changedToImage = locked ? IDB_MAP_TELE_LOCK : IDB_MAP_TELE;
 						break;
+					case MAP_POINT_TYPE_USABLE_TELEPORT:
+						// teleporter
+						if (tibiaMap.getDestPoint(x + self->x - 10, y + self->y - 10, self->z).x == 0)
+							changedToImage = locked ? IDB_MAP_UNKTELE_LOCK : IDB_MAP_UNKTELE;
+						else
+							changedToImage = locked ? IDB_MAP_TELE_LOCK : IDB_MAP_TELE;
+						break;
 					case MAP_POINT_TYPE_BLOCK:
 						// permanent block
 						changedToImage = locked ? IDB_MAP_BLOCK_LOCK : IDB_MAP_BLOCK;
@@ -250,7 +257,7 @@ void CToolMapShow::refreshVisibleMap()
 						m_mapButtons[x][y]->LoadBitmaps(changedToImage, changedToImage, changedToImage, changedToImage);
 						m_mapButtons[x][y]->RedrawWindow();
 						m_mapButtonImage[x][y]      = changedToImage;
-						m_mapButtons[x][y]->m_value = updownSel;
+						m_mapButtons[x][y]->m_value = pointType;
 					}
 					m_mapButtons[x][y]->m_locked = locked;
 				}
@@ -310,6 +317,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 
 void CToolMapShow::OnToolMapshowClear()
 {
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	tibiaMap.clear();
 }
 
@@ -344,7 +352,8 @@ void CToolMapShow::OnToolMapshowExtendedResearch()
 
 void CToolMapShow::mapPointToggleLock(int realX, int realY, int realZ)
 {
-	if (tibiaMap.isPointAvailableNoProh(realX, realY, realZ) && tibiaMap.getPointType(realX, realY, realZ) >= 0)
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
+	if (tibiaMap.isPointAvailableNoProh(realX, realY, realZ) && tibiaMap.getPointType(realX, realY, realZ) >= MAP_POINT_TYPE_AVAILABLE)
 	{
 		int prev = tibiaMap.isPointLocked(realX, realY, realZ);
 		tibiaMap.setPointLocked(realX, realY, realZ, !prev);
@@ -354,7 +363,8 @@ void CToolMapShow::mapPointToggleLock(int realX, int realY, int realZ)
 void CToolMapShow::MapResearchTick()
 {
 	KillTimer(1002);
-	CMemReaderProxy reader;
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
 	if (self->x - 0x10000000 || self->y < -0x10000000 || self->z < -20 || self->z > 20)
@@ -363,7 +373,7 @@ void CToolMapShow::MapResearchTick()
 		SetTimer(1002, 25, NULL);
 		return;
 	}
-	if (tibiaMap.getPointTypeNoProh(self->x, self->y, self->z) == 0)
+	if (tibiaMap.getPointTypeNoProh(self->x, self->y, self->z) == MAP_POINT_TYPE_AVAILABLE)
 	{
 		tibiaMap.setPointAsAvailable(self->x, self->y, self->z);
 		tibiaMap.setPointSpeed(self->x, self->y, self->z, 130);//130 default( is >255/2 and <70*2)
@@ -376,9 +386,10 @@ void CToolMapShow::ExtendedMapResearchTick()
 {
 	static int prevX = 0, prevY = 0, prevZ = 0, iter = 0;
 	KillTimer(1003);
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	// get tile 0 to make sure that the framework is initialised
-	reader.getTibiaTile(0);
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
+	CTileReader::getTileReader().getTile(0);
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
 	if (self->x < -0x10000000 || self->y < -0x10000000 || self->z < -20 || self->z > 20)
@@ -392,7 +403,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 	{
 		int x, y;
 		int tileArrAvail[18][14];
-		int tileArrUpDown[18][14];
+		MapPointType tileArrUpDown[18][14];
 		int tileArrSpd[18][14];
 		int tileArrMvbl[18][14];
 		memset(tileArrAvail, 0, sizeof(int[18][14]));
@@ -421,7 +432,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 					int tileId = reader.mapGetPointItemId(point(x, y, 0), i, relToCell);
 					if (tileId != 99)
 					{
-						CTibiaTile *tileData = reader.getTibiaTile(tileId);
+						CTibiaTile *tileData = CTileReader::getTileReader().getTile(tileId);
 						if (tileData->blocking)
 							blocked = 1;
 						if (tileData->blocking && tileData->notMoveable)
@@ -496,7 +507,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 				{
 					tileArrSpd[x + 8][y + 6]    = 0;
 					tileArrAvail[x + 8][y + 6]  = 0;
-					tileArrUpDown[x + 8][y + 6] = 0;
+					tileArrUpDown[x + 8][y + 6] = MAP_POINT_TYPE_AVAILABLE;
 				}
 			} // for y
 		} // for x
@@ -563,9 +574,10 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 {
 	static int prevXTele = 0, prevYTele = 0, prevZTele = 0;
 	KillTimer(1004);
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	// get tile 0 to make sure that the framework is initialised
-	reader.getTibiaTile(0);
+	CTileReader::getTileReader().getTile(0);
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
 	if (self->x == -0x10000000 || self->y < -0x10000000 || self->z < -20 || self->z > 20)
@@ -615,22 +627,22 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 					y += ySwitch;
 				}
 
-				MapPointType type = (MapPointType)tibiaMap.getPointType(prevXTele + x, prevYTele + y, prevZTele);
-				if (type == MAP_POINT_TYPE_TELEPORT)//teleporter
+				MapPointType type = tibiaMap.getPointType(prevXTele + x, prevYTele + y, prevZTele);
+				if (type == MAP_POINT_TYPE_TELEPORT || type == MAP_POINT_TYPE_USABLE_TELEPORT)//teleporter
 				{
-					CPackSenderProxy sender;
+				
 					if (tibiaMap.getDestPoint(prevXTele + x, prevYTele + y, prevZTele).x == 0)
 					{
 						tibiaMap.setDestPoint(prevXTele + x, prevYTele + y, prevZTele, self->x, self->y, self->z);
 						char buf[128];
 						sprintf(buf, "Assigned Teleporter Dest(%d,%d,%d)->(%d,%d,%d)", prevXTele + x, prevYTele + y, prevZTele, self->x, self->y, self->z);
-						sender.sendTAMessage(buf);
+						CPackSender::sendTAMessage(buf);
 						break;
 					}
 				}
 				else if (type > 0)
 				{
-					break;           //other updown is closer and probably used
+					break; //other pointType is closer and probably used
 				}
 			}
 		}
@@ -642,9 +654,10 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 	SetTimer(1004, 200, NULL);
 }
 
-void CToolMapShow::mapPointClicked(int realX, int realY, int realZ, int tileVal)
+void CToolMapShow::mapPointClicked(int realX, int realY, int realZ, MapPointType tileVal)
 {
-	if (tileVal >= 0)
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
+	if (tileVal >= MAP_POINT_TYPE_AVAILABLE) //not SELF and not CLEAR
 	{
 		// point added/updated
 		tibiaMap.setPointAsAvailable(realX, realY, realZ);
@@ -669,8 +682,8 @@ BOOL CToolMapShow::OnCommand(WPARAM wParam, LPARAM lParam)
 
 void CToolMapShow::showTileDetails(int x, int y)
 {
-	CMemReaderProxy reader;
-	CTibiaMapProxy tibiaMap;
+	CMemReader& reader = CMemReader::getMemReader();
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	int outOfRange = 0;
 	char buf[2560];
 

@@ -31,9 +31,6 @@ static char THIS_FILE[] = __FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-#include "TibiaItem_codes.cpp"
-
-
 int CTibiaItem::itemListsFresh = 0;
 int CTibiaItem::xmlInitialised = 0;
 
@@ -49,8 +46,8 @@ void saveItemsBranch(DOMNode* node, CTibiaTree* parent, xercesc::DOMDocument* do
 void traverseTreeForItemList(CTibiaTree* parent, CTibiaList* list);
 void traverseTreeForLootList(CTibiaTree* parent, CTibiaList* list);
 
-extern CRITICAL_SECTION ItemsInitCriticalSection;
-
+bool criticalSectionInitialized = false;
+CRITICAL_SECTION ItemsInitCriticalSection;
 
 CTibiaItem::CTibiaItem()
 {
@@ -532,6 +529,11 @@ void CTibiaItem::setItemAsLooted(int objectId)
 
 void CTibiaItem::refreshItemLists()
 {
+	if (!criticalSectionInitialized)
+	{
+		InitializeCriticalSection(&ItemsInitCriticalSection);
+		criticalSectionInitialized = true;
+	}
 	EnterCriticalSection(&ItemsInitCriticalSection);
 	if (itemListsFresh)
 	{
@@ -577,7 +579,7 @@ void CTibiaItem::refreshItemLists()
 		itemTree = new CTibiaTree(new CTibiaTreeBranchData("Root"));
 
 		char pathBuf[2048];
-		sprintf(pathBuf, "%s\\mods\\tibiaauto-items.xml", installPath);
+		sprintf(pathBuf, "%s\\data\\tibiaauto-items.xml", installPath);
 		parser->parse(pathBuf);
 		DOMNode  *doc = parser->getDocument();
 		for (rootNr = 0; rootNr < (int)doc->getChildNodes()->getLength(); rootNr++)
@@ -735,7 +737,7 @@ void CTibiaItem::refreshItemLists()
 		if (lootList.GetCount() == 0)
 			traverseTreeForLootList(itemTree, &lootList);                      // get loot from tree if not loaded from file
 
-		sprintf(pathBuf, "%s\\mods\\tibiaauto-consts.xml", installPath);
+		sprintf(pathBuf, "%s\\data\\tibiaauto-consts.xml", installPath);
 		OFSTRUCT lpOpen;
 		if (OpenFile(pathBuf, &lpOpen, OF_EXIST) != HFILE_ERROR)
 		{
@@ -888,7 +890,7 @@ void CTibiaItem::saveItemLists()
 	{
 		//int itemNr;
 		char pathBuf[2048];
-		sprintf(pathBuf, "%s\\mods\\tibiaauto-items.xml", installPath);
+		sprintf(pathBuf, "%s\\data\\tibiaauto-items.xml", installPath);
 
 		DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation(XMLString::transcode("Core"));
 

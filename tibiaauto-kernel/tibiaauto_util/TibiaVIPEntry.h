@@ -1,15 +1,7 @@
-// TibiaVIPEntry.h: interface for the CTibiaVIPEntry class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_TIBIAVIPENTRY_H__F994C191_09E2_497B_B20A_FF311B86858B__INCLUDED_)
-#define AFX_TIBIAVIPENTRY_H__F994C191_09E2_497B_B20A_FF311B86858B__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+#include "tibiaauto_util.h"
 
-class CTibiaVIPEntry
+class TIBIAAUTOUTIL_API CTibiaVIPEntry
 {
 public:
 	CTibiaVIPEntry();
@@ -25,5 +17,3 @@ public:
 	int icon;
 	int notify;
 };
-
-#endif // if !defined(AFX_TIBIAVIPENTRY_H__F994C191_09E2_497B_B20A_FF311B86858B__INCLUDED_)

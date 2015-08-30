@@ -15,12 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\tibiaauto-pub\sdk\BtnST.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="exports.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IPCPipeBack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -33,12 +27,6 @@
     <ClCompile Include="protocol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="proxy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\tibiaauto-pub\sdk\Skin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StdAfx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -47,9 +35,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\tibiaauto-pub\sdk\ipcm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IPCPipeBack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -71,15 +56,13 @@
     <ClInclude Include="tibiaautoinject2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="deelx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="tibiaautoinject2.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="tibiaautoinject2.def">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
   </ItemGroup>
 </Project>

@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "mod_runemaker.h"
 #include "ToolContainerContent.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <TibiaItem.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -49,8 +49,8 @@ END_MESSAGE_MAP()
 
 BOOL CToolContainerContent::OnInitDialog()
 {
-	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(m_OK);
 	int i;
@@ -70,7 +70,7 @@ BOOL CToolContainerContent::OnInitDialog()
 		CTibiaItem *item = (CTibiaItem *)container->items.GetAt(i);
 		sprintf(buf, "%d", item->objectId);
 		m_list.InsertItem(i, buf);
-		sprintf(buf, "%s", itemProxy.getItemName(item->objectId));
+		sprintf(buf, "%s", CTibiaItem::getItemName(item->objectId));
 		m_list.SetItemText(i, 1, buf);
 		sprintf(buf, "%d", item->quantity);
 		m_list.SetItemText(i, 2, buf);

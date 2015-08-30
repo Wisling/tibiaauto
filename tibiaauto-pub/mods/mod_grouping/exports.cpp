@@ -2,6 +2,8 @@
 
 #include "mod_grouping.h"
 
-CMod_groupingApp module;
-
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_groupingApp();
+}

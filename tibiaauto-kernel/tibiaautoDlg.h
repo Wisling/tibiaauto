@@ -158,7 +158,8 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 private:
-	int injectDll(HANDLE process, char* path);
+	int setDllLoadDir(HANDLE process, const char* dllLoadDir);
+	int injectDll(HANDLE process, const char* dllPath);
 	void InitialiseIPC();
 
 	long m_processId;

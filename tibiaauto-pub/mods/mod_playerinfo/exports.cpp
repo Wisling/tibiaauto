@@ -2,11 +2,8 @@
 
 #include "mod_playerinfo.h"
 
-CMod_playerinfoApp module;
-
-#include <IModuleInterface.cpp>
-
-extern "C" void* EXPORT WINAPI GetPlayerInfo()
+IModuleInterface* initModuleInstance()
 {
-	return module.GetPlayerInfo();
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_playerinfoApp();
 }

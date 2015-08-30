@@ -2,5 +2,8 @@
 
 #include "mod_maphack.h"
 
-CMod_maphackApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_maphackApp();
+}

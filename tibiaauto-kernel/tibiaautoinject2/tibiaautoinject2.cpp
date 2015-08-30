@@ -10,17 +10,15 @@
 #include "winsock2.h"
 #include "time.h"
 #include "protocol.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
-#include "ModuleUtil.h"
 #include "Tlhelp32.h"
 #include "MyMenu.h"
 #include "resource.h"
 #include "Windows.h"
 #include "regex.h"
-#include "RegexpProxy.h"
 #include "psapi.h"
-#include "ipcm.h"
+#include <ModuleUtil.h>
+#include <MemReader.h>
+#include <MemUtil.h>
 
 int myInterceptEncrypt(int v1, int v2);
 int myInterceptDecrypt(int v1, int v2);
@@ -176,8 +174,54 @@ int outGfbAvail       = 0;
 int outSelfUHAvail    = 0;
 int outFluidManaAvail = 0;
 int outFluidLifeAvail = 0;
-//10.80
+//10.81
 
+int funAddr_tibiaPrintText =			0x495CF0;
+int funAddr_tibiaPlayerNameText =		0x5298D0;
+int funAddr_tibiaInfoMiddleScreen =		0x5EFF40;
+int funAddr_tibiaIsCreatureVisible =	0x4A95F0;
+int funAddr_tibiaEncrypt =				0x606620;
+int funAddr_tibiaDecrypt =				0x6066A0;
+int funAddr_tibiaShouldParseRecv =		0x593EF0;//switch table contains "Are you sure you want to leave Tibia"
+int arrayPtr_recvStream =				0xB78654-8;//look for this address near above location
+int funAddr_tibiaInfoMessageBox =		0x5F3ED0;
+int callAddr_PrintText01 =				0x48E3BD;//...<addr>.*
+int callAddr_PrintText02 =				0x48E402;
+int callAddr_PrintText03 =				0x497EB9;
+int callAddr_PrintText04 =				0x57FCBB;
+int callAddr_PrintText05 =				0x58107E;
+int callAddr_PlayerNameText01 =			0x44F485;
+int callAddr_PlayerNameText02 =			0x46136C;
+int callAddr_PlayerNameText03 =			0x466E38;
+int callAddr_PlayerNameText04 =			0x467028;
+int callAddr_PlayerNameText05 =			0x46D5A8;
+int callAddr_PlayerNameText06 =			0x47952C;
+int callAddr_PlayerNameText07 =			0x495D7C;
+int callAddr_PlayerNameText08 =			0x4CEFFA;
+int callAddr_PlayerNameText09 =			0x580AFC;
+int callAddr_PlayerNameText10 =			0x58AE58;
+int callAddr_InfoMiddleScreen01 =		0x434988;
+int callAddr_InfoMiddleScreen02 =		0x493459;
+int callAddr_InfoMiddleScreen03 =		0x4D5E2D;
+int callAddr_InfoMiddleScreen04 =		0x57D97B;
+int callAddr_InfoMessageBox01 =			0x434214;
+int callAddr_InfoMessageBox02 =			0x45C75F;
+int callAddr_InfoMessageBox03 =			0x50FE0A;
+int callAddr_InfoMessageBox04 =			0x574682;
+int callAddr_InfoMessageBox05 =			0x574E77;
+int callAddr_InfoMessageBox06 =			0x574F1D;
+int callAddr_InfoMessageBox07 =			0x5F3D55;
+int callAddr_InfoMessageBox08 =			0x5F471C;
+int callAddr_InfoMessageBox09 =			0x5F480B;
+int callAddr_InfoMessageBox10 =			0x5F49F2;
+int callAddr_InfoMessageBox11 =			0x5F4CB9;
+int callAddr_InfoMessageBox12 =			0x5F57C5;
+int callAddr_InfoMessageBox13 =			0x5F57F5;
+int callAddr_Encrypt01 =				0x593623;
+int callAddr_Decrypt01 =				0x593C19;
+int callAddr_ShouldParseRecv01 =		0x49AF92;
+//10.80
+/*
 int funAddr_tibiaPrintText =			0x495C70;
 int funAddr_tibiaPlayerNameText =		0x529CE0;
 int funAddr_tibiaInfoMiddleScreen =		0x5F0210;
@@ -222,6 +266,7 @@ int callAddr_InfoMessageBox13 =			0x5F5AB5;
 int callAddr_Encrypt01 =				0x5939E3;
 int callAddr_Decrypt01 =				0x593FD9;
 int callAddr_ShouldParseRecv01 =		0x49AED2;
+*/
 //10.79
 /*
 int funAddr_tibiaPrintText =			0x4EDD00;
@@ -2750,7 +2795,7 @@ int GetProcessBaseAddr()
 
 int baseAdjust(int addr)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	return addr - 0x400000 + GetProcessBaseAddr();
 }
 
@@ -3001,8 +3046,8 @@ void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int crea
 
 void autoAimAttack(int runeId)
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	int attackedCreature       = reader.getAttackedCreature();
 
 	CTibiaCharacter *ch = reader.getCharacterByTibiaId(attackedCreature);
@@ -3015,7 +3060,7 @@ void autoAimAttack(int runeId)
 		int contNr;
 		int openContNr  = 0;
 		int openContMax = reader.readOpenContainerCount();
-		for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+		for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 		{
 			CTibiaContainer *cont = reader.readContainer(contNr);
 
@@ -3065,7 +3110,7 @@ void parseRecvActionData(int handle, char* data, int len)
 		AfxMessageBox("parseRecvActionData: length is 0.");
 
 #endif // ifdef _DEBUG
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	mess.messageType = 1010;
 
 	parcelRecvActionData* p = ((parcelRecvActionData*)mess.payload);
@@ -3097,11 +3142,11 @@ void parseRecvActionData(int handle, char* data, int len)
 
 void parseMessageSay(char *sayBuf)
 {
-	CTibiaItemProxy itemProxy;
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	
+	CMemReader& reader = CMemReader::getMemReader();
+	
 
-	struct ipcMessage mess;
+	CIpcMessage mess;
 
 	int len = strlen(sayBuf);
 	if (len < 900)
@@ -3123,16 +3168,16 @@ void parseMessageSay(char *sayBuf)
 
 	if (!strcmp(sayBuf, "%ta hmm") && autoAimActive)
 		if (reader.getAttackedCreature())
-			autoAimAttack(itemProxy.getValueForConst("runeHMM"));
+			autoAimAttack(CTibiaItem::getValueForConst("runeHMM"));
 	if (!strcmp(sayBuf, "%ta gfb") && autoAimActive)
 		if (reader.getAttackedCreature())
-			autoAimAttack(itemProxy.getValueForConst("runeGFB"));
+			autoAimAttack(CTibiaItem::getValueForConst("runeGFB"));
 	if (!strcmp(sayBuf, "%ta sd") && autoAimActive)
 		if (reader.getAttackedCreature())
-			autoAimAttack(itemProxy.getValueForConst("runeSD"));
+			autoAimAttack(CTibiaItem::getValueForConst("runeSD"));
 	if (!strcmp(sayBuf, "%ta explo") && autoAimActive)
 		if (reader.getAttackedCreature())
-			autoAimAttack(itemProxy.getValueForConst("runeExplo"));
+			autoAimAttack(CTibiaItem::getValueForConst("runeExplo"));
 	if (!strcmp(sayBuf, "%ta selfuh") && outSelfUHAvail)
 		//Mine_send(tibiaSocket,tibiaState.outbufSelfUH,payloadLen(tibiaState.outbufSelfUH)+2,lastSendFlags);
 		sendBufferViaSocket(tibiaState.outbufSelfUH);
@@ -3171,7 +3216,7 @@ int parseMessageForTibiaAction(char *buf, int len)
 		buf4 += 256;
 	if (autoAimActive && !autoAimOnlyCreatures && code == 0x84 && buf[0] == 13 && buf3 == 0xff && buf4 == 0xff)
 	{
-		CTibiaItemProxy itemProxy;
+		
 		// cast rune against monster
 		int contNr  = buf[5];
 		int itemPos = buf[7];
@@ -3198,13 +3243,13 @@ int parseMessageForTibiaAction(char *buf, int len)
 		unsigned int playerId = v1 + v2 * 256 + v3 * 256 * 256 + v4 * 256 * 256 * 256;
 		if (debugFile)
 			WriteOutDebug("### %x, %x\r\n", objectId, playerId);
-		if ((objectId == itemProxy.getValueForConst("runeHMM") ||
-		     objectId == itemProxy.getValueForConst("runeGFB") ||
-		     objectId == itemProxy.getValueForConst("runeSD") ||
-		     objectId == itemProxy.getValueForConst("runeExplo")) &&
+		if ((objectId == CTibiaItem::getValueForConst("runeHMM") ||
+		     objectId == CTibiaItem::getValueForConst("runeGFB") ||
+		     objectId == CTibiaItem::getValueForConst("runeSD") ||
+		     objectId == CTibiaItem::getValueForConst("runeExplo")) &&
 		    playerId < 0x40000000)
 		{
-			CMemReaderProxy reader;
+			CMemReader& reader = CMemReader::getMemReader();
 			CTibiaCharacter *ch = reader.getCharacterByTibiaId(playerId);
 			if (ch)
 			{
@@ -3291,7 +3336,7 @@ int parseMessageForTibiaAction(char *buf, int len)
 
 	if (code == 0x96 && buf[3] == 27)
 	{
-		CTibiaItemProxy itemProxy;
+		
 		// "private/NPC outgoing"
 		char sayBuf[1000];
 		char nickBuf[1000];
@@ -3333,7 +3378,7 @@ int parseMessageForTibiaAction(char *buf, int len)
 
 void hookCallback(int value)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	char *message = NULL;
 	if (value == 0x13)
 		message = "%ta pause";
@@ -3842,7 +3887,7 @@ void myInterceptInfoMiddleScreen(int type, char *s)
 			WriteOutDebug("got see '%s'\r\n", s);
 		unsigned long bytesWritten = 0;
 
-		struct ipcMessage mess;
+		CIpcMessage mess;
 		mess.messageType = 1002;
 		int len = strlen(s);
 		if (len < 900)
@@ -3893,13 +3938,12 @@ int myIsCreatureVisible(int *creaturePtr) //Should Draw Creature(not used)
 	{
 		int ret = 0;
 
-		static CMemReaderProxy *reader = NULL;
+		static CMemReader *reader = NULL;
 
 		if (!reader)
-			reader = new CMemReaderProxy();
-		static CMemConstData memConstData = reader->getMemConstData();
-		static int firstAddr              = memConstData.m_memAddressFirstCreature;
-		static int crSize                 = memConstData.m_memLengthCreature;
+			reader = &CMemReader::getMemReader();
+		static int firstAddr = reader->m_memAddressFirstCreature;
+		static int crSize = reader->m_memLengthCreature;
 
 
 		if (creaturePtr)
@@ -4106,9 +4150,8 @@ int prevNextRet       = 0;
 char prevRecvStream[32768];
 int myShouldParseRecv()
 {
-	CMemReaderProxy reader;
-	CRegexpProxy regexpProxy;
-
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	typedef int (*Proto_fun)();
 
 	Proto_fun fun = (Proto_fun)baseAdjust(funAddr_tibiaShouldParseRecv);
@@ -4145,7 +4188,7 @@ int myShouldParseRecv()
 		 {
 			 if (recvRegex[i].inUse == 1)
 			 {
-				 int match = regexpProxy.regnexec(&(recvRegex[i].preg), ((char*)prevRecvStream + actionStart), actionLen, 0, NULL, 0);
+				 int match = regnexec(&(recvRegex[i].preg), ((char*)prevRecvStream + actionStart), actionLen, 0, NULL, 0);
 				 if (match == 0)
 				 {
 					 if (0)
@@ -4259,7 +4302,7 @@ int myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, in
 	int msgLen  = strlen(s);
 	if (nickLen + msgLen < 900)
 	{
-		struct ipcMessage mess;
+		CIpcMessage mess;
 		memcpy(mess.payload, &type, sizeof(int));
 		memcpy(mess.payload + 4, &chantype, sizeof(int));
 		memcpy(mess.payload + 8, &nickLen, sizeof(int));
@@ -4393,8 +4436,7 @@ void InitialisePlayerInfoHack()
 
 void InitialiseProxyClasses()
 {
-	CMemReaderProxy reader;
-	reader.setProcessId(GetCurrentProcessId());
+	CMemUtil::setGlobalProcessId(GetCurrentProcessId());
 }
 
 WNDPROC wndProcOriginal = NULL;
@@ -4530,7 +4572,7 @@ BOOL APIENTRY DllMain(HINSTANCE hModule,
 	return TRUE;
 }
 
-void ParseIPCMessage(struct ipcMessage mess)
+void ParseIPCMessage(CIpcMessage mess)
 {
 	switch (mess.messageType)
 	{
@@ -4751,7 +4793,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 		{
 		case 1:
 		{
-			CRegexpProxy regexpProxy;
+			
 			int handle, regLen;
 			memcpy(&handle, mess.payload + 4, sizeof(int));
 			// Since we are using the array at the same time we are creating it, we do not move around items in use to fill empty spaces
@@ -4770,7 +4812,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 				memcpy(regExp, mess.payload + 12, regLen);
 
 				recvRegex[i].handle = handle;
-				if (regexpProxy.regncomp(&(recvRegex[i].preg), regExp, regLen, REG_NOSUB | REG_EXTENDED))
+				if (regncomp(&(recvRegex[i].preg), regExp, regLen, REG_NOSUB | REG_EXTENDED))
 				{
 					//Failed to compile expression, send one message back to user
 					char base[]    = "Error: Failed to compile regular expression ";
@@ -4818,14 +4860,14 @@ int ReadFromPipe()
 	do
 	{
 		// Read from the pipe.
-		struct ipcMessage inBuf;
+		CIpcMessage inBuf;
 		DWORD lpBytesRead;
 		inBuf.messageType = 0;
 
 		fSuccess = ReadFile(
 		        hPipe,    // pipe handle
 		        &inBuf,    // buffer to receive reply
-		        sizeof(struct ipcMessage),      // size of buffer
+		        sizeof(CIpcMessage),      // size of buffer
 		        &lpBytesRead,  // number of bytes read
 		        NULL);    // not overlapped
 

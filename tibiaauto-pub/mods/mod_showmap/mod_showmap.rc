@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -13,13 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Polish resources
+// Polish (Poland) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
-#ifdef _WIN32
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 #pragma code_page(1250)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -27,18 +25,18 @@ LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
     "#define _AFX_NO_OLE_RESOURCES\r\n"
@@ -64,18 +62,16 @@ END
 // Dialog
 //
 
-IDD_TOOL_MAPSHOW DIALOG DISCARDABLE  0, 0, 351, 336
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_TOOL_MAPSHOW DIALOG 0, 0, 351, 336
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tool: show recorded map"
 FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Mapping Options",IDC_FRAME_MAPPING_OPTIONS,7,303,195,26
     LTEXT           "Tile info: n/a",IDC_TILE_INFO,7,277,337,22,WS_BORDER
-    CONTROL         "Research map",IDC_TOOL_MAPSHOW_RESEARCH,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,317,62,10
-    CONTROL         "Extended research map",
-                    IDC_TOOL_MAPSHOW_EXTENDED_RESEARCH,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,81,317,91,10
+    CONTROL         "Research map",IDC_TOOL_MAPSHOW_RESEARCH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,317,62,10
+    CONTROL         "Extended research map",IDC_TOOL_MAPSHOW_EXTENDED_RESEARCH,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,81,317,91,10
     DEFPUSHBUTTON   "OK",IDOK,237,315,50,14
     PUSHBUTTON      "Clear map",IDC_TOOL_MAPSHOW_CLEAR,294,315,50,14
 END
@@ -87,7 +83,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_TOOL_MAPSHOW, DIALOG
     BEGIN
@@ -108,39 +104,39 @@ END
 // Bitmap
 //
 
-IDB_MAP_EMPTY           BITMAP  DISCARDABLE     "res\\map_empty.bmp"
-IDB_MAP_SELF            BITMAP  DISCARDABLE     "res\\map_self.bmp"
-IDB_MAP_SAMEFLOOR       BITMAP  DISCARDABLE     "res\\map_samefloor.bmp"
-IDB_MAP_ROPE            BITMAP  DISCARDABLE     "res\\map_rope.bmp"
-IDB_MAP_LADDER          BITMAP  DISCARDABLE     "res\\map_ladder.bmp"
-IDB_MAP_MAGICROPE       BITMAP  DISCARDABLE     "res\\map_magicrope.bmp"
-IDB_MAP_STAIRS          BITMAP  DISCARDABLE     "res\\map_stairs.bmp"
-IDB_MAP_OPENHOLE        BITMAP  DISCARDABLE     "res\\map_openhole.bmp"
-IDB_MAP_CLOSEDHOLE      BITMAP  DISCARDABLE     "res\\map_closedhole.bmp"
-IDB_MAP_CRATE           BITMAP  DISCARDABLE     "res\\map_crate.bmp"
-IDB_MAP_BLOCK           BITMAP  DISCARDABLE     "res\\map_blocked.bmp"
-IDB_MAP_DEPOT           BITMAP  DISCARDABLE     "res\\map_depot.bmp"
-IDB_MAP_UNKTELE         BITMAP  DISCARDABLE     "res\\map_unktele.bmp"
-IDB_MAP_TELE            BITMAP  DISCARDABLE     "res\\map_tele.bmp"
-IDB_MAP_SAMEFLOOR_LOCK  BITMAP  DISCARDABLE     "res\\map_samefloor_lock.bmp"
-IDB_MAP_ROPE_LOCK       BITMAP  DISCARDABLE     "res\\map_rope_lock.bmp"
-IDB_MAP_LADDER_LOCK     BITMAP  DISCARDABLE     "res\\map_ladder_lock.bmp"
-IDB_MAP_MAGICROPE_LOCK  BITMAP  DISCARDABLE     "res\\map_magicrope_lock.bmp"
-IDB_MAP_STAIRS_LOCK     BITMAP  DISCARDABLE     "res\\map_stairs_lock.bmp"
-IDB_MAP_OPENHOLE_LOCK   BITMAP  DISCARDABLE     "res\\map_openhole_lock.bmp"
-IDB_MAP_CLOSEDHOLE_LOCK BITMAP  DISCARDABLE     "res\\map_closedhole_lock.bmp"
-IDB_MAP_CRATE_LOCK      BITMAP  DISCARDABLE     "res\\map_crate_lock.bmp"
-IDB_MAP_BLOCK_LOCK      BITMAP  DISCARDABLE     "res\\map_blocked_lock.bmp"
-IDB_MAP_DEPOT_LOCK      BITMAP  DISCARDABLE     "res\\map_depot_lock.bmp"
-IDB_MAP_UNKTELE_LOCK    BITMAP  DISCARDABLE     "res\\map_unktele_lock.bmp"
-IDB_MAP_TELE_LOCK       BITMAP  DISCARDABLE     "res\\map_tele_lock.bmp"
+IDB_MAP_EMPTY           BITMAP                  "res\\map_empty.bmp"
+IDB_MAP_SELF            BITMAP                  "res\\map_self.bmp"
+IDB_MAP_SAMEFLOOR       BITMAP                  "res\\map_samefloor.bmp"
+IDB_MAP_ROPE            BITMAP                  "res\\map_rope.bmp"
+IDB_MAP_LADDER          BITMAP                  "res\\map_ladder.bmp"
+IDB_MAP_MAGICROPE       BITMAP                  "res\\map_magicrope.bmp"
+IDB_MAP_STAIRS          BITMAP                  "res\\map_stairs.bmp"
+IDB_MAP_OPENHOLE        BITMAP                  "res\\map_openhole.bmp"
+IDB_MAP_CLOSEDHOLE      BITMAP                  "res\\map_closedhole.bmp"
+IDB_MAP_CRATE           BITMAP                  "res\\map_crate.bmp"
+IDB_MAP_BLOCK           BITMAP                  "res\\map_blocked.bmp"
+IDB_MAP_DEPOT           BITMAP                  "res\\map_depot.bmp"
+IDB_MAP_UNKTELE         BITMAP                  "res\\map_unktele.bmp"
+IDB_MAP_TELE            BITMAP                  "res\\map_tele.bmp"
+IDB_MAP_SAMEFLOOR_LOCK  BITMAP                  "res\\map_samefloor_lock.bmp"
+IDB_MAP_ROPE_LOCK       BITMAP                  "res\\map_rope_lock.bmp"
+IDB_MAP_LADDER_LOCK     BITMAP                  "res\\map_ladder_lock.bmp"
+IDB_MAP_MAGICROPE_LOCK  BITMAP                  "res\\map_magicrope_lock.bmp"
+IDB_MAP_STAIRS_LOCK     BITMAP                  "res\\map_stairs_lock.bmp"
+IDB_MAP_OPENHOLE_LOCK   BITMAP                  "res\\map_openhole_lock.bmp"
+IDB_MAP_CLOSEDHOLE_LOCK BITMAP                  "res\\map_closedhole_lock.bmp"
+IDB_MAP_CRATE_LOCK      BITMAP                  "res\\map_crate_lock.bmp"
+IDB_MAP_BLOCK_LOCK      BITMAP                  "res\\map_blocked_lock.bmp"
+IDB_MAP_DEPOT_LOCK      BITMAP                  "res\\map_depot_lock.bmp"
+IDB_MAP_UNKTELE_LOCK    BITMAP                  "res\\map_unktele_lock.bmp"
+IDB_MAP_TELE_LOCK       BITMAP                  "res\\map_tele_lock.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
 //
 
-IDR_SHOWMAP_MENU MENU DISCARDABLE 
+IDR_SHOWMAP_MENU MENU
 BEGIN
     POPUP "Show Map Options"
     BEGIN
@@ -150,6 +146,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Depot",                       ID_SHOWMAPOPTIONS_DEPOT
         MENUITEM "Teleporter",                  ID_SHOWMAPOPTIONS_TELE
+        MENUITEM "Usable Teleporter",           ID_SHOWMAPOPTIONS_USETELE
         MENUITEM "Blocked Tile",                ID_SHOWMAPOPTIONS_BLOCK
         MENUITEM SEPARATOR
         POPUP "Go Up One Level"
@@ -158,15 +155,12 @@ BEGIN
             MENUITEM "Ladder",                      ID_SHOWMAPOPTIONS_LADDER
             MENUITEM "Stairs",                      ID_SHOWMAPOPTIONS_STAIRS
             MENUITEM "Magic rope",                  ID_SHOWMAPOPTIONS_MAGICROPE
-
         END
         MENUITEM SEPARATOR
         POPUP "Go Down One Level"
         BEGIN
             MENUITEM "Open hole",                   ID_SHOWMAPOPTIONS_OPENHOLE
-
             MENUITEM "Closed hole",                 ID_SHOWMAPOPTIONS_CLOSEDHOLE
-
             MENUITEM "Grate",                       ID_SHOWMAPOPTIONS_CRATE
         END
         MENUITEM SEPARATOR
@@ -175,69 +169,48 @@ BEGIN
     MENUITEM "",                            65535
 END
 
-#endif    // Polish resources
+#endif    // Polish (Poland) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog
 //
 
-IDD_TOOL_MAPSHOW_CONFIG DIALOG DISCARDABLE  0, 0, 229, 191
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_TOOL_MAPSHOW_CONFIG DIALOG 0, 0, 229, 191
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tile Configuration Tool"
 FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Tile Type",IDC_FRAME_TILE_TYPE,6,7,104,44
     GROUPBOX        "Movement",IDC_FRAME_MOVEMENT,6,53,104,83
     GROUPBOX        "Use",IDC_FRAME_USE,12,87,93,45
-    GROUPBOX        "Characteristics",IDC_FRAME_CHARACTERISTICS,116,7,104,
-                    107
-    LTEXT           "Tile ID:",IDC_STATIC,123,17,22,12,SS_NOTIFY | 
-                    SS_CENTERIMAGE
+    GROUPBOX        "Characteristics",IDC_FRAME_CHARACTERISTICS,116,7,104,107
+    LTEXT           "Tile ID:",IDC_STATIC,123,17,22,12,SS_NOTIFY | SS_CENTERIMAGE
     LTEXT           "Speed:",IDC_STATIC,123,99,24,10,SS_CENTERIMAGE
-    CONTROL         "Ground",IDC_GROUND,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,12,18,39,10
-    CONTROL         "Container",IDC_CONTAINER,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,12,29,46,10
-    CONTROL         "Depot",IDC_DEPOT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    12,40,35,10
-    CONTROL         "Can go UP",IDC_GO_UP,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
-                    WS_TABSTOP,12,65,51,10
-    CONTROL         "Can go DOWN",IDC_GO_DOWN,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | WS_TABSTOP,12,75,64,10
-    CONTROL         "Use Shovel",IDC_SHOVEL,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | WS_TABSTOP,18,98,53,10
-    CONTROL         "Use Rope",IDC_ROPE,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
-                    WS_TABSTOP,18,108,48,10
-    CONTROL         "Use Tile (CTRL+Click)",IDC_USE_TILE,"Button",
-                    BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,18,118,86,10
-    EDITTEXT        IDC_TILE_ID,153,17,24,12,ES_AUTOHSCROLL | ES_READONLY | 
-                    ES_NUMBER
-    CONTROL         "Blocks walking",IDC_BLOCKING,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | BS_MULTILINE | WS_TABSTOP,123,31,93,10
-    CONTROL         "Walkable ground tile",IDC_WALKABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
-                    123,42,93,10
-    CONTROL         "Movable",IDC_MOVABLE,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
-                    WS_TABSTOP,123,53,93,10
-    CONTROL         "Always appears on top",IDC_ALWAYS_ON_TOP,"Button",
-                    BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
-                    123,64,93,10
-    CONTROL         "Stackable item",IDC_STACKABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | WS_TABSTOP,123,75,93,10
-    CONTROL         "Teleporter",IDC_TELEPORTER,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | WS_TABSTOP,123,86,93,10
+    CONTROL         "Ground",IDC_GROUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,18,39,10
+    CONTROL         "Container",IDC_CONTAINER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,29,46,10
+    CONTROL         "Depot",IDC_DEPOT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,40,35,10
+    CONTROL         "Can go UP",IDC_GO_UP,"Button",BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,12,65,51,10
+    CONTROL         "Can go DOWN",IDC_GO_DOWN,"Button",BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,12,75,64,10
+    CONTROL         "Use Shovel",IDC_SHOVEL,"Button",BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,18,98,53,10
+    CONTROL         "Use Rope",IDC_ROPE,"Button",BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,18,108,48,10
+    CONTROL         "Use Tile (CTRL+Click)",IDC_USE_TILE,"Button",BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,18,118,86,10
+    EDITTEXT        IDC_TILE_ID,153,17,24,12,ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER
+    CONTROL         "Blocks walking",IDC_BLOCKING,"Button",BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,123,31,93,10
+    CONTROL         "Walkable ground tile",IDC_WALKABLE,"Button",BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,123,42,93,10
+    CONTROL         "Movable",IDC_MOVABLE,"Button",BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,123,53,93,10
+    CONTROL         "Always appears on top",IDC_ALWAYS_ON_TOP,"Button",BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,123,64,93,10
+    CONTROL         "Stackable item",IDC_STACKABLE,"Button",BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,123,75,93,10
+    CONTROL         "Teleporter",IDC_TELEPORTER,"Button",BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,123,86,93,10
     EDITTEXT        IDC_SPEED,154,98,24,12,ES_AUTOHSCROLL | ES_NUMBER
     PUSHBUTTON      "<<< Previous",IDC_PREVIOUS_CONFIG_TILE,116,152,50,14
     PUSHBUTTON      "Next >>>",IDC_NEXT_CONFIG_TILE,170,152,50,14
@@ -251,7 +224,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_TOOL_MAPSHOW_CONFIG, DIALOG
     BEGIN
@@ -269,9 +242,8 @@ END
 // Bitmap
 //
 
-IDB_BACKGROUND          BITMAP  DISCARDABLE     "thumbnailCARAJ88G.bmp"
+IDB_BACKGROUND          BITMAP                  "thumbnailCARAJ88G.bmp"
 
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
@@ -294,15 +266,13 @@ BEGIN
     BEGIN
         BLOCK "040904B0"
         BEGIN
-            VALUE "CompanyName", "\0"
-            VALUE "FileDescription", "mod_showmap DLL\0"
-            VALUE "FileVersion", "1, 0, 0, 1\0"
-            VALUE "InternalName", "mod_showmap\0"
-            VALUE "LegalCopyright", "Copyright (C) 2005\0"
-            VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "mod_showmap.DLL\0"
-            VALUE "ProductName", "mod_showmap Dynamic Link Library\0"
-            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "FileDescription", "mod_showmap DLL"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "mod_showmap"
+            VALUE "LegalCopyright", "Copyright (C) 2005"
+            VALUE "OriginalFilename", "mod_showmap.DLL"
+            VALUE "ProductName", "mod_showmap Dynamic Link Library"
+            VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END
     BLOCK "VarFileInfo"
@@ -311,9 +281,7 @@ BEGIN
     END
 END
 
-#endif    // !_MAC
-
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

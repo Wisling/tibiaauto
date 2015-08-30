@@ -5,16 +5,18 @@
 #include <iostream>
 #include "mod_cavebot.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
-#include "TAMiniMapProxy.h"
-#include "TibiaMapProxy.h"
-#include "TibiaMiniMap.h"
-#include "TibiaMiniMapLabel.h"
-#include "TibiaMiniMapPoint.h"
-#include "IPCBackPipeProxy.h"
 #include "LoadWaypointsInfo.h"
 #include "DropLootDialog.h"
+
+#include <TibiaItem.h>
+#include <MemReader.h>
+#include <VariableStore.h>
+#include <TAMiniMap.h>
+#include <TibiaMap.h>
+#include <TibiaMiniMap.h>
+#include <TibiaMiniMapLabel.h>
+#include <TibiaMiniMapPoint.h>
+#include <ModuleUtil.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -348,7 +350,7 @@ void CConfigDialog::enableControls()
 
 void CConfigDialog::configToControls(CConfigData *configData)
 {
-	CTibiaItemProxy itemProxy;
+	
 	int i;
 	char buf[128];
 
@@ -431,10 +433,10 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_trainingMode.SetCurSel(configData->trainingMode);
 	m_bloodHit.SetCheck(configData->bloodHit);
 	m_activate.SetCheck(configData->trainingActivate);
-	m_weaponTrain.SetCurSel(m_weaponTrain.FindStringExact(-1, itemProxy.getItemName(configData->weaponTrain)));
+	m_weaponTrain.SetCurSel(m_weaponTrain.FindStringExact(-1, CTibiaItem::getItemName(configData->weaponTrain)));
 	if (m_weaponTrain.GetCurSel() == -1)
 		m_weaponTrain.SetCurSel(0);
-	m_weaponFight.SetCurSel(m_weaponFight.FindStringExact(-1, itemProxy.getItemName(configData->weaponFight)));
+	m_weaponFight.SetCurSel(m_weaponFight.FindStringExact(-1, CTibiaItem::getItemName(configData->weaponFight)));
 	if (m_weaponFight.GetCurSel() == -1)
 		m_weaponFight.SetCurSel(0);
 	m_depotDropInsteadOfDeposit.SetCheck(configData->depotDropInsteadOfDeposit);
@@ -657,7 +659,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
@@ -764,7 +766,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 				m_waypointList.SetCurSel(currentWaypointNr);
 			break;
 		case CToolAutoAttackStateWalker_halfSleep:
-			sprintf(buf, "State: half module sleep by %s:%s", reader.getGlobalVariable("walking_control"), reader.getGlobalVariable("walking_priority"));
+			sprintf(buf, "State: half module sleep by %s:%s", CVariableStore::getVariable("walking_control"), CVariableStore::getVariable("walking_priority"));
 			m_stateWalker.SetWindowText(buf);
 			break;
 		case CToolAutoAttackStateWalker_fullSleep:
@@ -826,7 +828,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_trainingState.SetWindowText("State: unknown");
 		}
 
-		CTAMiniMapProxy taMiniMap;
+		CTAMiniMap& taMiniMap = CTAMiniMap::getTAMiniMap();
 		if (!taMiniMap.isFindPathStopped())
 		{
 			char buf[128];
@@ -1123,23 +1125,23 @@ void CConfigDialog::OnDepotEntryremove()
 
 void CConfigDialog::reloadDepotItems()
 {
-	CTibiaItemProxy itemProxy;
+	
 
 	while (m_depotItemList.GetCount() > 0)
 		m_depotItemList.DeleteString(0);
 
 	// load items for depot item combo
-	int count = itemProxy.getItemCount();
+	int count = CTibiaItem::getItemCount();
 	for (int i = 0; i < count; i++)
 	{
-		m_depotItemList.AddString(itemProxy.getItemNameAtIndex(i));
+		m_depotItemList.AddString(CTibiaItem::getItemNameAtIndex(i));
 	}
 	m_depotItemList.SetCurSel(0);
 }
 
 void CConfigDialog::reloadTrainingItems()
 {
-	CTibiaItemProxy itemProxy;
+	
 
 	while (m_weaponTrain.GetCount() > 0)
 		m_weaponTrain.DeleteString(0);
@@ -1147,15 +1149,15 @@ void CConfigDialog::reloadTrainingItems()
 		m_weaponFight.DeleteString(0);
 
 	// load items for depot item combo
-	int count = itemProxy.getItemCount();
+	int count = CTibiaItem::getItemCount();
 	int i;
 	for (i = 0; i < count; i++)
 	{
-		m_weaponTrain.AddString(itemProxy.getItemNameAtIndex(i));
-		m_weaponFight.AddString(itemProxy.getItemNameAtIndex(i));
-		int idx = m_weaponTrain.FindString(-1, itemProxy.getItemNameAtIndex(i));
-		m_weaponTrain.SetItemData(idx, itemProxy.getItemIdAtIndex(i));
-		m_weaponFight.SetItemData(idx, itemProxy.getItemIdAtIndex(i));
+		m_weaponTrain.AddString(CTibiaItem::getItemNameAtIndex(i));
+		m_weaponFight.AddString(CTibiaItem::getItemNameAtIndex(i));
+		int idx = m_weaponTrain.FindString(-1, CTibiaItem::getItemNameAtIndex(i));
+		m_weaponTrain.SetItemData(idx, CTibiaItem::getItemIdAtIndex(i));
+		m_weaponFight.SetItemData(idx, CTibiaItem::getItemIdAtIndex(i));
 	}
 	m_weaponTrain.SetCurSel(0);
 	m_weaponFight.SetCurSel(0);
@@ -1213,7 +1215,7 @@ void CConfigDialog::OnLoadFromMinimap()
 	int totalPointCount = 0;
 	int addedPointCount = 0;
 	int mapNr, pointCount, pointNr;
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	if (ret == IDYES)
 		m_waypointList.ResetContent();
 	else
@@ -1303,9 +1305,7 @@ void CConfigDialog::OnMonsterAttackDown()
 
 void PathfindThread(LPVOID lpParam)
 {
-	CTAMiniMapProxy taMiniMap;
-	CTibiaMapProxy tibiaMap;
-
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	PathfindParams* myData = (PathfindParams*)lpParam;
 	int startX             = myData->x;
 	int startY             = myData->y;
@@ -1315,7 +1315,7 @@ void PathfindThread(LPVOID lpParam)
 	int endZ               = myData->z2;
 	int direction[10][3]   = {{0, 0, 1}, {1, 0, 0}, {1, -1, 0}, {0, -1, 0}, {-1, -1, 0}, {-1, 0, 0}, {-1, 1, 0}, {0, 1, 0}, {1, 1, 0}, {0, 0, -1}};
 
-	CUIntArray *path = taMiniMap.findPathOnMiniMap(myData->x, myData->y, myData->z, myData->x2, myData->y2, myData->z2);
+	CUIntArray *path = CTAMiniMap::getTAMiniMap().findPathOnMiniMap(myData->x, myData->y, myData->z, myData->x2, myData->y2, myData->z2);
 
 	int i;
 	int radius = 2;//0 means 1x1, 2 means 5x5
@@ -1337,7 +1337,7 @@ void PathfindThread(LPVOID lpParam)
 		{
 			if (!tibiaMap.isPointAvailableNoProh(x, y, startZ))
 			{
-				CTibiaMiniMapPoint * mp = taMiniMap.getMiniMapPoint(x, y, startZ);
+				CTibiaMiniMapPoint * mp = CTAMiniMap::getTAMiniMap().getMiniMapPoint(x, y, startZ);
 				if (mp->speed != 255 && mp->colour != 0)
 				{
 					tibiaMap.setPointAsAvailable(x, y, startZ);//is not blocking nor unexplored
@@ -1351,9 +1351,9 @@ void PathfindThread(LPVOID lpParam)
 	for (i = 0; i < sz; i++)
 	{
 		int dir = path->GetAt(i);
-		if (dir == 0xD0)
+		if (dir == STEP_UPSTAIRS)
 			dir = 9;
-		else if (dir == 0xD1)
+		else if (dir == STEP_DOWNSTAIRS)
 			dir = 0;
 		startX += direction[dir][0];
 		startY += direction[dir][1];
@@ -1366,7 +1366,7 @@ void PathfindThread(LPVOID lpParam)
 				{
 					if (!tibiaMap.isPointAvailableNoProh(x, y, startZ))
 					{
-						CTibiaMiniMapPoint * mp = taMiniMap.getMiniMapPoint(x, y, startZ);
+						CTibiaMiniMapPoint * mp = CTAMiniMap::getTAMiniMap().getMiniMapPoint(x, y, startZ);
 						if (mp->speed != 255 && mp->colour != 0)
 						{
 							tibiaMap.setPointAsAvailable(x, y, startZ);//is not blocking nor unexplored
@@ -1376,8 +1376,8 @@ void PathfindThread(LPVOID lpParam)
 					}
 				}
 			}
-			int setPrev = (dir == 0) ? 101 : 204;//hole if went down; stairs if went up
-			int setCur  = (dir == 9) ? 101 : 204;//hole if went up; stairs if went down
+			MapPointType setPrev = (dir == 0) ? MAP_POINT_TYPE_OPEN_HOLE : MAP_POINT_TYPE_STAIRS;//hole if went down; stairs if went up
+			MapPointType setCur = (dir == 9) ? MAP_POINT_TYPE_OPEN_HOLE : MAP_POINT_TYPE_STAIRS;//hole if went up; stairs if went down
 			//add level change point
 			tibiaMap.setPointAsAvailable(startX, startY, startZ - direction[dir][2]);
 			tibiaMap.setPointAsAvailable(startX, startY, startZ);
@@ -1394,7 +1394,7 @@ void PathfindThread(LPVOID lpParam)
 			{
 				if (!tibiaMap.isPointAvailableNoProh(x, y, startZ))
 				{
-					CTibiaMiniMapPoint* mp = taMiniMap.getMiniMapPoint(x, y, startZ);
+					CTibiaMiniMapPoint* mp = CTAMiniMap::getTAMiniMap().getMiniMapPoint(x, y, startZ);
 					if (mp->speed != 255 && mp->colour != 0)
 					{
 						tibiaMap.setPointAsAvailable(x, y, startZ);//is not blocking nor unexplored
@@ -1410,7 +1410,7 @@ void PathfindThread(LPVOID lpParam)
 			{
 				if (!tibiaMap.isPointAvailableNoProh(x, y, startZ))
 				{
-					CTibiaMiniMapPoint * mp = taMiniMap.getMiniMapPoint(x, y, startZ);
+					CTibiaMiniMapPoint * mp = CTAMiniMap::getTAMiniMap().getMiniMapPoint(x, y, startZ);
 					if (mp->speed != 255 && mp->colour != 0)
 					{
 						tibiaMap.setPointAsAvailable(x, y, startZ);//is not blocking nor unexplored
@@ -1431,7 +1431,7 @@ void PathfindThread(LPVOID lpParam)
 
 void CConfigDialog::OnAutoResearch()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter* ch = reader.readSelfCharacter();
 	int curX            = ch->x, curY = ch->y, curZ = ch->z;
 	delete ch;

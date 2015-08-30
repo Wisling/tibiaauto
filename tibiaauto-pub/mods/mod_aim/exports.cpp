@@ -2,5 +2,9 @@
 
 #include "mod_aim.h"
 
-CMod_aimApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_aimApp();
+}
+

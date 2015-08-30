@@ -9,3 +9,5 @@
 #else // ifdef TIBIAAUTOINJECT3_EXPORTS
 #define TIBIAAUTOINJECT3_API __declspec(dllimport)
 #endif // ifdef TIBIAAUTOINJECT3_EXPORTS
+
+TIBIAAUTOINJECT3_API LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);

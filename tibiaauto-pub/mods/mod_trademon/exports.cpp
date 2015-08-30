@@ -2,6 +2,8 @@
 
 #include "mod_trademon.h"
 
-CMod_trademonApp module;
-
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_trademonApp();
+}

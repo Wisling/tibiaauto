@@ -1,23 +1,23 @@
-// TileReader.h: interface for the CTileReader class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_TILEREADER_H__D5B45C88_FF5F_4F3C_8978_7A12D58F2DDC__INCLUDED_)
-#define AFX_TILEREADER_H__D5B45C88_FF5F_4F3C_8978_7A12D58F2DDC__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+#include "tibiaauto_util.h"
 
 #include "TibiaTile.h"
 
 #define MAX_TILES 50000
 
-class CTileReader
+class TIBIAAUTOUTIL_API CTileReader
 {
-public:
+private:
 	CTileReader();
 	virtual ~CTileReader();
+	CTileReader(CTileReader const&);
+	void operator=(CTileReader const&);
+public:
+	static CTileReader& getTileReader()
+	{
+		static CTileReader singleton;
+		return singleton;
+	}
 	CTibiaTile *getTile(int tileNr);
 	void setTile(int, CTibiaTile *);
 	void cleanup();
@@ -27,5 +27,3 @@ private:
 	static int xmlInitialised;
 	static CTibiaTile *tiles[MAX_TILES];
 };
-
-#endif // !defined(AFX_TILEREADER_H__D5B45C88_FF5F_4F3C_8978_7A12D58F2DDC__INCLUDED_)

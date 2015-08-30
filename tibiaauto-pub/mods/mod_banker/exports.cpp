@@ -2,5 +2,8 @@
 
 #include "mod_banker.h"
 
-CMod_bankerApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_bankerApp();
+}

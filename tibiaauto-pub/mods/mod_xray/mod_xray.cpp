@@ -27,11 +27,11 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
-#include "ModuleUtil.h"
-#include "IPCBackPipeProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
+#include <ModuleUtil.h>
+#include <IPCBackPipe.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -64,13 +64,12 @@ int lastZ = 0;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
-	CIPCBackPipeProxy backPipe;
-	struct ipcMessage mess;
+	CIpcMessage mess;
 
 
 	while (!toolThreadShouldStop)
@@ -84,10 +83,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		if (!reader.isLoggedIn())
 		{
 			// flush IPC communication if not logged
-			while (backPipe.readFromPipe(&mess, 1008))
+			while (CIPCBackPipe::readFromPipe(&mess, 1008))
 			{
 			};
-			while (backPipe.readFromPipe(&mess, 2001))
+			while (CIPCBackPipe::readFromPipe(&mess, 2001))
 			{
 			};
 		}
@@ -106,7 +105,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 
 		// message can go via 'say command' or via hooks
-		if (backPipe.readFromPipe(&mess, 1008) || (config->extrahotkeys && backPipe.readFromPipe(&mess, 2001)))
+		if (CIPCBackPipe::readFromPipe(&mess, 1008) || (config->extrahotkeys && CIPCBackPipe::readFromPipe(&mess, 2001)))
 		{
 			int msgLen;
 			char msgBuf[16384];
@@ -206,11 +205,10 @@ int CMod_xrayApp::isStarted()
 	if (!m_started)
 	{
 		// if not started then regularry consume 1008 and 2001 messages from the queue
-		CIPCBackPipeProxy backPipe;
-		struct ipcMessage mess;
+		CIpcMessage mess;
 
-		backPipe.readFromPipe(&mess, 1008);
-		backPipe.readFromPipe(&mess, 2001);
+		CIPCBackPipe::readFromPipe(&mess, 1008);
+		CIPCBackPipe::readFromPipe(&mess, 2001);
 	}
 	return m_started;
 }

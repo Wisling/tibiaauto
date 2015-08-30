@@ -42,12 +42,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration)\mods\</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration)\mods\</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
@@ -60,8 +60,8 @@
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\sdk\</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-kernel\tibiaauto_util\</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;TIBIAAUTOUTIL_EXPORTS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
       <PrecompiledHeaderOutputFile>.\Release\tibiaauto_util.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -87,9 +87,11 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <LinkDLL>true</LinkDLL>
       <SubSystem>Windows</SubSystem>
-      <ModuleDefinitionFile>.\tibiaauto_util.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <ImportLibrary>.\Release\tibiaauto_util.lib</ImportLibrary>
+      <ImportLibrary>
+      </ImportLibrary>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
       <AdditionalDependencies>xerces-c_3.lib;libdb61.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -104,8 +106,8 @@
       <WarningLevel>Level3</WarningLevel>
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\sdk\</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-kernel\tibiaauto_util\</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;TIBIAAUTOUTIL_EXPORTS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
       <PrecompiledHeaderOutputFile>.\Debug\tibiaauto_util.pch</PrecompiledHeaderOutputFile>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -134,27 +136,36 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <ImportLibrary>.\Debug\tibiaauto_util.lib</ImportLibrary>
+      <ImportLibrary>
+      </ImportLibrary>
       <AdditionalDependencies>xerces-c_3.lib;libdb61.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions> /IGNORE:4786  /IGNORE:4786 </AdditionalOptions>
-      <ModuleDefinitionFile>.\tibiaauto_util.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\tibiaauto-pub\sdk\BtnST.cpp" />
+    <ClCompile Include="BtnST.cpp" />
+    <ClCompile Include="ComboBoxSuper.cpp" />
     <ClCompile Include="CreaturesReader.cpp" />
+    <ClCompile Include="GroupBoxEx.cpp" />
+    <ClCompile Include="IModuleInterface.cpp" />
     <ClCompile Include="IPCBackPipe.cpp" />
     <ClCompile Include="..\md5c.cpp" />
     <ClCompile Include="..\md5class.cpp" />
+    <ClCompile Include="IpcMessage.cpp" />
     <ClCompile Include="MemConstData.cpp" />
     <ClCompile Include="MemReader.cpp" />
     <ClCompile Include="MemUtil.cpp" />
+    <ClCompile Include="ModuleUtil.cpp" />
+    <ClCompile Include="MyDialog.cpp" />
     <ClCompile Include="PackSender.cpp" />
-    <ClCompile Include="proxy.cpp" />
     <ClCompile Include="Queue.cpp" />
-    <ClCompile Include="..\..\tibiaauto-pub\sdk\Skin.cpp" />
+    <ClCompile Include="RepeatButton.cpp" />
+    <ClCompile Include="Skin.cpp" />
     <ClCompile Include="SkinLoader.cpp" />
+    <ClCompile Include="SliderCtrlEx.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
@@ -167,17 +178,21 @@
     <ClCompile Include="TibiaContainer.cpp" />
     <ClCompile Include="TibiaItem.cpp" />
     <ClCompile Include="TibiaMap.cpp" />
+    <ClCompile Include="TibiaMapPoint.cpp" />
     <ClCompile Include="TibiaMapTile.cpp" />
     <ClCompile Include="TibiaMapTileItem.cpp" />
+    <ClCompile Include="TibiaMiniMap.cpp" />
+    <ClCompile Include="TibiaMiniMapLabel.cpp" />
+    <ClCompile Include="TibiaMiniMapPoint.cpp" />
+    <ClCompile Include="TibiaStructures.cpp" />
+    <ClCompile Include="TibiaTile.cpp" />
     <ClCompile Include="TibiaVIPEntry.cpp" />
     <ClCompile Include="TileReader.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="VariableStore.cpp" />
+    <ClCompile Include="XTabCtrl.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="tibiaauto_util.def">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </CustomBuild>
     <CustomBuild Include="res\tibiaauto_util.rc2" />
     <CustomBuild Include="Tibiaauto_util.rgs" />
   </ItemGroup>
@@ -187,28 +202,50 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BtnST.h" />
+    <ClInclude Include="ComboBoxSuper.h" />
     <ClInclude Include="CreaturesReader.h" />
+    <ClInclude Include="GroupBoxEx.h" />
+    <ClInclude Include="IModuleInterface.h" />
     <ClInclude Include="IPCBackPipe.h" />
+    <ClInclude Include="IpcMessage.h" />
+    <ClInclude Include="MemConstData.h" />
     <ClInclude Include="MemReader.h" />
     <ClInclude Include="MemUtil.h" />
+    <ClInclude Include="ModuleUtil.h" />
+    <ClInclude Include="MyDialog.h" />
     <ClInclude Include="PackSender.h" />
     <ClInclude Include="Queue.h" />
+    <ClInclude Include="RepeatButton.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="..\..\tibiaauto-pub\sdk\Skin.h" />
+    <ClInclude Include="Skin.h" />
     <ClInclude Include="SkinLoader.h" />
+    <ClInclude Include="SliderCtrlEx.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="TAMiniMap.h" />
     <ClInclude Include="tibiaauto_util.h" />
+    <ClInclude Include="TibiaCharacter.h" />
     <ClInclude Include="TibiaContainer.h" />
     <ClInclude Include="TibiaItem.h" />
     <ClInclude Include="TibiaMap.h" />
+    <ClInclude Include="TibiaMapPoint.h" />
     <ClInclude Include="TibiaMapTile.h" />
     <ClInclude Include="TibiaMapTileItem.h" />
-    <ClInclude Include="..\..\tibiaauto-pub\sdk\TibiaStructures.h" />
+    <ClInclude Include="TibiaMiniMap.h" />
+    <ClInclude Include="TibiaMiniMapLabel.h" />
+    <ClInclude Include="TibiaMiniMapPoint.h" />
+    <ClInclude Include="TibiaStructures.h" />
+    <ClInclude Include="TibiaTile.h" />
     <ClInclude Include="TibiaVIPEntry.h" />
     <ClInclude Include="TileReader.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="VariableStore.h" />
+    <ClInclude Include="XTabCtrl.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\tibiaauto-pub\tre\win32\tre.vcxproj">
+      <Project>{2fa575e7-e44f-46ff-b593-a90cef2323dc}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,11 +21,12 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "ModuleUtil.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <ModuleUtil.h>
 
 #include "playerInfo.h"
+extern mod_playerinfo playerInfo;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -206,11 +207,6 @@ char *CMod_playerinfoApp::getConfigParamName(int nr)
 	default:
 		return NULL;
 	}
-}
-
-void* CMod_playerinfoApp::GetPlayerInfo()
-{
-	return &playerInfo;
 }
 
 void CMod_playerinfoApp::getNewSkin(CSkin newSkin)

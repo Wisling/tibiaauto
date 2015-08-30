@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\tibiaauto-pub\sdk\BtnST.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CharDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,9 +36,6 @@
     <ClCompile Include="EnterCode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\tibiaauto-pub\sdk\GroupBoxEx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LoadedModules.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -51,19 +45,7 @@
     <ClCompile Include="md5class.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MemUtil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleProxy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tibiaauto-pub\sdk\MyDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OptionsDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="proxy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PythonEngine.cpp">
@@ -75,16 +57,7 @@
     <ClCompile Include="PythonScriptsDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\tibiaauto-pub\sdk\RepeatButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ScriptConfigDialg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tibiaauto-pub\sdk\Skin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tibiaauto-pub\sdk\SliderCtrlEx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StdAfx.cpp">
@@ -102,6 +75,12 @@
     <ClCompile Include="webbrowser2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PythonEngine_fun.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="tibiaauto.rc">
@@ -109,9 +88,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\tibiaauto-pub\sdk\BtnST.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CharDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -136,9 +112,6 @@
     <ClInclude Include="global.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\tibiaauto-pub\sdk\GroupBoxEx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LoadedModules.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -146,15 +119,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="md5class.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MemUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleProxy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tibiaauto-pub\sdk\MyDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OptionsDialog.h">
@@ -169,19 +133,10 @@
     <ClInclude Include="PythonScriptsDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\tibiaauto-pub\sdk\RepeatButton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ScriptConfigDialg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tibiaauto-pub\sdk\Skin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tibiaauto-pub\sdk\SliderCtrlEx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StdAfx.h">
@@ -197,6 +152,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="webbrowser2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PythonEngine_fun.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

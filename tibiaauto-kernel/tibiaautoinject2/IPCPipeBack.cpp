@@ -10,18 +10,6 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-void ipcMessage::send(HANDLE pipeHandle)
-{
-	this->tm = time(NULL);
-	DWORD cbWritten;
-	BOOL fSuccess = WriteFile(
-	        pipeHandle,
-	        this,
-	        sizeof(struct ipcMessage),
-	        &cbWritten,
-	        NULL);
-}
-
 CIPCPipeBack::CIPCPipeBack()
 {
 	hPipeBack = INVALID_HANDLE_VALUE;
@@ -95,7 +83,8 @@ void CIPCPipeBack::closePipe()
 	hPipeBack = INVALID_HANDLE_VALUE;
 }
 
-void CIPCPipeBack::send(ipcMessage mess)
+void CIPCPipeBack::send(CIpcMessage& mess)
 {
-	mess.send(hPipeBack);
+	CIpcMessage::hPipe = hPipeBack;
+	mess.send();
 }

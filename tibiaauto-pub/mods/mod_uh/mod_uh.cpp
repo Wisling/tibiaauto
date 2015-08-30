@@ -25,10 +25,11 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
-#include "ModuleUtil.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
+#include <VariableStore.h>
+#include <ModuleUtil.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -84,10 +85,10 @@ HANDLE toolThreadHandle;
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CConfigData *config = (CConfigData *)lpParam;
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+
+	
+	
 	CUIntArray acceptedItems;
 	int uhFallbackNeeded    = 0;
 	int grpUhFallbackNeeded = 0;
@@ -111,17 +112,17 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				switch (config->m_runetype)
 				{
 				case 0:
-					acceptedItems.Add(itemProxy.getValueForConst("runeUH"));
+					acceptedItems.Add(CTibiaItem::getValueForConst("runeUH"));
 					break;
 				case 1:
-					acceptedItems.Add(itemProxy.getValueForConst("runeIH"));
+					acceptedItems.Add(CTibiaItem::getValueForConst("runeIH"));
 					break;
 				}
 			}
 			else
 			{
-				acceptedItems.Add(itemProxy.getValueForConst("runeUH"));
-				acceptedItems.Add(itemProxy.getValueForConst("runeIH"));
+				acceptedItems.Add(CTibiaItem::getValueForConst("runeUH"));
+				acceptedItems.Add(CTibiaItem::getValueForConst("runeIH"));
 				uhFallbackNeeded = 0;
 			}
 
@@ -131,7 +132,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			int contNr;
 			int openContNr  = 0;
 			int openContMax = reader.readOpenContainerCount();
-			for (contNr = 0; contNr < memConstData.m_memMaxContainers && !uhItem->objectId && openContNr < openContMax; contNr++)
+			for (contNr = 0; contNr < reader.m_memMaxContainers && !uhItem->objectId && openContNr < openContMax; contNr++)
 			{
 				CTibiaContainer *cont = reader.readContainer(contNr);
 
@@ -149,17 +150,17 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 			if (uhItem->objectId)
 			{
-				reader.setGlobalVariable("UH_needed", "true");
+				CVariableStore::setVariable("UH_needed", "true");
 				if (self->hp <= config->m_uhBorderline)
 				{
-					sender.useWithObjectFromContainerOnFloor(
+					CPackSender::useWithObjectFromContainerOnFloor(
 					        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
 					        self->x, self->y, self->z);
 					Sleep(config->m_sleepAfter);
 				}
 				if (config->m_hotkeySelf)
 				{
-					sender.useWithObjectFromContainerOnFloor(
+					CPackSender::useWithObjectFromContainerOnFloor(
 					        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
 					        self->x, self->y, self->z, 105);
 				}
@@ -173,14 +174,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		}
 		else
 		{
-			reader.setGlobalVariable("UH_needed", "false");
+			CVariableStore::setVariable("UH_needed", "false");
 		}
 
 
 		// grp heal
 
 		int crNr;
-		for (crNr = 0; crNr < memConstData.m_memMaxCreatures; crNr++)
+		for (crNr = 0; crNr < reader.m_memMaxCreatures; crNr++)
 		{
 			CTibiaCharacter *ch = reader.readVisibleCreature(crNr);
 			if (ch->tibiaId == 0)
@@ -214,24 +215,24 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						switch (config->m_grpRunetype)
 						{
 						case 0:
-							acceptedItems.Add(itemProxy.getValueForConst("runeUH"));
+							acceptedItems.Add(CTibiaItem::getValueForConst("runeUH"));
 							break;
 						case 1:
-							acceptedItems.Add(itemProxy.getValueForConst("runeIH"));
+							acceptedItems.Add(CTibiaItem::getValueForConst("runeIH"));
 							break;
 						}
 					}
 					else
 					{
-						acceptedItems.Add(itemProxy.getValueForConst("runeUH"));
-						acceptedItems.Add(itemProxy.getValueForConst("runeIH"));
+						acceptedItems.Add(CTibiaItem::getValueForConst("runeUH"));
+						acceptedItems.Add(CTibiaItem::getValueForConst("runeIH"));
 						grpUhFallbackNeeded = 0;
 					}
 
 					int contNr;
 					int openContNr  = 0;
 					int openContMax = reader.readOpenContainerCount();
-					for (contNr = 0; contNr < memConstData.m_memMaxContainers && !uhItem->objectId && openContNr < openContMax; contNr++)
+					for (contNr = 0; contNr < reader.m_memMaxContainers && !uhItem->objectId && openContNr < openContMax; contNr++)
 					{
 						CTibiaContainer *cont = reader.readContainer(contNr);
 
@@ -248,7 +249,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 					if (uhItem->objectId)
 					{
-						sender.useWithObjectFromContainerOnFloor(
+						CPackSender::useWithObjectFromContainerOnFloor(
 						        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
 						        ch->x, ch->y, ch->z);
 						Sleep(config->m_sleepAfter);
@@ -267,7 +268,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 		delete self;
 	}
-	reader.setGlobalVariable("UH_needed", "false");
+	CVariableStore::setVariable("UH_needed", "false");
 	toolThreadShouldStop = 0;
 	return 0;
 }

@@ -2,5 +2,8 @@
 
 #include "mod_spellcaster.h"
 
-CMod_spellcasterApp module;
-#include "IModuleInterface.cpp"
+IModuleInterface* initModuleInstance()
+{
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
+	return new CMod_spellcasterApp();
+}

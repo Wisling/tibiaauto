@@ -5,17 +5,14 @@
 #include "stdafx.h"
 #include "tibiaauto.h"
 #include "PythonEngine.h"
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "PythonScript.h"
-#include "IPCBackPipeProxy.h"
-#include "TibiaMapProxy.h"
+#include <IPCBackPipe.h>
 #include "TibiaMiniMapPoint.h"
-#include "TAMiniMapProxy.h"
-#include "TibiaItemProxy.h"
-#include "AliceProxy.h"
-#include "RegexpProxy.h"
-#include "ModuleUtil.h"
+#include <TibiaItem.h>
+#include <ModuleUtil.h>
+#include "PythonEngine_fun.h"
 
 
 #ifdef _DEBUG
@@ -170,7 +167,7 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
 
    static PyObject *tibiaauto_reader_setProcessId(PyObject *self, PyObject *args)
    {
-        CMemReaderProxy reader;
+        CMemReader& reader = CMemReader::getMemReader();
 
         int processId;
 
@@ -182,7 +179,7 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
 
    static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *args)
    {
-        CMemReaderProxy reader;
+        CMemReader& reader = CMemReader::getMemReader();
 
         CTibiaCharacter *selfCh = reader.readSelfCharacter();
         PyObject *ret =
@@ -205,7 +202,7 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
    {
         CPackSenderProxy sender;
 
-    sender.turnUp();
+    CPackSender::turnUp();
         Py_INCREF(Py_None);
         return Py_None;
    }
@@ -214,13 +211,12 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
    {
         CPackSenderProxy sender;
 
-    sender.turnDown();
+    CPackSender::turnDown();
         Py_INCREF(Py_None);
         return Py_None;
    }
  */
 
-#include "PythonEngine_fun.cpp"
 
 //////////////////////////////////////////////////////////////////////
 // Python function list definitions
@@ -742,11 +738,10 @@ void CPythonEngine::backpipeMsgTick()
 	init();
 	enterCriticalSection();
 	long int tm = GetTickCount();
-	CMemReaderProxy reader;
-	CIPCBackPipeProxy backPipe;
-	struct ipcMessage mess;
+	CMemReader& reader = CMemReader::getMemReader();
+	CIpcMessage mess;
 
-	if (backPipe.readFromPipe(&mess, 1006))
+	if (CIPCBackPipe::readFromPipe(&mess, 1006))
 	{
 		int infoType;
 		int chanType;
@@ -831,7 +826,7 @@ void CPythonEngine::backpipeMsgTick()
 
 void CPythonEngine::unloadScript(int scriptNr)
 {
-	CPackSenderProxy sender;
+
 
 	init();
 	enterCriticalSection();
@@ -841,7 +836,7 @@ void CPythonEngine::unloadScript(int scriptNr)
 	for (int funNr = 0; (fun = pythonScript->getFunDef(funNr)); funNr++)
 	{
 		if (fun->type == FUNTYPE_INPACKET)
-			sender.unregisterInpacketRegex(fun->matchExprHandle);
+			CPackSender::unregisterInpacketRegex(fun->matchExprHandle);
 	}
 
 	CPythonScript::pythonScriptTab[scriptNr] = CPythonScript::pythonScriptTab[CPythonScript::pythonScriptCount - 1];
@@ -870,11 +865,10 @@ void CPythonEngine::backpipeTamsgTick()
 	init();
 	enterCriticalSection();
 	long int tm = GetTickCount();
-	CMemReaderProxy reader;
-	CIPCBackPipeProxy backPipe;
-	struct ipcMessage mess;
+	CMemReader& reader = CMemReader::getMemReader();
+	CIpcMessage mess;
 
-	if (backPipe.readFromPipe(&mess, 1007))
+	if (CIPCBackPipe::readFromPipe(&mess, 1007))
 	{
 		int msgLen;
 		char msgBuf[16384];
@@ -920,13 +914,12 @@ void CPythonEngine::backpipeInpacketTick()
 {
 	init();
 	enterCriticalSection();
-	CMemReaderProxy reader;
-	CIPCBackPipeProxy backPipe;
-	struct ipcMessage mess;
+	CMemReader& reader = CMemReader::getMemReader();
+	CIpcMessage mess;
 	struct parcelRecvActionData* pd;
 
 	//runs at most 'maxtimes' python functions each tick
-	for (int maxtimes = 5; backPipe.readFromPipe(&mess, 1010) && maxtimes > 0; maxtimes--)
+	for (int maxtimes = 5; CIPCBackPipe::readFromPipe(&mess, 1010) && maxtimes > 0; maxtimes--)
 	{
 		char buf[1024];
 
@@ -942,7 +935,7 @@ void CPythonEngine::backpipeInpacketTick()
 		memcpy(msgBuf, pd->actionData, pd->len);
 		while (countLeft && GetTickCount() - tm < 200)  // wait for remaining sections to come in for up to 200ms(they should always be on their way)
 		{
-			if (backPipe.readFromPipe(&mess, 1010))
+			if (CIPCBackPipe::readFromPipe(&mess, 1010))
 			{
 				if (pd->handle != handle || pd->countLeft != countLeft - 1)
 					sprintf(buf, "ERROR in backpipeInpacketTick: handle %d should be %d and count %d should be %d", pd->handle, handle, pd->countLeft, countLeft - 1);

@@ -5,8 +5,8 @@
 #include "mod_autogo.h"
 #include "ConfigDialog.h"
 #include "WhiteList.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <TibiaItem.h>
 #include <cmath>
 #include "AlarmDialog.h"
 #include "GeneralConfigDialog.h"
@@ -105,7 +105,7 @@ void CConfigDialog::enableControls()
 
 void CConfigDialog::configToControls(CConfigData *configData)
 {
-	CTibiaItemProxy itemProxy;
+	
 	m_Dialog[0]->configToControls(configData);
 	m_Dialog[1]->configToControls(configData);
 	statusPrinted = configData->status;
@@ -113,7 +113,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 
 CConfigData * CConfigDialog::controlsToConfig()
 {
-	CTibiaItemProxy itemProxy;
+	
 	CConfigData *newConfigData = new CConfigData();
 	m_Dialog[0]->controlsToConfig(newConfigData);
 	m_Dialog[1]->controlsToConfig(newConfigData);
@@ -127,7 +127,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent == 1001)
 	{
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		char buf[512];
 
