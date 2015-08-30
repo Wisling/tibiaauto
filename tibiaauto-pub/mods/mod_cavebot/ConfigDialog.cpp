@@ -407,12 +407,12 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	}
 	while (m_monsterList.GetCount())
 		m_monsterList.DeleteString(0);
-	for (i = 0; i < configData->monsterCount; i++)
+	for (i = 0; i < configData->monsterCount && i < MAX_MONSTERLISTCOUNT; i++)
 		m_monsterList.AddString(configData->monsterList[i]);
 
 	while (m_ignoreList.GetCount())
 		m_ignoreList.DeleteString(0);
-	for (i = 0; i < configData->ignoreCount; i++)
+	for (i = 0; i < configData->ignoreCount && i < MAX_IGNORECOUNT; i++)
 		m_ignoreList.AddString(configData->ignoreList[i]);
 
 	while (m_depotEntryList.GetCount())
@@ -504,12 +504,6 @@ CConfigData * CConfigDialog::controlsToConfig()
 		}
 		else
 		{
-			if (i == MAX_MONSTERLISTCOUNT)
-			{
-				char buf[256];
-				sprintf(buf, "You cannot add more than %d monsters to the cavebot attack list.", MAX_MONSTERLISTCOUNT);
-				AfxMessageBox(buf);
-			}
 			m_monsterList.DeleteString(i);
 		}
 	};
@@ -528,12 +522,6 @@ CConfigData * CConfigDialog::controlsToConfig()
 		}
 		else
 		{
-			if (i == MAX_IGNORECOUNT)
-			{
-				char buf[256];
-				sprintf(buf, "You cannot add more than %d ignored monsters to the cavebot list.", MAX_IGNORECOUNT);
-				AfxMessageBox(buf);
-			}
 			m_ignoreList.DeleteString(i);
 		}
 	};
@@ -567,12 +555,6 @@ CConfigData * CConfigDialog::controlsToConfig()
 		}
 		else
 		{
-			if (i == MAX_WAYPOINTCOUNT)
-			{
-				char buf[256];
-				sprintf(buf, "You cannot add more than %d waypoints.", MAX_WAYPOINTCOUNT);
-				AfxMessageBox(buf);
-			}
 			m_waypointList.DeleteString(i);
 		}
 	};
@@ -611,12 +593,6 @@ CConfigData * CConfigDialog::controlsToConfig()
 		}
 		else
 		{
-			if (i == MAX_DEPOTTRIGGERCOUNT)
-			{
-				char buf[256];
-				sprintf(buf, "You cannot add more than %d depot triggers.", MAX_DEPOTTRIGGERCOUNT);
-				AfxMessageBox(buf);
-			}
 			m_depotEntryList.DeleteString(i);
 		}
 	}
@@ -986,9 +962,12 @@ void CConfigDialog::OnToolAutoattackRemoveWaypoint()
 
 void CConfigDialog::OnToolAutoattackAddWaypoint()
 {
-	// max 1000 waypoints may be defined
-	if (!(m_waypointList.GetCount() < MAX_WAYPOINTCOUNT))
+	if (!(m_waypointList.GetCount() < MAX_WAYPOINTCOUNT)){
+		char buf[256];
+		sprintf(buf, "You cannot add more than %d waypoints.", MAX_WAYPOINTCOUNT);
+		AfxMessageBox(buf);
 		return;
+	}
 	char buf[256];
 	int curX, curY, curZ;
 	m_curX.GetWindowText(buf, 255);
@@ -1012,9 +991,12 @@ void CConfigDialog::OnToolAutoattackAddWaypoint()
 
 void CConfigDialog::OnAddDelay()
 {
-	// max 1000 waypoints may be defined
-	if (!(m_waypointList.GetCount() < MAX_WAYPOINTCOUNT))
+	if (!(m_waypointList.GetCount() < MAX_WAYPOINTCOUNT)){
+		char buf[256];
+		sprintf(buf, "You cannot add more than %d waypoints.", MAX_WAYPOINTCOUNT);
+		AfxMessageBox(buf);
 		return;
+	}
 	char buf[256];
 	m_delay.GetWindowText(buf, 255);
 	int tm = atoi(buf);
@@ -1053,17 +1035,31 @@ void CConfigDialog::OnToolAutoattackAddMonster()
 {
 	char buf[128];
 	m_monster.GetWindowText(buf, 128);
-	if (strlen(buf) && m_monsterList.GetCount() < MAX_MONSTERLISTCOUNT)
+	if (strlen(buf)){
+		if (!(m_monsterList.GetCount() < MAX_MONSTERLISTCOUNT)){
+			char buf[256];
+			sprintf(buf, "You cannot add more than %d monsters to the cavebot attack list.", MAX_MONSTERLISTCOUNT);
+			AfxMessageBox(buf);
+			return;
+		}
 		m_monsterList.SetCurSel(m_monsterList.AddString(buf));
-	m_monster.SetWindowText("");
+		m_monster.SetWindowText("");
+	}
 }
 
 void CConfigDialog::OnDepotEntryadd()
 {
+	if (!(m_depotEntryList.GetCount() < MAX_DEPOTTRIGGERCOUNT)){
+		char buf[256];
+		sprintf(buf, "You cannot add more than %d depot triggers.", MAX_DEPOTTRIGGERCOUNT);
+		AfxMessageBox(buf);
+		return;
+	}
+
 	char buf[128];
-	int depotWhen   = 0;
+	int depotWhen = 0;
 	int depotRemain = 0;
-	int sel         = m_depotItemList.GetCurSel();
+	int sel = m_depotItemList.GetCurSel();
 	char itemName[128];
 
 	m_depotWhen.GetWindowText(buf, 127);
@@ -1167,10 +1163,17 @@ void CConfigDialog::OnToolAutoattackAddIgnore()
 {
 	char buf[128];
 	m_ignore.GetWindowText(buf, 128);
-	if (strlen(buf) && m_ignoreList.GetCount() < MAX_IGNORECOUNT)
+	if (strlen(buf)){
+		if (!(m_ignoreList.GetCount() < MAX_IGNORECOUNT)){
+			char buf[256];
+			sprintf(buf, "You cannot add more than %d ignored monsters to the cavebot list.", MAX_IGNORECOUNT);
+			AfxMessageBox(buf);
+			return;
+		}
 		m_ignoreList.AddString(buf);
-	m_ignore.SetWindowText("");
-	m_ignoreList.SetCurSel(m_ignoreList.GetCount() - 1);
+		m_ignore.SetWindowText("");
+		m_ignoreList.SetCurSel(m_ignoreList.GetCount() - 1);
+	}
 }
 
 void CConfigDialog::OnToolAutoattackRemoveIgnore()
@@ -1240,7 +1243,7 @@ void CConfigDialog::OnLoadFromMinimap()
 					pointTab[totalPointCount++] = point;
 					addedPointCount++;
 					// when point is added for further processing
-					// it will be delete'ed lateron
+					// it will be deleteed later on
 				}
 				else
 				{
@@ -1261,20 +1264,22 @@ void CConfigDialog::OnLoadFromMinimap()
 	{
 		if (pointTab[i])
 		{
-			// this is a point to be added
-			char buf[256];
-			int curX = pointTab[i]->x;
-			int curY = pointTab[i]->y;
-			int curZ = pointTab[i]->type; // hack only: store on type 'z' coord on map
-			sprintf(buf, "(%d,%d,%d)", curX, curY, curZ);
-			m_waypointList.AddString(buf);
+			if (i < MAX_WAYPOINTCOUNT){
+				// this is a point to be added
+				char buf[256];
+				int curX = pointTab[i]->x;
+				int curY = pointTab[i]->y;
+				int curZ = pointTab[i]->type; // hack only: store on type 'z' coord on map
+				sprintf(buf, "(%d,%d,%d)", curX, curY, curZ);
+				m_waypointList.AddString(buf);
+			}
 			addedPointCount++;
 			delete pointTab[i];
 		}
 	}
 
 	if (addedPointCount == 0)
-		AfxMessageBox("No points added. Hint: did you use $ta prefix for the points description?");
+		AfxMessageBox("No points added. Hint: did you specify a valid prefix to find in the point descriptions?");
 }
 
 void CConfigDialog::OnMonsterAttackUp()

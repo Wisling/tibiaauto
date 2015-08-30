@@ -1887,7 +1887,7 @@ int getAttackPriority(CConfigData *config, char *monsterName)
 			break;
 		}
 	}
-	for (monstListNr = 0; monstListNr < config->monsterCount; monstListNr++)
+	for (monstListNr = 0; monstListNr < config->monsterCount && monstListNr < MAX_MONSTERLISTCOUNT; monstListNr++)
 	{
 		if (!_strcmpi(config->monsterList[monstListNr], buf))
 			return config->monsterCount - monstListNr;
@@ -3101,7 +3101,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				if (config->attackAllMonsters && ch->tibiaId >= 0x40001000)
 					creatureList[crNr].listPriority = 1;
 				// scan creature list to find its priority
-				for (monstListNr = 0; monstListNr < min(config->monsterCount, MAX_MONSTERLISTCOUNT); monstListNr++)
+				for (monstListNr = 0; monstListNr < config->monsterCount && monstListNr < MAX_MONSTERLISTCOUNT; monstListNr++)
 				{
 					if (config->monsterList[monstListNr][0] == 0)
 					{
@@ -4337,11 +4337,20 @@ void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue)
 				m_configData->waypointList[i].z = 0;
 			}
 		}
-		// y and z == -1 means delay instead of waypoint
-		sscanf(paramValue, "%d,%d,%d",
-		       &m_configData->waypointList[m_currentWaypointNr].x,
-		       &m_configData->waypointList[m_currentWaypointNr].y,
-		       &m_configData->waypointList[m_currentWaypointNr].z);
+		if (m_currentWaypointNr < MAX_WAYPOINTCOUNT){
+			// y and z == -1 means delay instead of waypoint
+			sscanf(paramValue, "%d,%d,%d",
+				&m_configData->waypointList[m_currentWaypointNr].x,
+				&m_configData->waypointList[m_currentWaypointNr].y,
+				&m_configData->waypointList[m_currentWaypointNr].z);
+		}
+		else {
+			if (m_currentWaypointNr == MAX_WAYPOINTCOUNT){
+				char buf[256];
+				sprintf(buf, "You cannot add more than %d waypoints to the cavebot waypoint list.", MAX_WAYPOINTCOUNT);
+				AfxMessageBox(buf);
+			}
+		}
 		m_currentWaypointNr++;
 	}
 	if (!strcmp(paramName, "attack/monster"))
@@ -4350,7 +4359,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue)
 			m_configData->monsterCount = 0;
 		if (m_currentMonsterNr < MAX_MONSTERLISTCOUNT)
 		{
-			strcpy(m_configData->monsterList[m_currentMonsterNr], paramValue);
+			strcpy(m_configData->monsterList[m_configData->monsterCount], paramValue);
 			m_configData->monsterCount++;
 		}
 		else
@@ -4368,8 +4377,18 @@ void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue)
 	{
 		if (m_currentIgnoreNr == 0)
 			m_configData->ignoreCount = 0;
-		strcpy(m_configData->ignoreList[m_currentIgnoreNr], paramValue);
-		m_configData->ignoreCount++;
+		if (m_currentIgnoreNr < MAX_IGNORECOUNT){
+			strcpy(m_configData->ignoreList[m_configData->ignoreCount], paramValue);
+			m_configData->ignoreCount++;
+		}
+		else {
+			if (m_currentIgnoreNr == MAX_IGNORECOUNT)
+			{
+				char buf[256];
+				sprintf(buf, "You cannot add more than %d monsters to the cavebot ignore list.", MAX_IGNORECOUNT);
+				AfxMessageBox(buf);
+			}
+		}
 		m_currentIgnoreNr++;
 	}
 	if (!strcmp(paramName, "depot/entry"))
@@ -4381,7 +4400,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue)
 				m_configData->depotTrigger[i].itemName[0] = '\0';
 		}
 		if (m_currentDepotEntryNr < MAX_DEPOTTRIGGERCOUNT){
-			sscanf(paramValue, "%d,%d,%63s", &m_configData->depotTrigger[m_currentDepotEntryNr].when, &m_configData->depotTrigger[m_currentDepotEntryNr].remain, m_configData->depotTrigger[m_currentDepotEntryNr].itemName);
+			sscanf(paramValue, "%d,%d,%63[^\t\r\n]", &m_configData->depotTrigger[m_currentDepotEntryNr].when, &m_configData->depotTrigger[m_currentDepotEntryNr].remain, m_configData->depotTrigger[m_currentDepotEntryNr].itemName);
 			if (m_configData->depotTrigger[m_currentDepotEntryNr].itemName[0] == 0){
 				m_currentDepotEntryNr--;
 			}
@@ -4504,17 +4523,17 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName, "general/debug"))
 		sprintf(buf, "%d", m_configData->debug);
 
-	if (!strcmp(paramName, "attack/monster") && m_currentMonsterNr < m_configData->monsterCount)
+	if (!strcmp(paramName, "attack/monster") && m_currentMonsterNr < m_configData->monsterCount && m_currentMonsterNr < MAX_MONSTERLISTCOUNT)
 	{
 		strcpy(buf, m_configData->monsterList[m_currentMonsterNr]);
 		m_currentMonsterNr++;
 	}
-	if (!strcmp(paramName, "attack/ignore") && m_currentIgnoreNr < m_configData->ignoreCount)
+	if (!strcmp(paramName, "attack/ignore") && m_currentIgnoreNr < m_configData->ignoreCount && m_currentIgnoreNr < MAX_IGNORECOUNT)
 	{
 		strcpy(buf, m_configData->ignoreList[m_currentIgnoreNr]);
 		m_currentIgnoreNr++;
 	}
-	if (!strcmp(paramName, "walker/waypoint") && (m_configData->waypointList[m_currentWaypointNr].x || m_configData->waypointList[m_currentWaypointNr].y || m_configData->waypointList[m_currentWaypointNr].z))
+	if (!strcmp(paramName, "walker/waypoint") && (m_configData->waypointList[m_currentWaypointNr].x || m_configData->waypointList[m_currentWaypointNr].y || m_configData->waypointList[m_currentWaypointNr].z) && m_currentWaypointNr < MAX_WAYPOINTCOUNT)
 	{
 		// y and z == -1 means delay
 		sprintf(buf, "%d,%d,%d", m_configData->waypointList[m_currentWaypointNr].x, m_configData->waypointList[m_currentWaypointNr].y, m_configData->waypointList[m_currentWaypointNr].z);
@@ -4550,11 +4569,9 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName)
 		sprintf(buf, "%d", m_configData->lootWhileKill);
 	if (!strcmp(paramName, "attack/dontAttackPlayers"))
 		sprintf(buf, "%d", m_configData->dontAttackPlayers);
-	if (!strcmp(paramName, "loot/other/dropList") && m_currentDroplistEntryNr < m_configData->dropListCount)
+	if (!strcmp(paramName, "loot/other/dropList") && m_currentDroplistEntryNr < m_configData->dropListCount && m_currentDroplistEntryNr < MAX_DROPLISTCOUNT)
 	{
-		if (m_currentDroplistEntryNr < MAX_DROPLISTCOUNT){
-			strcpy(buf, m_configData->dropList[m_currentDroplistEntryNr]);
-		}
+		strcpy(buf, m_configData->dropList[m_currentDroplistEntryNr]);
 		m_currentDroplistEntryNr++;
 	}
 
