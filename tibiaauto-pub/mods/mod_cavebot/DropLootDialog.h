@@ -16,7 +16,7 @@ class CDropLootDialog : public MyDialog
 {
 // Construction
 public:
-	CDropLootDialog(char dropListParam[100][64], int& dropListCountParam, int& dropWhenCapacityLimitReachedParam, int& dropOnlyLootedParam, CWnd* pParent = NULL);
+	CDropLootDialog(char dropListParam[MAX_DROPLISTCOUNT][64], int& dropListCountParam, int& dropWhenCapacityLimitReachedParam, int& dropOnlyLootedParam, CWnd* pParent = NULL);
 
 // Dialog Data
 	//{{AFX_DATA(DropLootDialog)

@@ -233,7 +233,7 @@ private:
 	queue <PathfindParams*> pathfindPoints;
 	CMod_cavebotApp * m_app;
 
-	char virDropList[100][64];
+	char virDropList[MAX_DROPLISTCOUNT][64];
 	int virDropListCount;
 	int virDropWhenCapacityLimitReached;
 	int virDropOnlyLooted;

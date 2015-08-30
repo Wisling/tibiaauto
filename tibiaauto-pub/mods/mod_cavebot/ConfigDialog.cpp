@@ -50,7 +50,7 @@ CConfigDialog::CConfigDialog(CMod_cavebotApp *app, CWnd* pParent /*=NULL*/)
 	m_app                          = app;
 	cavebotFindpathStartedWaypoint = 0;
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < MAX_DROPLISTCOUNT; i++)
 	{
 		virDropList[i][0] = '\0';
 	}
@@ -447,7 +447,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf, "%d", configData->radius);
 	m_radius.SetWindowText(buf);
 
-	memcpy(virDropList, configData->dropList, 64 * 100);
+	memcpy(virDropList, configData->dropList, 64 * MAX_DROPLISTCOUNT);
 	virDropListCount                = configData->dropListCount;
 	virDropWhenCapacityLimitReached = configData->dropWhenCapacityLimitReached;
 	virDropOnlyLooted               = configData->dropOnlyLooted;
@@ -637,7 +637,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_radius.GetWindowText(buf, 127);
 	newConfigData->radius = atoi(buf);
 
-	memcpy(newConfigData->dropList, virDropList, 64 * 100);
+	memcpy(newConfigData->dropList, virDropList, 64 * MAX_DROPLISTCOUNT);
 	newConfigData->dropListCount                = virDropListCount;
 	newConfigData->dropWhenCapacityLimitReached = virDropWhenCapacityLimitReached;
 	newConfigData->dropOnlyLooted               = virDropOnlyLooted;

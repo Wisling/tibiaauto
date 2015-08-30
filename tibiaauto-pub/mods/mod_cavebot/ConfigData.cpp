@@ -36,6 +36,8 @@ CConfigData::CConfigData()
 	for (i = 0; i < MAX_DEPOTTRIGGERCOUNT; i++)
 	{
 		depotTrigger[i].itemName[0] = 0;
+		depotTrigger[i].when = 0;
+		depotTrigger[i].remain = 0;
 	}
 
 	monsterCount              = 0;
@@ -83,7 +85,7 @@ CConfigData::CConfigData()
 	selectedWaypoint          = -1;
 
 	dropNotLooted = 0;
-	for (i = 0; i < 100; i++)
+	for (i = 0; i < MAX_DROPLISTCOUNT; i++)
 	{
 		dropList[i][0] = '\0';
 	}

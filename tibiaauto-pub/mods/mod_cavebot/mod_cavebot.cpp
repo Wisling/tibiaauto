@@ -379,7 +379,7 @@ int depotCheckShouldGo(CConfigData *config)
 	}
 
 	int i;
-	for (i = 0; i < 100 && strlen(config->depotTrigger[i].itemName); i++)
+	for (i = 0; i < MAX_DEPOTTRIGGERCOUNT && strlen(config->depotTrigger[i].itemName); i++)
 	{
 		int objectId = itemProxy.getItemId(config->depotTrigger[i].itemName);
 		int contNr;
@@ -1026,7 +1026,7 @@ void depotDeposit(CConfigData *config)
 	reader.setGlobalVariable("walking_control", "depotwalker");
 	reader.setGlobalVariable("walking_priority", "9");
 	CUIntArray alreadyManagedList; //save itemIDs for later use
-	for (int i = 0; i < 100 && strlen(config->depotTrigger[i].itemName); i++)
+	for (int i = 0; i < MAX_DEPOTTRIGGERCOUNT && strlen(config->depotTrigger[i].itemName); i++)
 	{
 		int objectToMove = itemProxy.getItemId(config->depotTrigger[i].itemName);
 		if (objectToMove)
@@ -4386,10 +4386,24 @@ void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue)
 		if (m_currentDepotEntryNr == 0)
 		{
 			int i;
-			for (i = 0; i < 100; i++)
+			for (i = 0; i < MAX_DEPOTTRIGGERCOUNT; i++)
 				m_configData->depotTrigger[i].itemName[0] = '\0';
 		}
-		sscanf(paramValue, "%d,%d,%[^#]", &m_configData->depotTrigger[m_currentDepotEntryNr].when, &m_configData->depotTrigger[m_currentDepotEntryNr].remain, m_configData->depotTrigger[m_currentDepotEntryNr].itemName);
+		if (m_currentDepotEntryNr < MAX_DEPOTTRIGGERCOUNT){
+			sscanf(paramValue, "%d,%d,%63s", &m_configData->depotTrigger[m_currentDepotEntryNr].when, &m_configData->depotTrigger[m_currentDepotEntryNr].remain, m_configData->depotTrigger[m_currentDepotEntryNr].itemName);
+			if (m_configData->depotTrigger[m_currentDepotEntryNr].itemName[0] == 0){
+				m_currentDepotEntryNr--;
+			}
+		}
+		else
+		{
+			if (m_currentDepotEntryNr == MAX_DEPOTTRIGGERCOUNT)
+			{
+				char buf[256];
+				sprintf(buf, "You cannot add more than %d depot triggers to the depot walker trigger list.", MAX_DEPOTTRIGGERCOUNT);
+				AfxMessageBox(buf);
+			}
+		}
 		m_currentDepotEntryNr++;
 	}
 	if (!strcmp(paramName, "walker/other/standAfterWaypointReached"))
@@ -4401,13 +4415,24 @@ void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue)
 	if (!strcmp(paramName, "walker/other/standAfterWaypointReached"))
 		m_configData->standStill = atoi(paramValue);
 
-
-	if (!strcmp(paramName, "loot/other/dropListCount"))
-		m_configData->dropListCount = atoi(paramValue);
-
-	if (!strcmp(paramName, "loot/other/dropList") && m_currentDroplistEntryNr < m_configData->dropListCount)
+	if (!strcmp(paramName, "loot/other/dropList"))
 	{
-		strcpy(m_configData->dropList[m_currentDroplistEntryNr], paramValue);
+		if (m_currentDroplistEntryNr == 0)
+			m_configData->dropListCount = 0;
+		if (m_currentDroplistEntryNr < MAX_DROPLISTCOUNT)
+		{
+			strcpy(m_configData->dropList[m_currentDroplistEntryNr], paramValue);
+			m_configData->dropListCount++;
+		}
+		else
+		{
+			if (m_currentDroplistEntryNr == MAX_DROPLISTCOUNT)
+			{
+				char buf[256];
+				sprintf(buf, "You cannot add more than %d drop items to the loot drop list.", MAX_DROPLISTCOUNT);
+				AfxMessageBox(buf);
+			}
+		}
 		m_currentDroplistEntryNr++;
 	}
 
@@ -4504,7 +4529,7 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName)
 		sprintf(buf, "%d,%d,%d", m_configData->waypointList[m_currentWaypointNr].x, m_configData->waypointList[m_currentWaypointNr].y, m_configData->waypointList[m_currentWaypointNr].z);
 		m_currentWaypointNr++;
 	}
-	if (!strcmp(paramName, "depot/entry") && strlen(m_configData->depotTrigger[m_currentDepotEntryNr].itemName) && m_currentDepotEntryNr < 100)
+	if (!strcmp(paramName, "depot/entry") && strlen(m_configData->depotTrigger[m_currentDepotEntryNr].itemName) && m_currentDepotEntryNr < MAX_DEPOTTRIGGERCOUNT)
 	{
 		sprintf(buf, "%d,%d,%s", m_configData->depotTrigger[m_currentDepotEntryNr].when, m_configData->depotTrigger[m_currentDepotEntryNr].remain, m_configData->depotTrigger[m_currentDepotEntryNr].itemName);
 		m_currentDepotEntryNr++;
@@ -4534,13 +4559,11 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName)
 		sprintf(buf, "%d", m_configData->lootWhileKill);
 	if (!strcmp(paramName, "attack/dontAttackPlayers"))
 		sprintf(buf, "%d", m_configData->dontAttackPlayers);
-
-	if (!strcmp(paramName, "loot/other/dropListCount"))
-		sprintf(buf, "%d", m_configData->dropListCount);
-
 	if (!strcmp(paramName, "loot/other/dropList") && m_currentDroplistEntryNr < m_configData->dropListCount)
 	{
-		strcpy(buf, m_configData->dropList[m_currentDroplistEntryNr]);
+		if (m_currentDroplistEntryNr < MAX_DROPLISTCOUNT){
+			strcpy(buf, m_configData->dropList[m_currentDroplistEntryNr]);
+		}
 		m_currentDroplistEntryNr++;
 	}
 
@@ -4648,20 +4671,18 @@ char *CMod_cavebotApp::getConfigParamName(int nr)
 	case 42:
 		return "attack/dontAttackPlayers";
 	case 43:
-		return "loot/other/dropListCount";
-	case 44:
 		return "loot/other/dropList";
-	case 45:
+	case 44:
 		return "loot/other/dropWhenCapacityLimitReached";
-	case 46:
+	case 45:
 		return "loot/other/dropOnlyLooted";
-	case 47:
+	case 46:
 		return "depot/depotModPriority";
-	case 48:
+	case 47:
 		return "depot/stopByDepot";
-	case 49:
+	case 48:
 		return "depot/depositLootedItemList";
-	case 50:
+	case 49:
 		return "attack/attackAllMonsters";
 
 	default:
