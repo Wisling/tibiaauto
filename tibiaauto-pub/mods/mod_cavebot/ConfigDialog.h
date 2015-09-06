@@ -187,6 +187,8 @@ public:
 	CComboBox m_depotModPriority;
 	CButton m_stopByDepot;
 	CButton m_depositLootedItemList;
+	CButtonST m_autoaddItemList;
+	CButtonST m_clearEntryList;
 
 	//}}AFX_DATA
 
@@ -237,6 +239,10 @@ private:
 	int virDropListCount;
 	int virDropWhenCapacityLimitReached;
 	int virDropOnlyLooted;
+public:
+	afx_msg void OnBnClickedDepotDepositLootedItemList();
+	afx_msg void OnAutoaddItemList();
+	afx_msg void OnDepotClearEntrylist();
 };
 
 //{{AFX_INSERT_LOCATION}}

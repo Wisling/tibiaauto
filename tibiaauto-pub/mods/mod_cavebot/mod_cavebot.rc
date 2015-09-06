@@ -62,17 +62,17 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOGEX 0, 0, 553, 390
+IDD_CONFIG DIALOGEX 0, 0, 553, 404
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: cave bot"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
-    GROUPBOX        "Debuging",IDC_FRAME_DEBUGGING,281,261,265,61
-    GROUPBOX        "Training",IDC_FRAME_TRAINING,281,181,265,77
+    GROUPBOX        "Debuging",IDC_FRAME_DEBUGGING,281,274,265,61
+    GROUPBOX        "Training",IDC_FRAME_TRAINING,281,194,265,77
     GROUPBOX        "Waypoint Walker",IDC_FRAME_WAYPOINT_WALKER,7,239,268,109
     GROUPBOX        "Monster Attacking",IDC_FRAME_MONSTER_ATTACKING,7,5,268,230
     GROUPBOX        "Corpse Looting",IDC_FRAME_CORPSE_LOOTING,281,7,265,66
-    GROUPBOX        "Depot Walker",IDC_FRAME_DEPOT_WALKER,281,78,265,101
+    GROUPBOX        "Depot Walker",IDC_FRAME_DEPOT_WALKER,281,78,265,114
     LTEXT           "Monsters to attack:",IDC_STATIC,157,13,80,8
     LTEXT           "Waypoints:",IDC_STATIC,157,246,115,8
     LTEXT           "State: not running",IDC_TOOL_AUTOATTACK_STATE_LOOT,291,61,120,8
@@ -80,7 +80,7 @@ BEGIN
     LTEXT           "Waypoint select mode:",IDC_STATIC,139,208,74,12,SS_CENTERIMAGE
     LTEXT           "Map used:",IDC_STATIC,17,306,44,12,SS_CENTERIMAGE
     LTEXT           "Loot capacity limit:",IDC_STATIC,289,18,64,13,SS_CENTERIMAGE
-    CONTROL         "Loot in bags",IDC_TOOL_AUTOATTACK_LOOTINBAGS,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,275,333,55,10
+    CONTROL         "Loot in bags",IDC_TOOL_AUTOATTACK_LOOTINBAGS,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,275,346,55,10
     LTEXT           "State: not running",IDC_TOOL_AUTOATTACK_STATE_WALKER,17,336,157,8
     LTEXT           "State: not running",IDC_TOOL_AUTOATTACK_STATE_ATTACK,17,223,247,8
     LTEXT           "Consider monsters in range:",IDC_STATIC,147,185,88,14,SS_CENTERIMAGE
@@ -88,23 +88,23 @@ BEGIN
     LTEXT           "Suspend after unreachable [s]:",IDC_STATIC,17,175,96,14,SS_CENTERIMAGE
     LTEXT           "Stand still after reaching waypoing for [s]:",IDC_STATIC,17,319,127,14,SS_CENTERIMAGE
     CONTROL         "Gather loot statistics",IDC_GATHER_LOOT_STATS,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,416,18,125,10
-    LTEXT           "State: not running",IDC_TOOL_AUTOATTACK_STATE_DEPOT,289,166,206,8
-    LTEXT           "When:",IDC_STATIC,289,124,22,8
-    LTEXT           "Remain:",IDC_STATIC,338,124,27,8
-    LTEXT           "If you experiance any problems with the cavebot, activate debuging and look for the results in the tibiaauto-debug-cavebot.txt file. If you think you have found a bug please report it on the forum and attach the debug file and your config file.",IDC_STATIC,289,271,247,35
-    LTEXT           "Training weapon:",IDC_STATIC,289,191,56,12,SS_CENTERIMAGE
-    LTEXT           "Fight weapon:",IDC_STATIC,290,208,46,13,SS_CENTERIMAGE
-    LTEXT           "State: not running",IDC_TRAINING_STATE,289,245,152,8
+    LTEXT           "State: not running",IDC_TOOL_AUTOATTACK_STATE_DEPOT,289,179,206,8
+    LTEXT           "When:",IDC_STATIC,289,137,22,8
+    LTEXT           "Remain:",IDC_STATIC,338,137,27,8
+    LTEXT           "If you experiance any problems with the cavebot, activate debuging and look for the results in the tibiaauto-debug-cavebot.txt file. If you think you have found a bug please report it on the forum and attach the debug file and your config file.",IDC_STATIC,289,284,247,35
+    LTEXT           "Training weapon:",IDC_STATIC,289,204,56,12,SS_CENTERIMAGE
+    LTEXT           "Fight weapon:",IDC_STATIC,290,221,46,13,SS_CENTERIMAGE
+    LTEXT           "State: not running",IDC_TRAINING_STATE,289,258,152,8
     LTEXT           "Attack creatures with hp%>:",IDC_STATIC,147,169,88,14,SS_CENTERIMAGE
     LTEXT           "Monsters to ignore:",IDC_STATIC,157,66,106,8
     LTEXT           "Go to depot when cap below:",IDC_STATIC,416,83,94,11,SS_CENTERIMAGE
     LTEXT           "New monsters for attack are selected in the order top-first. Creatures out of the list always have priority.",IDC_STATIC,17,15,106,32
-    LTEXT           "Training Mode:",IDC_STATIC,289,226,46,13,SS_CENTERIMAGE
+    LTEXT           "Training Mode:",IDC_STATIC,289,239,46,13,SS_CENTERIMAGE
     LTEXT           "Radius:",IDC_STATIC,17,270,28,12,SS_CENTERIMAGE
     LTEXT           "Delay(s)",IDC_STATIC,73,271,25,12,SS_CENTERIMAGE
-    LTEXT           "Depot Walker Priority:",IDC_STATIC,289,154,70,8
+    LTEXT           "Depot Walker Priority:",IDC_STATIC,289,167,70,8
     LTEXT           "Cavebot Priority: 1",IDC_STATIC,17,210,58,8
-    PUSHBUTTON      "OK",IDOK,251,369,50,14
+    PUSHBUTTON      "OK",IDOK,251,383,50,14
     EDITTEXT        IDC_TOOL_AUTOATTACK_MONSTER,17,50,98,14,ES_AUTOHSCROLL
     PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_MONSTER,125,49,19,14
     PUSHBUTTON      "<<<",IDC_TOOL_AUTOATTACK_REMOVE_MONSTER,125,20,19,14
@@ -161,32 +161,34 @@ BEGIN
     CONTROL         "Eat from corpse",IDC_EAT_FROM_CORPSE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,481,48,64,10
     CONTROL         "Loot while killing",IDC_LOOTWHILEKILL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,459,60,77,10
     CONTROL         "Drop items instead of depositing",IDC_DEPOT_DROP_INSTEAD_OF_DEPOSIT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,289,90,116,10
-    EDITTEXT        IDC_DEPOT_CAP,513,86,23,14,ES_AUTOHSCROLL
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,289,88,116,10
+    EDITTEXT        IDC_DEPOT_CAP,513,85,23,14,ES_AUTOHSCROLL
     CONTROL         "Deposit Item Config items",IDC_DEPOT_DEPOSIT_LOOTED_ITEM_LIST,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,416,94,95,10
-    COMBOBOX        IDC_DEPOT_ITEMLIST,289,104,89,184,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_DEPOT_WHEN,289,134,40,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_DEPOT_REMAIN,338,134,40,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "<<<",IDC_DEPOT_ENTRYREMOVE,387,102,19,14
-    PUSHBUTTON      ">>>",IDC_DEPOT_ENTRYADD,387,134,19,14
-    LISTBOX         IDC_DEPOT_ENTRYLIST,415,104,121,44,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_DEPOT_MODPRIORITY,360,152,48,80,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_DEPOT_ITEMLIST,289,119,89,184,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_DEPOT_WHEN,289,147,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DEPOT_REMAIN,338,147,40,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "<<<",IDC_DEPOT_ENTRYREMOVE,387,119,19,14
+    PUSHBUTTON      ">>>",IDC_DEPOT_ENTRYADD,387,147,19,14
+    LISTBOX         IDC_DEPOT_ENTRYLIST,415,118,121,44,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_DEPOT_MODPRIORITY,360,165,48,80,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     CONTROL         "Stop by depot when sell/bank",IDC_DEPOT_STOPBYDEPOT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,416,153,111,10
-    COMBOBOX        IDC_TRAINING_WEAPON_TRAIN,351,190,89,184,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_TRAINING_WEAPON_FIGHT,351,209,89,184,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_TRAINING_ATTACK_MODE,352,228,89,59,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Activate training mode",IDC_TRAINING_ACTIVATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,448,190,86,10
-    CONTROL         "Blood hit control",IDC_TRAINING_BLOOD_HIT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,448,200,67,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,416,167,111,10
+    COMBOBOX        IDC_TRAINING_WEAPON_TRAIN,351,203,89,184,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_TRAINING_WEAPON_FIGHT,351,222,89,184,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_TRAINING_ATTACK_MODE,352,241,89,59,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Activate training mode",IDC_TRAINING_ACTIVATE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,448,203,86,10
+    CONTROL         "Blood hit control",IDC_TRAINING_BLOOD_HIT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,448,213,67,10
     CONTROL         "Fight when surrounded",IDC_TRAINING_FIGHT_WHEN_SURROUNDED,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,448,210,88,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,448,223,88,10
     CONTROL         "Fight when alien found",IDC_TRAINING_FIGHT_WHEN_ALIEN,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,448,220,87,10
-    CONTROL         "Enable cavebot debuging",IDC_DEBUG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,289,308,97,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,448,233,87,10
+    CONTROL         "Enable cavebot debuging",IDC_DEBUG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,289,321,97,10
     CONTROL         "Enable PauseBreak key as pause hotkey(or %ta pause)",IDC_PAUSING_ENABLE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,289,325,191,10,WS_EX_TRANSPARENT
-    CONTROL         "Enable cavebot",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,352,539,14
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,289,338,191,10,WS_EX_TRANSPARENT
+    CONTROL         "Enable cavebot",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,365,539,14
+    PUSHBUTTON      "Item Config into List",IDC_DEPOT_AUTOADD_ITEM_LIST,416,105,70,13
+    PUSHBUTTON      "Clear",IDC_DEPOT_CLEAR_ENTRYLIST,499,105,28,13
 END
 
 IDD_SENDSTATS DIALOG 0, 0, 203, 94
@@ -229,7 +231,7 @@ BEGIN
         VERTGUIDE, 448
         VERTGUIDE, 536
         TOPMARGIN, 7
-        BOTTOMMARGIN, 383
+        BOTTOMMARGIN, 397
         HORZGUIDE, 94
         HORZGUIDE, 105
         HORZGUIDE, 109
