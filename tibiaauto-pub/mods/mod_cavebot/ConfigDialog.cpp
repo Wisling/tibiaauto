@@ -150,6 +150,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DEPOT_MODPRIORITY, m_depotModPriority);
 	DDX_Control(pDX, IDC_DEPOT_STOPBYDEPOT, m_stopByDepot);
 	DDX_Control(pDX, IDC_DEPOT_DEPOSIT_LOOTED_ITEM_LIST, m_depositLootedItemList);
+	DDX_Control(pDX, IDC_DEPOT_AUTOADD_ITEM_LIST, m_autoaddItemList);
+	DDX_Control(pDX, IDC_DEPOT_CLEAR_ENTRYLIST, m_clearEntryList);
 	//}}AFX_DATA_MAP
 }
 
@@ -186,6 +188,8 @@ ON_WM_ERASEBKGND()
 ON_WM_DRAWITEM()
 ON_WM_CTLCOLOR()
 //}}AFX_MSG_MAP
+ON_BN_CLICKED(IDC_DEPOT_AUTOADD_ITEM_LIST, &CConfigDialog::OnAutoaddItemList)
+ON_BN_CLICKED(IDC_DEPOT_CLEAR_ENTRYLIST, &CConfigDialog::OnDepotClearEntrylist)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -885,6 +889,8 @@ void CConfigDialog::DoSetButtonSkin()
 	skin.SetButtonSkin(m_MonsterUp);
 	skin.SetButtonSkin(m_AddDelay);
 	skin.SetButtonSkin(m_dropLootList);
+	skin.SetButtonSkin(m_autoaddItemList);
+	skin.SetButtonSkin(m_clearEntryList);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -1425,4 +1431,49 @@ void CConfigDialog::OnDropLootList()
 void CConfigDialog::OnDropLoot()
 {
 	m_dropLootList.EnableWindow(m_dropNotLooted.GetCheck());
+}
+
+
+void CConfigDialog::OnAutoaddItemList()
+{
+	m_depositLootedItemList.SetCheck(false);
+	m_depotEntryList.SetRedraw(false);
+	char buf[128];
+	for (int i = 0; i < CTibiaItem::getLootItemCount(); i++)
+	{
+		char* itemName = CTibiaItem::getLootItemNameAtIndex(i);
+		int index = m_depotItemList.FindStringExact(-1, itemName);
+		if (index != -1)
+		{
+			sprintf(buf, "%s %d->%d", itemName, 999999, 0);
+			m_depotEntryList.SetCurSel(m_depotEntryList.AddString(buf));
+			m_depotItemList.DeleteString(index);
+			m_depotItemList.SetCurSel(0);
+		}
+	}
+	m_depotEntryList.SetRedraw(true);
+}
+
+
+void CConfigDialog::OnDepotClearEntrylist()
+{
+	char itemName[128];
+	char paramString[128];
+	for (int ind = 0; ind < m_depotEntryList.GetCount(); ind++)
+	{
+		m_depotEntryList.GetText(ind, paramString);
+		int i;
+		for (i = strlen(paramString) - 1; i > 0; i--)
+		{
+			if (paramString[i] == ' ')
+			{
+				memcpy(itemName, paramString, i);
+				itemName[i] = '\0';
+				break;
+			}
+		}
+		m_depotItemList.AddString(itemName);
+	}
+	m_depotEntryList.ResetContent();
+	m_depotEntryList.SetCurSel(-1);
 }
