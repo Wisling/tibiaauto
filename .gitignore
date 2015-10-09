@@ -3,6 +3,7 @@
 *.obj
 *.tlog*
 *.log
+*.nsi
 *.sbr
 *.ipch
 *.pch

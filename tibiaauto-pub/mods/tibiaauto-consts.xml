@@ -1,4 +1,4 @@
-<!-- Tibia constants for Tibia 10.81 -->
+<!-- Tibia constants for Tibia 10.82 -->
 <const-definitions>
 	<consts>
 		<!-- item codes -->
@@ -44,10 +44,10 @@
 		<const code="addrOffset" value="0"/>
 		
 		<const code="addrMCInject" value="0"/> <!--D7 3D B7 -->
-		<const code="addrXRay1" value="0x56756C"/> <!-- 07000000????????02000000-->
-		<const code="addrXRay2" value="0x567574"/>
-		<const code="addrFunRevealCName1" value="0x5835A7"/> <!-- replace 1 search (84 C0) 75 (?0E?) and (3B F8) 75 (?34?) -->
-		<const code="addrFunRevealCName2" value="0x5835C5"/> <!-- replace 1 -->
+		<const code="addrXRay1" value="0x56757C"/> <!-- 07000000????????02000000-->
+		<const code="addrXRay2" value="0x567584"/>
+		<const code="addrFunRevealCName1" value="0x583617"/> <!-- replace 1 search (84 C0) 75 (?0E?) and (3B F8) 75 (?34?) -->
+		<const code="addrFunRevealCName2" value="0x583635"/> <!-- replace 1 -->
 		<const code="addrFunRevealCName3" value="0"/>
 		<const code="addrFunRevealCName4" value="0"/>
 		<const code="addrSelfPosX" value="0"/>
@@ -94,14 +94,14 @@
 		<const code="addrHPMax" value="0xAD1024"/>
 		<const code="addrGoX" value="0xAD1028"/>
 		<const code="addrSelfId" value="0xAD102C"/>
-		<const code="addrFps" value="0xB1EDB0"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
-		<const code="addrVocation" value="0xB13BD0"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
-		<const code="addrPacketCount" value="0xAD1E38"/> <!-- cat0 -->
-		<const code="addrFirstCreature" value="0xB2D900"/> <!-- cat1 -->
-		<const code="addrSlotArrow" value="0xB73970"/> <!-- cat2 -->
-		<const code="addrMapStart" value="0xB73ADC"/> <!-- is a pointer to visible map -->
-		<const code="addrFirstContainer" value="0xB79E30"/> <!-- cat2 pointer to cont number -0xC-->
-		<const code="addrCurrentTm" value="0xB7A9C4"/> <!-- cat2 -->
+		<const code="addrFps" value="0xB1E174"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
+		<const code="addrVocation" value="0xB13154"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
+		<const code="addrPacketCount" value="0xAD1DD8"/> <!-- cat0 -->
+		<const code="addrFirstCreature" value="0xB2CC50"/> <!-- cat1 -->
+		<const code="addrSlotArrow" value="0xB72CB8"/> <!-- cat2 count-4 -->
+		<const code="addrMapStart" value="0xB72E24"/> <!-- is a pointer to visible map -->
+		<const code="addrFirstContainer" value="0xB790D4"/> <!-- cat2 pointer to cont number -0xC-->
+		<const code="addrCurrentTm" value="0xB79C24"/> <!-- cat2 -->
 
 		<const code="lengthContainer" value="492"/>
 		<const code="lengthItem" value="32"/>
