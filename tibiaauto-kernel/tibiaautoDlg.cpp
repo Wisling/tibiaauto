@@ -1662,7 +1662,7 @@ void CTibiaautoDlg::reportUsage()
 		int count = CModuleLoader::allModulesCount;
 		int pos;
 		int checksum = tm % 177;
-		fprintf(f, "version=2.62.0 tm=%d,", tm);
+		fprintf(f, "version=2.63.0 tm=%d,", tm);
 		for (pos = 0; pos < count; pos++)
 		{
 			IModuleInterface *mod = CModuleLoader::allModules[pos];
