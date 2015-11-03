@@ -308,6 +308,9 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			itemArray.Add(CTibiaItem::getValueForConst("fluidEmpty"));
 			itemArray.Add(CTibiaItem::getValueForConst("fluidEmptyS"));
 			itemArray.Add(CTibiaItem::getValueForConst("fluidEmptyG"));
+
+            int dropWhenMoreThan = config->flaskMoreThan;
+
 			int contNr;
 			int openContNr  = 0;
 			int openContMax = reader.readOpenContainerCount();
@@ -319,7 +322,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					openContNr++;
 					CTibiaItem *item = CModuleUtil::lookupItem(contNr, &itemArray);
-					if (item->objectId)
+                    if( item->objectId && item->quantity > dropWhenMoreThan )
 					{
 						CPackSender::moveObjectFromContainerToFloor(item->objectId, 0x40 + contNr, item->pos, self->x, self->y, self->z, item->quantity ? item->quantity : 1);
 						Sleep(CModuleUtil::randomFormula(config->sleep, 200, 0));
@@ -498,9 +501,11 @@ void CMod_fluidApp::loadConfigParam(char *paramName, char *paramValue)
 	if (!strcmp(paramName, "drink/manaS"))
 		m_configData->drinkManaS = atoi(paramValue);
 	if (!strcmp(paramName, "drink/manaG"))
-		m_configData->drinkManaG = atoi(paramValue);
-	if (!strcmp(paramName, "other/dropEmpty"))
-		m_configData->dropEmpty = atoi(paramValue);
+        m_configData->drinkManaG = atoi( paramValue );
+    if( !strcmp( paramName, "other/dropEmpty" ) )
+        m_configData->dropEmpty = atoi( paramValue );
+    if( !strcmp( paramName, "other/flaskMoreThan" ) )
+        m_configData->flaskMoreThan = atoi( paramValue );
 	if (!strcmp(paramName, "drink/hpBelowH"))
 		m_configData->hpBelowH = atoi(paramValue);
 	if (!strcmp(paramName, "drink/hpBelow"))
@@ -568,6 +573,8 @@ char *CMod_fluidApp::saveConfigParam(char *paramName)
 		sprintf(buf, "%d", m_configData->drinkManaG);
 	if (!strcmp(paramName, "other/dropEmpty"))
 		sprintf(buf, "%d", m_configData->dropEmpty);
+	if (!strcmp(paramName, "other/flaskMoreThan"))
+		sprintf(buf, "%d", m_configData->flaskMoreThan);
 	if (!strcmp(paramName, "drink/hpBelowH"))
 		sprintf(buf, "%d", m_configData->hpBelowH);
 	if (!strcmp(paramName, "drink/hpBelow"))
