@@ -6,6 +6,8 @@ class CTibiaItem;
 class CTibiaList;
 template <class T> class CTibiaQueue;
 
+#include <memory>
+
 enum StepDirsEnum
 {
 	STEP_NULL = 0,
@@ -34,9 +36,9 @@ public:
 	static int waitForItemChange(int locationAddress, int origItemId);
 	static int waitForItemChange(int contNr, int slotNr, int origItemId, int quantity);
 	static int waitForItemsInsideChange(int contNr, int origItemsCount);
-	static int waitForItemsInsideChange(int contNr, int origItemSlot, int origItemQuantity, int origItemsCount);
-	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted);
-	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted, int qty);
+    static int waitForItemsInsideChange( int contNr, int origItemSlot, int origItemQuantity, int origItemsCount );
+    static CTibiaItem * lookupItem( int containerNr, CUIntArray *itemsAccepted );
+    static CTibiaItem * lookupItem( int containerNr, CUIntArray *itemsAccepted, int qty );
 	static int findFreeSpace(int &x, int &y, int z, int r = 1);
 	static struct point findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation, uint8_t path[15], int radius = 1);
 	static void executeWalk(int startX, int startY, int startZ, uint8_t path[15]);

@@ -128,41 +128,41 @@ int CModuleUtil::randomFormula(int average, int halfrange, int minR, int maxR)
 		return randomFormula(average, halfrange, minR);
 }
 
-CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted, int fluidType)
+CTibiaItem * CModuleUtil::lookupItem( int containerNr, CUIntArray *itemsAccepted, int fluidType )
 {
-	
-	int foodContNr = -1;
 
-	int itemNr;
-	CTibiaItem *retItem = new CTibiaItem();
+    int foodContNr = -1;
 
-	CTibiaContainer *container = CMemReader::getMemReader().readContainer(containerNr);
-	if (container->flagOnOff && container->itemsInside > 0)
-	{
-		for (itemNr = container->itemsInside - 1; itemNr >= 0; itemNr--)
-		{
-			CTibiaItem *item = (CTibiaItem *)container->items.GetAt(itemNr);
+    int itemNr;
+    CTibiaItem *retItem = new CTibiaItem();
 
-			int pos;
-			for (pos = 0; pos < itemsAccepted->GetSize(); pos++)
-			{
-				if ((int)item->objectId == (int)itemsAccepted->GetAt(pos) && item->quantity == fluidType)
-				{
-					// item found!
+    CTibiaContainer *container = CMemReader::getMemReader().readContainer( containerNr );
+    if( container->flagOnOff && container->itemsInside > 0 )
+    {
+        for( itemNr = container->itemsInside - 1; itemNr >= 0; itemNr-- )
+        {
+            CTibiaItem *item = (CTibiaItem *)container->items.GetAt( itemNr );
 
-					retItem->pos      = itemNr;
-					retItem->objectId = item->objectId;
-					retItem->quantity = item->quantity;
+            int pos;
+            for( pos = 0; pos < itemsAccepted->GetSize(); pos++ )
+            {
+                if( (int)item->objectId == (int)itemsAccepted->GetAt( pos ) && item->quantity == fluidType )
+                {
+                    // item found!
 
-					delete container;
-					return retItem;
-				}
-			};
-		};
-	}
+                    retItem->pos = itemNr;
+                    retItem->objectId = item->objectId;
+                    retItem->quantity = item->quantity;
 
-	delete container;
-	return retItem;
+                    delete container;
+                    return retItem;
+                }
+            };
+        };
+    }
+
+    delete container;
+    return retItem;
 }
 
 int CModuleUtil::waitForHpManaIncrease(int oldHp, int oldMana) //max about 0.45s

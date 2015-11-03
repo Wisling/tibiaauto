@@ -61,8 +61,9 @@ public:
 	CComboBox m_customItem1List;
 	CButton m_dropEmpty;
 	CEdit m_sleep;
-	CEdit m_manaBelow;
-	CEdit m_hpBelow;
+    CEdit m_manaBelow;
+    CEdit m_hpBelow;
+    CEdit m_flaskMoreThan;
 	CButton m_drinkMana;
 	CButton m_drinkHp;
 	CButton m_randomCast;
