@@ -322,7 +322,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					openContNr++;
 					CTibiaItem *item = CModuleUtil::lookupItem(contNr, &itemArray);
-                    if( item->objectId && item->quantity > dropWhenMoreThan )
+                    if(item->objectId && item->quantity > dropWhenMoreThan)
 					{
 						CPackSender::moveObjectFromContainerToFloor(item->objectId, 0x40 + contNr, item->pos, self->x, self->y, self->z, item->quantity ? item->quantity : 1);
 						Sleep(CModuleUtil::randomFormula(config->sleep, 200, 0));

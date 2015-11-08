@@ -33,43 +33,43 @@ public:
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
-	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx m_GeneralOptionsFrame;
-	CGroupBoxEx m_ManaRecoveryFrame;
-	CGroupBoxEx m_HealthRecoveryFrame;
-	CEdit m_manaBelowS;
-	CEdit m_manaBelowN;
-	CEdit m_manaBelowG;
-	CEdit m_hpBelowH;
-	CEdit m_hpBelowS;
-	CEdit m_hpBelowN;
-	CEdit m_hpBelowG;
-	CEdit m_hpBelowU;
-	CButton m_drinkManaS;
-	CButton m_drinkManaN;
-	CButton m_drinkManaG;
-	CButton m_drinkHpH;
-	CButton m_drinkHpS;
-	CButton m_drinkHpN;
-	CButton m_drinkHpG;
-	CButton m_drinkHpU;
-	CButton m_customItem2Use;
-	CEdit m_customItem2Below;
-	CComboBox m_customItem2List;
-	CButton m_customItem1Use;
-	CEdit m_customItem1Below;
-	CComboBox m_customItem1List;
-	CButton m_dropEmpty;
-	CEdit m_sleep;
+    enum { IDD = IDD_CONFIG };
+    CGroupBoxEx m_GeneralOptionsFrame;
+    CGroupBoxEx m_ManaRecoveryFrame;
+    CGroupBoxEx m_HealthRecoveryFrame;
+    CEdit m_manaBelowS;
+    CEdit m_manaBelowN;
+    CEdit m_manaBelowG;
+    CEdit m_hpBelowH;
+    CEdit m_hpBelowS;
+    CEdit m_hpBelowN;
+    CEdit m_hpBelowG;
+    CEdit m_hpBelowU;
+    CButton m_drinkManaS;
+    CButton m_drinkManaN;
+    CButton m_drinkManaG;
+    CButton m_drinkHpH;
+    CButton m_drinkHpS;
+    CButton m_drinkHpN;
+    CButton m_drinkHpG;
+    CButton m_drinkHpU;
+    CButton m_customItem2Use;
+    CEdit m_customItem2Below;
+    CComboBox m_customItem2List;
+    CButton m_customItem1Use;
+    CEdit m_customItem1Below;
+    CComboBox m_customItem1List;
+    CButton m_dropEmpty;
+    CEdit m_sleep;
     CEdit m_manaBelow;
     CEdit m_hpBelow;
     CEdit m_flaskMoreThan;
-	CButton m_drinkMana;
-	CButton m_drinkHp;
-	CButton m_randomCast;
-	CButton m_useHotkey;
-	CButtonST m_OK;
-	CButtonST m_enable;
+    CButton m_drinkMana;
+    CButton m_drinkHp;
+    CButton m_randomCast;
+    CButton m_useHotkey;
+    CButtonST m_OK;
+    CButtonST m_enable;
 	//}}AFX_DATA
 
 
