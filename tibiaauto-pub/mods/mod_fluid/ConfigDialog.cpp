@@ -139,7 +139,7 @@ void CConfigDialog::disableControls()
 	m_customItem2Use.EnableWindow(false);
 	m_randomCast.EnableWindow(false);
 	m_useHotkey.EnableWindow(false);
-    m_flaskMoreThan.EnableWindow( false );
+    m_flaskMoreThan.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -174,7 +174,7 @@ void CConfigDialog::enableControls()
 	m_customItem2Use.EnableWindow(true);
 	m_randomCast.EnableWindow(true);
 	m_useHotkey.EnableWindow(true);
-    m_flaskMoreThan.EnableWindow( true );
+    m_flaskMoreThan.EnableWindow(true);
 }
 
 void CConfigDialog::configToControls(CConfigData *configData)

@@ -128,25 +128,24 @@ int CModuleUtil::randomFormula(int average, int halfrange, int minR, int maxR)
 		return randomFormula(average, halfrange, minR);
 }
 
-CTibiaItem * CModuleUtil::lookupItem( int containerNr, CUIntArray *itemsAccepted, int fluidType )
+CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted, int fluidType)
 {
-
     int foodContNr = -1;
 
     int itemNr;
     CTibiaItem *retItem = new CTibiaItem();
 
-    CTibiaContainer *container = CMemReader::getMemReader().readContainer( containerNr );
-    if( container->flagOnOff && container->itemsInside > 0 )
+    CTibiaContainer *container = CMemReader::getMemReader().readContainer(containerNr);
+    if(container->flagOnOff && container->itemsInside > 0)
     {
-        for( itemNr = container->itemsInside - 1; itemNr >= 0; itemNr-- )
+        for(itemNr = container->itemsInside-1; itemNr >= 0; itemNr--)
         {
-            CTibiaItem *item = (CTibiaItem *)container->items.GetAt( itemNr );
+            CTibiaItem *item = (CTibiaItem *)container->items.GetAt(itemNr);
 
             int pos;
-            for( pos = 0; pos < itemsAccepted->GetSize(); pos++ )
+            for(pos = 0; pos < itemsAccepted->GetSize(); pos++)
             {
-                if( (int)item->objectId == (int)itemsAccepted->GetAt( pos ) && item->quantity == fluidType )
+                if((int)item->objectId == (int)itemsAccepted->GetAt(pos)&&item->quantity==fluidType)
                 {
                     // item found!
 
