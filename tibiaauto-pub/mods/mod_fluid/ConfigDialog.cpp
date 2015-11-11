@@ -59,7 +59,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_SLEEP, m_sleep);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_MANABELOW, m_manaBelow);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HPBELOW, m_hpBelow);
-    DDX_Control( pDX, IDC_FLASKMORETHAN, m_flaskMoreThan );
+	DDX_Control(pDX, IDC_FLASKMORETHAN, m_flaskMoreThan);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKMANA, m_drinkMana);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKHP, m_drinkHp);
 	DDX_Control(pDX, IDC_TOOL_RANDOMCAST, m_randomCast);
@@ -139,7 +139,7 @@ void CConfigDialog::disableControls()
 	m_customItem2Use.EnableWindow(false);
 	m_randomCast.EnableWindow(false);
 	m_useHotkey.EnableWindow(false);
-    m_flaskMoreThan.EnableWindow(false);
+	m_flaskMoreThan.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -174,12 +174,11 @@ void CConfigDialog::enableControls()
 	m_customItem2Use.EnableWindow(true);
 	m_randomCast.EnableWindow(true);
 	m_useHotkey.EnableWindow(true);
-    m_flaskMoreThan.EnableWindow(true);
+	m_flaskMoreThan.EnableWindow(true);
 }
 
 void CConfigDialog::configToControls(CConfigData *configData)
 {
-	
 	char buf[128];
 
 	m_dropEmpty.SetCheck(configData->dropEmpty);
@@ -202,11 +201,11 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf, "%d", configData->hpBelowS);
 	m_hpBelowS.SetWindowText(buf);
 	sprintf(buf, "%d", configData->hpBelowG);
-    m_hpBelowG.SetWindowText(buf);
-    sprintf(buf, "%d", configData->hpBelowU);
-    m_hpBelowU.SetWindowText(buf);
-    sprintf(buf, "%d", configData->flaskMoreThan);
-    m_flaskMoreThan.SetWindowText(buf);
+	m_hpBelowG.SetWindowText(buf);
+	sprintf(buf, "%d", configData->hpBelowU);
+	m_hpBelowU.SetWindowText(buf);
+	sprintf(buf, "%d", configData->flaskMoreThan);
+	m_flaskMoreThan.SetWindowText(buf);
 	m_drinkMana.SetCheck(configData->drinkMana);
 	m_drinkManaN.SetCheck(configData->drinkManaN);
 	m_drinkManaS.SetCheck(configData->drinkManaS);
@@ -261,21 +260,21 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_hpBelowS.GetWindowText(buf, 127);
 	newConfigData->hpBelowS = atoi(buf);
 	m_hpBelowG.GetWindowText(buf, 127);
-    newConfigData->hpBelowG = atoi(buf);
-    m_hpBelowU.GetWindowText(buf, 127);
-    newConfigData->hpBelowU = atoi(buf);
+	newConfigData->hpBelowG = atoi(buf);
+	m_hpBelowU.GetWindowText(buf, 127);
+	newConfigData->hpBelowU = atoi(buf);
 	m_flaskMoreThan.GetWindowText(buf, 127);
 	newConfigData->flaskMoreThan = atoi(buf);
-	newConfigData->drinkMana  = m_drinkMana.GetCheck();
-	newConfigData->drinkManaN = m_drinkManaN.GetCheck();
-	newConfigData->drinkManaS = m_drinkManaS.GetCheck();
-	newConfigData->drinkManaG = m_drinkManaG.GetCheck();
-	newConfigData->drinkHpH   = m_drinkHpH.GetCheck();
-	newConfigData->drinkHp    = m_drinkHp.GetCheck();
-	newConfigData->drinkHpN   = m_drinkHpN.GetCheck();
-	newConfigData->drinkHpS   = m_drinkHpS.GetCheck();
-	newConfigData->drinkHpG   = m_drinkHpG.GetCheck();
-	newConfigData->drinkHpU   = m_drinkHpU.GetCheck();
+	newConfigData->drinkMana     = m_drinkMana.GetCheck();
+	newConfigData->drinkManaN    = m_drinkManaN.GetCheck();
+	newConfigData->drinkManaS    = m_drinkManaS.GetCheck();
+	newConfigData->drinkManaG    = m_drinkManaG.GetCheck();
+	newConfigData->drinkHpH      = m_drinkHpH.GetCheck();
+	newConfigData->drinkHp       = m_drinkHp.GetCheck();
+	newConfigData->drinkHpN      = m_drinkHpN.GetCheck();
+	newConfigData->drinkHpS      = m_drinkHpS.GetCheck();
+	newConfigData->drinkHpG      = m_drinkHpG.GetCheck();
+	newConfigData->drinkHpU      = m_drinkHpU.GetCheck();
 
 	newConfigData->customItem1Use = m_customItem1Use.GetCheck();
 	m_customItem1Below.GetWindowText(buf, 127);
@@ -327,8 +326,6 @@ void CConfigDialog::activateEnableButton(int enable)
 
 void CConfigDialog::reloadCustomItems()
 {
-	
-
 	while (m_customItem1List.GetCount() > 0)
 		m_customItem1List.DeleteString(0);
 	while (m_customItem1List.GetCount() > 0)
