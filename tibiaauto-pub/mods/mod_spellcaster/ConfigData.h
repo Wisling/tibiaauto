@@ -5,8 +5,6 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include <functional>
-
 struct Player {
 	char name[64];
 	int maxHP;
@@ -21,18 +19,6 @@ struct TimedSpell {
 	time_t triggerTime;
 	int randMana;
 	bool usePotions;
-};
-
-template<typename Comparator>
-struct Rule
-{
-    int value;
-    Comparator compare;
-
-    bool passed(int valueToCompare)
-    {
-        return compare(value, valueToCompare);
-    }
 };
 
 class CConfigData
