@@ -5,7 +5,6 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-
 struct Player {
 	char name[64];
 	int maxHP;
