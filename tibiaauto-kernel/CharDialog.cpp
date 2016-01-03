@@ -320,7 +320,7 @@ void CCharDialog::OnToolInjectmc()
 							fseek(fout, tibiacontents_ind - tibiacontents, SEEK_SET);
 							fwrite(&val, 1, 1, fout);
 							char buf[256];
-							sprintf(buf, "This file has been successfully patched for multi-clienting.\nA backup has been saved in the same directory.");
+							sprintf(buf, "Success!\n\nThis file has been successfully patched for multi-clienting.\nA backup has been saved in the same directory.");
 							AfxMessageBox(buf);
 						}
 						else
