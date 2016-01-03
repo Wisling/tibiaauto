@@ -59,7 +59,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_SLEEP, m_sleep);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_MANABELOW, m_manaBelow);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HPBELOW, m_hpBelow);
-	DDX_Control(pDX, IDC_FLASKMORETHAN, m_flaskMoreThan);
+	DDX_Control(pDX, IDC_TOOL_DROPFLASKSAT, m_dropFlasksAt);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKMANA, m_drinkMana);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKHP, m_drinkHp);
 	DDX_Control(pDX, IDC_TOOL_RANDOMCAST, m_randomCast);
@@ -76,6 +76,7 @@ ON_WM_TIMER()
 ON_WM_CTLCOLOR()
 ON_WM_ERASEBKGND()
 //}}AFX_MSG_MAP
+ON_BN_CLICKED(IDC_TOOL_FLUIDDRINKER_DROPEMPTY, &CConfigDialog::OnBnClickedToolFluiddrinkerDropempty)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -139,7 +140,7 @@ void CConfigDialog::disableControls()
 	m_customItem2Use.EnableWindow(false);
 	m_randomCast.EnableWindow(false);
 	m_useHotkey.EnableWindow(false);
-	m_flaskMoreThan.EnableWindow(false);
+	m_dropFlasksAt.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -174,7 +175,7 @@ void CConfigDialog::enableControls()
 	m_customItem2Use.EnableWindow(true);
 	m_randomCast.EnableWindow(true);
 	m_useHotkey.EnableWindow(true);
-	m_flaskMoreThan.EnableWindow(true);
+	m_dropFlasksAt.EnableWindow(true);
 }
 
 void CConfigDialog::configToControls(CConfigData *configData)
@@ -204,8 +205,8 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_hpBelowG.SetWindowText(buf);
 	sprintf(buf, "%d", configData->hpBelowU);
 	m_hpBelowU.SetWindowText(buf);
-	sprintf(buf, "%d", configData->flaskMoreThan);
-	m_flaskMoreThan.SetWindowText(buf);
+	sprintf(buf, "%d", configData->dropFlasksAt);
+	m_dropFlasksAt.SetWindowText(buf);
 	m_drinkMana.SetCheck(configData->drinkMana);
 	m_drinkManaN.SetCheck(configData->drinkManaN);
 	m_drinkManaS.SetCheck(configData->drinkManaS);
@@ -263,8 +264,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->hpBelowG = atoi(buf);
 	m_hpBelowU.GetWindowText(buf, 127);
 	newConfigData->hpBelowU = atoi(buf);
-	m_flaskMoreThan.GetWindowText(buf, 127);
-	newConfigData->flaskMoreThan = atoi(buf);
+	m_dropFlasksAt.GetWindowText(buf, 127);
+	newConfigData->dropFlasksAt = atoi(buf);
 	newConfigData->drinkMana     = m_drinkMana.GetCheck();
 	newConfigData->drinkManaN    = m_drinkManaN.GetCheck();
 	newConfigData->drinkManaS    = m_drinkManaS.GetCheck();
@@ -345,4 +346,10 @@ void CConfigDialog::reloadCustomItems()
 	}
 	m_customItem1List.SetCurSel(0);
 	m_customItem2List.SetCurSel(0);
+}
+
+
+void CConfigDialog::OnBnClickedToolFluiddrinkerDropempty()
+{
+	// TODO: Add your control notification handler code here
 }
