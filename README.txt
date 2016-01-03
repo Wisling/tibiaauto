@@ -1,4 +1,6 @@
-2.63.0 10.8.2015
+2.64.0 1.2.2015
 Enhancements:
- Tibia Auto: Updated for Tibia 10.82
+ Tibia Auto: Updated for Tibia 10.90
+ tiles.xml: Updated for Tibia 10.90
+ Fluid Drinker: Drops flasks in groups instead of one at a time
 Defects:
