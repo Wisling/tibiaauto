@@ -1580,15 +1580,15 @@ int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char*
 	Proto_fun fun = (Proto_fun)baseAdjust(funAddr_tibiaPrintText);
 
 	__asm {
-		push v9 //[ebp + 0x28]
-		mov ecx, v8 //[ebp + 0x24]
-		push v7 //[ebp + 0x20]
-		push v6 //[ebp + 0x1C]
-		push v5 //[ebp + 0x18]
-		push v4 //[ebp + 0x14]
-		push v3 //[ebp + 0x10]
-		push v2 //[ebp + 0x0C]
-		push v1 //[ebp + 0x08]
+		push v9 //[ebp + 0x20]
+		push v8 //[ebp + 0x1C]
+		push v7 //[ebp + 0x18]
+		push v6 //[ebp + 0x14]
+		push v5 //[ebp + 0x10]
+		push v4 //[ebp + 0x0C]
+		push v3 //[ebp + 0x08]
+		mov edx, v2
+		mov ecx, v1
 		call fun
 		add esp, 0x20
 		mov retvar, eax
@@ -1626,8 +1626,6 @@ __declspec(naked) void INmyPrintText() //(int v1, int v2, int v3, int v4, int v5
 	__asm {
 		push ebp
 		mov ebp, esp
-		    push [ebp + 0x24]
-		push ecx
 		push [ebp + 0x20]
 		push [ebp + 0x1C]
 		push [ebp + 0x18]
@@ -1635,6 +1633,8 @@ __declspec(naked) void INmyPrintText() //(int v1, int v2, int v3, int v4, int v5
 		push [ebp + 0x10]
 		push [ebp + 0x0C]
 		push [ebp + 0x08]
+		push edx
+		push ecx
 		call myPrintText
 		leave
 		ret
@@ -2281,6 +2281,8 @@ void InitialisePlayerInfoHack()
 	DWORD procId    = GetCurrentProcessId();
 	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
 
+	trapFun(dwHandle, baseAdjust(callAddr_PrintText03 + 1), (unsigned int)INmyPrintText);
+
 	// lookup: find string In(FontNumber,1 [6th match is in the middle of the function]
 
 	trapFun(dwHandle, baseAdjust(callAddr_PlayerNameText01 + 1), (unsigned int)INmyPlayerNameText);
@@ -2637,9 +2639,9 @@ void ParseIPCMessage(CIpcMessage mess)
 	}
 	case 307:
 	{
-		/*CString buf;
-		   buf.Format("(%d, %d) rgb(%d, %d, %d) '%s'", mess.data[0], mess.data[1], mess.data[2], mess.data[3], mess.data[4], mess.payload);
-		   AfxMessageBox(buf);*/
+		//CString buf;
+		//buf.Format("(%d, %d) rgb(%d, %d, %d) %d '%s'", mess.payload[0], mess.payload[4], mess.payload[8], mess.payload[12], mess.payload[16], mess.payload[20], mess.payload+24);
+		//AfxMessageBox(buf);
 		int x, y, red, green, blue, messLen;
 		char message[1000];
 		memcpy(&x, mess.payload, sizeof(int));
@@ -2658,12 +2660,13 @@ void ParseIPCMessage(CIpcMessage mess)
 			//AfxMessageBox(buf);
 			if (HUDisplay[loop].pos.x == x && HUDisplay[loop].pos.y == y)
 			{
-				if (message != "")          // Update message on screen at point (mess.data[0], mess.data[1]):
+				if (messLen != 0)          // Update message on screen at point (mess.data[0], mess.data[1]):
 				{
 					HUDisplay[loop].redColor   = red;
 					HUDisplay[loop].greenColor = green;
 					HUDisplay[loop].blueColor  = blue;
 					memcpy(HUDisplay[loop].message, message, messLen);
+					HUDisplay[loop].message[messLen] = '\0';
 					//AfxMessageBox("update");
 					actionComplete = true;
 					break;
