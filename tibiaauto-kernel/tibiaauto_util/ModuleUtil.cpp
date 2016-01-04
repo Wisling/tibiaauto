@@ -80,8 +80,8 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 					delete container;
 					return retItem;
 				}
-			};
-		};
+			}
+		}
 	}
 
 	delete container;
@@ -130,7 +130,6 @@ int CModuleUtil::randomFormula(int average, int halfrange, int minR, int maxR)
 
 CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted, int fluidType)
 {
-	
 	int foodContNr = -1;
 
 	int itemNr;
@@ -157,8 +156,8 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 					delete container;
 					return retItem;
 				}
-			};
-		};
+			}
+		}
 	}
 
 	delete container;
@@ -167,7 +166,6 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 
 int CModuleUtil::waitForHpManaIncrease(int oldHp, int oldMana) //max about 0.45s
 {
-	
 	int t;
 	for (t = 0; t < 15; t++)
 	{
@@ -185,7 +183,6 @@ int CModuleUtil::waitForHpManaIncrease(int oldHp, int oldMana) //max about 0.45s
 
 int CModuleUtil::waitForManaDecrease(int oldMana) //max about 0.45s
 {
-	
 	int t;
 	for (t = 0; t < 15; t++)
 	{
@@ -203,7 +200,6 @@ int CModuleUtil::waitForManaDecrease(int oldMana) //max about 0.45s
 
 int CModuleUtil::waitForCapsChange(float origCaps)//takes about a max of .6 secs for NPC purchases and up to .9 for dropping an object
 {
-	
 	int t;
 	for (t = 0; t < 30; t++)
 	{
@@ -221,7 +217,6 @@ int CModuleUtil::waitForCapsChange(float origCaps)//takes about a max of .6 secs
 
 int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemsCount)//takes about a max of .6 secs
 {
-	
 	int t;
 	for (t = 0; t < 30; t++)
 	{
@@ -239,7 +234,6 @@ int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemsCount)//takes
 
 int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemSlot, int origItemQuantity, int origItemsCount)//takes about a max of .5 secs
 {
-	
 	int t;
 	for (t = 0; t < 30; t++)
 	{
@@ -263,7 +257,6 @@ int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemSlot, int orig
 
 int CModuleUtil::waitForItemChange(int locationAddress, int origItemId)//takes about a max of .6 secs
 {
-	
 	int t;
 	for (t = 0; t < 30; t++)
 	{
@@ -281,7 +274,6 @@ int CModuleUtil::waitForItemChange(int locationAddress, int origItemId)//takes a
 
 int CModuleUtil::waitForItemChange(int contNr, int slotNr, int origItemId, int quantity)//takes about a max of .5 secs
 {
-	
 	int t;
 	for (t = 0; t < 30; t++)
 	{
@@ -538,7 +530,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 #endif // ifdef MAPDEBUG
 
 	memset(path, 0x00, sizeof(path[0]) * 15);
-	int closerEnd = 0;
+	int closerEnd       = 0;
 	CTibiaMap &tibiaMap = CTibiaMap::getTibiaMap();
 
 	if (endSpecialLocation || !radius)
@@ -789,10 +781,10 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		}
 
 		//prevents the adding of squares around current square as possible next points except when standing on it(MAP_POINT_TYPE_BLOCK goes nowhere)
-		if ((currentPointType == MAP_POINT_TYPE_OPEN_HOLE || 
-			currentPointType == MAP_POINT_TYPE_STAIRS ||
-			currentPointType == MAP_POINT_TYPE_TELEPORT ||
-			currentPointType == MAP_POINT_TYPE_BLOCK) && !(startX == x && startY == y && startZ == z))
+		if ((currentPointType == MAP_POINT_TYPE_OPEN_HOLE ||
+		     currentPointType == MAP_POINT_TYPE_STAIRS ||
+		     currentPointType == MAP_POINT_TYPE_TELEPORT ||
+		     currentPointType == MAP_POINT_TYPE_BLOCK) && !(startX == x && startY == y && startZ == z))
 			forcedLevelChange = 1;
 
 		if (abs(x - px) > 1 || abs(y - py) > 1 || z != pz)
@@ -898,7 +890,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				}
 				return point(0, 0, 0);
 			}
-		};
+		}
+		;
 		pathTab[pathPos].x = startX;
 		pathTab[pathPos].y = startY;
 		pathTab[pathPos].z = startZ;
@@ -940,17 +933,17 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				path[pos] = STEP_EAST;
 			else if (curX - 1 == nextX && curY == nextY)
 				path[pos] = STEP_WEST;
-			else if(curX == nextX && curY + 1 == nextY)
+			else if (curX == nextX && curY + 1 == nextY)
 				path[pos] = STEP_SOUTH;
-			else if(curX == nextX && curY - 1 == nextY)
+			else if (curX == nextX && curY - 1 == nextY)
 				path[pos] = STEP_NORTH;
-			else if(curX + 1 == nextX && curY + 1 == nextY)
-				path[pos] = STEP_SOUTHEAST; 
-			else if(curX - 1 == nextX && curY + 1 == nextY)
+			else if (curX + 1 == nextX && curY + 1 == nextY)
+				path[pos] = STEP_SOUTHEAST;
+			else if (curX - 1 == nextX && curY + 1 == nextY)
 				path[pos] = STEP_SOUTHWEST;
-			else if(curX + 1 == nextX && curY - 1 == nextY)
+			else if (curX + 1 == nextX && curY - 1 == nextY)
 				path[pos] = STEP_NORTHEAST;
-			else if(curX - 1 == nextX && curY - 1 == nextY)
+			else if (curX - 1 == nextX && curY - 1 == nextY)
 				path[pos] = STEP_NORTHWEST;
 
 			if (curZ - 1 == nextZ)
@@ -1042,7 +1035,6 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 int CModuleUtil::waitForOpenContainer(int contNr, int open)//max about 0.7s
 {
-	
 	int t;
 	for (t = 0; t < 30; t++)
 	{
@@ -1390,7 +1382,6 @@ int CModuleUtil::waitForCreatureDisappear(int x, int y, int tibiaId)
 
 int CModuleUtil::waitForCreatureDisappear(int x, int y, int tibiaId, int &xReturn, int &yReturn)
 {
-	
 	int iterCount = 20;
 	while (iterCount-- > 0)
 	{
@@ -1434,11 +1425,11 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, uint8_t path[1
 	static int lastExecuteWalkTm = 0; // indicates when last a "real" walk was executed
 	static int lastStartChangeTm = 0; // indicates when start point was changed for the last time
 	//static int movedDiagonally=0; // will make delay to resend walk 3x longer
-	static int lastEndX   = 0, lastEndY = 0, lastEndZ = 0;
-	static int lastStartX = 0, lastStartY = 0, lastStartZ = 0;
+	static int lastEndX         = 0, lastEndY = 0, lastEndZ = 0;
+	static int lastStartX       = 0, lastStartY = 0, lastStartZ = 0;
 	CMemConstData* memConstData = &CMemReader::getMemReader();
-	CTibiaCharacter *self      = CMemReader::getMemReader().readSelfCharacter();
-	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
+	CTibiaCharacter *self       = CMemReader::getMemReader().readSelfCharacter();
+	CTibiaMap& tibiaMap         = CTibiaMap::getTibiaMap();
 
 	int currentTm = CMemReader::getMemReader().getCurrentTm();
 	int pathSize;
@@ -2061,8 +2052,8 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, uint8_t path[1
 		//CMemReader::getMemReader().getMemIntValue(CTibiaItem::getValueForConst("addrTilesToGo"))==0
 		//time to walk 1 sqm is inverse to the speed, double speed== half the time
 		//int maxTileDelay=(int)(tileSpeed*(movedDiagonally?3:1)*1000/self->walkSpeed)+600;
-		int pathLen = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrTilesToGo"));
-		int pathInd = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrCurrentTileToGo"));
+		int pathLen         = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrTilesToGo"));
+		int pathInd         = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrCurrentTileToGo"));
 		bool stoppedWalking = self->moving == 0 && (pathLen == pathInd || pathLen == 0);
 
 		//int pathStartAddr=CMemReader::getMemReader().m_memAddressPathToGo;
@@ -2195,7 +2186,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, uint8_t path[1
 
 void CModuleUtil::prepareProhPointList()
 {
-	CMemReader& reader = CMemReader::getMemReader();
+	CMemReader& reader    = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	// prepare prohPoint list
 	CTibiaMap::getTibiaMap().prohPointClear();

@@ -6,20 +6,22 @@ class CTibiaItem;
 class CTibiaList;
 template <class T> class CTibiaQueue;
 
+#include <memory>
+
 enum StepDirsEnum
 {
-	STEP_NULL = 0,
-	STEP_EAST = 1,
-	STEP_NORTHEAST = 2,
-	STEP_NORTH = 3,
-	STEP_NORTHWEST = 4,
-	STEP_WEST = 5,
-	STEP_SOUTHWEST = 6,
-	STEP_SOUTH = 7,
-	STEP_SOUTHEAST = 8,
-	STEP_UPSTAIRS = 0x10,
+	STEP_NULL       = 0,
+	STEP_EAST       = 1,
+	STEP_NORTHEAST  = 2,
+	STEP_NORTH      = 3,
+	STEP_NORTHWEST  = 4,
+	STEP_WEST       = 5,
+	STEP_SOUTHWEST  = 6,
+	STEP_SOUTH      = 7,
+	STEP_SOUTHEAST  = 8,
+	STEP_UPSTAIRS   = 0x10,
 	STEP_DOWNSTAIRS = 0x20,
-	STEP_TELEPORT = 0x40
+	STEP_TELEPORT   = 0x40
 };
 
 class TIBIAAUTOUTIL_API CModuleUtil
@@ -69,4 +71,3 @@ private:
 	CModuleUtil();
 	virtual ~CModuleUtil();
 };
-

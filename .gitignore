@@ -32,6 +32,7 @@
 *.idb
 *.tlog*
 *.log
+*.nsi
 *.sbr
 *.ipch
 *.sbr
