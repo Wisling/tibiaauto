@@ -30,6 +30,7 @@ int myShouldParseRecv();
 #define TA_MESSAGE_QLEN 10
 #define MAX_CREATUREINFO 1300
 #define MAX_PAYLOAD_LEN 1024
+#define MAX_PRINTEXT_LEN 128
 
 #ifndef NDEBUG
 const bool OUTPUT_DEBUG_INFO = 1;
@@ -113,7 +114,7 @@ struct HUD {
 	int redColor;
 	int blueColor;
 	int greenColor;
-	char message[128];
+	string message;
 public:
 	HUD()
 	{
@@ -1614,8 +1615,16 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 	vector<HUD>::size_type i;
 	for (i = 0; i != vecHUD.size(); i++)
 	{
-		if (vecHUD[i].pos.x && vecHUD[i].pos.y && vecHUD[i].message != NULL && vecHUD[i].message[0] != '\0')
-			OUTmyPrintText(1, vecHUD[i].pos.x, vecHUD[i].pos.y, nFont, vecHUD[i].redColor, vecHUD[i].greenColor, vecHUD[i].blueColor, vecHUD[i].message, 0);
+		if (vecHUD[i].pos.x && vecHUD[i].pos.y && !(vecHUD[i].message.empty()) && vecHUD[i].message[0] != '\0')
+		{
+			char * tmpCharArray = new char[vecHUD[i].message.size() + 1];
+			copy(vecHUD[i].message.begin(), vecHUD[i].message.end(), tmpCharArray);
+			tmpCharArray[vecHUD[i].message.size()] = '\0';
+
+			OUTmyPrintText(1, vecHUD[i].pos.x, vecHUD[i].pos.y, nFont, vecHUD[i].redColor, vecHUD[i].greenColor, vecHUD[i].blueColor, tmpCharArray, 0);
+			delete[] tmpCharArray;
+
+		}
 	}
 	return ret;
 }
@@ -2643,14 +2652,15 @@ void ParseIPCMessage(CIpcMessage mess)
 		//buf.Format("(%d, %d) rgb(%d, %d, %d) %d '%s'", mess.payload[0], mess.payload[4], mess.payload[8], mess.payload[12], mess.payload[16], mess.payload[20], mess.payload+24);
 		//AfxMessageBox(buf);
 		int x, y, red, green, blue, messLen;
-		char message[1000];
+		
 		memcpy(&x, mess.payload, sizeof(int));
 		memcpy(&y, mess.payload + 4, sizeof(int));
 		memcpy(&red, mess.payload + 8, sizeof(int));
 		memcpy(&green, mess.payload + 12, sizeof(int));
 		memcpy(&blue, mess.payload + 16, sizeof(int));
 		memcpy(&messLen, mess.payload + 20, sizeof(int));
-		memcpy(&message, mess.payload + 24, messLen + 1);
+
+		string message(mess.payload + 24, messLen);
 
 		bool actionComplete = false;
 		vector<HUD>::size_type i;
@@ -2665,8 +2675,7 @@ void ParseIPCMessage(CIpcMessage mess)
 					vecHUD[i].redColor = red;
 					vecHUD[i].greenColor = green;
 					vecHUD[i].blueColor = blue;
-					memcpy(vecHUD[i].message, message, messLen);
-					vecHUD[i].message[messLen] = '\0';
+					vecHUD[i].message = message;
 					//AfxMessageBox("update");
 					actionComplete = true;
 					break;
@@ -2678,7 +2687,7 @@ void ParseIPCMessage(CIpcMessage mess)
 					vecHUD[i].redColor = 0;
 					vecHUD[i].greenColor = 0;
 					vecHUD[i].blueColor = 0;
-					vecHUD[i].message[0] = '\0';
+					vecHUD[i].message.clear();
 					vecHUD.erase(vecHUD.begin() + i);
 					//AfxMessageBox("delete");
 					actionComplete = true;
@@ -2686,7 +2695,7 @@ void ParseIPCMessage(CIpcMessage mess)
 				}
 			}
 		}
-		if (!actionComplete)           // Add a message to the screen if there is room to store it and no delete or update action took place
+		if (!actionComplete && messLen < MAX_PRINTEXT_LEN)           // Add a message to the screen if there is room to store it and no delete or update action took place
 		{
 			HUD tmpHUD;			
 			tmpHUD.pos.x = x;
@@ -2694,7 +2703,7 @@ void ParseIPCMessage(CIpcMessage mess)
 			tmpHUD.redColor = red;
 			tmpHUD.greenColor = green;
 			tmpHUD.blueColor = blue;
-			memcpy(tmpHUD.message, message, messLen);
+			tmpHUD.message = message;
 			vecHUD.push_back(tmpHUD);
 			//AfxMessageBox("add");
 		}
