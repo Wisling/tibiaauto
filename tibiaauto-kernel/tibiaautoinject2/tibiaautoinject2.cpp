@@ -2662,7 +2662,7 @@ void ParseIPCMessage(CIpcMessage mess)
 			//AfxMessageBox(buf);
 			if (vecHUD[i].pos.x == x && vecHUD[i].pos.y == y)
 			{
-				if (messLen != 0)          // Update message on screen at point (mess.data[0], mess.data[1]):
+				if (messLen != 0 && messLen < MAX_PRINTEXT_LEN)          // Update message on screen at point (mess.data[0], mess.data[1]):
 				{
 					vecHUD[i].redColor = red;
 					vecHUD[i].greenColor = green;
