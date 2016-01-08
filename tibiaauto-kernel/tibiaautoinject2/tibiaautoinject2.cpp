@@ -1616,15 +1616,7 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 	for (i = 0; i != vecHUD.size(); i++)
 	{
 		if (vecHUD[i].pos.x && vecHUD[i].pos.y && !(vecHUD[i].message.empty()) && vecHUD[i].message[0] != '\0')
-		{
-			char * tmpCharArray = new char[vecHUD[i].message.size() + 1];
-			copy(vecHUD[i].message.begin(), vecHUD[i].message.end(), tmpCharArray);
-			tmpCharArray[vecHUD[i].message.size()] = '\0';
-
-			OUTmyPrintText(1, vecHUD[i].pos.x, vecHUD[i].pos.y, nFont, vecHUD[i].redColor, vecHUD[i].greenColor, vecHUD[i].blueColor, tmpCharArray, 0);
-			delete[] tmpCharArray;
-
-		}
+			OUTmyPrintText(1, vecHUD[i].pos.x, vecHUD[i].pos.y, nFont, vecHUD[i].redColor, vecHUD[i].greenColor, vecHUD[i].blueColor, const_cast<char*>(vecHUD[i].message.c_str()), 0);
 	}
 	return ret;
 }
