@@ -1571,6 +1571,58 @@ void InitialiseCreatureInfo()
 	}
 }
 
+int OUTmyDrawRect(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9)
+{
+	int retvar;
+	typedef void(*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+
+	Proto_fun fun = (Proto_fun)baseAdjust(0x5D6520);
+
+	__asm {
+			push v9
+			push v8
+			push v7
+			push v6
+			push v5
+			push v4
+			push v3
+			push v2
+			mov ecx, v1
+			call fun
+			add esp, 0x20
+			mov retvar, eax
+	}
+	return retvar;
+
+}
+
+int myDrawRect(int ecx, int nSurface, int nX, int nY, int nWeight, int nHeight, int nRed, int nGreen, int nBlue)
+{
+	int ret = OUTmyDrawRect(ecx, nSurface, nX, nY-20, nWeight, nHeight, nRed, nGreen, nBlue);
+	return ret;
+}
+
+__declspec(naked) void INmyDrawRect() //(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8)
+{
+	__asm {
+		mov ecx, dword ptr[ebp - 0x5D8C]
+		push ebp
+		mov ebp, esp
+		push[ebp + 0x24]
+		push[ebp + 0x20]
+		push[ebp + 0x1C]
+		push[ebp + 0x18]
+		push[ebp + 0x14]
+		push[ebp + 0x10]
+		push[ebp + 0x0C]
+		push[ebp + 0x08]
+		push ecx
+		call myDrawRect
+		leave
+		ret 0x24
+	}
+}
+
 //(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8<ecx>, int v9)
 int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8, int v9)
 {
@@ -1626,7 +1678,7 @@ __declspec(naked) void INmyPrintText() //(int v1, int v2, int v3, int v4, int v5
 	__asm {
 		push ebp
 		mov ebp, esp
-		    push [ebp + 0x24]
+		push [ebp + 0x24]
 		push ecx
 		push [ebp + 0x20]
 		push [ebp + 0x1C]
@@ -2276,10 +2328,24 @@ void trapFun(HANDLE dwHandle, int addr, unsigned int targetFun)
 	WriteProcessMemory(dwHandle, (void *)addr, &targetAddr, sizeof(long int), NULL);
 }
 
+void trapFun2(HANDLE dwHandle, int addr, unsigned int targetFun)
+{
+	BYTE bytes[1] = { 0xE8 };
+	WriteProcessMemory(dwHandle, (void *)addr, bytes, sizeof(BYTE), NULL);
+	int targetAddr = targetFun - addr - 5;
+	int tmpAddr = addr + 1;
+	WriteProcessMemory(dwHandle, (void *)tmpAddr, &targetAddr, sizeof(long int), NULL);
+	BYTE bytes2[4] = { 0x90, 0x90, 0x90, 0x90 };
+	tmpAddr = tmpAddr + 4;
+	WriteProcessMemory(dwHandle, (void *)tmpAddr, bytes2, sizeof(long int), NULL);
+}
+
 void InitialisePlayerInfoHack()
 {
 	DWORD procId    = GetCurrentProcessId();
 	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
+
+	trapFun2(dwHandle, baseAdjust(0x57FE3C), (unsigned int)INmyDrawRect);
 
 	// lookup: find string In(FontNumber,1 [6th match is in the middle of the function]
 
