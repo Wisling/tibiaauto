@@ -113,7 +113,7 @@ struct HUD {
 	int redColor;
 	int blueColor;
 	int greenColor;
-	char message[1024];
+	char message[128];
 public:
 	HUD()
 	{
