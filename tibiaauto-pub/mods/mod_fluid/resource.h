@@ -55,7 +55,7 @@
 #define IDC_FRAME_GENERAL_OPTIONS       3014
 #define IDC_CONTAINER_STATUS6           3015
 #define IDC_EDIT1                       3015
-#define IDC_FLASKMORETHAN               3015
+#define IDC_TOOL_DROPFLASKSAT           3015
 #define IDC_CONTAINER_MODE_7            3016
 #define IDC_CONTAINER_STATUS7           3017
 #define IDC_CONTAINER_MODE_8            3018

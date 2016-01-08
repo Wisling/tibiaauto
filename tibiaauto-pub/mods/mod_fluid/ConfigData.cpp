@@ -48,7 +48,7 @@ CConfigData::CConfigData()
 	customItem2Use   = 0;
 	randomCast       = 1;
 	useHotkey        = 1;
-	flaskMoreThan    = 1;
+	dropFlasksAt    = 10;
 }
 
 CConfigData::~CConfigData()
