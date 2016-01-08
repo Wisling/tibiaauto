@@ -30,6 +30,7 @@ int myShouldParseRecv();
 #define TA_MESSAGE_QLEN 10
 #define MAX_CREATUREINFO 1300
 #define MAX_PAYLOAD_LEN 1024
+#define MAX_PRINTEXT_LEN 128
 
 #ifndef NDEBUG
 const bool OUTPUT_DEBUG_INFO = 1;
@@ -113,7 +114,7 @@ struct HUD {
 	int redColor;
 	int blueColor;
 	int greenColor;
-	char message[1024];
+	string message;
 public:
 	HUD()
 	{
@@ -124,7 +125,7 @@ public:
 		message[0] = '\0';
 	}
 };
-HUD HUDisplay[100];
+vector<HUD> vecHUD;
 
 struct tibiaState
 {
@@ -1632,15 +1633,15 @@ int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char*
 	Proto_fun fun = (Proto_fun)baseAdjust(funAddr_tibiaPrintText);
 
 	__asm {
-		push v9 //[ebp + 0x28]
-		mov ecx, v8 //[ebp + 0x24]
-		push v7 //[ebp + 0x20]
-		push v6 //[ebp + 0x1C]
-		push v5 //[ebp + 0x18]
-		push v4 //[ebp + 0x14]
-		push v3 //[ebp + 0x10]
-		push v2 //[ebp + 0x0C]
-		push v1 //[ebp + 0x08]
+		push v9 //[ebp + 0x20]
+		push v8 //[ebp + 0x1C]
+		push v7 //[ebp + 0x18]
+		push v6 //[ebp + 0x14]
+		push v5 //[ebp + 0x10]
+		push v4 //[ebp + 0x0C]
+		push v3 //[ebp + 0x08]
+		mov edx, v2
+		mov ecx, v1
 		call fun
 		add esp, 0x20
 		mov retvar, eax
@@ -1662,13 +1663,12 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 			taMessageEnd = 0;
 	}
 
-	int titleOffset = 0;
-
 	int ret = OUTmyPrintText(nSurface, nX, nY, nFont, nRed, nGreen, nBlue, lpText, nAlign);
-	for (int loop = 0; loop < 100; loop++)
+	vector<HUD>::size_type i;
+	for (i = 0; i != vecHUD.size(); i++)
 	{
-		if (HUDisplay[loop].pos.x && HUDisplay[loop].pos.y && HUDisplay[loop].message != NULL && HUDisplay[loop].message[0] != '\0')
-			OUTmyPrintText(1, HUDisplay[loop].pos.x, HUDisplay[loop].pos.y, nFont, HUDisplay[loop].redColor, HUDisplay[loop].greenColor, HUDisplay[loop].blueColor, HUDisplay[loop].message, 0);
+		if (vecHUD[i].pos.x && vecHUD[i].pos.y && !(vecHUD[i].message.empty()) && vecHUD[i].message[0] != '\0')
+			OUTmyPrintText(1, vecHUD[i].pos.x, vecHUD[i].pos.y, nFont, vecHUD[i].redColor, vecHUD[i].greenColor, vecHUD[i].blueColor, const_cast<char*>(vecHUD[i].message.c_str()), 0);
 	}
 	return ret;
 }
@@ -1678,8 +1678,6 @@ __declspec(naked) void INmyPrintText() //(int v1, int v2, int v3, int v4, int v5
 	__asm {
 		push ebp
 		mov ebp, esp
-		push [ebp + 0x24]
-		push ecx
 		push [ebp + 0x20]
 		push [ebp + 0x1C]
 		push [ebp + 0x18]
@@ -1687,6 +1685,8 @@ __declspec(naked) void INmyPrintText() //(int v1, int v2, int v3, int v4, int v5
 		push [ebp + 0x10]
 		push [ebp + 0x0C]
 		push [ebp + 0x08]
+		push edx
+		push ecx
 		call myPrintText
 		leave
 		ret
@@ -2347,6 +2347,9 @@ void InitialisePlayerInfoHack()
 
 	trapFun2(dwHandle, baseAdjust(0x57FE3C), (unsigned int)INmyDrawRect);
 
+	trapFun(dwHandle, baseAdjust(callAddr_PrintText03 + 1), (unsigned int)INmyPrintText);
+	trapFun(dwHandle, baseAdjust(callAddr_PrintText04 + 1), (unsigned int)INmyPrintText);
+
 	// lookup: find string In(FontNumber,1 [6th match is in the middle of the function]
 
 	trapFun(dwHandle, baseAdjust(callAddr_PlayerNameText01 + 1), (unsigned int)INmyPlayerNameText);
@@ -2703,63 +2706,63 @@ void ParseIPCMessage(CIpcMessage mess)
 	}
 	case 307:
 	{
-		/*CString buf;
-		   buf.Format("(%d, %d) rgb(%d, %d, %d) '%s'", mess.data[0], mess.data[1], mess.data[2], mess.data[3], mess.data[4], mess.payload);
-		   AfxMessageBox(buf);*/
+		//CString buf;
+		//buf.Format("(%d, %d) rgb(%d, %d, %d) %d '%s'", mess.payload[0], mess.payload[4], mess.payload[8], mess.payload[12], mess.payload[16], mess.payload[20], mess.payload+24);
+		//AfxMessageBox(buf);
 		int x, y, red, green, blue, messLen;
-		char message[1000];
+		
 		memcpy(&x, mess.payload, sizeof(int));
 		memcpy(&y, mess.payload + 4, sizeof(int));
 		memcpy(&red, mess.payload + 8, sizeof(int));
 		memcpy(&green, mess.payload + 12, sizeof(int));
 		memcpy(&blue, mess.payload + 16, sizeof(int));
 		memcpy(&messLen, mess.payload + 20, sizeof(int));
-		memcpy(&message, mess.payload + 24, messLen + 1);
+
+		string message(mess.payload + 24, messLen);
 
 		bool actionComplete = false;
-		int found           = -1;
-		for (int loop = 0; loop < 100; loop++)
+		vector<HUD>::size_type i;
+		for (i = 0; i != vecHUD.size(); i++)
 		{
-			//buf.Format("(%d, %d), %d", HUDisplay[loop].pos.x, HUDisplay[loop].pos.y, found);
+			//buf.Format("(%d, %d), %d", vecHUD[i].pos.x, vecHUD[i].pos.y, vecHUD.size());
 			//AfxMessageBox(buf);
-			if (HUDisplay[loop].pos.x == x && HUDisplay[loop].pos.y == y)
+			if (vecHUD[i].pos.x == x && vecHUD[i].pos.y == y)
 			{
-				if (message != "")          // Update message on screen at point (mess.data[0], mess.data[1]):
+				if (messLen != 0 && messLen < MAX_PRINTEXT_LEN)          // Update message on screen at point (mess.data[0], mess.data[1]):
 				{
-					HUDisplay[loop].redColor   = red;
-					HUDisplay[loop].greenColor = green;
-					HUDisplay[loop].blueColor  = blue;
-					memcpy(HUDisplay[loop].message, message, messLen);
+					vecHUD[i].redColor = red;
+					vecHUD[i].greenColor = green;
+					vecHUD[i].blueColor = blue;
+					vecHUD[i].message = message;
 					//AfxMessageBox("update");
 					actionComplete = true;
 					break;
 				}
 				else          // "Delete" message from screen
 				{
-					HUDisplay[loop].pos.x      = 0;
-					HUDisplay[loop].pos.y      = 0;
-					HUDisplay[loop].redColor   = 0;
-					HUDisplay[loop].greenColor = 0;
-					HUDisplay[loop].blueColor  = 0;
-					HUDisplay[loop].message[0] = '\0';
+					vecHUD[i].pos.x = 0;
+					vecHUD[i].pos.y = 0;
+					vecHUD[i].redColor = 0;
+					vecHUD[i].greenColor = 0;
+					vecHUD[i].blueColor = 0;
+					vecHUD[i].message.clear();
+					vecHUD.erase(vecHUD.begin() + i);
 					//AfxMessageBox("delete");
 					actionComplete = true;
 					break;
 				}
 			}
-			else if  (!HUDisplay[loop].pos.x && !HUDisplay[loop].pos.y && found < 0)
-			{
-				found = loop;
-			}
 		}
-		if (!actionComplete && found > -1)           // Add a message to the screen if there is room to store it and no delete or update action took place
+		if (!actionComplete && messLen < MAX_PRINTEXT_LEN)           // Add a message to the screen if there is room to store it and no delete or update action took place
 		{
-			HUDisplay[found].pos.x      = x;
-			HUDisplay[found].pos.y      = y;
-			HUDisplay[found].redColor   = red;
-			HUDisplay[found].greenColor = green;
-			HUDisplay[found].blueColor  = blue;
-			memcpy(HUDisplay[found].message, message, messLen);
+			HUD tmpHUD;			
+			tmpHUD.pos.x = x;
+			tmpHUD.pos.y = y;
+			tmpHUD.redColor = red;
+			tmpHUD.greenColor = green;
+			tmpHUD.blueColor = blue;
+			tmpHUD.message = message;
+			vecHUD.push_back(tmpHUD);
 			//AfxMessageBox("add");
 		}
 		break;
