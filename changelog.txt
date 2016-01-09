@@ -1,3 +1,9 @@
+2.64.1 1.?.2015
+Enhancements:
+ Fluid Drinker: Changed flask dropping from > to >=
+Defects:
+ Cavebot: Fixed loot from floor bug causing cavebot to stop working
+
 2.64.0 1.2.2015
 Enhancements:
  Tibia Auto: Updated for Tibia 10.90
