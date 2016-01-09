@@ -1584,15 +1584,15 @@ int OUTmyDrawRect(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8
 	Proto_fun fun = (Proto_fun)baseAdjust(0x5D6520);
 
 	__asm {
-			push v9
-			push v8
-			push v7
-			push v6
-			push v5
-			push v4
-			push v3
-			push v2
-			mov ecx, v1
+			push v9 //nBlue
+			push v8 //nGreen
+			push v7 //nRed
+			push v6 //nHeight
+			push v5 //nWeight
+			push v4 //nY
+			push v3 //nX
+			push v2 //nSurface
+			mov ecx, v1 //unknown
 			call fun
 			add esp, 0x20
 			mov retvar, eax
@@ -1613,9 +1613,11 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 	{
 		OUTmyDrawRect(ecx, nSurface, nX, nY-5, nWeight, nHeight, nRed, nGreen, nBlue);
 
+		float myGreen = ((float)self->hp / (float)self->maxHp) * 0xC0;
+		int luminosity = myGreen - nGreen; // get light intensity from hp bar
 		float myBlue = ((float)self->mana / (float)self->maxMana) * 0xC0;
+		myBlue = myBlue - luminosity; //adjust blue color to light
 		float myRed = ((1 - ((float)self->mana / (float)self->maxMana)) * 0xC0);
-
 		float myWeight = ((float)self->mana / (float)self->maxMana) * nWeight;
 
 		if (!(!nRed && !nGreen && !nBlue))
@@ -1644,8 +1646,8 @@ __declspec(naked) void INmyDrawRect() //(int v1, int v2, int v3, int v4, int v5,
 		push[ebp + 0x10]
 		push[ebp + 0x0C]
 		push[ebp + 0x08]
-		push ecx
-		push [ebp]
+		push ecx //unknown parameter
+		push [ebp] // ebp is needed only to know which creatureID is being drawn
 		call myDrawRect
 		leave
 		ret 0x24
@@ -1666,8 +1668,8 @@ __declspec(naked) void INmyDrawBlackRect() //(int v1, int v2, int v3, int v4, in
 			push[ebp + 0x10]
 			push[ebp + 0x0C]
 			push[ebp + 0x08]
-			push ecx
-			push [ebp]
+			push ecx //unknown parameter
+			push [ebp] // ebp is needed only to know which creatureID is being drawn
 			call myDrawRect
 			leave
 			ret 0x24
