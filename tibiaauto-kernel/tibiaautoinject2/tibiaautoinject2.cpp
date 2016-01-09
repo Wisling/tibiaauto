@@ -1620,7 +1620,7 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 		float myRed = ((1 - ((float)self->mana / (float)self->maxMana)) * 0xC0);
 		float myWeight = ((float)self->mana / (float)self->maxMana) * nWeight;
 
-		if (!(!nRed && !nGreen && !nBlue))
+		if (!(!nRed && !nGreen && !nBlue)) //if it is not black bar being drawn
 		{
 			OUTmyDrawRect(ecx, nSurface, nX, nY, int(myWeight), nHeight, int(myRed), 0, int(myBlue));
 		}
@@ -1630,6 +1630,7 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 	}
 	else	
 		OUTmyDrawRect(ecx, nSurface, nX, nY, nWeight, nHeight, nRed, nGreen, nBlue);
+
 }
 
 __declspec(naked) void INmyDrawRect() //(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8)
