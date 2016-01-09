@@ -1653,7 +1653,7 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 			{
 				uint8_t path[15];
 				int pathSize = 0;
-				memset(path, 0x00, sizeof(int) * 15);
+				memset(path, 0x00, sizeof(path[0]) * 15);
 				if (config->debug)
 				{
 					sprintf(buf, "findPathOnMap: loot from floor (%d, %d) %x", x, y, foundLootedObjectId);

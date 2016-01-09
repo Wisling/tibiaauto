@@ -63,7 +63,7 @@ public:
 	CEdit m_sleep;
 	CEdit m_manaBelow;
 	CEdit m_hpBelow;
-	CEdit m_flaskMoreThan;
+	CEdit m_dropFlasksAt;
 	CButton m_drinkMana;
 	CButton m_drinkHp;
 	CButton m_randomCast;
@@ -97,6 +97,8 @@ protected:
 
 private:
 	CMod_fluidApp * m_app;
+public:
+	afx_msg void OnBnClickedToolFluiddrinkerDropempty();
 };
 
 //{{AFX_INSERT_LOCATION}}
