@@ -188,6 +188,8 @@ int funAddr_tibiaDecrypt =				0x606B00;
 int funAddr_tibiaShouldParseRecv =		0x594360;//switch table contains "Are you sure you want to leave Tibia"
 int arrayPtr_recvStream =				0xB78B70-8;//look for this address near above location
 int funAddr_tibiaInfoMessageBox =		0x5F4310;
+int callAddr_DrawRect =                 0x57FE42;
+int callAddr_DrawBlackRect =            0x57FDB3;
 int callAddr_PrintText01 =				0x48E52D;//...<addr>.*
 int callAddr_PrintText02 =				0x48E572;
 int callAddr_PrintText03 =				0x498049;
@@ -2383,7 +2385,7 @@ void trapFun(HANDLE dwHandle, int addr, unsigned int targetFun)
 	WriteProcessMemory(dwHandle, (void *)addr, &targetAddr, sizeof(long int), NULL);
 }
 
-void trapFun2(HANDLE dwHandle, int addr, unsigned int targetFun)
+void hookDrawRect(HANDLE dwHandle, int addr, unsigned int targetFun)
 {
 	BYTE bytes[1] = { 0xE8 };
 	WriteProcessMemory(dwHandle, (void *)addr, bytes, sizeof(BYTE), NULL);
@@ -2400,8 +2402,8 @@ void InitialisePlayerInfoHack()
 	DWORD procId    = GetCurrentProcessId();
 	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
 
-	trapFun2(dwHandle, baseAdjust(0x57FE3C), (unsigned int)INmyDrawRect);
-	trapFun2(dwHandle, baseAdjust(0x57FDAD), (unsigned int)INmyDrawBlackRect);
+	hookDrawRect(dwHandle, baseAdjust(callAddr_DrawBlackRect - 6), (unsigned int)INmyDrawBlackRect); // first layer black bar
+	hookDrawRect(dwHandle, baseAdjust(callAddr_DrawRect - 6), (unsigned int)INmyDrawRect); // second layer colored bar
 
 	trapFun(dwHandle, baseAdjust(callAddr_PrintText03 + 1), (unsigned int)INmyPrintText);
 	trapFun(dwHandle, baseAdjust(callAddr_PrintText04 + 1), (unsigned int)INmyPrintText);
