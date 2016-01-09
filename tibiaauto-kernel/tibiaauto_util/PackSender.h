@@ -60,6 +60,8 @@ public:
 	static void sendClearCreatureInfo();
 	static void sendMount();
 	static void sendDismount();
+	static void activateManaBar();
+	static void desactivateManaBar();
 	static void sendDirectPacket(const char* buf, int len);
 
 	static void useItem(int objectId);

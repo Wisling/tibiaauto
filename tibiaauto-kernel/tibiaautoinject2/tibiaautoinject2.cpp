@@ -127,6 +127,8 @@ public:
 };
 vector<HUD> vecHUD;
 
+bool manaBar = 0;
+
 struct tibiaState
 {
 	int attackedCreature;
@@ -1597,10 +1599,33 @@ int OUTmyDrawRect(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8
 
 }
 
-int myDrawRect(int ecx, int nSurface, int nX, int nY, int nWeight, int nHeight, int nRed, int nGreen, int nBlue)
+void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int nHeight, int nRed, int nGreen, int nBlue)
 {
-	int ret = OUTmyDrawRect(ecx, nSurface, nX, nY-20, nWeight, nHeight, nRed, nGreen, nBlue);
-	return ret;
+	int creaturePointer = *(int*)(ebp - 0x5D6C);
+	char *creatureID = (char*)(creaturePointer);
+
+	CMemReader& reader = CMemReader::getMemReader();
+	CTibiaCharacter *self = reader.readSelfCharacter();
+
+	if (strcmp(self->name, creatureID) == 0 && manaBar)
+	{
+		OUTmyDrawRect(ecx, nSurface, nX, nY-5, nWeight, nHeight, nRed, nGreen, nBlue);
+
+		float myBlue = ((float)self->mana / (float)self->maxMana) * 0xC0;
+		float myRed = ((1 - ((float)self->mana / (float)self->maxMana)) * 0xC0);
+
+		float myWeight = ((float)self->mana / (float)self->maxMana) * nWeight;
+
+		if (!(!nRed && !nGreen && !nBlue))
+		{
+			OUTmyDrawRect(ecx, nSurface, nX, nY, int(myWeight), nHeight, int(myRed), 0, int(myBlue));
+		}
+		else
+			OUTmyDrawRect(ecx, nSurface, nX, nY, nWeight, nHeight, nRed, nGreen, nBlue);
+			
+	}
+	else	
+		OUTmyDrawRect(ecx, nSurface, nX, nY, nWeight, nHeight, nRed, nGreen, nBlue);
 }
 
 __declspec(naked) void INmyDrawRect() //(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8)
@@ -1618,9 +1643,32 @@ __declspec(naked) void INmyDrawRect() //(int v1, int v2, int v3, int v4, int v5,
 		push[ebp + 0x0C]
 		push[ebp + 0x08]
 		push ecx
+		push [ebp]
 		call myDrawRect
 		leave
 		ret 0x24
+	}
+}
+
+__declspec(naked) void INmyDrawBlackRect() //(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8)
+{
+	__asm {
+		mov ecx, dword ptr[ebp - 0x5D4C]
+			push ebp
+			mov ebp, esp
+			push[ebp + 0x24]
+			push[ebp + 0x20]
+			push[ebp + 0x1C]
+			push[ebp + 0x18]
+			push[ebp + 0x14]
+			push[ebp + 0x10]
+			push[ebp + 0x0C]
+			push[ebp + 0x08]
+			push ecx
+			push [ebp]
+			call myDrawRect
+			leave
+			ret 0x24
 	}
 }
 
@@ -1663,6 +1711,13 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 			taMessageEnd = 0;
 	}
 
+	CMemReader& reader = CMemReader::getMemReader();
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int creatureID = *(int*)(lpText - 4); //You can ofc use tCreature structure
+	if ( (self->tibiaId == creatureID) && manaBar)
+	{
+		nY = nY - 5;
+	}
 	int ret = OUTmyPrintText(nSurface, nX, nY, nFont, nRed, nGreen, nBlue, lpText, nAlign);
 	vector<HUD>::size_type i;
 	for (i = 0; i != vecHUD.size(); i++)
@@ -2346,6 +2401,7 @@ void InitialisePlayerInfoHack()
 	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
 
 	trapFun2(dwHandle, baseAdjust(0x57FE3C), (unsigned int)INmyDrawRect);
+	trapFun2(dwHandle, baseAdjust(0x57FDAD), (unsigned int)INmyDrawBlackRect);
 
 	trapFun(dwHandle, baseAdjust(callAddr_PrintText03 + 1), (unsigned int)INmyPrintText);
 	trapFun(dwHandle, baseAdjust(callAddr_PrintText04 + 1), (unsigned int)INmyPrintText);
@@ -2829,6 +2885,12 @@ void ParseIPCMessage(CIpcMessage mess)
 		}
 		break;
 	}
+	case 309:
+		manaBar = 1;
+		break;
+	case 310:
+		manaBar = 0;
+		break;
 	default:
 		break;
 	};
