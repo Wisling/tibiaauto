@@ -1611,17 +1611,47 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 
 	if (strcmp(self->name, creatureID) == 0 && manaBar)
 	{
-		OUTmyDrawRect(ecx, nSurface, nX, nY-5, nWeight, nHeight, nRed, nGreen, nBlue);
-
-		float myGreen = ((float)self->hp / (float)self->maxHp) * 0xC0;
-		int luminosity = myGreen - nGreen; // get light intensity from hp bar
-		float myBlue = ((float)self->mana / (float)self->maxMana) * 0xC0;
-		myBlue = myBlue - luminosity; //adjust blue color to light
-		float myRed = ((1 - ((float)self->mana / (float)self->maxMana)) * 0xC0);
-		float myWeight = ((float)self->mana / (float)self->maxMana) * nWeight;
+		OUTmyDrawRect(ecx, nSurface, nX, nY-5, nWeight, nHeight, nRed, nGreen, nBlue); //draw hp bar 5 pixels higher
 
 		if (!(!nRed && !nGreen && !nBlue)) //if it is not black bar being drawn
 		{
+			float myRed = ((1 - ((float)self->mana / (float)self->maxMana)) * 0xC0);
+			float myBlue = ((float)self->mana / (float)self->maxMana) * 0xC0;
+			float hpPorc = ((float)self->hp / (float)self->maxHp);
+
+			int luminosity;
+
+			if (hpPorc > 0.30) // hp bar change from yellow to red at 30%
+			{
+				luminosity = 0xC0 - nGreen;
+			}
+			else // when hp< 30%, green color change from 0xC0 to 0x30
+			{
+				luminosity = 0xC0 - nRed;
+			}
+					
+			if (myBlue < 0x30) // minimum blue color
+			{
+				myBlue = 0x30;
+			}
+
+			if (myRed < 0x30) // minimum red color
+			{
+				myRed = 0x30;
+			}
+
+
+			if ((myBlue - luminosity) > 0) //adjust blue color to light
+				myBlue = myBlue - luminosity;
+			else
+				myBlue = 0;
+
+			myRed = myRed - (float)luminosity/(float)4; //adjust red color to light
+			if (myRed < 0)
+				myRed = 0;
+
+			float myWeight = ((float)self->mana / (float)self->maxMana) * 0x19; // "0x19" is the maxWeight of colored bar
+
 			OUTmyDrawRect(ecx, nSurface, nX, nY, int(myWeight), nHeight, int(myRed), 0, int(myBlue));
 		}
 		else
@@ -1718,8 +1748,8 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 
 	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	int creatureID = *(int*)(lpText - 4); //You can ofc use tCreature structure
-	if ( (self->tibiaId == creatureID) && manaBar)
+	int creatureID = *(int*)(lpText - 4);
+	if ( (self->tibiaId == creatureID) && manaBar) // print name a bit higher for extra space to input the second bar
 	{
 		nY = nY - 5;
 	}
