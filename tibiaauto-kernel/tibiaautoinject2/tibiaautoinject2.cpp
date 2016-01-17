@@ -1,4 +1,4 @@
-// tibiaautoinject2.cpp : Defines the entry point for the DLL application.
+MAX_PRINTEXT_LEN// tibiaautoinject2.cpp : Defines the entry point for the DLL application.
 //
 // Check MyPlayerNameText funcs
 
@@ -30,7 +30,7 @@ int myShouldParseRecv();
 #define TA_MESSAGE_QLEN 10
 #define MAX_CREATUREINFO 1300
 #define MAX_PAYLOAD_LEN 1024
-#define MAX_PRINTEXT_LEN 128
+#define MAX_PRINTEXT_LEN 1024
 
 #ifndef NDEBUG
 const bool OUTPUT_DEBUG_INFO = 1;
@@ -1599,6 +1599,8 @@ int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char*
 
 int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, int nBlue, char* lpText, int nAlign)
 {
+	int ret = OUTmyPrintText(nSurface, nX, nY, nFont, nRed, nGreen, nBlue, lpText, nAlign);
+
 	//myPrintText runs continuously, so this is a good place to check if the TA Message pipe has anything for us
 	//EXCEPT when display creature names is off
 	if (taMessageStart != taMessageEnd)
@@ -1611,13 +1613,15 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 			taMessageEnd = 0;
 	}
 
-	int ret = OUTmyPrintText(nSurface, nX, nY, nFont, nRed, nGreen, nBlue, lpText, nAlign);
 	vector<HUD>::size_type i;
 	for (i = 0; i != vecHUD.size(); i++)
 	{
-		if (vecHUD[i].pos.x && vecHUD[i].pos.y && !(vecHUD[i].message.empty()) && vecHUD[i].message[0] != '\0')
+		if (vecHUD[i].pos.x > 2 && vecHUD[i].pos.y && !(vecHUD[i].message.empty()) && vecHUD[i].message[0] != '\0'){
 			OUTmyPrintText(1, vecHUD[i].pos.x, vecHUD[i].pos.y, nFont, vecHUD[i].redColor, vecHUD[i].greenColor, vecHUD[i].blueColor, const_cast<char*>(vecHUD[i].message.c_str()), 0);
+		}
+
 	}
+
 	return ret;
 }
 
