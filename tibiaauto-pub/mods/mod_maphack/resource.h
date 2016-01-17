@@ -1,5 +1,5 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by mod_maphack.rc
 //
 #define IDC_TOOL_FLUIDDRINKER_HPBELOW   1113
@@ -33,6 +33,8 @@
 #define IDC_CONTAINER_MODE_5            3012
 #define IDC_CONTAINER_STATUS5           3013
 #define IDC_CONTAINER_MODE_6            3014
+#define IDC_CHECK1                      3014
+#define IDC_MANABAR                     3014
 #define IDC_CONTAINER_STATUS6           3015
 #define IDC_CONTAINER_MODE_7            3016
 #define IDC_CONTAINER_STATUS7           3017
@@ -46,12 +48,12 @@
 #define IDC_CONTAINER_STATUS10          3025
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3002
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3014
+#define _APS_NEXT_CONTROL_VALUE         3015
 #define _APS_NEXT_SYMED_VALUE           3000
-#endif // ifndef APSTUDIO_READONLY_SYMBOLS
-#endif // ifdef APSTUDIO_INVOKED
+#endif
+#endif
