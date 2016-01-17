@@ -1612,7 +1612,6 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 		if (taMessageEnd == TA_MESSAGE_QLEN)
 			taMessageEnd = 0;
 	}
-
 	vector<HUD>::size_type i;
 	for (i = 0; i != vecHUD.size(); i++)
 	{
@@ -2656,7 +2655,7 @@ void ParseIPCMessage(CIpcMessage mess)
 		memcpy(&blue, mess.payload + 16, sizeof(int));
 		memcpy(&messLen, mess.payload + 20, sizeof(int));
 
-		string message(mess.payload + 24, messLen);
+		string message(mess.payload + 24, min(MAX_PRINTEXT_LEN,messLen));
 
 		bool actionComplete = false;
 		vector<HUD>::size_type i;
@@ -2666,7 +2665,7 @@ void ParseIPCMessage(CIpcMessage mess)
 			//AfxMessageBox(buf);
 			if (vecHUD[i].pos.x == x && vecHUD[i].pos.y == y)
 			{
-				if (messLen != 0 && messLen < MAX_PRINTEXT_LEN)          // Update message on screen at point (mess.data[0], mess.data[1]):
+				if (messLen != 0)          // Update message on screen at point (mess.data[0], mess.data[1]):
 				{
 					vecHUD[i].redColor = red;
 					vecHUD[i].greenColor = green;
@@ -2691,7 +2690,7 @@ void ParseIPCMessage(CIpcMessage mess)
 				}
 			}
 		}
-		if (!actionComplete && messLen < MAX_PRINTEXT_LEN)           // Add a message to the screen if there is room to store it and no delete or update action took place
+		if (!actionComplete)           // Add a message to the screen if there is room to store it and no delete or update action took place
 		{
 			HUD tmpHUD;			
 			tmpHUD.pos.x = x;
