@@ -127,7 +127,7 @@ public:
 };
 vector<HUD> vecHUD;
 
-bool manaBar = 0;
+bool showManaBar = 0;
 
 struct tibiaState
 {
@@ -1609,7 +1609,7 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
-	if (strcmp(self->name, creatureID) == 0 && manaBar)
+	if (strcmp(self->name, creatureID) == 0 && showManaBar)
 	{
 		OUTmyDrawRect(ecx, nSurface, nX, nY-5, nWeight, nHeight, nRed, nGreen, nBlue); //draw hp bar 5 pixels higher
 
@@ -1658,7 +1658,7 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 			OUTmyDrawRect(ecx, nSurface, nX, nY, nWeight, nHeight, nRed, nGreen, nBlue);
 			
 	}
-	else	
+	else
 		OUTmyDrawRect(ecx, nSurface, nX, nY, nWeight, nHeight, nRed, nGreen, nBlue);
 
 }
@@ -1748,21 +1748,23 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 
 	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	int creatureID = *(int*)(lpText - 4);
-	if ( (self->tibiaId == creatureID) && manaBar) // print name a bit higher for extra space to input the second bar
+	int creatureID = *(int*)(lpText - 4); //Character ID is currently stored in data before text string
+	if (self->tibiaId == creatureID)
 	{
-		nY = nY - 5;
+		if (showManaBar){ // print name a bit higher for extra space to input the second bar
+			nY = nY - 5;
+		}
+		// Runt printText for HUD only once at the time the character name is printed
+		vector<HUD>::size_type i;
+		for (i = 0; i != vecHUD.size(); i++)
+		{
+			if (vecHUD[i].pos.x > 2 && vecHUD[i].pos.y && !(vecHUD[i].message.empty()) && vecHUD[i].message[0] != '\0'){
+				OUTmyPrintText(1, vecHUD[i].pos.x, vecHUD[i].pos.y, nFont, vecHUD[i].redColor, vecHUD[i].greenColor, vecHUD[i].blueColor, const_cast<char*>(vecHUD[i].message.c_str()), 0);
+			}
+
+		}
 	}
 	int ret = OUTmyPrintText(nSurface, nX, nY, nFont, nRed, nGreen, nBlue, lpText, nAlign);
-	vector<HUD>::size_type i;
-	for (i = 0; i != vecHUD.size(); i++)
-	{
-		if (vecHUD[i].pos.x > 2 && vecHUD[i].pos.y && !(vecHUD[i].message.empty()) && vecHUD[i].message[0] != '\0'){
-			OUTmyPrintText(1, vecHUD[i].pos.x, vecHUD[i].pos.y, nFont, vecHUD[i].redColor, vecHUD[i].greenColor, vecHUD[i].blueColor, const_cast<char*>(vecHUD[i].message.c_str()), 0);
-		}
-
-	}
-
 	return ret;
 }
 
@@ -2924,10 +2926,10 @@ void ParseIPCMessage(CIpcMessage mess)
 		break;
 	}
 	case 309:
-		manaBar = 1;
+		showManaBar = 1;
 		break;
 	case 310:
-		manaBar = 0;
+		showManaBar = 0;
 		break;
 	default:
 		break;
