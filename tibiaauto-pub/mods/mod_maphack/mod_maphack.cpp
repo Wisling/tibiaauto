@@ -133,7 +133,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 			delete self;
 		}
-		if (config->manaBar && !manaBarStarted)
+		if (config->showManaBar && !manaBarStarted)
 		{
 			manaBarStarted = 1;
 			CPackSender::activateManaBar();			
@@ -499,8 +499,8 @@ void CMod_maphackApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->minimapResearch = atoi(paramValue);
 	if (!strcmp(paramName, "autoMount"))
 		m_configData->autoMount = atoi(paramValue);
-	if (!strcmp(paramName, "manaBar"))
-		m_configData->manaBar = atoi(paramValue);
+	if (!strcmp(paramName, "showManaBar"))
+		m_configData->showManaBar = atoi(paramValue);
 }
 
 char *CMod_maphackApp::saveConfigParam(char *paramName)
@@ -518,8 +518,8 @@ char *CMod_maphackApp::saveConfigParam(char *paramName)
 		sprintf(buf, "%d", m_configData->minimapResearch);
 	if (!strcmp(paramName, "autoMount"))
 		sprintf(buf, "%d", m_configData->autoMount);
-	if (!strcmp(paramName, "manaBar"))
-		sprintf(buf, "%d", m_configData->manaBar);
+	if (!strcmp(paramName, "showManaBar"))
+		sprintf(buf, "%d", m_configData->showManaBar);
 
 	return buf;
 }
@@ -539,7 +539,7 @@ char *CMod_maphackApp::getConfigParamName(int nr)
 	case 4:
 		return "autoMount";
 	case 5:
-		return "manaBar";
+		return "showManaBar";
 	default:
 		return NULL;
 	}

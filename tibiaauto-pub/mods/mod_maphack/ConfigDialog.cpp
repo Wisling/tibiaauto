@@ -106,7 +106,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_revealInvisible.SetCheck(configData->revealInvisible);
 	m_minimapResearch.SetCheck(configData->minimapResearch);
 	m_autoMount.SetCheck(configData->autoMount);
-	m_manaBar.SetCheck(configData->manaBar);
+	m_manaBar.SetCheck(configData->showManaBar);
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -118,7 +118,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->revealInvisible = m_revealInvisible.GetCheck();
 	newConfigData->minimapResearch = m_minimapResearch.GetCheck();
 	newConfigData->autoMount       = m_autoMount.GetCheck();
-	newConfigData->manaBar   	   = m_manaBar.GetCheck();
+	newConfigData->showManaBar   	   = m_manaBar.GetCheck();
 
 	return newConfigData;
 }
