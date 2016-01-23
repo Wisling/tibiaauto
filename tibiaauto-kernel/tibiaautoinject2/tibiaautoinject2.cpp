@@ -1650,7 +1650,7 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 			if (myRed < 0)
 				myRed = 0;
 
-			float myWeight = ((float)self->mana / (float)self->maxMana) * 0x1A; // "0x19" is the maxWeight of colored bar
+			float myWeight = ((float)self->mana / (float)self->maxMana) * 0x1A; // "0x1A" is the maxWeight of colored bar
 
 			OUTmyDrawRect(ecx, nSurface, nX, nY, int(myWeight), nHeight, int(myRed), 0, int(myBlue));
 		}
