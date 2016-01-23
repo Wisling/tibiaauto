@@ -1,4 +1,4 @@
-MAX_PRINTEXT_LEN// tibiaautoinject2.cpp : Defines the entry point for the DLL application.
+// tibiaautoinject2.cpp : Defines the entry point for the DLL application.
 //
 // Check MyPlayerNameText funcs
 
@@ -127,6 +127,8 @@ public:
 };
 vector<HUD> vecHUD;
 
+bool showManaBar = 0;
+
 struct tibiaState
 {
 	int attackedCreature;
@@ -186,6 +188,8 @@ int funAddr_tibiaDecrypt =				0x606B00;
 int funAddr_tibiaShouldParseRecv =		0x594360;//switch table contains "Are you sure you want to leave Tibia"
 int arrayPtr_recvStream =				0xB78B70-8;//look for this address near above location
 int funAddr_tibiaInfoMessageBox =		0x5F4310;
+int callAddr_DrawRect =                 0x57FE42;
+int callAddr_DrawBlackRect =            0x57FDB3;
 int callAddr_PrintText01 =				0x48E52D;//...<addr>.*
 int callAddr_PrintText02 =				0x48E572;
 int callAddr_PrintText03 =				0x498049;
@@ -1572,6 +1576,137 @@ void InitialiseCreatureInfo()
 	}
 }
 
+int OUTmyDrawRect(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9)
+{
+	int retvar;
+	typedef void(*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+
+	Proto_fun fun = (Proto_fun)baseAdjust(0x5D6520);
+
+	__asm {
+			push v9 //nBlue
+			push v8 //nGreen
+			push v7 //nRed
+			push v6 //nHeight
+			push v5 //nWeight
+			push v4 //nY
+			push v3 //nX
+			push v2 //nSurface
+			mov ecx, v1 //unknown
+			call fun
+			add esp, 0x20
+			mov retvar, eax
+	}
+	return retvar;
+
+}
+
+void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int nHeight, int nRed, int nGreen, int nBlue)
+{
+	int creaturePointer = *(int*)(ebp - 0x5D6C);
+	char *creatureID = (char*)(creaturePointer);
+
+	CMemReader& reader = CMemReader::getMemReader();
+	CTibiaCharacter *self = reader.readSelfCharacter();
+
+	if (strcmp(self->name, creatureID) == 0 && showManaBar)
+	{
+		OUTmyDrawRect(ecx, nSurface, nX, nY-5, nWeight, nHeight, nRed, nGreen, nBlue); //draw hp bar 5 pixels higher
+
+		if (!(!nRed && !nGreen && !nBlue)) //if it is not black bar being drawn
+		{
+			float myRed = ((1 - ((float)self->mana / (float)self->maxMana)) * 0xC0);
+			float myBlue = ((float)self->mana / (float)self->maxMana) * 0xC0;
+			float hpPorc = ((float)self->hp / (float)self->maxHp);
+
+			int luminosity;
+
+			if (hpPorc > 0.30) // hp bar change from yellow to red at 30%
+			{
+				luminosity = 0xC0 - nGreen;
+			}
+			else // when hp< 30%, green color change from 0xC0 to 0x30
+			{
+				luminosity = 0xC0 - nRed;
+			}
+					
+			if (myBlue < 0x30) // minimum blue color
+			{
+				myBlue = 0x30;
+			}
+
+			if (myRed < 0x30) // minimum red color
+			{
+				myRed = 0x30;
+			}
+
+
+			if ((myBlue - luminosity) > 0) //adjust blue color to light
+				myBlue = myBlue - luminosity;
+			else
+				myBlue = 0;
+
+			myRed = myRed - (float)luminosity/(float)4; //adjust red color to light
+			if (myRed < 0)
+				myRed = 0;
+
+			float myWeight = ((float)self->mana / (float)self->maxMana) * 0x19; // "0x19" is the maxWeight of colored bar
+
+			OUTmyDrawRect(ecx, nSurface, nX, nY, int(myWeight), nHeight, int(myRed), 0, int(myBlue));
+		}
+		else
+			OUTmyDrawRect(ecx, nSurface, nX, nY, nWeight, nHeight, nRed, nGreen, nBlue);
+			
+	}
+	else
+		OUTmyDrawRect(ecx, nSurface, nX, nY, nWeight, nHeight, nRed, nGreen, nBlue);
+
+}
+
+__declspec(naked) void INmyDrawRect() //(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8)
+{
+	__asm {
+		mov ecx, dword ptr[ebp - 0x5D8C]
+		push ebp
+		mov ebp, esp
+		push[ebp + 0x24]
+		push[ebp + 0x20]
+		push[ebp + 0x1C]
+		push[ebp + 0x18]
+		push[ebp + 0x14]
+		push[ebp + 0x10]
+		push[ebp + 0x0C]
+		push[ebp + 0x08]
+		push ecx //unknown parameter
+		push [ebp] // ebp is needed only to know which creatureID is being drawn
+		call myDrawRect
+		leave
+		ret 0x24
+	}
+}
+
+__declspec(naked) void INmyDrawBlackRect() //(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8)
+{
+	__asm {
+		mov ecx, dword ptr[ebp - 0x5D4C]
+			push ebp
+			mov ebp, esp
+			push[ebp + 0x24]
+			push[ebp + 0x20]
+			push[ebp + 0x1C]
+			push[ebp + 0x18]
+			push[ebp + 0x14]
+			push[ebp + 0x10]
+			push[ebp + 0x0C]
+			push[ebp + 0x08]
+			push ecx //unknown parameter
+			push [ebp] // ebp is needed only to know which creatureID is being drawn
+			call myDrawRect
+			leave
+			ret 0x24
+	}
+}
+
 //(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8<ecx>, int v9)
 int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8, int v9)
 {
@@ -1599,8 +1734,6 @@ int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char*
 
 int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, int nBlue, char* lpText, int nAlign)
 {
-	int ret = OUTmyPrintText(nSurface, nX, nY, nFont, nRed, nGreen, nBlue, lpText, nAlign);
-
 	//myPrintText runs continuously, so this is a good place to check if the TA Message pipe has anything for us
 	//EXCEPT when display creature names is off
 	if (taMessageStart != taMessageEnd)
@@ -1613,15 +1746,25 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 			taMessageEnd = 0;
 	}
 
-	vector<HUD>::size_type i;
-	for (i = 0; i != vecHUD.size(); i++)
+	CMemReader& reader = CMemReader::getMemReader();
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int creatureID = *(int*)(lpText - 4); //Character ID is currently stored in data before text string
+	if (self->tibiaId == creatureID)
 	{
-		if (vecHUD[i].pos.x > 2 && vecHUD[i].pos.y && !(vecHUD[i].message.empty()) && vecHUD[i].message[0] != '\0'){
-			OUTmyPrintText(1, vecHUD[i].pos.x, vecHUD[i].pos.y, nFont, vecHUD[i].redColor, vecHUD[i].greenColor, vecHUD[i].blueColor, const_cast<char*>(vecHUD[i].message.c_str()), 0);
+		if (showManaBar){ // print name a bit higher for extra space to input the second bar
+			nY = nY - 5;
 		}
+		// Runt printText for HUD only once at the time the character name is printed
+		vector<HUD>::size_type i;
+		for (i = 0; i != vecHUD.size(); i++)
+		{
+			if (vecHUD[i].pos.x > 2 && vecHUD[i].pos.y && !(vecHUD[i].message.empty()) && vecHUD[i].message[0] != '\0'){
+				OUTmyPrintText(1, vecHUD[i].pos.x, vecHUD[i].pos.y, nFont, vecHUD[i].redColor, vecHUD[i].greenColor, vecHUD[i].blueColor, const_cast<char*>(vecHUD[i].message.c_str()), 0);
+			}
 
+		}
 	}
-
+	int ret = OUTmyPrintText(nSurface, nX, nY, nFont, nRed, nGreen, nBlue, lpText, nAlign);
 	return ret;
 }
 
@@ -1750,7 +1893,7 @@ __declspec(naked) void INmyPlayerNameText() //()
 		mov ebp, esp
 		push edi
 		push ebx
-		push [ebp + 0x38]
+		    push [ebp + 0x38]
 		push [ebp + 0x34]
 		push [ebp + 0x30]
 		push [ebp + 0x2C]
@@ -2280,10 +2423,25 @@ void trapFun(HANDLE dwHandle, int addr, unsigned int targetFun)
 	WriteProcessMemory(dwHandle, (void *)addr, &targetAddr, sizeof(long int), NULL);
 }
 
+void hookDrawRect(HANDLE dwHandle, int addr, unsigned int targetFun)
+{
+	BYTE bytes[1] = { 0xE8 };
+	WriteProcessMemory(dwHandle, (void *)addr, bytes, sizeof(BYTE), NULL);
+	int targetAddr = targetFun - addr - 5;
+	int tmpAddr = addr + 1;
+	WriteProcessMemory(dwHandle, (void *)tmpAddr, &targetAddr, sizeof(long int), NULL);
+	BYTE bytes2[4] = { 0x90, 0x90, 0x90, 0x90 };
+	tmpAddr = tmpAddr + 4;
+	WriteProcessMemory(dwHandle, (void *)tmpAddr, bytes2, sizeof(long int), NULL);
+}
+
 void InitialisePlayerInfoHack()
 {
 	DWORD procId    = GetCurrentProcessId();
 	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
+
+	hookDrawRect(dwHandle, baseAdjust(callAddr_DrawBlackRect - 6), (unsigned int)INmyDrawBlackRect); // first layer black bar
+	hookDrawRect(dwHandle, baseAdjust(callAddr_DrawRect - 6), (unsigned int)INmyDrawRect); // second layer colored bar
 
 	trapFun(dwHandle, baseAdjust(callAddr_PrintText03 + 1), (unsigned int)INmyPrintText);
 	trapFun(dwHandle, baseAdjust(callAddr_PrintText04 + 1), (unsigned int)INmyPrintText);
@@ -2767,6 +2925,12 @@ void ParseIPCMessage(CIpcMessage mess)
 		}
 		break;
 	}
+	case 309:
+		showManaBar = 1;
+		break;
+	case 310:
+		showManaBar = 0;
+		break;
 	default:
 		break;
 	};

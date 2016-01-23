@@ -1068,6 +1068,22 @@ void CPackSender::sendDismount()
 	sendPacket(retbuf);
 }
 
+void CPackSender::activateManaBar()
+{
+	CIpcMessage mess;
+	mess.messageType = 309;
+	mess.send();
+
+}
+
+void CPackSender::desactivateManaBar()
+{
+	CIpcMessage mess;
+	mess.messageType = 310;
+	mess.send();
+
+}
+
 #pragma warning (pop)
 
 void CPackSender::sendDirectPacket(const char* buf, int len)
