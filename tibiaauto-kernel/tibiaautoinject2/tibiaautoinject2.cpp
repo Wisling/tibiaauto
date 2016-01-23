@@ -1893,7 +1893,7 @@ __declspec(naked) void INmyPlayerNameText() //()
 		mov ebp, esp
 		push edi
 		push ebx
-		    push [ebp + 0x38]
+		push [ebp + 0x38]
 		push [ebp + 0x34]
 		push [ebp + 0x30]
 		push [ebp + 0x2C]
