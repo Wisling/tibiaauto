@@ -1635,14 +1635,14 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 				myBlue = 0x30;
 			}
 
-			if (myRed < 0x30) // minimum red color
+			if (myRed < 0x20) // minimum red color
 			{
-				myRed = 0x30;
+				myRed = 0x20;
 			}
 
 
 			if ((myBlue - luminosity) > 0) //adjust blue color to light
-				myBlue = myBlue - luminosity;
+				myBlue = myBlue - (float)luminosity / (float)1.5;
 			else
 				myBlue = 0;
 
@@ -1650,7 +1650,7 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 			if (myRed < 0)
 				myRed = 0;
 
-			float myWeight = ((float)self->mana / (float)self->maxMana) * 0x19; // "0x19" is the maxWeight of colored bar
+			float myWeight = ((float)self->mana / (float)self->maxMana) * 0x1A; // "0x1A" is the maxWeight of colored bar
 
 			OUTmyDrawRect(ecx, nSurface, nX, nY, int(myWeight), nHeight, int(myRed), 0, int(myBlue));
 		}
