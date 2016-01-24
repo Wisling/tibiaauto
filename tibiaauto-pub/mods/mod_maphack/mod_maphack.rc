@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -13,13 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Polish resources
+// Polish (Poland) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
-#ifdef _WIN32
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 #pragma code_page(1250)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -27,18 +25,18 @@ LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
     "#define _AFX_NO_OLE_RESOURCES\r\n"
@@ -64,26 +62,22 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 152, 126
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_CONFIG DIALOGEX 0, 0, 153, 131
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: Map Hack"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "Map Options",IDC_FRAME_MAP_OPTIONS,7,7,138,80
-    DEFPUSHBUTTON   "OK",IDOK,52,105,50,14
-    CONTROL         "Reveal water with no fish",IDC_REVEAL_NOFISH,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,18,127,10
+    GROUPBOX        "Map Options",IDC_FRAME_MAP_OPTIONS,7,7,139,87
+    DEFPUSHBUTTON   "OK",IDOK,52,110,50,14
+    CONTROL         "Reveal water with no fish",IDC_REVEAL_NOFISH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,18,127,10
     CONTROL         "Always show creature name/hp bar",IDC_REVEALCNAME,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,30,127,10
-    CONTROL         "Mount Automatically",IDC_AUTOMOUNT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,43,127,10
-    CONTROL         "Show invisible creatures",IDC_REVEALINVISIBLE,"Button",
-                    BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,14,56,127,
-                    10
+    CONTROL         "Mount Automatically",IDC_AUTOMOUNT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,42,127,10
+    CONTROL         "Show invisible creatures",IDC_REVEALINVISIBLE,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,14,54,127,10
     CONTROL         "Multi-level Minimap Research",IDC_MINIMAPRESEARCH,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,69,127,10
-    CONTROL         "Enable map hacks",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,89,138,14
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,66,127,10
+    CONTROL         "Enable map hacks",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,95,139,14
+    CONTROL         "Activate mana bar",IDC_MANABAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,78,99,10
 END
 
 
@@ -93,32 +87,29 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_CONFIG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 145
+        RIGHTMARGIN, 146
         TOPMARGIN, 7
-        BOTTOMMARGIN, 119
+        BOTTOMMARGIN, 124
     END
 END
 #endif    // APSTUDIO_INVOKED
 
-#endif    // Polish resources
+#endif    // Polish (Poland) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
@@ -141,15 +132,13 @@ BEGIN
     BEGIN
         BLOCK "040904B0"
         BEGIN
-            VALUE "CompanyName", "\0"
-            VALUE "FileDescription", "mod_maphack DLL\0"
-            VALUE "FileVersion", "1, 0, 0, 1\0"
-            VALUE "InternalName", "mod_maphack\0"
-            VALUE "LegalCopyright", "Copyright (C) 2005\0"
-            VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "mod_maphack.DLL\0"
-            VALUE "ProductName", "mod_maphack Dynamic Link Library\0"
-            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "FileDescription", "mod_maphack DLL"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "mod_maphack"
+            VALUE "LegalCopyright", "Copyright (C) 2005"
+            VALUE "OriginalFilename", "mod_maphack.DLL"
+            VALUE "ProductName", "mod_maphack Dynamic Link Library"
+            VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END
     BLOCK "VarFileInfo"
@@ -158,9 +147,7 @@ BEGIN
     END
 END
 
-#endif    // !_MAC
-
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

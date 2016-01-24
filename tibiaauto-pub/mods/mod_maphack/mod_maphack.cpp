@@ -64,6 +64,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	int iter                   = 0;
 	time_t mountTm             = 0;
 	int mountStarted           = 0;
+	int manaBarStarted         = 0;
 
 	CPackSender::enableCName(1);
 	while (!toolThreadShouldStop)
@@ -131,6 +132,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				mountStarted = 0;
 			}
 			delete self;
+		}
+		if (config->showManaBar && !manaBarStarted)
+		{
+			manaBarStarted = 1;
+			CPackSender::activateManaBar();			
 		}
 		if (config->minimapResearch && iter % 2 == 0)
 		{
@@ -348,6 +354,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	CPackSender::enableCName(0);
 	reader.writeDisableRevealCName();
 	toolThreadShouldStop = 0;
+	manaBarStarted = 0;
+	CPackSender::desactivateManaBar();
 	return 0;
 }
 
@@ -491,6 +499,8 @@ void CMod_maphackApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->minimapResearch = atoi(paramValue);
 	if (!strcmp(paramName, "autoMount"))
 		m_configData->autoMount = atoi(paramValue);
+	if (!strcmp(paramName, "showManaBar"))
+		m_configData->showManaBar = atoi(paramValue);
 }
 
 char *CMod_maphackApp::saveConfigParam(char *paramName)
@@ -508,6 +518,8 @@ char *CMod_maphackApp::saveConfigParam(char *paramName)
 		sprintf(buf, "%d", m_configData->minimapResearch);
 	if (!strcmp(paramName, "autoMount"))
 		sprintf(buf, "%d", m_configData->autoMount);
+	if (!strcmp(paramName, "showManaBar"))
+		sprintf(buf, "%d", m_configData->showManaBar);
 
 	return buf;
 }
@@ -526,6 +538,8 @@ char *CMod_maphackApp::getConfigParamName(int nr)
 		return "reveal/minimap";
 	case 4:
 		return "autoMount";
+	case 5:
+		return "showManaBar";
 	default:
 		return NULL;
 	}

@@ -39,6 +39,7 @@ public:
 	CButton m_revealInvisible;
 	CButton m_minimapResearch;
 	CButton m_autoMount;
+	CButton m_manaBar;
 	CButtonST m_OK;
 	CButtonST m_enable;
 	//}}AFX_DATA
