@@ -931,15 +931,15 @@ void CPackSender::sendCreatureInfo(char *name, char *info1, char *info2)
 void CPackSender::printText(CPoint pos, int red, int green, int blue, char* message)
 {
 	CIpcMessage mess;
-	int messLen = strlen(message);
 	mess.messageType = 307;
 	memcpy(mess.payload, &pos.x, sizeof(int));
 	memcpy(mess.payload + 4, &pos.y, sizeof(int));
 	memcpy(mess.payload + 8, &red, sizeof(int));
 	memcpy(mess.payload + 12, &green, sizeof(int));
 	memcpy(mess.payload + 16, &blue, sizeof(int));
+	unsigned int messLen = min(sizeof(mess.payload) - 24, strlen(message));
 	memcpy(mess.payload + 20, &messLen, sizeof(int));
-	strcpy(mess.payload + 24, message);
+	memcpy(mess.payload + 24, message, messLen);
 	mess.send();
 }
 
