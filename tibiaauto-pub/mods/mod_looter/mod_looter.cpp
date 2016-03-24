@@ -446,11 +446,14 @@ void CMod_looterApp::start()
 
 void CMod_looterApp::stop()
 {
-	toolThreadShouldStop = 1;
-	while (toolThreadShouldStop)
+	if (m_started && toolThreadHandle)
 	{
-		Sleep(50);
-	};
+		toolThreadShouldStop = 1;
+		while (toolThreadShouldStop)
+		{
+			Sleep(50);
+		};
+	}
 	m_started = 0;
 
 	if (m_configDialog)

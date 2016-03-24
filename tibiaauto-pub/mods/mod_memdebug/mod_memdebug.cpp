@@ -36,6 +36,7 @@ END_MESSAGE_MAP()
 CMod_memdebugApp::CMod_memdebugApp()
 {
 	m_started = 0;
+	m_configDialog = NULL;
 }
 
 CMod_memdebugApp::~CMod_memdebugApp()

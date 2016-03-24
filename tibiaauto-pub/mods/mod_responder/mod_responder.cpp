@@ -54,6 +54,7 @@ CMod_responderApp::CMod_responderApp()
 {
 	m_infoDialog   = NULL;
 	currentPointNr = 0;
+	m_configData = new CConfigData();
 }
 
 CMod_responderApp::~CMod_responderApp()

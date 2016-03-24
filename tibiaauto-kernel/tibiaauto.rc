@@ -91,6 +91,7 @@ END
 
 IDD_CHAR_DIALOG DIALOGEX 0, 0, 157, 63
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
+EXSTYLE WS_EX_APPWINDOW
 CAPTION "Choose character"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
@@ -299,6 +300,17 @@ BEGIN
         MENUITEM "Reload",                      ID_MENU_RELOAD
         MENUITEM "Unload",                      ID_MENU_UNLOAD
     END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_CHAR_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
 END
 
 #endif    // Polish (Poland) resources

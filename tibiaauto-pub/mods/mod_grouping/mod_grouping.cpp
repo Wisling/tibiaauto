@@ -179,6 +179,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 CMod_groupingApp::CMod_groupingApp()
 {
 	m_started = 0;
+	m_configData = new CConfigData();
 }
 
 CMod_groupingApp::~CMod_groupingApp()
