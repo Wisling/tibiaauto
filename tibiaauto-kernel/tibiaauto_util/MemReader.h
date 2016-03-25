@@ -17,7 +17,6 @@ private:
 	CMemReader();
 	virtual ~CMemReader();
 	CMemReader(CMemReader const&);
-	void operator=(CMemReader const&);
 public:
 	static CMemReader& getMemReader()
 	{

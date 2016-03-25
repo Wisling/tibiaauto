@@ -22,7 +22,7 @@
 
 int myInterceptEncrypt(int v1, int v2);
 int myInterceptDecrypt(int v1, int v2);
-int OUTmyInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
+__declspec(noinline) int OUTmyInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
 int myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
 int myShouldParseRecv();
 
@@ -1210,7 +1210,7 @@ void InitialiseCreatureInfo()
 	}
 }
 
-int OUTmyDrawRect(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9)
+__declspec(noinline) int OUTmyDrawRect(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9)
 {
 	int retvar;
 	typedef void(*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
@@ -1294,6 +1294,7 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 	}
 	else
 		OUTmyDrawRect(ecx, nSurface, nX, nY, nWeight, nHeight, nRed, nGreen, nBlue);
+	delete self;
 
 }
 
@@ -1323,26 +1324,26 @@ __declspec(naked) void INmyDrawBlackRect() //(int v1, int v2, int v3, int v4, in
 {
 	__asm {
 		mov ecx, dword ptr[ebp - 0x5D4C]
-			push ebp
-			mov ebp, esp
-			push[ebp + 0x24]
-			push[ebp + 0x20]
-			push[ebp + 0x1C]
-			push[ebp + 0x18]
-			push[ebp + 0x14]
-			push[ebp + 0x10]
-			push[ebp + 0x0C]
-			push[ebp + 0x08]
-			push ecx //unknown parameter
-			push [ebp] // ebp is needed only to know which creatureID is being drawn
-			call myDrawRect
-			leave
-			ret 0x24
+		push ebp
+		mov ebp, esp
+		push[ebp + 0x24]
+		push[ebp + 0x20]
+		push[ebp + 0x1C]
+		push[ebp + 0x18]
+		push[ebp + 0x14]
+		push[ebp + 0x10]
+		push[ebp + 0x0C]
+		push[ebp + 0x08]
+		push ecx //unknown parameter
+		push [ebp] // ebp is needed only to know which creatureID is being drawn
+		call myDrawRect
+		leave
+		ret 0x24
 	}
 }
 
 //(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8<ecx>, int v9)
-int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8, int v9)
+__declspec(noinline) int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8, int v9)
 {
 	int retvar;
 	typedef void (*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8, int v9);
@@ -1397,6 +1398,8 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 
 		}
 	}
+	delete self;
+
 	int ret = OUTmyPrintText(nSurface, nX, nY, nFont, nRed, nGreen, nBlue, lpText, nAlign);
 	return ret;
 }
@@ -1422,7 +1425,7 @@ __declspec(naked) void INmyPrintText() //(int v1, int v2, int v3, int v4, int v5
 }
 
 //(int align<ecx>, char *str<edx>, int visible, int x, int y, int fontNumber, int colR, int colG, int colB, int showFormatting, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, int v16<ebx>, int v17<edi>)
-int OUTmyPlayerNameText(int alignvar, int fontNumber, int visible, int x, int y, int showFormatting, int colR, int colG, int colB, char *strvar, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, char* v16, int v17)
+__declspec(noinline) int OUTmyPlayerNameText(int alignvar, int fontNumber, int visible, int x, int y, int showFormatting, int colR, int colG, int colB, char *strvar, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, char* v16, int v17)
 {
 	int retvar;
 	typedef int (*Proto_fun)(int align, int fontNumber, int visible, int x, int y, int showFormatting, int colR, int colG, int colB, char *str, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, char* v16, int v17);
@@ -1665,7 +1668,7 @@ int myIsCreatureVisible(int *creaturePtr) //Should Draw Creature(not used)
 	}
 }
 
-int OUTmyInterceptEncrypt(int v1, int v2) //<eax>(int v1<ecx>, int v2<edx>)
+__declspec(noinline) int OUTmyInterceptEncrypt(int v1, int v2) //<eax>(int v1<ecx>, int v2<edx>)
 {
 	int retvar;
 	typedef void (*Proto_fun)(int v1, int v2);
@@ -1725,7 +1728,7 @@ __declspec(naked) void INmyInterceptEncrypt() //<eax>(int v1<ecx>, int v2<edx>)
 	}
 }
 
-int OUTmyInterceptDecrypt(int v1, int v2) //<eax>(int v1<ecx>, int v2<edx>)
+__declspec(noinline) int OUTmyInterceptDecrypt(int v1, int v2) //<eax>(int v1<ecx>, int v2<edx>)
 {
 	int retvar; //create [ebp - 4] variable
 	typedef void (*Proto_fun)();
@@ -1770,7 +1773,7 @@ __declspec(naked) void INmyInterceptDecrypt() //<eax>(int v1<ecx>, int v2<edx>)
 	}
 }
 
-/*int OUTmyInterceptAllRegs(int v1, int v2, int v3, int v4, int v5, int v6, int va, int vb, int vc, int vd, int vdi, int vsi)
+/*__declspec(noinline) int OUTmyInterceptAllRegs(int v1, int v2, int v3, int v4, int v5, int v6, int va, int vb, int vc, int vd, int vdi, int vsi)
    {
         int ret;
         typedef void (*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int va, int vb, int vc, int vd, int vdi, int vsi);
@@ -1917,7 +1920,7 @@ int myShouldParseRecv()
 }
 
 //<eax>(int v1, int v2, int v3<ecx>, int v4, int v5, int v6, int v7, int v8<edx>, int v9)
-int OUTmyInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9)
+__declspec(noinline) int OUTmyInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9)
 {
 	int retval;
 	typedef int (*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
@@ -2072,13 +2075,13 @@ void InitialisePlayerInfoHack()
 {
 	DWORD procId    = GetCurrentProcessId();
 	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
-
+	
 	hookDrawRect(dwHandle, baseAdjust(callAddr_DrawBlackRect - 6), (unsigned int)INmyDrawBlackRect); // first layer black bar
 	hookDrawRect(dwHandle, baseAdjust(callAddr_DrawRect - 6), (unsigned int)INmyDrawRect); // second layer colored bar
-
+	
 	trapFun(dwHandle, baseAdjust(callAddr_PrintText03 + 1), (unsigned int)INmyPrintText);
 	trapFun(dwHandle, baseAdjust(callAddr_PrintText04 + 1), (unsigned int)INmyPrintText);
-
+	
 	// lookup: find string In(FontNumber,1 [6th match is in the middle of the function]
 
 	trapFun(dwHandle, baseAdjust(callAddr_PlayerNameText01 + 1), (unsigned int)INmyPlayerNameText);
@@ -2251,19 +2254,16 @@ BOOL APIENTRY DllMain(HINSTANCE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-
-		InitialiseDebugFile();
+		InitialiseProxyClasses();
+		//InitialiseDebugFile();
 		InitialiseTibiaState();
-		InitialiseHooks();
+		//InitialiseHooks();
 		//InitialiseKBHooks();
 		InitialiseCommunication();
 		InitialisePlayerInfoHack();
-		InitialiseProxyClasses();
-		InitialiseCreatureInfo();
+		//InitialiseCreatureInfo();
 		//InitialiseTibiaMenu();
-		ActivateHookCallback();
-
-
+		//ActivateHookCallback();
 		break;
 	case DLL_PROCESS_DETACH:
 	{
