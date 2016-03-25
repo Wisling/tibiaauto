@@ -2075,13 +2075,13 @@ void InitialisePlayerInfoHack()
 {
 	DWORD procId    = GetCurrentProcessId();
 	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
-	
+
 	hookDrawRect(dwHandle, baseAdjust(callAddr_DrawBlackRect - 6), (unsigned int)INmyDrawBlackRect); // first layer black bar
 	hookDrawRect(dwHandle, baseAdjust(callAddr_DrawRect - 6), (unsigned int)INmyDrawRect); // second layer colored bar
-	
+
 	trapFun(dwHandle, baseAdjust(callAddr_PrintText03 + 1), (unsigned int)INmyPrintText);
 	trapFun(dwHandle, baseAdjust(callAddr_PrintText04 + 1), (unsigned int)INmyPrintText);
-	
+
 	// lookup: find string In(FontNumber,1 [6th match is in the middle of the function]
 
 	trapFun(dwHandle, baseAdjust(callAddr_PlayerNameText01 + 1), (unsigned int)INmyPlayerNameText);
@@ -2255,15 +2255,15 @@ BOOL APIENTRY DllMain(HINSTANCE hModule,
 	{
 	case DLL_PROCESS_ATTACH:
 		InitialiseProxyClasses();
-		//InitialiseDebugFile();
+		InitialiseDebugFile();
 		InitialiseTibiaState();
-		//InitialiseHooks();
+		InitialiseHooks();
 		//InitialiseKBHooks();
 		InitialiseCommunication();
 		InitialisePlayerInfoHack();
-		//InitialiseCreatureInfo();
+		InitialiseCreatureInfo();
 		//InitialiseTibiaMenu();
-		//ActivateHookCallback();
+		ActivateHookCallback();
 		break;
 	case DLL_PROCESS_DETACH:
 	{
@@ -2395,27 +2395,6 @@ void ParseIPCMessage(CIpcMessage mess)
 		memcpy(&autoAimActive, mess.payload, 4);
 		memcpy(&autoAimOnlyCreatures, mess.payload + 4, 4);
 		memcpy(&autoAimAimPlayersFromBattle, mess.payload + 8, 4);
-		/*
-		 * as of tibia 7.8 this is obsolete (handled by the client itself
-
-		   if (autoAimAimPlayersFromBattle)
-		   {
-		   unsigned char val=0xEB;
-		   unsigned char *addr=(unsigned char *)0x42BBAB+0xF430+0x30; //7.72
-		   DWORD procId=GetCurrentProcessId();
-		   HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
-		   WriteProcessMemory(dwHandle, (void *)addr, &val,   sizeof(char), NULL);
-		   CloseHandle(dwHandle);
-		   } else {
-		   unsigned char val=0x74;
-		   //unsigned char *addr=(unsigned char *)0x411073; // 7.6
-		   unsigned char *addr=(unsigned char *)0x42BBAB+0xF430+0x30; //7.72
-		   DWORD procId=GetCurrentProcessId();
-		   HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
-		   WriteProcessMemory(dwHandle, (void *)addr, &val,   sizeof(char), NULL);
-		   CloseHandle(dwHandle);
-		   }
-		 */
 		break;
 	}
 	case 304:
@@ -2632,143 +2611,3 @@ void InitialiseCommunication()
 	        0,                 // use default creation flags
 	        &dwThread);   // returns the thread identifier
 };
-
-/*
-
-
-
-   #define INCLUDE_PROXY_CLASSES
-   #include "ddraw.h"
-   #include "NewIDirectDrawSurface4.cpp"
-   #include "NewIDirectDraw4.cpp"
-   #include "NewIDirectDraw.cpp"
-
-
-                  extern "C"
-                  {
-
-                        typedef HRESULT (WINAPI *RealDirectDrawCreate)(GUID FAR *lpGUID, LPDIRECTDRAW FAR *lplpDD, IUnknown FAR *pUnkOuter);
-
-
-                                HRESULT WINAPI DirectDrawCreate(
-                                GUID FAR *lpGUID,
-                                LPDIRECTDRAW FAR *lplpDD,
-                                IUnknown FAR *pUnkOuter)
-                                {
-
-
-                                        RealDirectDrawCreate pDirectDrawCreate;
-
-                                          HMODULE hddraw=NULL;
-                                          char szFileName[512];
-                                          UINT ret;
-
-                                                ret = GetSystemDirectory(szFileName, 256);
-                                                if(ret <= 0)
-                                                {
-                                                return FALSE;
-                                                }
-
-                                                  strcat(szFileName, "\\ddraw.dll");
-                                                  hddraw = LoadLibrary(szFileName);
-                                                  if(hddraw == NULL)
-                                                  {
-                                                  return FALSE;
-                                                  }
-
-                                                        pDirectDrawCreate = (RealDirectDrawCreate)GetProcAddress(hddraw, "DirectDrawCreate");
-
-                                                          if(pDirectDrawCreate == NULL)
-                                                          {
-                                                          return FALSE;
-                                                          }
-                                                          IDirectDraw *realIDirectDraw;
-                                                          pDirectDrawCreate(lpGUID,&realIDirectDraw,pUnkOuter);
- * lplpDD = new NewIDirectDraw(realIDirectDraw,"IDirectDraw");
-
-                                                                return FALSE;
-
-                                                                  }
-                                                                  } // extern "C"
-
-
-
-                                                                                extern "C"
-                                                                                {
-
-                                                                                  typedef PVOID (WINAPI *RealAllocMemEx)(DWORD dwSize, HANDLE hProcess);
-                                                                                  typedef BOOL (WINAPI *RealFreeMemEx)(PVOID  pMem, HANDLE hProcess);
-                                                                                  typedef BOOL (WINAPI *RealHookAPI)(LPCSTR pszModule,LPCSTR pszFuncName,PVOID  pCallbackFunc,PVOID  *pNextHook,DWORD  dwFlags);
-                                                                                  typedef HANDLE (WINAPI *RealCreateRemoteThreadEx)(HANDLE hProcess,LPSECURITY_ATTRIBUTES  lpThreadAttributes,DWORD dwStackSize,LPTHREAD_START_ROUTINE lpStartAddress,LPVOID lpParameter,DWORD dwCreationFlags,LPDWORD lpThreadId);
-
-                                                                                        HANDLE WINAPI CreateRemoteThreadEx(
-                                                                                        HANDLE                 hProcess,
-                                                                                        LPSECURITY_ATTRIBUTES  lpThreadAttributes,
-                                                                                        DWORD                  dwStackSize,
-                                                                                        LPTHREAD_START_ROUTINE lpStartAddress,
-                                                                                        LPVOID                 lpParameter,
-                                                                                        DWORD                  dwCreationFlags,
-                                                                                        LPDWORD                lpThreadId
-                                                                                        )
-                                                                                        {
-                                                                                        MessageBox(NULL,"CreateRemoteThreadEx","",0);
-                                                                                        RealCreateRemoteThreadEx fun;
-                                                                                        fun = (RealCreateRemoteThreadEx)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "CreateRemoteThreadEx");
-                                                                                        return fun(hProcess,lpThreadAttributes,dwStackSize,lpStartAddress,lpParameter,dwCreationFlags,lpThreadId);
-                                                                                        }
-
-
-                                                                                                BOOL WINAPI HookAPI(
-                                                                                                LPCSTR pszModule,
-                                                                                                LPCSTR pszFuncName,
-                                                                                                PVOID  pCallbackFunc,
-                                                                                                PVOID  *pNextHook,
-                                                                                                DWORD  dwFlags
-                                                                                                )
-                                                                                                {
-                                                                                                char b[1024];
-                                                                                                sprintf(b,"HookApi: %s/%s",pszModule,pszFuncName);
-                                                                                                MessageBox(NULL,b,"",0);
-                                                                                                RealHookAPI fun;
-                                                                                                fun = (RealHookAPI)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "HookAPI");
-                                                                                                return fun(pszModule,pszFuncName,pCallbackFunc,pNextHook,dwFlags);
-                                                                                                }
-
-
-
-                                                                                                          PVOID WINAPI AllocMemEx(
-                                                                                                          DWORD  dwSize,
-                                                                                                          HANDLE hProcess
-                                                                                                          )
-                                                                                                          {
-                                                                                                          MessageBox(NULL,"AllocMemEx","",0);
-                                                                                                          RealAllocMemEx fun;
-                                                                                                          fun = (RealAllocMemEx)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "AllocMemEx");
-                                                                                                          return fun(dwSize,hProcess);
-                                                                                                          }
-                                                                                                          BOOL WINAPI FreeMemEx(
-                                                                                                          PVOID  pMem,
-                                                                                                          HANDLE hProcess
-
-                                                                                                                )
-                                                                                                                {
-                                                                                                                MessageBox(NULL,"FreeMemEx","",0);
-                                                                                                                RealFreeMemEx fun;
-                                                                                                                fun = (RealFreeMemEx)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "FreeMemEx");
-                                                                                                                return fun(pMem,hProcess);
-                                                                                                                }
-
-                                                                                                                  BOOL WINAPI HookCode(
-                                                                                                                  PVOID  pCode,
-                                                                                                                  PVOID  pCallbackFunc,
-                                                                                                                  PVOID  *pNextHook,
-                                                                                                                  DWORD  dwFlags
-                                                                                                                  )
-                                                                                                                  {
-                                                                                                                  MessageBox(NULL,"HookCode","",0);
-                                                                                                                  return 0;
-                                                                                                                  }
-
-
-                                                                                                                          } // extern "C"
- */
