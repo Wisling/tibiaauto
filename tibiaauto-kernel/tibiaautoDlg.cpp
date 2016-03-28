@@ -18,7 +18,6 @@
 #include "DonationDialog.h"
 #include <IPCBackPipe.h>
 #include <TibiaItem.h>
-#include "EnterCode.h"
 #include "md5class.h"
 #include "OptionsDialog.h"
 #include "detours.h"
@@ -330,24 +329,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 	CMemReader& reader = CMemReader::getMemReader();
 	CMemUtil::setGlobalProcessId(m_processId);
-
-	// shutdownCounter is anti-hack protection
-	shutdownCounter = rand() % 100;
-#ifndef _DEBUG
-	CEnterCode *enterCode = new CEnterCode(this);
-	int res               = enterCode->DoModal();
-	delete enterCode;
-
-	if (res != IDOK)
-	{
-		EndDialog(IDCANCEL);
-		return TRUE;
-	}
-#else // ifndef _DEBUG
-	shutdownCounter = -rand();
-#endif // ifndef _DEBUG
-
-
+	
 	m_loadedModules = new CLoadedModules();
 	m_loadedModules->Create(IDD_LOADED_MODULES);
 
@@ -481,7 +463,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	setShellTray();
 
 	SetTimer(1003, 1000 * 60 * 15, NULL); // once every 15 minutes refresh ads
-	SetTimer(1004, 1000 * 60 * 5, NULL); // once every 5 minutes refresh ads
+	SetTimer(1004, 1000 * 60 * 5, NULL); // once every 5 minutes report usage
 	if (CModuleUtil::getTASetting("GatherBotStats"))
 		SetTimer(1005, 5000, NULL);  //every 5 seconds check and record module stats
 	SetTimer(1006, 5000, NULL); //refresh tray icon name if changed
@@ -549,15 +531,6 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		m_loginName.GetWindowText(currentDisplay);
 		if (currentDisplay != buf)
 			m_loginName.SetWindowText(buf);
-		shutdownCounter--;
-		if (shutdownCounter < -100000)
-			shutdownCounter = -123;
-		if (shutdownCounter == 0)
-		{
-			// ups ops some's hacking TA :/
-			shutdownCounter++;
-			delete this;
-		}
 		SetTimer(1001, 150, NULL);
 	}
 	if (nIDEvent == 1002)
@@ -1544,12 +1517,6 @@ void CTibiaautoDlg::OnToolAntilog()
 void CTibiaautoDlg::OnFps()
 {
 	m_moduleFps->showConfigDialog();
-}
-
-void CTibiaautoDlg::passSecurityInfo(int value)
-{
-	if (!value)
-		delete this;
 }
 
 void CTibiaautoDlg::OnPythonScripts()

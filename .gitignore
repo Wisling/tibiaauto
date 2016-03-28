@@ -45,6 +45,7 @@
 *.user
 Debug
 Release
+Release_Profiling
 *.aps
 
 ## Ignore Visual Studio temporary files, build results, and

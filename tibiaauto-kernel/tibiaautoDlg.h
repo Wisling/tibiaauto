@@ -161,14 +161,10 @@ private:
 	int setDllLoadDir(HANDLE process, const char* dllLoadDir);
 	int injectDll(HANDLE process, const char* dllPath);
 	void InitialiseIPC();
-
 	long m_processId;
-
 
 public:
 	~CTibiaautoDlg();
-	void passSecurityInfo(int value);
-	int shutdownCounter;
 	LRESULT DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam);
 private:
 	void reportUsage();
