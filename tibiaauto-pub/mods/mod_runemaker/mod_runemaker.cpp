@@ -65,11 +65,11 @@ int RandomVariableMana(int &pt, int command, CConfigData *config)
 {
 	CMemReader& reader = CMemReader::getMemReader();
 
-	CTibiaCharacter* self = reader.readSelfCharacter();
-	int val               = pt < 0 ? max(self->maxMana + pt, self->maxMana / 10) : pt;
+	CTibiaCharacter self;
+	 reader.readSelfCharacter(& self);
+	int val               = pt < 0 ? max(self.maxMana + pt, self.maxMana / 10) : pt;
 	if (!config->randomCast)
 	{
-		delete self;
 		return val;
 	}
 	if (!setMana[&pt])
@@ -78,12 +78,11 @@ int RandomVariableMana(int &pt, int command, CConfigData *config)
 	{
 	
 		// within 10% of number with a cutoff at maxMana
-		setMana[&pt] = CModuleUtil::randomFormula(val, (int)(val * 0.1), val, max(self->maxMana, val + 1));
+		setMana[&pt] = CModuleUtil::randomFormula(val, (int)(val * 0.1), val, max(self.maxMana, val + 1));
 		char buf[111];
 		sprintf(buf, "%d", setMana[&pt]);
 		CPackSender::sendTAMessage(buf);
 	}
-	delete self;
 	return setMana[&pt];
 }
 
@@ -106,7 +105,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		Sleep(900);
 		if (!reader.isLoggedIn())
 			continue;                   // do not proceed if not connected
-		CTibiaCharacter *myself = reader.readSelfCharacter();
+		CTibiaCharacter myself;
+		 reader.readSelfCharacter(&myself);
 
 		int blanksCount = 0;
 		int openContNr  = 0;
@@ -124,23 +124,22 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			};
 			delete container;
 		}
-		if (myself->soulPoints >= config->soulPoints)
+		if (myself.soulPoints >= config->soulPoints)
 		{
 			for (; blanksCount > 0; blanksCount--)
 			{
 				int manaLimit = RandomVariableMana(config->makeNow ? config->mana : (config->manaLimit > config->mana) ? config->manaLimit : config->mana, GET, config);
-				if (myself->mana >= manaLimit)
+				if (myself.mana >= manaLimit)
 				{
 					RandomVariableMana(config->makeNow ? config->mana : (config->manaLimit > config->mana) ? config->manaLimit : config->mana, MAKE, config);
 					// cast spell
 					CPackSender::say((LPCTSTR)config->spell);
-					CModuleUtil::waitForManaDecrease(myself->mana);
+					CModuleUtil::waitForManaDecrease(myself.mana);
 					if (!config->maxUse)
 						break; //even if we have the mana and blank runes/spears do not continue casting
 				}
 			}
 		}
-		delete myself;
 	}
 	setMana.clear();
 	toolThreadShouldStop = 0;

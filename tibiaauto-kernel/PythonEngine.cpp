@@ -181,7 +181,8 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
    {
         CMemReader& reader = CMemReader::getMemReader();
 
-        CTibiaCharacter *selfCh = reader.readSelfCharacter();
+        CTibiaCharacter selfCh;
+         reader.readSelfCharacter(&selfCh);
         PyObject *ret =
                 Py_BuildValue("{s:i,s:i,s:i,s:i,s:i}",
                 "hp",selfCh->hp,

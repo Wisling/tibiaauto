@@ -128,7 +128,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	if (nIDEvent == 1001)
 	{
 		CMemReader& reader = CMemReader::getMemReader();
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 		char buf[512];
 
 		if (!m_enable.GetCheck())
@@ -137,7 +138,6 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		sprintf(buf, "Status: %s", statusPrinted);
 		m_status.SetWindowText(buf);
 
-		delete self;
 	}
 	CDialog::OnTimer(nIDEvent);
 }

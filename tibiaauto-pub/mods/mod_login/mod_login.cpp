@@ -196,10 +196,9 @@ int ensureForeground(HWND hwnd)
 int getSelfHealth()
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int retHealth         = self->hp;
-	delete self;
-	self = NULL;
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	int retHealth         = self.hp;
 	return retHealth;
 }
 

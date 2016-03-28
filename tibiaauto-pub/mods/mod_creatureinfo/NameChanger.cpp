@@ -62,38 +62,39 @@ void CNameChanger::RefreshInfo()
 	int iCount = m_list.GetItemCount();
 	int iAdded = 0;
 
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
 	m_list.SendMessage(WM_SETREDRAW, 0, 0);
 
 	for (chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 	{
-		CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
-		if (ch->tibiaId == 0)
+		CTibiaCharacter ch;
+		reader.readVisibleCreature(&ch, chNr);
+		if (ch.tibiaId == 0)
 		{
-			delete ch;
 			break;
 		}
-		if (ch->name[0] && (m_battleOnly.GetCheck() ? ch->visible && ch->z == self->z : 1))
+		if (ch.name[0] && (m_battleOnly.GetCheck() ? ch.visible && ch.z == self.z : 1))
 		{
 			//T4: We have a creature
 			if (iAdded < iCount)
 			{
-				m_list.SetItem(iAdded, 0, LVIF_TEXT | LVIF_PARAM, ch->name, 0, 0, 0, chNr);
+				m_list.SetItem(iAdded, 0, LVIF_TEXT | LVIF_PARAM, ch.name, 0, 0, 0, chNr);
 			}
 			else
 			{
-				m_list.InsertItem(iAdded, ch->name);
-				m_list.SetItem(iAdded, 0, LVIF_TEXT | LVIF_PARAM, ch->name, 0, 0, 0, chNr);
+				m_list.InsertItem(iAdded, ch.name);
+				m_list.SetItem(iAdded, 0, LVIF_TEXT | LVIF_PARAM, ch.name, 0, 0, 0, chNr);
 			}
 
-			sprintf(buffer, "%d%%", ch->hpPercLeft);
+			sprintf(buffer, "%d%%", ch.hpPercLeft);
 			m_list.SetItem(iAdded, 1, LVIF_TEXT, buffer, 0, 0, 0, 0);
 
 			if (m_relpos.GetCheck())
-				sprintf(buffer, "%d,%d,%d", ch->x - self->x, ch->y - self->y, ch->z - self->z);
+				sprintf(buffer, "%d,%d,%d", ch.x - self.x, ch.y - self.y, ch.z - self.z);
 			else
-				sprintf(buffer, "%d,%d,%d", ch->x, ch->y, ch->z);
+				sprintf(buffer, "%d,%d,%d", ch.x, ch.y, ch.z);
 			m_list.SetItem(iAdded, 2, LVIF_TEXT, buffer, 0, 0, 0, 0);
 
 			sprintf(buffer, "%d", chNr);
@@ -101,18 +102,16 @@ void CNameChanger::RefreshInfo()
 
 			if (m_advanced.GetCheck())
 			{
-				sprintf(buffer, "0x%08X", ch->tibiaId);
+				sprintf(buffer, "0x%08X", ch.tibiaId);
 				m_list.SetItem(iAdded, 4, LVIF_TEXT, buffer, 0, 0, 0, 0);
-				sprintf(buffer, "%d", ch->outfitId);
+				sprintf(buffer, "%d", ch.outfitId);
 				m_list.SetItem(iAdded, 5, LVIF_TEXT, buffer, 0, 0, 0, 0);
-				sprintf(buffer, "%d", ch->monsterType);
+				sprintf(buffer, "%d", ch.monsterType);
 				m_list.SetItem(iAdded, 6, LVIF_TEXT, buffer, 0, 0, 0, 0);
 			}
 
 			iAdded++;
 		}
-
-		delete ch;
 	}
 	//T4: Remove unused items
 	for (; iCount > iAdded; iCount--)
@@ -124,7 +123,6 @@ void CNameChanger::RefreshInfo()
 	m_list.RedrawWindow(NULL, NULL, FALSE);
 	m_list.UpdateWindow();
 
-	delete self;
 }
 
 BOOL CNameChanger::OnInitDialog()

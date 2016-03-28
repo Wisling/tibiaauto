@@ -172,7 +172,8 @@ void CToolMapShow::refreshVisibleMap()
 	if (!IsWindowVisible())
 		return;
 
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
 	if (m_mapButtonImage[10][10] != IDB_MAP_SELF)
 	{
@@ -189,11 +190,11 @@ void CToolMapShow::refreshVisibleMap()
 		{
 			if (x != 10 || y != 10)
 			{
-				int avail = tibiaMap.isPointAvailableNoProh(x + self->x - 10, y + self->y - 10, self->z);
+				int avail = tibiaMap.isPointAvailableNoProh(x + self.x - 10, y + self.y - 10, self.z);
 				if (avail)
 				{
-					int locked             = tibiaMap.isPointLocked(x + self->x - 10, y + self->y - 10, self->z);
-					MapPointType pointType = tibiaMap.getPointType(x + self->x - 10, y + self->y - 10, self->z);
+					int locked             = tibiaMap.isPointLocked(x + self.x - 10, y + self.y - 10, self.z);
+					MapPointType pointType = tibiaMap.getPointType(x + self.x - 10, y + self.y - 10, self.z);
 					int changedToImage     = -1;
 
 					switch (pointType)
@@ -235,14 +236,14 @@ void CToolMapShow::refreshVisibleMap()
 						break;
 					case MAP_POINT_TYPE_TELEPORT:
 						// teleporter
-						if (tibiaMap.getDestPoint(x + self->x - 10, y + self->y - 10, self->z).x == 0)
+						if (tibiaMap.getDestPoint(x + self.x - 10, y + self.y - 10, self.z).x == 0)
 							changedToImage = locked ? IDB_MAP_UNKTELE_LOCK : IDB_MAP_UNKTELE;
 						else
 							changedToImage = locked ? IDB_MAP_TELE_LOCK : IDB_MAP_TELE;
 						break;
 					case MAP_POINT_TYPE_USABLE_TELEPORT:
 						// teleporter
-						if (tibiaMap.getDestPoint(x + self->x - 10, y + self->y - 10, self->z).x == 0)
+						if (tibiaMap.getDestPoint(x + self.x - 10, y + self.y - 10, self.z).x == 0)
 							changedToImage = locked ? IDB_MAP_UNKTELE_LOCK : IDB_MAP_UNKTELE;
 						else
 							changedToImage = locked ? IDB_MAP_TELE_LOCK : IDB_MAP_TELE;
@@ -275,7 +276,6 @@ void CToolMapShow::refreshVisibleMap()
 			}
 		}
 	}
-	delete self;
 }
 
 int mod(int i, int m)
@@ -365,20 +365,19 @@ void CToolMapShow::MapResearchTick()
 	KillTimer(1002);
 	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
-	if (self->x - 0x10000000 || self->y < -0x10000000 || self->z < -20 || self->z > 20)
+	if (self.x - 0x10000000 || self.y < -0x10000000 || self.z < -20 || self.z > 20)
 	{
-		delete self;
 		SetTimer(1002, 25, NULL);
 		return;
 	}
-	if (tibiaMap.getPointTypeNoProh(self->x, self->y, self->z) == MAP_POINT_TYPE_AVAILABLE)
+	if (tibiaMap.getPointTypeNoProh(self.x, self.y, self.z) == MAP_POINT_TYPE_AVAILABLE)
 	{
-		tibiaMap.setPointAsAvailable(self->x, self->y, self->z);
-		tibiaMap.setPointSpeed(self->x, self->y, self->z, 130);//130 default( is >255/2 and <70*2)
+		tibiaMap.setPointAsAvailable(self.x, self.y, self.z);
+		tibiaMap.setPointSpeed(self.x, self.y, self.z, 130);//130 default( is >255/2 and <70*2)
 	}
-	delete self;
 	SetTimer(1002, 25, NULL);
 }
 
@@ -390,16 +389,16 @@ void CToolMapShow::ExtendedMapResearchTick()
 	// get tile 0 to make sure that the framework is initialised
 	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	CTileReader::getTileReader().getTile(0);
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
-	if (self->x < -0x10000000 || self->y < -0x10000000 || self->z < -20 || self->z > 20)
+	if (self.x < -0x10000000 || self.y < -0x10000000 || self.z < -20 || self.z > 20)
 	{
-		delete self;
 		SetTimer(1003, 500, NULL);
 		return;
 	}
 	iter++;//increases every 0.5 secs
-	if (self->x != prevX || self->y != prevY || self->z != prevZ || iter % 6 == 0)//reading takes about 100ms +- 100
+	if (self.x != prevX || self.y != prevY || self.z != prevZ || iter % 6 == 0)//reading takes about 100ms +- 100
 	{
 		int x, y;
 		int tileArrAvail[18][14];
@@ -477,7 +476,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 					}
 					else if (x != 0 || y != 0)
 					{
-						tibiaMap.prohPointAdd(self->x + x, self->y + y, self->z);
+						tibiaMap.prohPointAdd(self.x + x, self.y + y, self.z);
 					}
 				} // for i
 
@@ -511,62 +510,61 @@ void CToolMapShow::ExtendedMapResearchTick()
 				}
 			} // for y
 		} // for x
-		CTibiaCharacter *newSelf = reader.readSelfCharacter();
+		CTibiaCharacter newself;
+		reader.readSelfCharacter(&newself);
 
 		int cellNr = reader.mapGetSelfCellNr();
 		//if change in cellNr does not match with change in (x,y) then teleported  ( mod func returns >= 0 )
-		int wasTeleported = (cellNr % 18 != mod((relToCell % 18 + (newSelf->x - self->x)), 18)) || (cellNr % (14 * 18) / 18 != mod((relToCell % (14 * 18) / 18 + (newSelf->y - self->y)), 14));
+		int wasTeleported = (cellNr % 18 != mod((relToCell % 18 + (newself.x - self.x)), 18)) || (cellNr % (14 * 18) / 18 != mod((relToCell % (14 * 18) / 18 + (newself.y - self.y)), 14));
 
 		//since we used relToCell only changing floors and teleports while reading drastically matter
-		if (newSelf->z == self->z && !wasTeleported)
+		if (newself.z == self.z && !wasTeleported)
 		{
-			prevX = self->x;
-			prevY = self->y;
-			prevZ = self->z;
+			prevX = self.x;
+			prevY = self.y;
+			prevZ = self.z;
 			// tiles changed between read from tibia and write to map are excluded
-			for (x = -8 + max(0, newSelf->x - self->x); x <= 9 + min(0, newSelf->x - self->x); x++)
+			for (x = -8 + max(0, newself.x - self.x); x <= 9 + min(0, newself.x - self.x); x++)
 			{
-				for (y = -6 + max(0, newSelf->y - self->y); y <= 7 + min(0, newSelf->y - self->y); y++)
+				for (y = -6 + max(0, newself.y - self.y); y <= 7 + min(0, newself.y - self.y); y++)
 				{
-					if (!tibiaMap.isPointLocked(self->x + x, self->y + y, self->z))
+					if (!tibiaMap.isPointLocked(self.x + x, self.y + y, self.z))
 					{
 						if (tileArrAvail[x + 8][y + 6])
 						{
-							tibiaMap.setPointAsAvailable(self->x + x, self->y + y, self->z);
-							tibiaMap.setPointType(self->x + x, self->y + y, self->z, tileArrUpDown[x + 8][y + 6]);
+							tibiaMap.setPointAsAvailable(self.x + x, self.y + y, self.z);
+							tibiaMap.setPointType(self.x + x, self.y + y, self.z, tileArrUpDown[x + 8][y + 6]);
 							if (tileArrSpd[x + 8][y + 6] == 0)
-								tibiaMap.setPointSpeed(self->x + x, self->y + y, self->z, 130);              //130 default( is >255/2 and <70*2)
+								tibiaMap.setPointSpeed(self.x + x, self.y + y, self.z, 130);              //130 default( is >255/2 and <70*2)
 							else
-								tibiaMap.setPointSpeed(self->x + x, self->y + y, self->z, tileArrSpd[x + 8][y + 6]);
+								tibiaMap.setPointSpeed(self.x + x, self.y + y, self.z, tileArrSpd[x + 8][y + 6]);
 						}
 						else
 						{
-							tibiaMap.setPointType(self->x + x, self->y + y, self->z, MAP_POINT_TYPE_AVAILABLE);
-							tibiaMap.setPointSpeed(self->x + x, self->y + y, self->z, 0);
-							if (tibiaMap.isPointAvailableNoProh(self->x + x, self->y + y, self->z) && tileArrMvbl[x + 8][y + 6])
+							tibiaMap.setPointType(self.x + x, self.y + y, self.z, MAP_POINT_TYPE_AVAILABLE);
+							tibiaMap.setPointSpeed(self.x + x, self.y + y, self.z, 0);
+							if (tibiaMap.isPointAvailableNoProh(self.x + x, self.y + y, self.z) && tileArrMvbl[x + 8][y + 6])
 							{
 								//To avoid removing a tile that could be made available again too quickly
 								//Make it less likely that it will happen, 90% chance of updating after 20 seconds.
 								//Better implementation is to track these across iterations and make not available after 10 seconds
 								if (rand() % 100 < 5)
-									tibiaMap.removePointAvailable(self->x + x, self->y + y, self->z);
+									tibiaMap.removePointAvailable(self.x + x, self.y + y, self.z);
 								else
-									tibiaMap.prohPointAdd(self->x + x, self->y + y, self->z);
+									tibiaMap.prohPointAdd(self.x + x, self.y + y, self.z);
 							}
 							else
 							{
 								if (x == 1 && y == 0)
 									int a = 0;
-								tibiaMap.removePointAvailable(self->x + x, self->y + y, self->z);
+								tibiaMap.removePointAvailable(self.x + x, self.y + y, self.z);
 							}
 						}
 					}
 				}
 			}
 		}
-		delete newSelf;
 	}
-	delete self;
 	SetTimer(1003, 500, NULL);
 }
 
@@ -578,18 +576,18 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	// get tile 0 to make sure that the framework is initialised
 	CTileReader::getTileReader().getTile(0);
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
-	if (self->x == -0x10000000 || self->y < -0x10000000 || self->z < -20 || self->z > 20)
+	if (self.x == -0x10000000 || self.y < -0x10000000 || self.z < -20 || self.z > 20)
 	{
-		delete self;
 		SetTimer(1004, 200, NULL);
 		return;
 	}
 	int sensitivity = 2;//sqm to check for teleporter and #sqm travellable between checks
-	if (self->x != prevXTele || self->y != prevYTele || self->z != prevZTele)
+	if (self.x != prevXTele || self.y != prevYTele || self.z != prevZTele)
 	{
-		if (abs(self->x - prevXTele) > sensitivity || abs(self->y - prevYTele) > sensitivity || abs(self->z - prevZTele) > 0)
+		if (abs(self.x - prevXTele) > sensitivity || abs(self.y - prevYTele) > sensitivity || abs(self.z - prevZTele) > 0)
 		{
 			int x       = 0, y = 0;
 			int xSwitch = 0;
@@ -633,9 +631,9 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 				
 					if (tibiaMap.getDestPoint(prevXTele + x, prevYTele + y, prevZTele).x == 0)
 					{
-						tibiaMap.setDestPoint(prevXTele + x, prevYTele + y, prevZTele, self->x, self->y, self->z);
+						tibiaMap.setDestPoint(prevXTele + x, prevYTele + y, prevZTele, self.x, self.y, self.z);
 						char buf[128];
-						sprintf(buf, "Assigned Teleporter Dest(%d,%d,%d)->(%d,%d,%d)", prevXTele + x, prevYTele + y, prevZTele, self->x, self->y, self->z);
+						sprintf(buf, "Assigned Teleporter Dest(%d,%d,%d)->(%d,%d,%d)", prevXTele + x, prevYTele + y, prevZTele, self.x, self.y, self.z);
 						CPackSender::sendTAMessage(buf);
 						break;
 					}
@@ -646,11 +644,10 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 				}
 			}
 		}
-		prevXTele = self->x;
-		prevYTele = self->y;
-		prevZTele = self->z;
+		prevXTele = self.x;
+		prevYTele = self.y;
+		prevZTele = self.z;
 	}
-	delete self;
 	SetTimer(1004, 200, NULL);
 }
 
@@ -687,7 +684,8 @@ void CToolMapShow::showTileDetails(int x, int y)
 	int outOfRange = 0;
 	char buf[2560];
 
-	CTibiaCharacter* self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	 reader.readSelfCharacter(& self);
 	// make (x,y) relative to the center
 	x -= 10;
 	y -= 10;
@@ -702,7 +700,7 @@ void CToolMapShow::showTileDetails(int x, int y)
 		if (count > 10)
 			count = 10;
 
-		sprintf(buf, "Tile info: %d [x=%d y=%d]", tibiaMap.getPointSpeed(self->x + x, self->y + y, self->z), x, y);
+		sprintf(buf, "Tile info: %d [x=%d y=%d]", tibiaMap.getPointSpeed(self.x + x, self.y + y, self.z), x, y);
 		for (pos = 0; pos < count; pos++)
 		{
 			sprintf(subbuf, " id=%d[%d:%d,%d]", reader.mapGetPointStackIndex(point(x, y, 0), pos), reader.mapGetPointItemId(point(x, y, 0), pos), reader.mapGetPointItemExtraInfo(point(x, y, 0), pos, 1), reader.mapGetPointItemExtraInfo(point(x, y, 0), pos, 2));
@@ -715,7 +713,6 @@ void CToolMapShow::showTileDetails(int x, int y)
 		sprintf(buf, "Tile info: n/a");
 		m_tileInfo.SetWindowText(buf);
 	}
-	delete self;
 }
 
 void CToolMapShow::setTileDetails(int x, int y, int setOption)

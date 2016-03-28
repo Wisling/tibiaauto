@@ -28,61 +28,60 @@ PyObject *tibiaauto_reader_setProcessId(PyObject *self, PyObject *args)
 
 PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *args)
 {
-	CTibiaCharacter *selfCh = CMemReader::getMemReader().readSelfCharacter();
+	CTibiaCharacter selfCh;
+	CMemReader::getMemReader().readSelfCharacter(&selfCh);
 
 	PyObject *ret =
 	        Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s}",
-	                      "hp", selfCh->hp,
-	                      "mana", selfCh->mana,
-	                      "x", selfCh->x,
-	                      "y", selfCh->y,
-	                      "z", selfCh->z,
-	                      "tibiaId", selfCh->tibiaId,
-	                      "visible", selfCh->visible,
-	                      "outfitId", selfCh->outfitId,
-	                      "mountId", selfCh->mountId,
-	                      "moving", selfCh->moving,
-	                      "monsterType", selfCh->monsterType,
-	                      "hpPercLeft", selfCh->hpPercLeft,
-	                      "cap", selfCh->cap,
-	                      "stamina", selfCh->stamina,
-	                      "maxHp", selfCh->maxHp,
-	                      "maxMana", selfCh->maxMana,
-	                      "exp", selfCh->exp,
-	                      "lvl", selfCh->lvl,
-	                      "mlvl", selfCh->mlvl,
-	                      "mlvlPercLeft", selfCh->mlvlPercLeft,
-	                      "soulPoints", selfCh->soulPoints,
-	                      "skillSword", selfCh->skillSword,
-	                      "skillAxe", selfCh->skillAxe,
-	                      "skillClub", selfCh->skillClub,
-	                      "skillShield", selfCh->skillShield,
-	                      "skillDist", selfCh->skillDist,
-	                      "skillFish", selfCh->skillFish,
-	                      "skillFist", selfCh->skillFist,
-	                      "skillSwordPercLeft", selfCh->skillSwordPercLeft,
-	                      "skillAxePercLeft", selfCh->skillAxePercLeft,
-	                      "skillClubPercLeft", selfCh->skillClubPercLeft,
-	                      "skillShieldPercLeft", selfCh->skillShieldPercLeft,
-	                      "skillDistPercLeft", selfCh->skillDistPercLeft,
-	                      "skillFishPercLeft", selfCh->skillFishPercLeft,
-	                      "skillFistPercLeft", selfCh->skillFistPercLeft,
-	                      "name", selfCh->name,
-	                      "nr", selfCh->nr,
-	                      "lastAttackTm", selfCh->lastAttackTm,
-	                      "lookDirection", selfCh->lookDirection,
-	                      "colorHead", selfCh->colorHead,
-	                      "colorBody", selfCh->colorBody,
-	                      "colorLegs", selfCh->colorLegs,
-	                      "colorFoot", selfCh->colorFoot,
-	                      "walkSpeed", selfCh->walkSpeed,
-	                      "skulls", selfCh->skulls,
-	                      "shields", selfCh->shields,
-	                      "warIcon", selfCh->warIcon,
-	                      "blocking", selfCh->blocking,
-	                      "voc", selfCh->voc);
-
-	delete selfCh;
+	                      "hp", selfCh.hp,
+	                      "mana", selfCh.mana,
+	                      "x", selfCh.x,
+	                      "y", selfCh.y,
+	                      "z", selfCh.z,
+	                      "tibiaId", selfCh.tibiaId,
+	                      "visible", selfCh.visible,
+	                      "outfitId", selfCh.outfitId,
+	                      "mountId", selfCh.mountId,
+	                      "moving", selfCh.moving,
+	                      "monsterType", selfCh.monsterType,
+	                      "hpPercLeft", selfCh.hpPercLeft,
+	                      "cap", selfCh.cap,
+	                      "stamina", selfCh.stamina,
+	                      "maxHp", selfCh.maxHp,
+	                      "maxMana", selfCh.maxMana,
+	                      "exp", selfCh.exp,
+	                      "lvl", selfCh.lvl,
+	                      "mlvl", selfCh.mlvl,
+	                      "mlvlPercLeft", selfCh.mlvlPercLeft,
+	                      "soulPoints", selfCh.soulPoints,
+	                      "skillSword", selfCh.skillSword,
+	                      "skillAxe", selfCh.skillAxe,
+	                      "skillClub", selfCh.skillClub,
+	                      "skillShield", selfCh.skillShield,
+	                      "skillDist", selfCh.skillDist,
+	                      "skillFish", selfCh.skillFish,
+	                      "skillFist", selfCh.skillFist,
+	                      "skillSwordPercLeft", selfCh.skillSwordPercLeft,
+	                      "skillAxePercLeft", selfCh.skillAxePercLeft,
+	                      "skillClubPercLeft", selfCh.skillClubPercLeft,
+	                      "skillShieldPercLeft", selfCh.skillShieldPercLeft,
+	                      "skillDistPercLeft", selfCh.skillDistPercLeft,
+	                      "skillFishPercLeft", selfCh.skillFishPercLeft,
+	                      "skillFistPercLeft", selfCh.skillFistPercLeft,
+	                      "name", selfCh.name,
+	                      "nr", selfCh.nr,
+	                      "lastAttackTm", selfCh.lastAttackTm,
+	                      "lookDirection", selfCh.lookDirection,
+	                      "colorHead", selfCh.colorHead,
+	                      "colorBody", selfCh.colorBody,
+	                      "colorLegs", selfCh.colorLegs,
+	                      "colorFoot", selfCh.colorFoot,
+	                      "walkSpeed", selfCh.walkSpeed,
+	                      "skulls", selfCh.skulls,
+	                      "shields", selfCh.shields,
+	                      "warIcon", selfCh.warIcon,
+	                      "blocking", selfCh.blocking,
+	                      "voc", selfCh.voc);
 	return ret;
 }
 
@@ -368,66 +367,63 @@ PyObject *tibiaauto_reader_readBattleListMin(PyObject *self, PyObject *args)
 
 PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *args)
 {
-	
 	int arg1;
 	if (!PyArg_ParseTuple(args, "i", &arg1))
 		return NULL;
-	CTibiaCharacter *ch = CMemReader::getMemReader().readVisibleCreature(arg1);
+	CTibiaCharacter ch;
+	CMemReader::getMemReader().readVisibleCreature(&ch, arg1);
 
 	PyObject *ret =
 	        Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s}",
-	                      "hp", ch->hp,
-	                      "mana", ch->mana,
-	                      "x", ch->x,
-	                      "y", ch->y,
-	                      "z", ch->z,
-	                      "tibiaId", ch->tibiaId,
-	                      "visible", ch->visible,
-	                      "outfitId", ch->outfitId,
-	                      "mountId", ch->mountId,
-	                      "moving", ch->moving,
-	                      "monsterType", ch->monsterType,
-	                      "hpPercLeft", ch->hpPercLeft,
-	                      "cap", ch->cap,
-	                      "stamina", ch->stamina,
-	                      "maxHp", ch->maxHp,
-	                      "maxMana", ch->maxMana,
-	                      "exp", ch->exp,
-	                      "lvl", ch->lvl,
-	                      "mlvl", ch->mlvl,
-	                      "mlvlPercLeft", ch->mlvlPercLeft,
-	                      "soulPoints", ch->soulPoints,
-	                      "skillSword", ch->skillSword,
-	                      "skillAxe", ch->skillAxe,
-	                      "skillClub", ch->skillClub,
-	                      "skillShield", ch->skillShield,
-	                      "skillDist", ch->skillDist,
-	                      "skillFish", ch->skillFish,
-	                      "skillFist", ch->skillFist,
-	                      "skillSwordPercLeft", ch->skillSwordPercLeft,
-	                      "skillAxePercLeft", ch->skillAxePercLeft,
-	                      "skillClubPercLeft", ch->skillClubPercLeft,
-	                      "skillShieldPercLeft", ch->skillShieldPercLeft,
-	                      "skillDistPercLeft", ch->skillDistPercLeft,
-	                      "skillFishPercLeft", ch->skillFishPercLeft,
-	                      "skillFistPercLeft", ch->skillFistPercLeft,
-	                      "name", ch->name,
-	                      "nr", ch->nr,
-	                      "lastAttackTm", ch->lastAttackTm,
-	                      "lookDirection", ch->lookDirection,
-	                      "colorHead", ch->colorHead,
-	                      "colorBody", ch->colorBody,
-	                      "colorLegs", ch->colorLegs,
-	                      "colorFoot", ch->colorFoot,
-	                      "walkSpeed", ch->walkSpeed,
-	                      "skulls", ch->skulls,
-	                      "shields", ch->shields,
-	                      "warIcon", ch->warIcon,
-	                      "blocking", ch->blocking,
-	                      "voc", ch->voc);
-
-
-	delete ch;
+	                      "hp", ch.hp,
+	                      "mana", ch.mana,
+	                      "x", ch.x,
+	                      "y", ch.y,
+	                      "z", ch.z,
+	                      "tibiaId", ch.tibiaId,
+	                      "visible", ch.visible,
+	                      "outfitId", ch.outfitId,
+	                      "mountId", ch.mountId,
+	                      "moving", ch.moving,
+	                      "monsterType", ch.monsterType,
+	                      "hpPercLeft", ch.hpPercLeft,
+	                      "cap", ch.cap,
+	                      "stamina", ch.stamina,
+	                      "maxHp", ch.maxHp,
+	                      "maxMana", ch.maxMana,
+	                      "exp", ch.exp,
+	                      "lvl", ch.lvl,
+	                      "mlvl", ch.mlvl,
+	                      "mlvlPercLeft", ch.mlvlPercLeft,
+	                      "soulPoints", ch.soulPoints,
+	                      "skillSword", ch.skillSword,
+	                      "skillAxe", ch.skillAxe,
+	                      "skillClub", ch.skillClub,
+	                      "skillShield", ch.skillShield,
+	                      "skillDist", ch.skillDist,
+	                      "skillFish", ch.skillFish,
+	                      "skillFist", ch.skillFist,
+	                      "skillSwordPercLeft", ch.skillSwordPercLeft,
+	                      "skillAxePercLeft", ch.skillAxePercLeft,
+	                      "skillClubPercLeft", ch.skillClubPercLeft,
+	                      "skillShieldPercLeft", ch.skillShieldPercLeft,
+	                      "skillDistPercLeft", ch.skillDistPercLeft,
+	                      "skillFishPercLeft", ch.skillFishPercLeft,
+	                      "skillFistPercLeft", ch.skillFistPercLeft,
+	                      "name", ch.name,
+	                      "nr", ch.nr,
+	                      "lastAttackTm", ch.lastAttackTm,
+	                      "lookDirection", ch.lookDirection,
+	                      "colorHead", ch.colorHead,
+	                      "colorBody", ch.colorBody,
+	                      "colorLegs", ch.colorLegs,
+	                      "colorFoot", ch.colorFoot,
+	                      "walkSpeed", ch.walkSpeed,
+	                      "skulls", ch.skulls,
+	                      "shields", ch.shields,
+	                      "warIcon", ch.warIcon,
+	                      "blocking", ch.blocking,
+	                      "voc", ch.voc);
 	return ret;
 }
 
@@ -455,64 +451,61 @@ PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject *args)
 	int arg1;
 	if (!PyArg_ParseTuple(args, "i", &arg1))
 		return NULL;
-	CTibiaCharacter *ch = CMemReader::getMemReader().getCharacterByTibiaId(arg1);
-	if (!ch)
-		ch = CMemReader::getMemReader().readSelfCharacter(); //avoids returning NULL
+	CTibiaCharacter ch;
+	if (!CMemReader::getMemReader().getCharacterByTibiaId(&ch, arg1))
+		CMemReader::getMemReader().readSelfCharacter(&ch); //avoids returning NULL
 
 	PyObject *ret =
 	        Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s}",
-	                      "hp", ch->hp,
-	                      "mana", ch->mana,
-	                      "x", ch->x,
-	                      "y", ch->y,
-	                      "z", ch->z,
-	                      "tibiaId", ch->tibiaId,
-	                      "visible", ch->visible,
-	                      "outfitId", ch->outfitId,
-	                      "mountId", ch->mountId,
-	                      "moving", ch->moving,
-	                      "monsterType", ch->monsterType,
-	                      "hpPercLeft", ch->hpPercLeft,
-	                      "cap", ch->cap,
-	                      "stamina", ch->stamina,
-	                      "maxHp", ch->maxHp,
-	                      "maxMana", ch->maxMana,
-	                      "exp", ch->exp,
-	                      "lvl", ch->lvl,
-	                      "mlvl", ch->mlvl,
-	                      "mlvlPercLeft", ch->mlvlPercLeft,
-	                      "soulPoints", ch->soulPoints,
-	                      "skillSword", ch->skillSword,
-	                      "skillAxe", ch->skillAxe,
-	                      "skillClub", ch->skillClub,
-	                      "skillShield", ch->skillShield,
-	                      "skillDist", ch->skillDist,
-	                      "skillFish", ch->skillFish,
-	                      "skillFist", ch->skillFist,
-	                      "skillSwordPercLeft", ch->skillSwordPercLeft,
-	                      "skillAxePercLeft", ch->skillAxePercLeft,
-	                      "skillClubPercLeft", ch->skillClubPercLeft,
-	                      "skillShieldPercLeft", ch->skillShieldPercLeft,
-	                      "skillDistPercLeft", ch->skillDistPercLeft,
-	                      "skillFishPercLeft", ch->skillFishPercLeft,
-	                      "skillFistPercLeft", ch->skillFistPercLeft,
-	                      "name", ch->name,
-	                      "nr", ch->nr,
-	                      "lastAttackTm", ch->lastAttackTm,
-	                      "lookDirection", ch->lookDirection,
-	                      "colorHead", ch->colorHead,
-	                      "colorBody", ch->colorBody,
-	                      "colorLegs", ch->colorLegs,
-	                      "colorFoot", ch->colorFoot,
-	                      "walkSpeed", ch->walkSpeed,
-	                      "skulls", ch->skulls,
-	                      "shields", ch->shields,
-	                      "warIcon", ch->warIcon,
-	                      "blocking", ch->blocking,
-	                      "voc", ch->voc);
-
-
-	delete ch;
+	                      "hp", ch.hp,
+	                      "mana", ch.mana,
+	                      "x", ch.x,
+	                      "y", ch.y,
+	                      "z", ch.z,
+	                      "tibiaId", ch.tibiaId,
+	                      "visible", ch.visible,
+	                      "outfitId", ch.outfitId,
+	                      "mountId", ch.mountId,
+	                      "moving", ch.moving,
+	                      "monsterType", ch.monsterType,
+	                      "hpPercLeft", ch.hpPercLeft,
+	                      "cap", ch.cap,
+	                      "stamina", ch.stamina,
+	                      "maxHp", ch.maxHp,
+	                      "maxMana", ch.maxMana,
+	                      "exp", ch.exp,
+	                      "lvl", ch.lvl,
+	                      "mlvl", ch.mlvl,
+	                      "mlvlPercLeft", ch.mlvlPercLeft,
+	                      "soulPoints", ch.soulPoints,
+	                      "skillSword", ch.skillSword,
+	                      "skillAxe", ch.skillAxe,
+	                      "skillClub", ch.skillClub,
+	                      "skillShield", ch.skillShield,
+	                      "skillDist", ch.skillDist,
+	                      "skillFish", ch.skillFish,
+	                      "skillFist", ch.skillFist,
+	                      "skillSwordPercLeft", ch.skillSwordPercLeft,
+	                      "skillAxePercLeft", ch.skillAxePercLeft,
+	                      "skillClubPercLeft", ch.skillClubPercLeft,
+	                      "skillShieldPercLeft", ch.skillShieldPercLeft,
+	                      "skillDistPercLeft", ch.skillDistPercLeft,
+	                      "skillFishPercLeft", ch.skillFishPercLeft,
+	                      "skillFistPercLeft", ch.skillFistPercLeft,
+	                      "name", ch.name,
+	                      "nr", ch.nr,
+	                      "lastAttackTm", ch.lastAttackTm,
+	                      "lookDirection", ch.lookDirection,
+	                      "colorHead", ch.colorHead,
+	                      "colorBody", ch.colorBody,
+	                      "colorLegs", ch.colorLegs,
+	                      "colorFoot", ch.colorFoot,
+	                      "walkSpeed", ch.walkSpeed,
+	                      "skulls", ch.skulls,
+	                      "shields", ch.shields,
+	                      "warIcon", ch.warIcon,
+	                      "blocking", ch.blocking,
+	                      "voc", ch.voc);
 	return ret;
 }
 
@@ -1231,18 +1224,17 @@ PyObject *tibiaauto_sender_walkOnTAMap(PyObject *self, PyObject *args)
 		if (!PyArg_ParseTuple(args, "iii", &arg1, &arg2, &arg3))
 			return NULL;
 	}
-	CTibiaCharacter *selfCh = CMemReader::getMemReader().readSelfCharacter();
+	CTibiaCharacter selfCh;
+	 CMemReader::getMemReader().readSelfCharacter(&selfCh);
 
 
-	CModuleUtil::findPathOnMap(selfCh->x, selfCh->y, selfCh->z, arg1, arg2, arg3, 0, path, arg4);
+	CModuleUtil::findPathOnMap(selfCh.x, selfCh.y, selfCh.z, arg1, arg2, arg3, 0, path, arg4);
 	int pathSize;
 	for (pathSize = 0; pathSize < 15 && path[pathSize]; pathSize++)
 	{
 	}
 	if (pathSize)
-		CModuleUtil::executeWalk(selfCh->x, selfCh->y, selfCh->z, path);
-
-	delete selfCh;
+		CModuleUtil::executeWalk(selfCh.x, selfCh.y, selfCh.z, path);
 
 	Py_INCREF(Py_None);
 	return Py_None;

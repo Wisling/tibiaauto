@@ -100,9 +100,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		if (!reader.isLoggedIn())
 			continue;                   // do not proceed if not connected
 
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
-		if (self->hp <= config->m_uhBorderline || config->m_hotkeySelf)
+		if (self.hp <= config->m_uhBorderline || config->m_hotkeySelf)
 		{
 			int uhContainer;
 
@@ -151,18 +152,18 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (uhItem->objectId)
 			{
 				CVariableStore::setVariable("UH_needed", "true");
-				if (self->hp <= config->m_uhBorderline)
+				if (self.hp <= config->m_uhBorderline)
 				{
 					CPackSender::useWithObjectFromContainerOnFloor(
 					        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
-					        self->x, self->y, self->z);
+					        self.x, self.y, self.z);
 					Sleep(config->m_sleepAfter);
 				}
 				if (config->m_hotkeySelf)
 				{
 					CPackSender::useWithObjectFromContainerOnFloor(
 					        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
-					        self->x, self->y, self->z, 105);
+					        self.x, self.y, self.z, 105);
 				}
 			}
 			else
@@ -183,17 +184,17 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		int crNr;
 		for (crNr = 0; crNr < reader.m_memMaxCreatures; crNr++)
 		{
-			CTibiaCharacter *ch = reader.readVisibleCreature(crNr);
-			if (ch->tibiaId == 0)
+			CTibiaCharacter ch;
+			reader.readVisibleCreature(&ch, crNr);
+			if (ch.tibiaId == 0)
 			{
-				delete ch;
 				break;
 			}
-			if (ch->visible)
+			if (ch.visible)
 			{
 				char chName[128];
 				memset(chName, 0, 128);
-				memcpy(chName, ch->name, strlen(ch->name));
+				memcpy(chName, ch.name, strlen(ch.name));
 
 				int chToHeal = 0;
 
@@ -204,7 +205,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 						chToHeal = 1;
 				}
-				if (chToHeal && ch->hpPercLeft < config->m_grpBorderline && self->z == ch->z)
+				if (chToHeal && ch.hpPercLeft < config->m_grpBorderline && self.z == ch.z)
 				{
 					CTibiaItem *uhItem = new CTibiaItem();
 					int uhContainer    = -1;
@@ -251,7 +252,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					{
 						CPackSender::useWithObjectFromContainerOnFloor(
 						        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
-						        ch->x, ch->y, ch->z);
+						        ch.x, ch.y, ch.z);
 						Sleep(config->m_sleepAfter);
 					}
 					else
@@ -262,11 +263,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					delete uhItem;
 				}
 			}
-
-			delete ch;
 		}
 
-		delete self;
 	}
 	CVariableStore::setVariable("UH_needed", "false");
 	toolThreadShouldStop = 0;

@@ -388,8 +388,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 
 	// this is needed to force loading tibiaauto_util.dll
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	delete self;
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
 
 	CPythonEngine pythonEngine;
@@ -1653,8 +1653,8 @@ void CTibiaautoDlg::OnButton1()
 	int i;
 	for (i = 0; i < 100000; i++)
 	{
-		CTibiaCharacter *self = reader.readSelfCharacter();
-		delete self;
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 	}
 }
 

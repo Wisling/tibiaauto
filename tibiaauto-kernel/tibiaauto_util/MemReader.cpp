@@ -217,10 +217,9 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 	return container;
 }
 
-CTibiaCharacter *CMemReader::readSelfCharacter()
+void CMemReader::readSelfCharacter(CTibiaCharacter* ch)
 {
-	CTibiaCharacter *ch = new CTibiaCharacter();
-
+	ch->initialized = true;
 	ch->hp      = CMemUtil::GetMemIntValue(m_memAddressHP) ^ CMemUtil::GetMemIntValue(m_memAddressXor);
 	ch->mana    = CMemUtil::GetMemIntValue(m_memAddressMana) ^ CMemUtil::GetMemIntValue(m_memAddressXor);
 	ch->maxHp   = CMemUtil::GetMemIntValue(m_memAddressHPMax) ^ CMemUtil::GetMemIntValue(m_memAddressXor);
@@ -264,8 +263,6 @@ CTibiaCharacter *CMemReader::readSelfCharacter()
 		strncpy(ch->voc, "ed", 3);
 		break;
 	}
-
-
 	ch->skillAxe            = CMemUtil::GetMemIntValue(m_memAddressSkillAxe);
 	ch->skillClub           = CMemUtil::GetMemIntValue(m_memAddressSkillClub);
 	ch->skillSword          = CMemUtil::GetMemIntValue(m_memAddressSkillSword);
@@ -285,35 +282,7 @@ CTibiaCharacter *CMemReader::readSelfCharacter()
 
 	int loggedCharNr = getLoggedCharNr();
 	if (loggedCharNr >= 0)
-	{
-		CTibiaCharacter *monCh = readVisibleCreature(loggedCharNr);
-		ch->tibiaId = monCh->tibiaId;
-		ch->x       = monCh->x;
-		ch->y       = monCh->y;
-		ch->z       = monCh->z;
-		strcpy(ch->name, monCh->name);
-		ch->lookDirection = monCh->lookDirection;
-		ch->colorHead     = monCh->colorHead;
-		ch->colorBody     = monCh->colorBody;
-		ch->colorLegs     = monCh->colorLegs;
-		ch->colorFoot     = monCh->colorFoot;
-		ch->walkSpeed     = monCh->walkSpeed;
-		ch->skulls        = monCh->skulls;
-		ch->shields       = monCh->shields;
-		ch->outfitId      = monCh->outfitId;
-		ch->mountId       = monCh->mountId;
-		ch->monsterType   = monCh->monsterType;
-		ch->hpPercLeft    = monCh->hpPercLeft;
-		ch->lastAttackTm  = monCh->lastAttackTm;
-		ch->nr            = loggedCharNr;
-		ch->warIcon       = monCh->warIcon;
-		ch->blocking      = monCh->blocking;
-		ch->moving        = monCh->moving;
-
-		delete monCh;
-	}
-
-	return ch;
+		readVisibleCreature(ch, loggedCharNr);
 }
 
 CTibiaItem * CMemReader::readItem(int locationAddress)
@@ -332,15 +301,14 @@ CTibiaItem * CMemReader::readItem(int locationAddress)
 	return item;
 }
 
-CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
+void CMemReader::readVisibleCreature(CTibiaCharacter* ch, int nr)
 {
-	CTibiaCharacter *ch = new CTibiaCharacter();
-
 	int offset = m_memAddressFirstCreature + nr * m_memLengthCreature;
 	char memcharinfo[1024];
 	memset(memcharinfo, 0, 1024);
-	CMemUtil::GetMemRange(offset, offset + m_memLengthCreature, memcharinfo, 1);
 
+	CMemUtil::GetMemRange(offset, offset + m_memLengthCreature, memcharinfo, 1);
+	ch->initialized = true;
 	ch->hp       = -1;
 	ch->mana     = -1;
 	ch->tibiaId  = *((int*)memcharinfo);
@@ -404,8 +372,6 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	ch->nr = nr;
 
 	CMemUtil::GetMemRange(offset + 4, offset + 4 + 31, ch->name);
-
-	return ch;
 }
 
 int CMemReader::readBattleListMin()
@@ -471,7 +437,7 @@ int CMemReader::getNextPacketCount()
 	return ret;
 }
 
-CTibiaCharacter *CMemReader::getCharacterByTibiaId(int tibiaId)
+bool CMemReader::getCharacterByTibiaId(CTibiaCharacter * ch, int tibiaId)
 {
 	int i;
 	for (i = 0; i < m_memMaxCreatures; i++)
@@ -479,9 +445,12 @@ CTibiaCharacter *CMemReader::getCharacterByTibiaId(int tibiaId)
 		int offset = m_memAddressFirstCreature + i * m_memLengthCreature;
 
 		if (CMemUtil::GetMemIntValue(offset) == tibiaId)
-			return readVisibleCreature(i);
+		{
+			readVisibleCreature(ch, i);
+			return true;
+		}
 	}
-	return NULL;
+	return false;
 }
 
 int CMemReader::getTradeCountSelf()
@@ -645,11 +614,11 @@ int CMemReader::mapGetSelfCellNr()
 {
 	static int prevSelfTileNr  = 0;
 	static int prevSelfTilePos = 0;
-	int wouldReturn            = 0;
-	CTibiaCharacter *self      = readSelfCharacter();
-	if (self->z < 0 || self->z > 15)
+	int wouldReturn = 0;
+	CTibiaCharacter self;
+	readSelfCharacter(&self);
+	if (self.z < 0 || self.z > 15)
 	{
-		delete self;
 		return 0;
 	}
 
@@ -660,9 +629,8 @@ int CMemReader::mapGetSelfCellNr()
 	if (prevSelfTilePos < c && tileId == 99)
 	{
 		int tileCharId = maptile->items[prevSelfTilePos].quantity;
-		if (tileCharId == self->tibiaId)
+		if (tileCharId == self.tibiaId)
 		{
-			delete self;
 			delete maptile;
 			return prevSelfTileNr;
 		}
@@ -671,7 +639,7 @@ int CMemReader::mapGetSelfCellNr()
 	maptile = NULL;
 
 	int floorSize     = m_memMaxMapTiles / 8;
-	int tileNrLowest  = max(0, min(1768, (self->z <= 7) ? floorSize * (7 - self->z) : (floorSize * 2)));
+	int tileNrLowest  = max(0, min(1768, (self.z <= 7) ? floorSize * (7 - self.z) : (floorSize * 2)));
 	int tileNrHighest = tileNrLowest + floorSize;
 /*
         // check using one of 8 memory locations for current cell(this makes the function 100 times faster)
@@ -688,9 +656,8 @@ int CMemReader::mapGetSelfCellNr()
                         if (tileId==99)
                         {
                                 int tileCharId = CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile+pos*12+4+4);
-                                if (tileCharId==self->tibiaId)
+                                if (tileCharId==self.tibiaId)
                                 {
-                                        delete self;
                                         prevSelfTileNr=cell;
                                         prevSelfTilePos=pos;
                                         return cell;
@@ -713,9 +680,8 @@ int CMemReader::mapGetSelfCellNr()
 			if (tileId == 99)
 			{
 				int tileCharId = maptile->items[pos].quantity;
-				if (tileCharId == self->tibiaId)
+				if (tileCharId == self.tibiaId)
 				{
-					delete self;
 					delete maptile;
 					prevSelfTileNr  = tileNr;
 					prevSelfTilePos = pos;
@@ -739,9 +705,8 @@ int CMemReader::mapGetSelfCellNr()
 			if (tileId == 99)
 			{
 				int tileCharId = maptile->items[pos].quantity;
-				if (tileCharId == self->tibiaId)
+				if (tileCharId == self.tibiaId)
 				{
-					delete self;
 					delete maptile;
 					prevSelfTileNr  = tileNr;
 					prevSelfTilePos = pos;
@@ -752,7 +717,6 @@ int CMemReader::mapGetSelfCellNr()
 		delete maptile;
 		maptile = NULL;
 	}
-	delete self;
 	return 0;
 }
 

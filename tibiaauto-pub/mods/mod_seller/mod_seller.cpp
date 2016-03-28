@@ -1013,28 +1013,26 @@ void CMod_SellerApp::resetMultiParamAccess(char *paramName)
 int findSeller(CConfigData *config, int traderNum)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z)
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	if (config->targetX == self.x && config->targetY == self.y && config->targetZ == self.z)
 	{
 		memset(config->path, 0, 15);
-		delete self;
 		return 1;
 	}
 	GUIx   = config->sellerList[traderNum].sellerX;
 	GUIy   = config->sellerList[traderNum].sellerY;
 	GUIz   = config->sellerList[traderNum].sellerZ;
 	GUINum = traderNum;
-	struct point nearestSell = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->sellerList[traderNum].sellerX, config->sellerList[traderNum].sellerY, config->sellerList[traderNum].sellerZ, 0, config->path, 3);
+	struct point nearestSell = CModuleUtil::findPathOnMap(self.x, self.y, self.z, config->sellerList[traderNum].sellerX, config->sellerList[traderNum].sellerY, config->sellerList[traderNum].sellerZ, 0, config->path, 3);
 	if (nearestSell.x && nearestSell.y && nearestSell.z)
 	{
 		config->targetX = nearestSell.x;
 		config->targetY = nearestSell.y;
 		config->targetZ = nearestSell.z;
-		delete self;
 //			AfxMessageBox("Seller Found moving");
 		return 1;
 	}
-	delete self;
 //			AfxMessageBox("Seller Not Found");
 	return 0;
 }
@@ -1069,59 +1067,53 @@ int moveToSeller(CConfigData *config, int traderNum)
 		//Find a location close enough to NPC
 		if (!positionFound)
 		{
-			CTibiaCharacter* self = reader.readSelfCharacter();
-			CModuleUtil::executeWalk(self->x, self->y, self->z, config->path);
-			if (self->x == config->targetX && self->y == config->targetY && self->z == config->targetZ)
+			CTibiaCharacter self;
+			reader.readSelfCharacter(&self);
+			CModuleUtil::executeWalk(self.x, self.y, self.z, config->path);
+			if (self.x == config->targetX && self.y == config->targetY && self.z == config->targetZ)
 				positionFound = 1;
-			delete self;
 		}
 		else     //Approach NPC after finding them
 		{
 			for (int i = 0; i < reader.m_memMaxCreatures; i++)
 			{
-				CTibiaCharacter* mon = reader.readVisibleCreature(i);
-				if (mon->tibiaId == 0)
+				CTibiaCharacter mon;
+				reader.readVisibleCreature(&mon, i);
+				if (mon.tibiaId == 0)
 				{
-					delete mon;
 					break;
 				}
-				int len = strlen(mon->name);
+				int len = strlen(mon.name);
 				// since sellerList[traderNum].sellerName may include city, match first part of name
-				if (strncmp(config->sellerList[traderNum].sellerName, mon->name, len) == 0 && (config->sellerList[traderNum].sellerName[len] == 0 || config->sellerList[traderNum].sellerName[len] == ' '))
+				if (strncmp(config->sellerList[traderNum].sellerName, mon.name, len) == 0 && (config->sellerList[traderNum].sellerName[len] == 0 || config->sellerList[traderNum].sellerName[len] == ' '))
 				{
 					for (int tries = 0; tries < 2; tries++) // should only need 1 try, but we'd need to start over if we don't make it
 					{
-						CTibiaCharacter* self = reader.readSelfCharacter();
-						delete mon;
-						mon = reader.readVisibleCreature(i);
+						CTibiaCharacter self;
+						reader.readSelfCharacter(&self);
+						reader.readVisibleCreature(&mon, i);
 
 						struct point nearestSell = point(0, 0, 0);
 						int rad                  = 2;
 						while (nearestSell.x == 0 && rad <= 3)//find paths increasingly farther away
 						{
-							nearestSell = CModuleUtil::findPathOnMap(self->x, self->y, self->z, mon->x, mon->y, mon->z, 0, config->path, rad++);
+							nearestSell = CModuleUtil::findPathOnMap(self.x, self.y, self.z, mon.x, mon.y, mon.z, 0, config->path, rad++);
 						}
-						if (nearestSell.x && nearestSell.y && nearestSell.z == self->z)
+						if (nearestSell.x && nearestSell.y && nearestSell.z == self.z)
 						{
-							CModuleUtil::executeWalk(self->x, self->y, self->z, config->path);
+							CModuleUtil::executeWalk(self.x, self.y, self.z, config->path);
 							if (CModuleUtil::waitToStandOnSquare(nearestSell.x, nearestSell.y))
 							{
-								delete mon;
-								mon = reader.readVisibleCreature(i);
-								if (!(abs(self->x - mon->x) <= 3 && abs(self->y - mon->y) <= 3 && self->z == mon->z))
+								reader.readVisibleCreature(&mon, i);
+								if (!(abs(self.x - mon.x) <= 3 && abs(self.y - mon.y) <= 3 && self.z == mon.z))
 								{
-									delete self;
 									continue;
 								}
-								delete mon;
-								delete self;
 								return 1;
 							}
 						}
-						delete self;
 					}
 				}
-				delete mon;
 			}
 			positionFound = 0;
 		}
@@ -1132,9 +1124,6 @@ int moveToSeller(CConfigData *config, int traderNum)
 int sellItems(CConfigData *config, int traderNum)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-
-	
-	
 	CTibiaContainer *cont;
 	int itemCount;
 	int done = -1;
@@ -1168,11 +1157,12 @@ int sellItems(CConfigData *config, int traderNum)
 						itemCount = countAllItemsOfType(objectId);
 						while (itemCount > 0)
 						{
-							CTibiaCharacter *self = reader.readSelfCharacter();
+							CTibiaCharacter self;
+							reader.readSelfCharacter(&self);
 							CPackSender::npcSell(objectId, min(itemCount, MAX_BUYSELL_ITEMS));
 							itemCount -= min(itemCount, MAX_BUYSELL_ITEMS);
 							Sleep(RandomTimeSeller());
-							if (CModuleUtil::waitForCapsChange(self->cap))
+							if (CModuleUtil::waitForCapsChange(self.cap))
 							{
 								if (done != 0)
 									done = 1;
@@ -1181,7 +1171,6 @@ int sellItems(CConfigData *config, int traderNum)
 							{
 								done = 0;
 							}
-							delete self;
 						}
 					}
 				}
@@ -1230,11 +1219,12 @@ int buyItems(CConfigData *config, int traderNum)
 
 		while (itemCount > 0)
 		{
-			CTibiaCharacter *self = reader.readSelfCharacter();
+			CTibiaCharacter self;
+			reader.readSelfCharacter(&self);
 			CPackSender::npcBuy(objectId, min(itemCount, MAX_BUYSELL_ITEMS), 0, 0);
 			itemCount -= min(itemCount, MAX_BUYSELL_ITEMS);
 			Sleep(RandomTimeSeller());
-			if (CModuleUtil::waitForCapsChange(self->cap))
+			if (CModuleUtil::waitForCapsChange(self.cap))
 			{
 				if (done != 0)
 					done = 1;
@@ -1243,7 +1233,6 @@ int buyItems(CConfigData *config, int traderNum)
 			{
 				done = 0;
 			}
-			delete self;
 		}
 	}
 	return done == 1 ? 1 : 0;
@@ -1344,7 +1333,8 @@ bool shouldGo(CConfigData *config)
 	//char buf[64];
 	
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
 
 	int count      = 0;
@@ -1352,14 +1342,12 @@ bool shouldGo(CConfigData *config)
 	bool should    = false;
 	for (int i = 0; i < MAX_SELLERS; i++)
 	{
-		if (config->sellOnCap && self->cap < config->sellWhen && individualShouldGo(config, i))
+		if (config->sellOnCap && self.cap < config->sellWhen && individualShouldGo(config, i))
 		{
-			delete self;
 			return true;
 		}
 		if (config->sellOnSpace && !spaceAvailable() && individualShouldGo(config, i))
 		{
-			delete self;
 			return true;
 		}
 		for (int j = 0; j < MAX_SELLER_ITEMS; j++)
@@ -1402,7 +1390,6 @@ bool shouldGo(CConfigData *config)
 		}
 	}
 //	should?AfxMessageBox("Should go"):AfxMessageBox("Should not go");
-	delete self;
 	return should;
 }
 

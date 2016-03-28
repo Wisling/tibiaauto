@@ -705,19 +705,18 @@ void CConfigDialog::OnAddSeller()
 	int i;
 	for (i = 0; i < reader.m_memMaxCreatures; i++)
 	{
-		CTibiaCharacter* mon = reader.readVisibleCreature(i);
-		if (mon->tibiaId == 0)
+		CTibiaCharacter mon;
+		reader.readVisibleCreature(&mon, i);
+		if (mon.tibiaId == 0)
 		{
-			delete mon;
 			break;
 		}
-		int lenName = strlen(mon->name);
-		if (strncmp(buf, mon->name, lenName) == 0 && (buf[lenName] == 0 || buf[lenName] == ' '))
+		int lenName = strlen(mon.name);
+		if (strncmp(buf, mon.name, lenName) == 0 && (buf[lenName] == 0 || buf[lenName] == ' '))
 		{
 			sellerFound = 1;
 			break;
 		}
-		delete mon;
 	}
 	if (!sellerFound)
 	{
@@ -725,19 +724,19 @@ void CConfigDialog::OnAddSeller()
 		return;
 	}
 
-	CTibiaCharacter* NPCSeller = reader.readVisibleCreature(i);
+	CTibiaCharacter NPCSeller;
+	reader.readVisibleCreature(&NPCSeller, i);
 	if (sellerNum >= MAX_NPCS)
 	{
 		AfxMessageBox("NPC list is full.");
 		return;
 	}
 	strcpy(sellersInfo[sellerNum].name, buf);
-	sellersInfo[sellerNum].xPos = NPCSeller->x;
-	sellersInfo[sellerNum].yPos = NPCSeller->y;
-	sellersInfo[sellerNum].zPos = NPCSeller->z;
-	delete NPCSeller;
+	sellersInfo[sellerNum].xPos = NPCSeller.x;
+	sellersInfo[sellerNum].yPos = NPCSeller.y;
+	sellersInfo[sellerNum].zPos = NPCSeller.z;
 
-	sprintf(buf, "Added %s sucessfully to the list at position (%d,%d,%d)", sellersInfo[sellerNum].name, sellersInfo[sellerNum].xPos, sellersInfo[sellerNum].yPos, sellersInfo[sellerNum].zPos);
+	sprintf(buf, "Added %s successfully to the list at position (%d,%d,%d)", sellersInfo[sellerNum].name, sellersInfo[sellerNum].xPos, sellersInfo[sellerNum].yPos, sellersInfo[sellerNum].zPos);
 	AfxMessageBox(buf);
 	sellerNum++;
 

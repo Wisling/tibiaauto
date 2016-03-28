@@ -64,15 +64,15 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 	//CPackSender::sendAutoAimConfig(1,config->onlyCreatures,config->aimPlayersFromBattle);
 	
-	CTibiaCharacter *sel = reader.readSelfCharacter();
-	float caps           = sel->cap;
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	float caps           = self.cap;
 	FILE* f              = fopen("C:/srangp.txt", "wb");
 	while (!toolThreadShouldStop)
 	{
 		Sleep(100);
-		delete sel;
-		sel = reader.readSelfCharacter();
-		if (caps != sel->cap && sel->cap > 5000)
+		reader.readSelfCharacter(&self);
+		if (caps != self.cap && self.cap > 5000)
 		{
 			int addy = CTibiaItem::getValueForConst("addrCap");
 			for (int i = 0; i < 20; i++)
@@ -82,7 +82,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 			fprintf(f, "\n");
 			fflush(f);
-			caps = sel->cap;
+			caps = self.cap;
 		}
 	}
 	while (!toolThreadShouldStop)
@@ -101,9 +101,9 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		if (attackedCreature)
 		{
 			//T4: Get attacked creature structure
-			CTibiaCharacter *ch = reader.getCharacterByTibiaId(attackedCreature);
+			CTibiaCharacter ch;
 
-			if (ch)
+			if (reader.getCharacterByTibiaId(&ch, attackedCreature))
 			{
 				//T4: Check containers for the same rune as in hand
 				int contNr;
@@ -137,10 +137,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							delete runeItem;
 						}
 					};
-
 					delete cont;
 				}
-				delete ch;
 			}
 		}
 	}

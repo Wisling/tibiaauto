@@ -641,20 +641,21 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		KillTimer(1001);
 		CMemReader& reader = CMemReader::getMemReader();
 
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
 		char buf[256];
-		if (lastX != self->x || lastY != self->y || lastZ != self->z)
+		if (lastX != self.x || lastY != self.y || lastZ != self.z)
 		{
-			sprintf(buf, "%d", self->x);
+			sprintf(buf, "%d", self.x);
 			m_curX.SetWindowText(buf);
-			sprintf(buf, "%d", self->y);
+			sprintf(buf, "%d", self.y);
 			m_curY.SetWindowText(buf);
-			sprintf(buf, "%d", self->z);
+			sprintf(buf, "%d", self.z);
 			m_curZ.SetWindowText(buf);
-			lastX = self->x;
-			lastY = self->y;
-			lastZ = self->z;
+			lastX = self.x;
+			lastY = self.y;
+			lastZ = self.z;
 		}
 
 
@@ -721,7 +722,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		{
 			if (globalAutoAttackStateDepot != CToolAutoAttackStateDepot_walking)
 			{
-				int tilesAway = abs(self->x - actualTargetX) + abs(self->y - actualTargetY) + abs(self->z - actualTargetZ);
+				int tilesAway = abs(self.x - actualTargetX) + abs(self.y - actualTargetY) + abs(self.z - actualTargetZ);
 				sprintf(buf, "State: walking to (%d,%d,%d) %d tiles away", actualTargetX, actualTargetY, actualTargetZ, tilesAway);
 				m_stateWalker.SetWindowText(buf);
 				if (currentWaypointNr != m_waypointList.GetCurSel())
@@ -772,7 +773,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			break;
 		case CToolAutoAttackStateDepot_walking:
 		{
-			int tilesAway = abs(self->x - depotX) + abs(self->y - depotY) + abs(self->z - depotZ);
+			int tilesAway = abs(self.x - depotX) + abs(self.y - depotY) + abs(self.z - depotZ);
 			sprintf(buf, "State: walking to depot (%d,%d,%d) %d tiles away", depotX, depotY, depotZ, tilesAway);
 			m_stateDepot.SetWindowText(buf);
 			break;
@@ -836,7 +837,6 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			SetTimer(1001, 100, NULL);
 			CDialog::OnTimer(nIDEvent);
 			AfxMessageBox(buf);
-			delete self;
 			return;
 		}
 
@@ -868,7 +868,6 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 					char buf[512];
 					sprintf(buf, "Successfully completed researching map in %d seconds.\nRemember to enable extended map reseach to changing levels and avoid new obstacles.", time(NULL) - startTime + 1);
 					AfxMessageBox(buf);
-					delete self;
 					return;
 				}
 			}
@@ -889,7 +888,6 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			}
 		}
 
-		delete self;
 
 
 		SetTimer(1001, 100, NULL);
@@ -1443,9 +1441,9 @@ void PathfindThread(LPVOID lpParam)
 void CConfigDialog::OnAutoResearch()
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter* ch = reader.readSelfCharacter();
-	int curX            = ch->x, curY = ch->y, curZ = ch->z;
-	delete ch;
+	CTibiaCharacter ch;
+	reader.readSelfCharacter(& ch);
+	int curX  = ch.x, curY = ch.y, curZ = ch.z;
 	int nextX = 0, nextY = 0, nextZ = 0;
 	if (!reader.isLoggedIn())
 	{

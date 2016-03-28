@@ -66,13 +66,13 @@ void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 	// m_value == MAP_POINT_TYPE_SELF is self point
 	if (m_value != MAP_POINT_TYPE_SELF)
 	{
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
-		realX = self->x + m_x - 10;
-		realY = self->y + m_y - 10;
-		realZ = self->z;
+		realX = self.x + m_x - 10;
+		realY = self.y + m_y - 10;
+		realZ = self.z;
 
-		delete self;
 		int i;
 		/* Get the mouse cursor position */
 		DWORD dwPos = GetMessagePos();

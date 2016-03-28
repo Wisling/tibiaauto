@@ -299,31 +299,32 @@ void Alarm::initializeCharacter()
 {
 	//Initialize the character's starting info
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	lvlInit         = self->lvl;
-	mlvlInit        = self->mlvl;
-	skillFishInit   = self->skillFish;
-	skillFistInit   = self->skillFist;
-	skillClubInit   = self->skillClub;
-	skillSwordInit  = self->skillSword;
-	skillAxeInit    = self->skillAxe;
-	skillDistInit   = self->skillDist;
-	skillShieldInit = self->skillShield;
-	positionXInit   = self->x;
-	positionYInit   = self->y;
-	positionZInit   = self->z;
-	healthInit      = self->hp;
-	delete self;
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	lvlInit         = self.lvl;
+	mlvlInit        = self.mlvl;
+	skillFishInit   = self.skillFish;
+	skillFistInit   = self.skillFist;
+	skillClubInit   = self.skillClub;
+	skillSwordInit  = self.skillSword;
+	skillAxeInit    = self.skillAxe;
+	skillDistInit   = self.skillDist;
+	skillShieldInit = self.skillShield;
+	positionXInit   = self.x;
+	positionYInit   = self.y;
+	positionZInit   = self.z;
+	healthInit      = self.hp;
 }
 
 bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg)
 {
 	bool retval = false;
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	if (currentLoc.x != self->x || currentLoc.y != self->y || currentLoc.z != self->z)
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	if (currentLoc.x != self.x || currentLoc.y != self.y || currentLoc.z != self.z)
 	{
-		currentLoc = point(self->x, self->y, self->z);
+		currentLoc = point(self.x, self.y, self.z);
 		movedTime  = time(NULL);
 	}
 
@@ -336,151 +337,151 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg)
 			switch (attribute)
 			{
 			case ALL:
-				retval         |= (self->lvl > lvlInit);
-				retval         |= (self->mlvl > mlvlInit);
-				retval         |= (self->skillFish > skillFishInit);
-				retval         |= (self->skillFist > skillFistInit);
-				retval         |= (self->skillClub > skillClubInit);
-				retval         |= (self->skillSword > skillSwordInit);
-				retval         |= (self->skillAxe > skillAxeInit);
-				retval         |= (self->skillDist > skillDistInit);
-				retval         |= (self->skillShield > skillShieldInit);
-				lvlInit         = self->lvl;
-				mlvlInit        = self->mlvl;
-				skillFishInit   = self->skillFish;
-				skillFistInit   = self->skillFist;
-				skillClubInit   = self->skillClub;
-				skillSwordInit  = self->skillSword;
-				skillAxeInit    = self->skillAxe;
-				skillDistInit   = self->skillDist;
-				skillShieldInit = self->skillShield;
+				retval         |= (self.lvl > lvlInit);
+				retval         |= (self.mlvl > mlvlInit);
+				retval         |= (self.skillFish > skillFishInit);
+				retval         |= (self.skillFist > skillFistInit);
+				retval         |= (self.skillClub > skillClubInit);
+				retval         |= (self.skillSword > skillSwordInit);
+				retval         |= (self.skillAxe > skillAxeInit);
+				retval         |= (self.skillDist > skillDistInit);
+				retval         |= (self.skillShield > skillShieldInit);
+				lvlInit         = self.lvl;
+				mlvlInit        = self.mlvl;
+				skillFishInit   = self.skillFish;
+				skillFistInit   = self.skillFist;
+				skillClubInit   = self.skillClub;
+				skillSwordInit  = self.skillSword;
+				skillAxeInit    = self.skillAxe;
+				skillDistInit   = self.skillDist;
+				skillShieldInit = self.skillShield;
 				break;
 			case LEVEL:
-				retval  = self->lvl > lvlInit;
-				lvlInit = self->lvl;
+				retval  = self.lvl > lvlInit;
+				lvlInit = self.lvl;
 				break;
 			case MAGICLVL:
-				retval   = self->mlvl > mlvlInit;
-				mlvlInit = self->mlvl;
+				retval   = self.mlvl > mlvlInit;
+				mlvlInit = self.mlvl;
 				break;
 			case FISHING:
-				retval        = self->skillFish > skillFishInit;
-				skillFishInit = self->skillFish;
+				retval        = self.skillFish > skillFishInit;
+				skillFishInit = self.skillFish;
 				break;
 			case FIST:
-				retval        = self->skillFist > skillFistInit;
-				skillFistInit = self->skillFist;
+				retval        = self.skillFist > skillFistInit;
+				skillFistInit = self.skillFist;
 				break;
 			case CLUB:
-				retval        = self->skillClub > skillClubInit;
-				skillClubInit = self->skillClub;
+				retval        = self.skillClub > skillClubInit;
+				skillClubInit = self.skillClub;
 				break;
 			case SWORDSKILL:
-				retval         = self->skillSword > skillSwordInit;
-				skillSwordInit = self->skillSword;
+				retval         = self.skillSword > skillSwordInit;
+				skillSwordInit = self.skillSword;
 				break;
 			case AXE:
-				retval       = self->skillAxe > skillAxeInit;
-				skillAxeInit = self->skillAxe;
+				retval       = self.skillAxe > skillAxeInit;
+				skillAxeInit = self.skillAxe;
 				break;
 			case DISTANCE:
-				retval        = self->skillDist > skillDistInit;
-				skillDistInit = self->skillDist;
+				retval        = self.skillDist > skillDistInit;
+				skillDistInit = self.skillDist;
 				break;
 			case SHIELD:
-				retval          = self->skillShield > skillShieldInit;
-				skillShieldInit = self->skillShield;
+				retval          = self.skillShield > skillShieldInit;
+				skillShieldInit = self.skillShield;
 				break;
 			}
 			break;
 		case PERCLVLACHIEVED:
 		{
-			int lvlExp = (int)((50 * pow(self->lvl - 1, 3) - 150 * pow(self->lvl - 1, 2) + 400 * (self->lvl - 1)) / 3);
+			int lvlExp = (int)((50 * pow(self.lvl - 1, 3) - 150 * pow(self.lvl - 1, 2) + 400 * (self.lvl - 1)) / 3);
 			switch (attribute)
 			{
 			case ALL:
-				retval |= (100 - (self->exp - lvlExp) / ((self->lvl - 1) * (self->lvl - 2) * 50 + 100) >= trigger.getIntTrigger());
-				retval |= (100 - self->mlvlPercLeft >= trigger.getIntTrigger());
-				retval |= (100 - self->skillFishPercLeft >= trigger.getIntTrigger());
-				retval |= (100 - self->skillFistPercLeft >= trigger.getIntTrigger());
-				retval |= (100 - self->skillClubPercLeft >= trigger.getIntTrigger());
-				retval |= (100 - self->skillSwordPercLeft >= trigger.getIntTrigger());
-				retval |= (100 - self->skillAxePercLeft >= trigger.getIntTrigger());
-				retval |= (100 - self->skillDistPercLeft >= trigger.getIntTrigger());
-				retval |= (100 - self->skillShieldPercLeft >= trigger.getIntTrigger());
+				retval |= (100 - (self.exp - lvlExp) / ((self.lvl - 1) * (self.lvl - 2) * 50 + 100) >= trigger.getIntTrigger());
+				retval |= (100 - self.mlvlPercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self.skillFishPercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self.skillFistPercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self.skillClubPercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self.skillSwordPercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self.skillAxePercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self.skillDistPercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self.skillShieldPercLeft >= trigger.getIntTrigger());
 				break;
 			case LEVEL:
-				retval = 100 - (self->exp - lvlExp) / ((self->lvl - 1) * (self->lvl - 2) * 50 + 100) >= trigger.getIntTrigger();
+				retval = 100 - (self.exp - lvlExp) / ((self.lvl - 1) * (self.lvl - 2) * 50 + 100) >= trigger.getIntTrigger();
 				break;
 			case MAGICLVL:
-				retval = 100 - self->mlvlPercLeft >= trigger.getIntTrigger();
+				retval = 100 - self.mlvlPercLeft >= trigger.getIntTrigger();
 				break;
 			case FISHING:
-				retval = 100 - self->skillFishPercLeft >= trigger.getIntTrigger();
+				retval = 100 - self.skillFishPercLeft >= trigger.getIntTrigger();
 				break;
 			case FIST:
-				retval = 100 - self->skillFistPercLeft >= trigger.getIntTrigger();
+				retval = 100 - self.skillFistPercLeft >= trigger.getIntTrigger();
 				break;
 			case CLUB:
-				retval = 100 - self->skillClubPercLeft >= trigger.getIntTrigger();
+				retval = 100 - self.skillClubPercLeft >= trigger.getIntTrigger();
 				break;
 			case SWORDSKILL:
-				retval = 100 - self->skillSwordPercLeft >= trigger.getIntTrigger();
+				retval = 100 - self.skillSwordPercLeft >= trigger.getIntTrigger();
 				break;
 			case AXE:
-				retval = 100 - self->skillAxePercLeft >= trigger.getIntTrigger();
+				retval = 100 - self.skillAxePercLeft >= trigger.getIntTrigger();
 				break;
 			case DISTANCE:
-				retval = 100 - self->skillDistPercLeft >= trigger.getIntTrigger();
+				retval = 100 - self.skillDistPercLeft >= trigger.getIntTrigger();
 				break;
 			case SHIELD:
-				retval = 100 - self->skillShieldPercLeft >= trigger.getIntTrigger();
+				retval = 100 - self.skillShieldPercLeft >= trigger.getIntTrigger();
 				break;
 			}
 			break;
 		}
 		case PERCLVLREMAINING:
 		{
-			int lvlExp = (int)((50 * pow(self->lvl - 1, 3) - 150 * pow(self->lvl - 1, 2) + 400 * (self->lvl - 1)) / 3);
+			int lvlExp = (int)((50 * pow(self.lvl - 1, 3) - 150 * pow(self.lvl - 1, 2) + 400 * (self.lvl - 1)) / 3);
 			switch (attribute)
 			{
 			case ALL:
-				retval |= ((self->exp - lvlExp) / ((self->lvl - 1) * (self->lvl - 2) * 50 + 100) <= trigger.getIntTrigger());
-				retval |= (self->mlvlPercLeft <= trigger.getIntTrigger());
-				retval |= (self->skillFishPercLeft <= trigger.getIntTrigger());
-				retval |= (self->skillFistPercLeft <= trigger.getIntTrigger());
-				retval |= (self->skillClubPercLeft <= trigger.getIntTrigger());
-				retval |= (self->skillSwordPercLeft <= trigger.getIntTrigger());
-				retval |= (self->skillAxePercLeft <= trigger.getIntTrigger());
-				retval |= (self->skillDistPercLeft <= trigger.getIntTrigger());
-				retval |= (self->skillShieldPercLeft <= trigger.getIntTrigger());
+				retval |= ((self.exp - lvlExp) / ((self.lvl - 1) * (self.lvl - 2) * 50 + 100) <= trigger.getIntTrigger());
+				retval |= (self.mlvlPercLeft <= trigger.getIntTrigger());
+				retval |= (self.skillFishPercLeft <= trigger.getIntTrigger());
+				retval |= (self.skillFistPercLeft <= trigger.getIntTrigger());
+				retval |= (self.skillClubPercLeft <= trigger.getIntTrigger());
+				retval |= (self.skillSwordPercLeft <= trigger.getIntTrigger());
+				retval |= (self.skillAxePercLeft <= trigger.getIntTrigger());
+				retval |= (self.skillDistPercLeft <= trigger.getIntTrigger());
+				retval |= (self.skillShieldPercLeft <= trigger.getIntTrigger());
 				break;
 			case LEVEL:
-				retval = (self->exp - lvlExp) / ((self->lvl - 1) * (self->lvl - 2) * 50 + 100) <= trigger.getIntTrigger();
+				retval = (self.exp - lvlExp) / ((self.lvl - 1) * (self.lvl - 2) * 50 + 100) <= trigger.getIntTrigger();
 				break;
 			case MAGICLVL:
-				retval = self->mlvlPercLeft <= trigger.getIntTrigger();
+				retval = self.mlvlPercLeft <= trigger.getIntTrigger();
 				break;
 			case FISHING:
-				retval = self->skillFishPercLeft <= trigger.getIntTrigger();
+				retval = self.skillFishPercLeft <= trigger.getIntTrigger();
 				break;
 			case FIST:
-				retval = self->skillFistPercLeft <= trigger.getIntTrigger();
+				retval = self.skillFistPercLeft <= trigger.getIntTrigger();
 				break;
 			case CLUB:
-				retval = self->skillClubPercLeft <= trigger.getIntTrigger();
+				retval = self.skillClubPercLeft <= trigger.getIntTrigger();
 				break;
 			case SWORDSKILL:
-				retval = self->skillSwordPercLeft <= trigger.getIntTrigger();
+				retval = self.skillSwordPercLeft <= trigger.getIntTrigger();
 				break;
 			case AXE:
-				retval = self->skillAxePercLeft <= trigger.getIntTrigger();
+				retval = self.skillAxePercLeft <= trigger.getIntTrigger();
 				break;
 			case DISTANCE:
-				retval = self->skillDistPercLeft <= trigger.getIntTrigger();
+				retval = self.skillDistPercLeft <= trigger.getIntTrigger();
 				break;
 			case SHIELD:
-				retval = self->skillShieldPercLeft <= trigger.getIntTrigger();
+				retval = self.skillShieldPercLeft <= trigger.getIntTrigger();
 				break;
 			}
 			break;
@@ -494,22 +495,22 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg)
 			switch (attribute)
 			{
 			case HP:
-				retval = self->hp == trigger.getIntTrigger();
+				retval = self.hp == trigger.getIntTrigger();
 				break;
 			case MP:
-				retval = self->mana == trigger.getIntTrigger();
+				retval = self.mana == trigger.getIntTrigger();
 				break;
 			case XP:
-				retval = self->exp == trigger.getIntTrigger();
+				retval = self.exp == trigger.getIntTrigger();
 				break;
 			case SP:
-				retval = self->soulPoints == trigger.getIntTrigger();
+				retval = self.soulPoints == trigger.getIntTrigger();
 				break;
 			case STAMINA:
-				retval = self->stamina == trigger.getIntTrigger();
+				retval = self.stamina == trigger.getIntTrigger();
 				break;
 			case CAPACITY:
-				retval = self->cap == trigger.getIntTrigger();
+				retval = self.cap == trigger.getIntTrigger();
 				break;
 			case SPACE:
 				retval = spaceAvailable() == trigger.getIntTrigger();
@@ -520,22 +521,22 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg)
 			switch (attribute)
 			{
 			case HP:
-				retval = self->hp < trigger.getIntTrigger();
+				retval = self.hp < trigger.getIntTrigger();
 				break;
 			case MP:
-				retval = self->mana < trigger.getIntTrigger();
+				retval = self.mana < trigger.getIntTrigger();
 				break;
 			case XP:
-				retval = self->exp < trigger.getIntTrigger();
+				retval = self.exp < trigger.getIntTrigger();
 				break;
 			case SP:
-				retval = self->soulPoints < trigger.getIntTrigger();
+				retval = self.soulPoints < trigger.getIntTrigger();
 				break;
 			case STAMINA:
-				retval = self->stamina < trigger.getIntTrigger();
+				retval = self.stamina < trigger.getIntTrigger();
 				break;
 			case CAPACITY:
-				retval = self->cap < trigger.getIntTrigger();
+				retval = self.cap < trigger.getIntTrigger();
 				break;
 			case SPACE:
 				retval = spaceAvailable() < trigger.getIntTrigger();
@@ -546,22 +547,22 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg)
 			switch (attribute)
 			{
 			case HP:
-				retval = self->hp > trigger.getIntTrigger();
+				retval = self.hp > trigger.getIntTrigger();
 				break;
 			case MP:
-				retval = self->mana > trigger.getIntTrigger();
+				retval = self.mana > trigger.getIntTrigger();
 				break;
 			case XP:
-				retval = self->exp > trigger.getIntTrigger();
+				retval = self.exp > trigger.getIntTrigger();
 				break;
 			case SP:
-				retval = self->soulPoints > trigger.getIntTrigger();
+				retval = self.soulPoints > trigger.getIntTrigger();
 				break;
 			case STAMINA:
-				retval = self->stamina > trigger.getIntTrigger();
+				retval = self.stamina > trigger.getIntTrigger();
 				break;
 			case CAPACITY:
-				retval = self->cap > trigger.getIntTrigger();
+				retval = self.cap > trigger.getIntTrigger();
 				break;
 			case SPACE:
 				retval = spaceAvailable() > trigger.getIntTrigger();
@@ -732,22 +733,22 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg)
 		switch (attribute)
 		{
 		case CHARACTERMOVED:
-			retval = positionXInit != self->x || positionYInit != self->y || positionZInit != self->z;
+			retval = positionXInit != self.x || positionYInit != self.y || positionZInit != self.z;
 			break;
 		case CHARACTERHIT:
 			switch (condition)
 			{
 			case EQUAL:
-				retval = healthInit - self->hp > 0 && healthInit - self->hp == trigger.getIntTrigger();
+				retval = healthInit - self.hp > 0 && healthInit - self.hp == trigger.getIntTrigger();
 				break;
 			case LESS:
-				retval = healthInit - self->hp > 0 && healthInit - self->hp < trigger.getIntTrigger();
+				retval = healthInit - self.hp > 0 && healthInit - self.hp < trigger.getIntTrigger();
 				break;
 			case MORE:
-				retval = healthInit - self->hp > 0 && healthInit - self->hp > trigger.getIntTrigger();
+				retval = healthInit - self.hp > 0 && healthInit - self.hp > trigger.getIntTrigger();
 				break;
 			}
-			healthInit = self->hp;
+			healthInit = self.hp;
 			break;
 		case CHARACTERNOTMOVED:
 			switch (condition)
@@ -769,12 +770,11 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg)
 			int y      = trigger.getMultiIntTrigger(1);
 			int z      = trigger.getMultiIntTrigger(2);
 			int radius = trigger.getMultiIntTrigger(3);
-			retval = abs(self->x - x) <= radius && abs(self->y - y) <= radius && self->z == z;
+			retval = abs(self.x - x) <= radius && abs(self.y - y) <= radius && self.z == z;
 			break;
 		}
 		break;
 	}
-	delete self;
 	return retval;
 }
 
@@ -823,41 +823,42 @@ int Alarm::onScreenCheck(char whiteList[100][32], int options)
 {
 	CMemReader& reader = CMemReader::getMemReader();
 	
-	CTibiaCharacter *self      = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
 	int retval = 0;
 	for (int creatureNr = 0; creatureNr < reader.m_memMaxCreatures; creatureNr++)
 	{
-		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
-		if (ch->tibiaId == 0)
+		CTibiaCharacter ch;
+		reader.readVisibleCreature(&ch, creatureNr);
+		if (!ch.initialized || ch.tibiaId == 0)
 		{
-			delete ch;
 			break;
 		}
-		if (ch->visible)
+		if (ch.visible)
 		{
-			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList, (char*)ch->name) ^ ((options & OPTIONS_MAKE_BLACKLIST) != 0)))
+			if (ch.tibiaId != self.tibiaId && (!OnList(whiteList, (char*)ch.name) ^ ((options & OPTIONS_MAKE_BLACKLIST) != 0)))
 			{
-				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || ((options & OPTIONS_BATTLE_ANXIETY) && abs(ch->z - self->z) <= 1))
+				if (ch.z == self.z || (options & OPTIONS_BATTLE_PARANOIA) || ((options & OPTIONS_BATTLE_ANXIETY) && abs(ch.z - self.z) <= 1))
 				{
-					if (unsigned int(ch->tibiaId) < 0x40000000)
+					if (unsigned int(ch.tibiaId) < 0x40000000)
 					{
 						retval |= 1 << PLAYER;
-						if (reader.getCurrentTm() - ch->lastAttackTm < 60 * 1000)//player has attacked in last minute
+						if (reader.getCurrentTm() - ch.lastAttackTm < 60 * 1000)//player has attacked in last minute
 
 							retval |= 1 << ATTACKINGPLAYER;
 					}
-					if (ch->name[0] == 'G' && ch->name[1] == 'M' || ch->name[0] == 'C' && ch->name[1] == 'M')   // this is GM
+					if (ch.name[0] == 'G' && ch.name[1] == 'M' || ch.name[0] == 'C' && ch.name[1] == 'M')   // this is GM
 						retval |= 1 << GM;
-					if (ch->tibiaId >= 0x40000000)   // this is monster/npc
+					if (ch.tibiaId >= 0x40000000)   // this is monster/npc
 						retval |= 1 << MONSTER;
 				}
-				if (ch->z == self->z && abs(ch->x - self->x) <= 7 && abs(ch->y - self->y) <= 5)
+				if (ch.z == self.z && abs(ch.x - self.x) <= 7 && abs(ch.y - self.y) <= 5)
 					retval |= 1 << BATTLELIST;
 			}
-			if (ch->tibiaId != self->tibiaId && (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || ((options & OPTIONS_BATTLE_ANXIETY) && abs(ch->z - self->z) <= 1)))
+			if (ch.tibiaId != self.tibiaId && (ch.z == self.z || (options & OPTIONS_BATTLE_PARANOIA) || ((options & OPTIONS_BATTLE_ANXIETY) && abs(ch.z - self.z) <= 1)))
 			{
-				switch (ch->skulls)
+				switch (ch.skulls)
 				{
 				case YELLOW_SKULL:
 					retval |= 1 << YELLOWSKULL;
@@ -877,9 +878,7 @@ int Alarm::onScreenCheck(char whiteList[100][32], int options)
 				}
 			}
 		}
-		delete ch;
 	}
-	delete self;
 	return retval;
 }
 
