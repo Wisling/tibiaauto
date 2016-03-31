@@ -9,9 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#undef _DEBUG
 #include "python.h"
-#define _DEBUG
 
 #include "PythonEngine.h"
 

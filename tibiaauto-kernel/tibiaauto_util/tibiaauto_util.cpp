@@ -27,7 +27,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-static char THIS_FILE[] = "C:/temp/testfdkls.txt";
+static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
 extern HANDLE hPipe;

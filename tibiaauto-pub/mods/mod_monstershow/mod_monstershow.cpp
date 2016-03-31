@@ -53,6 +53,7 @@ END_MESSAGE_MAP()
 CMod_monstershowApp::CMod_monstershowApp()
 {
 	m_infoDialog = NULL;
+	m_configData = new CConfigData();
 }
 
 CMod_monstershowApp::~CMod_monstershowApp()

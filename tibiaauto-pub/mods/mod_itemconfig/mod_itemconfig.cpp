@@ -78,6 +78,7 @@ END_MESSAGE_MAP()
 CMod_itemconfigApp::CMod_itemconfigApp()
 {
 	m_infoDialog = NULL;
+	m_configData = new CConfigData();
 }
 
 CMod_itemconfigApp::~CMod_itemconfigApp()

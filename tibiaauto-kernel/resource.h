@@ -152,7 +152,6 @@
 #define IDD_CONFIGSTATUS                161
 #define IDR_LOADED_MODULES_MENU         163
 #define IDD_DONATION                    171
-#define IDD_ENTERCODE                   175
 #define IDD_PYTHON_SCRIPTS              179
 #define IDR_PYTHON_SCRIPTS_FUNLIST_MENU 180
 #define IDR_PYTHON_SCRIPTS_MENU         181

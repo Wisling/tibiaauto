@@ -162,6 +162,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 CMod_antylogoutApp::CMod_antylogoutApp()
 {
 	m_started = 0;
+	m_configData = new CConfigData();
 }
 
 CMod_antylogoutApp::~CMod_antylogoutApp()

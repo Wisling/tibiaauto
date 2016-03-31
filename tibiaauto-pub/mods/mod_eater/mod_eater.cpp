@@ -207,6 +207,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 CMod_eaterApp::CMod_eaterApp()
 {
 	m_started = 0;
+	m_configData = new CConfigData();
 }
 
 CMod_eaterApp::~CMod_eaterApp()
