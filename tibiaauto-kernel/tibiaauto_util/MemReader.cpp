@@ -821,6 +821,7 @@ void CMemReader::mapSetPointItemId(point p, int stackNr, int tileId, int relToCe
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr                = mt.items[stackNr].itemId;
 	CMemUtil::SetMemIntValue(addr, tileId, 0);//this address comes from Tibia itself and need not be shifted
+	CMemUtil::SetMemIntValue(mt.items[stackNr].frameGroupPtr, 0, 0); //Erase frameGroupPtr so client won't try to continue move phase
 }
 
 void CMemReader::mapSetPointItemsCount(point p, int count, int relToCell /*=-1*/)

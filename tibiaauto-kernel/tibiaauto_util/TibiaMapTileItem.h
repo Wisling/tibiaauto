@@ -27,6 +27,6 @@ public:
 	int val2;
 	int val3;
 	int val4;
-	int val5;
+	int frameGroupPtr;
 };
 
