@@ -2144,61 +2144,49 @@ PyObject *tibiaauto_item_getItemsLootedCount(PyObject *self, PyObject *args)
 
 PyObject *tibiaauto_kernel_startModule(PyObject *self, PyObject *args)
 {
-	int arg1;
-	if (!PyArg_ParseTuple(args, "i", &arg1))
+	char* arg1;
+	if (!PyArg_ParseTuple(args, "s", &arg1))
 		return NULL;
-	if (arg1 >= CModuleLoader::allModulesCount || arg1 < 0)
+	ModuleMap::iterator it = CModuleLoader::loadedModules.find(arg1);
+	if (it == CModuleLoader::loadedModules.end())
+	{
+		PyErr_SetString(PyExc_NameError, "Cannot find the specified module");
 		return NULL;
+	}
 
-	CModuleLoader::allModules[arg1]->start();
+	it->second->start();
 	Py_INCREF(Py_None);
 	return Py_None;
 }
 
 PyObject *tibiaauto_kernel_stopModule(PyObject *self, PyObject *args)
 {
-	int arg1;
-	if (!PyArg_ParseTuple(args, "i", &arg1))
+	char* arg1;
+	if (!PyArg_ParseTuple(args, "s", &arg1))
 		return NULL;
-	if (arg1 >= CModuleLoader::allModulesCount || arg1 < 0)
+	ModuleMap::iterator it = CModuleLoader::loadedModules.find(arg1);
+	if (it == CModuleLoader::loadedModules.end())
+	{
+		PyErr_SetString(PyExc_NameError, "Cannot find the specified module");
 		return NULL;
-
-	CModuleLoader::allModules[arg1]->stop();
+	}
+	it->second->stop();
 	Py_INCREF(Py_None);
 	return Py_None;
 }
 
-PyObject *tibiaauto_kernel_getModuleCount(PyObject *self, PyObject *args)
-{
-	int ret1      = CModuleLoader::allModulesCount;
-	PyObject *ret = Py_BuildValue("i", ret1);
-
-	return ret;
-}
-
-PyObject *tibiaauto_kernel_getModuleName(PyObject *self, PyObject *args)
-{
-	int arg1;
-	if (!PyArg_ParseTuple(args, "i", &arg1))
-		return NULL;
-	if (arg1 >= CModuleLoader::allModulesCount || arg1 < 0)
-		return NULL;
-
-	const char *ret1    = CModuleLoader::allModules[arg1]->getModuleName();
-	PyObject *ret = Py_BuildValue("s", ret1);
-
-	return ret;
-}
-
 PyObject *tibiaauto_kernel_getModuleDesc(PyObject *self, PyObject *args)
 {
-	int arg1;
-	if (!PyArg_ParseTuple(args, "i", &arg1))
+	char* arg1;
+	if (!PyArg_ParseTuple(args, "s", &arg1))
 		return NULL;
-	if (arg1 >= CModuleLoader::allModulesCount || arg1 < 0)
+	ModuleMap::iterator it = CModuleLoader::loadedModules.find(arg1);
+	if (it == CModuleLoader::loadedModules.end())
+	{
+		PyErr_SetString(PyExc_NameError, "Cannot find the specified module");
 		return NULL;
-
-	char *ret1    = CModuleLoader::allModules[arg1]->getName();
+	}
+	char *ret1    = it->second->getName();
 	PyObject *ret = Py_BuildValue("s", ret1);
 
 	return ret;
@@ -2206,13 +2194,16 @@ PyObject *tibiaauto_kernel_getModuleDesc(PyObject *self, PyObject *args)
 
 PyObject *tibiaauto_kernel_getModuleVersion(PyObject *self, PyObject *args)
 {
-	int arg1;
-	if (!PyArg_ParseTuple(args, "i", &arg1))
+	char* arg1;
+	if (!PyArg_ParseTuple(args, "s", &arg1))
 		return NULL;
-	if (arg1 >= CModuleLoader::allModulesCount || arg1 < 0)
+	ModuleMap::iterator it = CModuleLoader::loadedModules.find(arg1);
+	if (it == CModuleLoader::loadedModules.end())
+	{
+		PyErr_SetString(PyExc_NameError, "Cannot find the specified module");
 		return NULL;
-
-	char *ret1    = CModuleLoader::allModules[arg1]->getVersion();
+	}
+	char *ret1    = it->second->getVersion();
 	PyObject *ret = Py_BuildValue("s", ret1);
 
 	return ret;
@@ -2220,13 +2211,17 @@ PyObject *tibiaauto_kernel_getModuleVersion(PyObject *self, PyObject *args)
 
 PyObject *tibiaauto_kernel_isModuleStarted(PyObject *self, PyObject *args)
 {
-	int arg1;
+	char* arg1;
 	if (!PyArg_ParseTuple(args, "i", &arg1))
 		return NULL;
-	if (arg1 >= CModuleLoader::allModulesCount || arg1 < 0)
+	ModuleMap::iterator it = CModuleLoader::loadedModules.find(arg1);
+	if (it == CModuleLoader::loadedModules.end())
+	{
+		PyErr_SetString(PyExc_NameError, "Cannot find the specified module");
 		return NULL;
+	}
 
-	int ret1      = CModuleLoader::allModules[arg1]->isStarted();
+	int ret1      = it->second->isStarted();
 	PyObject *ret = Py_BuildValue("i", ret1);
 
 	return ret;

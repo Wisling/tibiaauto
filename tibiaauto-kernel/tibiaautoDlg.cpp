@@ -554,9 +554,10 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 	{
 		static unsigned int enabledModules = 0xffffffff;
 		unsigned int modCheck              = 0;
-		for (int i = 0; i < CModuleLoader::allModulesCount && i < 32; i++)
+		int i = 0;
+		for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end() && i < 32; ++it, ++i)
 		{
-			modCheck |= CModuleLoader::allModules[i]->isStarted() << i;
+			modCheck |= it->second->isStarted() << i;
 		}
 		if (modCheck != enabledModules)
 		{
@@ -894,10 +895,9 @@ void CTibiaautoDlg::OnSave()
 		fprintf(f, "<configfile>\n");
 		int modNr;
 		int someModuleRunning = 0;
-		for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
+		for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 		{
-			IModuleInterface * module = CModuleLoader::allModules[modNr];
-			if (module->isStarted())
+			if (it->second->isStarted())
 			{
 				someModuleRunning = 1;
 				break;
@@ -909,9 +909,9 @@ void CTibiaautoDlg::OnSave()
 			if (AfxMessageBox("Some modules are running.\nWould you like to save a list of running modules?", MB_YESNO) == IDYES)
 			{
 				fprintf(f, "<startedModules>\n");
-				for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
+				for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 				{
-					IModuleInterface * module = CModuleLoader::allModules[modNr];
+					IModuleInterface* module = it->second;
 					if (module->isStarted())
 						fprintf(f, "<module name = \"%s\"/>", module->getModuleName());
 				}
@@ -928,9 +928,9 @@ void CTibiaautoDlg::OnSave()
 		}
 
 		// save "normal" modules
-		for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
+		for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 		{
-			IModuleInterface* module = CModuleLoader::allModules[modNr];
+			IModuleInterface* module = it->second;
 			if (module != NULL)
 			{
 				char* nme = module->getName();
@@ -1047,11 +1047,10 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 	char logBuf[16384];
 
 	int modNr;
-	int *restartedModulesTab = new int[CModuleLoader::allModulesCount];
-	for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
+	map<string, bool> restartedModulesTab;
+	for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 	{
-		IModuleInterface * module = CModuleLoader::allModules[modNr];
-		restartedModulesTab[modNr] = module->isStarted();
+		restartedModulesTab[it->first] = (it->second->isStarted() != 0);
 	}
 
 
@@ -1061,10 +1060,10 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 	m_configDialogStatus->msgAddToLog(logBuf);
 
 	//Modules
-	for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
+	for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 	{
-		IModuleInterface * module = CModuleLoader::allModules[modNr];
-		if (restartedModulesTab[modNr])
+		IModuleInterface* module = it->second;
+		if (restartedModulesTab[it->first])
 		{
 			sprintf(logBuf, "Stopping module %s ...", module->getModuleName());
 			m_configDialogStatus->msgAddToLog(logBuf);
@@ -1086,23 +1085,19 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 	xercesc::DOMDocument *doc = parser->getDocument();
 	DOMElement *root          = doc->getDocumentElement();
 
-	for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
+	for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 	{
-		IModuleInterface * module = CModuleLoader::allModules[modNr];
-		if (module != NULL)
+		IModuleInterface* module = it->second;
+		DOMNode *moduleConfig = configCreator.getConfigForModule(root, it->first.c_str());
+		if (moduleConfig)
 		{
-			const char *moduleName      = module->getModuleName();
-			DOMNode *moduleConfig = configCreator.getConfigForModule(root, moduleName);
-			if (moduleConfig)
-			{
-				sprintf(logBuf, "Loading config for module %s ...", module->getModuleName());
-				module->resetConfig();
-				m_configDialogStatus->msgAddToLog(logBuf);
-				configCreator.parseConfigFromNode(module, moduleConfig, "");
-				module->configToControls();
-			}
+			sprintf(logBuf, "Loading config for module %s ...", it->first);
+			module->resetConfig();
+			m_configDialogStatus->msgAddToLog(logBuf);
+			configCreator.parseConfigFromNode(module, moduleConfig, "");
+			module->configToControls();
 		}
-	}
+}
 
 	int scriptNr = 0;
 	for (;; )
@@ -1145,12 +1140,12 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 						{
 							char nodeValue[1024];
 							wcstombs(nodeValue, attrNode->getNodeValue(), 1024);
-							for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
+							for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 							{
-								IModuleInterface * module = CModuleLoader::allModules[modNr];
-								if (!strcmp(nodeValue, module->getModuleName()))
+								IModuleInterface* module = it->second;
+								if (!strcmp(nodeValue, it->first.c_str()))
 								{
-									sprintf(logBuf, "Starting module %s ...", module->getModuleName());
+									sprintf(logBuf, "Starting module %s ...", it->first.c_str());
 									m_configDialogStatus->msgAddToLog(logBuf);
 									module->start();
 								}
@@ -1201,10 +1196,10 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 	}
 	if (!otherModulesLoaded)
 	{
-		for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
+		for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 		{
-			IModuleInterface * module = CModuleLoader::allModules[modNr];
-			if (restartedModulesTab[modNr])
+			IModuleInterface * module = it->second;
+			if (restartedModulesTab[it->first])
 			{
 				sprintf(logBuf, "Starting module %s ...", module->getModuleName());
 				m_configDialogStatus->msgAddToLog(logBuf);
@@ -1217,7 +1212,6 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 	sprintf(logBuf, "Loading character '%s' finished.", loggedCharName);
 	m_configDialogStatus->msgAddToLog(logBuf);
 
-	delete []restartedModulesTab;
 	delete (struct loadThreadParam *)lpParam;
 	return 0;
 }
@@ -1251,11 +1245,9 @@ void CTibiaautoDlg::loadConfig(CString pathName)
 void CTibiaautoDlg::OnLoad()
 {
 	int someModuleRunning = 0;
-	int modNr;
-	for (modNr = 0; modNr < CModuleLoader::allModulesCount; modNr++)
+	for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 	{
-		IModuleInterface * module = CModuleLoader::allModules[modNr];
-		if (module->isStarted())
+		if (it->second->isStarted())
 			someModuleRunning = 1;
 	}
 	if (someModuleRunning)
@@ -1626,13 +1618,11 @@ void CTibiaautoDlg::reportUsage()
 	if (f)
 	{
 		time_t tm = time(NULL);
-		int count = CModuleLoader::allModulesCount;
-		int pos;
 		int checksum = tm % 177;
 		fprintf(f, "version=2.64.1 tm=%d,", tm);
-		for (pos = 0; pos < count; pos++)
+		for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 		{
-			IModuleInterface *mod = CModuleLoader::allModules[pos];
+			IModuleInterface* mod = it->second;
 			fprintf(f, "%s=%d,", mod->getName(), mod->isStarted());
 			checksum = checksum * 3 + strlen(mod->getName()) * 9 + mod->isStarted() * 13;
 		}
@@ -1685,12 +1675,9 @@ BOOL CTibiaautoDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 		m_pythonScriptsDialog->Invalidate();
 		m_loadedModules->Invalidate();
 
-		int count = CModuleLoader::allModulesCount;
-		int pos;
-		for (pos = 0; pos < count; pos++)
+		for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 		{
-			IModuleInterface *mod = CModuleLoader::allModules[pos];
-			mod->getNewSkin(skin);
+			it->second->getNewSkin(skin);
 		}
 	}
 	return CDialog::OnNotify(wParam, lParam, pResult);

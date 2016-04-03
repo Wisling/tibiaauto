@@ -99,43 +99,38 @@ BOOL CLoadedModules::OnInitDialog()
 
 void CLoadedModules::refreshModulesInformation()
 {
-	int i;
+	int i = 0;
 	//m_list.DeleteAllItems();
-	for (i = 0; i < CModuleLoader::allModulesCount; i++)
+	for (ModuleMap::const_iterator it = CModuleLoader::loadedModules.cbegin(); it != CModuleLoader::loadedModules.cend(); ++it, ++i)
 	{
 		char buf[128], buf2[128];
 		if (i >= m_list.GetItemCount())
 			m_list.InsertItem(i, "");
 
-		sprintf(buf, "%s", (CModuleLoader::allModules[i] != NULL) ? "yes" : "no");
-		memset(buf2, 0, 128);
-		m_list.GetItemText(i, 1, buf2, 127);
-		if (strcmp(buf, buf2))
-			m_list.SetItemText(i, 1, buf);
-
-		if (CModuleLoader::allModules[i] == NULL)
-			continue;
-
-		sprintf(buf, "%s", CModuleLoader::allModules[i]->getModuleName());
-		memset(buf2, 0, 128);
+		sprintf(buf, "%s", it->first);
 		m_list.GetItemText(i, 0, buf2, 127);
 		if (strcmp(buf, buf2))
 			m_list.SetItemText(i, 0, buf);
 
-		sprintf(buf, "%s", CModuleLoader::allModules[i]->getName());
-		memset(buf2, 0, 128);
+		sprintf(buf, "%s", (it->second != NULL) ? "yes" : "no");
+		m_list.GetItemText(i, 1, buf2, 127);
+		if (strcmp(buf, buf2))
+			m_list.SetItemText(i, 1, buf);
+
+		if (it->second == NULL)
+			continue;
+
+		sprintf(buf, "%s", it->second->getName());
 		m_list.GetItemText(i, 2, buf2, 127);
 		if (strcmp(buf, buf2))
 			m_list.SetItemText(i, 2, buf);
 
-		sprintf(buf, "%s", CModuleLoader::allModules[i]->getVersion());
-		memset(buf2, 0, 128);
+		sprintf(buf, "%s", it->second->getVersion());
 		m_list.GetItemText(i, 3, buf2, 127);
 		if (strcmp(buf, buf2))
 			m_list.SetItemText(i, 3, buf);
 
-		sprintf(buf, "%s", CModuleLoader::allModules[i]->isStarted() ? "yes" : "no");
-		memset(buf2, 0, 128);
+		sprintf(buf, "%s", it->second->isStarted() ? "yes" : "no");
 		m_list.GetItemText(i, 4, buf2, 127);
 		if (strcmp(buf, buf2))
 			m_list.SetItemText(i, 4, buf);
@@ -147,11 +142,7 @@ void CLoadedModules::OnTimer(UINT nIDEvent)
 	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
-
-
 		refreshModulesInformation();
-
-
 		SetTimer(1001, 500, NULL);
 	}
 
@@ -177,32 +168,38 @@ BOOL CLoadedModules::OnCommand(WPARAM wParam, LPARAM lParam)
 	if (wParam == ID_STOPMODULE_STOPMODULE || wParam == ID_STOPMODULE_STARTMODULE || wParam == ID_MODULEACTIONS_SHOWCONFIGDIALOG)
 	{
 		int modStartFail = 0;
+		char modName[128];
 		POSITION pos     = m_list.GetFirstSelectedItemPosition();
 		while (pos)
 		{
 			int modNr                = m_list.GetNextSelectedItem(pos);
-			IModuleInterface *module = CModuleLoader::allModules[modNr];
-			switch (wParam)
+			m_list.GetItemText(modNr, 0, modName, 127);
+			ModuleMap::iterator it = CModuleLoader::loadedModules.find(modName);
+			if (it != CModuleLoader::loadedModules.end())
 			{
-			case ID_STOPMODULE_STOPMODULE:
-				module->stop();
-				module->enableControls();
-				break;
-			case ID_STOPMODULE_STARTMODULE:
-				module->controlsToConfig();
-				if (module->validateConfig(0))
+				IModuleInterface *module = it->second;
+				switch (wParam)
 				{
-					module->disableControls();
-					module->start();
+				case ID_STOPMODULE_STOPMODULE:
+					module->stop();
+					module->enableControls();
+					break;
+				case ID_STOPMODULE_STARTMODULE:
+					module->controlsToConfig();
+					if (module->validateConfig(0))
+					{
+						module->disableControls();
+						module->start();
+					}
+					else
+					{
+						modStartFail = 1;
+					}
+					break;
+				case ID_MODULEACTIONS_SHOWCONFIGDIALOG:
+					module->showConfigDialog();
+					break;
 				}
-				else
-				{
-					modStartFail = 1;
-				}
-				break;
-			case ID_MODULEACTIONS_SHOWCONFIGDIALOG:
-				module->showConfigDialog();
-				break;
 			}
 		}
 		if (modStartFail)
