@@ -3978,6 +3978,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 CMod_cavebotApp::CMod_cavebotApp()
 {
+	m_currentWaypointNr = 0;
+	m_currentMonsterNr = 0;
+	m_currentIgnoreNr = 0;
+	m_currentDepotEntryNr = 0;
+	m_currentDroplistEntryNr = 0;
 	m_configDialog = NULL;
 	m_started      = 0;
 	m_configData   = new CConfigData();

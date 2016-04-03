@@ -2203,7 +2203,7 @@ PyObject *tibiaauto_kernel_getModuleVersion(PyObject *self, PyObject *args)
 		PyErr_SetString(PyExc_NameError, "Cannot find the specified module");
 		return NULL;
 	}
-	char *ret1    = it->second->getVersion();
+	char *ret1 = it->second->getVersion();
 	PyObject *ret = Py_BuildValue("s", ret1);
 
 	return ret;
@@ -2212,7 +2212,7 @@ PyObject *tibiaauto_kernel_getModuleVersion(PyObject *self, PyObject *args)
 PyObject *tibiaauto_kernel_isModuleStarted(PyObject *self, PyObject *args)
 {
 	char* arg1;
-	if (!PyArg_ParseTuple(args, "i", &arg1))
+	if (!PyArg_ParseTuple(args, "s", &arg1))
 		return NULL;
 	ModuleMap::iterator it = CModuleLoader::loadedModules.find(arg1);
 	if (it == CModuleLoader::loadedModules.end())
@@ -2221,10 +2221,45 @@ PyObject *tibiaauto_kernel_isModuleStarted(PyObject *self, PyObject *args)
 		return NULL;
 	}
 
-	int ret1      = it->second->isStarted();
+	int ret1 = it->second->isStarted();
 	PyObject *ret = Py_BuildValue("i", ret1);
 
 	return ret;
+}
+
+PyObject *tibiaauto_kernel_getModuleParam(PyObject *self, PyObject *args)
+{
+	char* arg1, *arg2;
+	if (!PyArg_ParseTuple(args, "ss", &arg1, &arg2))
+		return NULL;
+	ModuleMap::iterator it = CModuleLoader::loadedModules.find(arg1);
+	if (it == CModuleLoader::loadedModules.end())
+	{
+		PyErr_SetString(PyExc_NameError, "Cannot find the specified module");
+		return NULL;
+	}
+
+	char* ret1 = it->second->saveConfigParam(arg2);
+	PyObject *ret = Py_BuildValue("s", ret1);
+	return ret;
+}
+
+PyObject *tibiaauto_kernel_setModuleParam(PyObject *self, PyObject *args)
+{
+	char* arg1, *arg2, *arg3;
+	if (!PyArg_ParseTuple(args, "sss", &arg1, &arg2, &arg3))
+		return NULL;
+	ModuleMap::iterator it = CModuleLoader::loadedModules.find(arg1);
+	if (it == CModuleLoader::loadedModules.end())
+	{
+		PyErr_SetString(PyExc_NameError, "Cannot find the specified module");
+		return NULL;
+	}
+
+	it->second->loadConfigParam(arg2, arg3);
+	it->second->configToControls();
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 PyObject *tibiaauto_kernel_startPythonModule(PyObject *self, PyObject *args)

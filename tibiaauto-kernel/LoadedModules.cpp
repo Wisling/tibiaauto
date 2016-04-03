@@ -107,7 +107,7 @@ void CLoadedModules::refreshModulesInformation()
 		if (i >= m_list.GetItemCount())
 			m_list.InsertItem(i, "");
 
-		sprintf(buf, "%s", it->first);
+		sprintf(buf, "%s", it->first.c_str());
 		m_list.GetItemText(i, 0, buf2, 127);
 		if (strcmp(buf, buf2))
 			m_list.SetItemText(i, 0, buf);

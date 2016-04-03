@@ -474,13 +474,14 @@ static PyMethodDef Methods_taitem[] = {
 	{NULL, NULL}         /* Sentinel */
 };
 
-
 static PyMethodDef Methods_takernel[] = {
 	{"startModule", tibiaauto_kernel_startModule, METH_VARARGS},
 	{"stopModule", tibiaauto_kernel_stopModule, METH_VARARGS},
 	{"getModuleDesc", tibiaauto_kernel_getModuleDesc, METH_VARARGS},
-	{"isModuleStarted", tibiaauto_kernel_isModuleStarted, METH_VARARGS},
 	{"getModuleVersion", tibiaauto_kernel_getModuleVersion, METH_VARARGS},
+	{"isModuleStarted", tibiaauto_kernel_isModuleStarted, METH_VARARGS},
+	{"getModuleParam", tibiaauto_kernel_getModuleParam, METH_VARARGS},
+	{"setModuleParam", tibiaauto_kernel_setModuleParam, METH_VARARGS},
 
 	{"startPythonModule", tibiaauto_kernel_startPythonModule, METH_VARARGS},
 	{"stopPythonModule", tibiaauto_kernel_stopPythonModule, METH_VARARGS},
