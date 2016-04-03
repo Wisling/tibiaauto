@@ -34,17 +34,17 @@ extern HANDLE hPipe;
 
 void setProcessId(int processId)
 {
-	CMemUtil::setGlobalProcessId(processId);
+	CMemUtil::getMemUtil().setGlobalProcessId(processId);
 }
 
 int getProcessId()
 {
-	return CMemUtil::getGlobalProcessId();
+	return CMemUtil::getMemUtil().getGlobalProcessId();
 }
 
 void getBaseAddr()
 {
-	CMemUtil::getGlobalBaseAddr();
+	CMemUtil::getMemUtil().getGlobalBaseAddr();
 }
 
 CMemConstData getMemConstData()
@@ -52,24 +52,24 @@ CMemConstData getMemConstData()
 	return CMemConstData();
 }
 
-void memReadSetMemIntValue(int address, int value, int addBaseAddr = 1)
+void memReadSetMemIntValue(DWORD address, int value, bool addBaseAddr = true)
 {
-	CMemUtil::SetMemIntValue(address, value, addBaseAddr);
+	CMemUtil::getMemUtil().SetMemIntValue(address, value, addBaseAddr);
 }
 
-int memReadGetMemIntValue(int address, int addBaseAddr = 1)
+int memReadGetMemIntValue(DWORD address, bool addBaseAddr = true)
 {
-	return CMemUtil::GetMemIntValue(address, addBaseAddr);
+	return CMemUtil::getMemUtil().GetMemIntValue(address, addBaseAddr);
 }
 
-void memReadSetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddr = 1)
+void memReadSetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, bool addBaseAddr = true)
 {
-	CMemUtil::SetMemRange(memAddressStart, memAddressEnd, data, addBaseAddr);
+	CMemUtil::getMemUtil().SetMemRange(memAddressStart, memAddressEnd, data, addBaseAddr);
 }
 
-void memReadGetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddr = 1)
+void memReadGetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, bool addBaseAddr = true)
 {
-	CMemUtil::GetMemRange(memAddressStart, memAddressEnd, data, addBaseAddr);
+	CMemUtil::getMemUtil().GetMemRange(memAddressStart, memAddressEnd, data, addBaseAddr);
 }
 
 void tibiaItemfillTypedItemIdArray(int ind)

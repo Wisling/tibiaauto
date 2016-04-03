@@ -2044,8 +2044,8 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, uint8_t path[1
 		//CMemReader::getMemReader().getMemIntValue(CTibiaItem::getValueForConst("addrTilesToGo"))==0
 		//time to walk 1 sqm is inverse to the speed, double speed== half the time
 		//int maxTileDelay=(int)(tileSpeed*(movedDiagonally?3:1)*1000/self.walkSpeed)+600;
-		int pathLen         = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrTilesToGo"));
-		int pathInd         = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrCurrentTileToGo"));
+		int pathLen         = CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrTilesToGo"));
+		int pathInd         = CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrCurrentTileToGo"));
 		bool stoppedWalking = self.moving == 0 && (pathLen == pathInd || pathLen == 0);
 
 		//int pathStartAddr=CMemReader::getMemReader().m_memAddressPathToGo;

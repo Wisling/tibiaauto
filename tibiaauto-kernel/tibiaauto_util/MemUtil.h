@@ -2,46 +2,68 @@
 
 #include "tibiaauto_util.h"
 
+#include <map>
+using namespace std;
+
+#define MEMORY_CACHE_VALID_TIME 2 // Milliseconds
+#define MEMORY_CACHE_ENTRY_SIZE 32 // Bytes, must be a power of 2
+struct MemoryCacheEntry
+{
+	LONGLONG expirationTime;
+	char value[MEMORY_CACHE_ENTRY_SIZE];
+};
+typedef map<DWORD, MemoryCacheEntry> ReadMemoryCache;
+
 class TIBIAAUTOUTIL_API CMemUtil
 {
-	CMemUtil() {};
+private:
+	CMemUtil();
 	virtual ~CMemUtil() {};
+	CMemUtil(CMemUtil const&);
 public:
-	static int SetMemRange(int processId, DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddress);
-	static int SetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddress = 1);
-	static long int GetMemIntValue(DWORD memAddress, int addBaseAddress = 1);
-	static int GetMemIntValue(long processId, DWORD memAddress, long int *value, int addBaseAddress);
-	static int SetMemIntValue(long processId, DWORD memAddress, long int value, int addBaseAddress);
-	static int SetMemIntValue(DWORD memAddress, long int value, int addBaseAddress = 1);
-	static int SetMemByteValue(long processId, DWORD memAddress, char value, int addBaseAddress);
-	static BOOL AdjustPrivileges();
-	static void GetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *ret, int addBaseAddress = 1);
-	static int GetMemRange(long processId, DWORD memAddressStart, DWORD memAddressEnd, char *result, int addBaseAddress);
-	static int GetProcessBaseAddr(int processId);
+	static CMemUtil& getMemUtil()
+	{
+		static CMemUtil singleton;
+		return singleton;
+	}
 
-	static void setGlobalProcessId(int procId)
+	int SetMemRange(int processId, DWORD memAddressStart, DWORD memAddressEnd, char *data, bool addBaseAddress);
+	int SetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, bool addBaseAddress = true);
+	long int GetMemIntValue(DWORD memAddress, bool addBaseAddress = true);
+	int GetMemIntValue(long processId, DWORD memAddress, long int *value, bool addBaseAddress);
+	int SetMemIntValue(long processId, DWORD memAddress, long int value, bool addBaseAddress);
+	int SetMemIntValue(DWORD memAddress, long int value, bool addBaseAddress = true);
+	int SetMemByteValue(long processId, DWORD memAddress, char value, bool addBaseAddress);
+	BOOL AdjustPrivileges();
+	void GetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *ret, bool addBaseAddress = true);
+	int GetMemRange(long processId, DWORD memAddressStart, DWORD memAddressEnd, char *result, bool addBaseAddress);
+	int GetProcessBaseAddr(int processId);
+
+	void setGlobalProcessId(int procId)
 	{
 		m_globalProcessId = procId;
-		m_globalBaseAddr  = CMemUtil::GetProcessBaseAddr(procId);
+		m_globalBaseAddr  = CMemUtil::getMemUtil().GetProcessBaseAddr(procId);
 	};
-	static int getGlobalProcessId()
+	int getGlobalProcessId()
 	{
 		return m_globalProcessId;
 	};
-	static int getGlobalBaseAddr()
+	int getGlobalBaseAddr()
 	{
 		return m_globalBaseAddr;
 	};
 
-	static long m_globalProcessId;
-	static long m_globalBaseAddr;
 private:
-	static HANDLE m_prevProcessHandle;
-	static long m_prevProcessId;
-	static long m_prevProcessIdBase;
-	static long m_prevBaseAddr;
-	static HANDLE gethandle(long processId);
-	static int readmemory(int processId, int memAddress, int* result, int size, int addBaseAddress);
-	static int writememory(int processId, int memAddress, int* value, int size, int addBaseAddress);
+	ReadMemoryCache m_memoryCache;
+	LONGLONG m_cacheTimeoutTicks;
+	HANDLE m_prevProcessHandle;
+	long m_prevProcessId;
+	long m_prevProcessIdBase;
+	long m_prevBaseAddr;
+	long m_globalBaseAddr;
+	long m_globalProcessId;
+	HANDLE gethandle(long processId);
+	int readmemory(DWORD processId, DWORD memAddress, char* result, DWORD size, bool addBaseAddress, bool useCache = 1);
+	int writememory(DWORD processId, DWORD memAddress, int* value, DWORD size, bool addBaseAddress);
 };
 

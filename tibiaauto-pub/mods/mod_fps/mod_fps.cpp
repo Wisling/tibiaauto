@@ -71,8 +71,8 @@ void SetFPS(double iFps)
 
 	//T4: Fps value can be set to almost 0
 
-	CMemUtil::SetMemIntValue(addrFps + 88, ifpsVal[0], 0);//this address comes from Tibia itself and need not be shifted
-	CMemUtil::SetMemIntValue(addrFps + 88 + 4, ifpsVal[1], 0);//this address comes from Tibia itself and need not be shifted
+	CMemUtil::getMemUtil().SetMemIntValue(addrFps + 88, ifpsVal[0], 0);//this address comes from Tibia itself and need not be shifted
+	CMemUtil::getMemUtil().SetMemIntValue(addrFps + 88 + 4, ifpsVal[1], 0);//this address comes from Tibia itself and need not be shifted
 }
 
 double GetFPS()
@@ -80,15 +80,15 @@ double GetFPS()
 	CMemReader& reader = CMemReader::getMemReader();
 	
 	if (!addrFps)
-		addrFps = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrFps"));
+		addrFps = CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrFps"));
 
 	double *fpsVal;
 	int ifpsVal[2];
 
 	fpsVal = (double*)ifpsVal;
 
-	ifpsVal[0] = CMemUtil::GetMemIntValue(addrFps + 88, 0);//this address comes from Tibia itself and need not be shifted
-	ifpsVal[1] = CMemUtil::GetMemIntValue(addrFps + 88 + 4, 0);//this address comes from Tibia itself and need not be shifted
+	ifpsVal[0] = CMemUtil::getMemUtil().GetMemIntValue(addrFps + 88, 0);//this address comes from Tibia itself and need not be shifted
+	ifpsVal[1] = CMemUtil::getMemUtil().GetMemIntValue(addrFps + 88 + 4, 0);//this address comes from Tibia itself and need not be shifted
 
 
 	return 1000 / (*fpsVal);
@@ -103,7 +103,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 	oldFps = max(GetFPS(), 20);
 	if (!hTibiaWnd)
-		EnumWindows(EnumWindowsProc, CMemUtil::getGlobalProcessId());
+		EnumWindows(EnumWindowsProc, CMemUtil::getMemUtil().getGlobalProcessId());
 
 
 	while (!toolThreadShouldStop)

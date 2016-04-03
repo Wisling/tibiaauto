@@ -2143,7 +2143,7 @@ void InitialisePlayerInfoHack()
 
 void InitialiseProxyClasses()
 {
-	CMemUtil::setGlobalProcessId(GetCurrentProcessId());
+	CMemUtil::getMemUtil().setGlobalProcessId(GetCurrentProcessId());
 }
 
 WNDPROC wndProcOriginal = NULL;

@@ -95,8 +95,8 @@ MiniMapSection* CTAMiniMap::loadFromMemory(int xMap, int yMap, int zMap)
 			//AfxMessageBox("map found");
 			MiniMapSection* pdNew = new MiniMapSection(xMap, yMap, zMap);
 			pdNew->timeUsed = time(NULL);
-			CMemUtil::GetMemRange(mapOffset, mapOffset + 65536, (char*)pdNew->colour);
-			CMemUtil::GetMemRange(mapOffset + 65536, mapOffset + 65536 + 65536, (char*)pdNew->speed);
+			CMemUtil::getMemUtil().GetMemRange(mapOffset, mapOffset + 65536, (char*)pdNew->colour);
+			CMemUtil::getMemUtil().GetMemRange(mapOffset + 65536, mapOffset + 65536 + 65536, (char*)pdNew->speed);
 
 			struct point *p           = new point(xMap, yMap, zMap);
 			struct MiniMapSection *pd = NULL;
@@ -229,8 +229,8 @@ void CTAMiniMap::setMiniMapPoint(int x, int y, int z, int col, int spd)
 			char colour     = col;
 			char speed      = spd;
 
-			CMemUtil::SetMemRange(mapOffset + pointOffset, mapOffset + pointOffset + 1, (char*)colour);
-			CMemUtil::SetMemRange(mapOffset + 65536 + pointOffset, mapOffset + 65536 + pointOffset + 1, (char*)speed);
+			CMemUtil::getMemUtil().SetMemRange(mapOffset + pointOffset, mapOffset + pointOffset + 1, (char*)colour);
+			CMemUtil::getMemUtil().SetMemRange(mapOffset + 65536 + pointOffset, mapOffset + 65536 + pointOffset + 1, (char*)speed);
 		}
 		delete map;
 	}

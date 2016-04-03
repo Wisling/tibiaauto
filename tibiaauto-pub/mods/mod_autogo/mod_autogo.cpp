@@ -116,7 +116,7 @@ void InitTibiaHandle()
 		DWORD pid;
 		DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
 
-		if (pid == CMemUtil::getGlobalProcessId())
+		if (pid == CMemUtil::getMemUtil().getGlobalProcessId())
 			break;
 		tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
 	}
@@ -128,7 +128,7 @@ void actionTerminate()
 	CMemReader& reader = CMemReader::getMemReader();
 	HANDLE hTibiaProc;
 
-	hTibiaProc = OpenProcess(PROCESS_TERMINATE, true, CMemUtil::getGlobalProcessId());
+	hTibiaProc = OpenProcess(PROCESS_TERMINATE, true, CMemUtil::getMemUtil().getGlobalProcessId());
 
 	TerminateProcess(hTibiaProc, 0);
 

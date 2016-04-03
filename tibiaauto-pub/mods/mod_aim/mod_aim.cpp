@@ -77,7 +77,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			int addy = CTibiaItem::getValueForConst("addrCap");
 			for (int i = 0; i < 20; i++)
 			{
-				int a = CMemUtil::GetMemIntValue(addy + (i - 10) * 4);
+				int a = CMemUtil::getMemUtil().GetMemIntValue(addy + (i - 10) * 4);
 				fprintf(f, "%8x", a);
 			}
 			fprintf(f, "\n");

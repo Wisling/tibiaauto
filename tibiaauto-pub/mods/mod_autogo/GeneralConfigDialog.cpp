@@ -169,7 +169,7 @@ CString capturePosition(CString name)
 			DWORD pid;
 			DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHwnd, &pid);
 
-			if (pid == CMemUtil::getGlobalProcessId())
+			if (pid == CMemUtil::getMemUtil().getGlobalProcessId())
 				break;
 			tibiaHwnd = FindWindowEx(NULL, tibiaHwnd, "TibiaClient", NULL);
 		}

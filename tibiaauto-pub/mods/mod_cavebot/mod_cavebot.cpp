@@ -254,7 +254,7 @@ void dumpCreatureInfo(char *info, unsigned int tibiaId)
 		for (i = 0; i < reader.m_memLengthCreature; i += 4)
 		{
 			char buf[128];
-			int val = CMemUtil::GetMemIntValue(offset + i);
+			int val = CMemUtil::getMemUtil().GetMemIntValue(offset + i);
 			sprintf(buf, "offset %d -> %d", i, val);
 			registerDebug(buf);
 		}
@@ -2599,7 +2599,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		 * 2. we are not in a half sleep (no walking) mode
 		 * 3. there is something to loot
 		 */
-		int moving = CMemUtil::GetMemIntValue(reader.m_memAddressTilesToGo);
+		int moving = CMemUtil::getMemUtil().GetMemIntValue(reader.m_memAddressTilesToGo);
 		if (config->lootFromFloor && lootFromFloorArr.GetSize() && !isInHalfSleep() && isLooterDone(config))
 		{
 			static time_t lastFullDroppedLootCheckTm  = 0;
@@ -3692,15 +3692,15 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						char whiteText[15];                             //Stores white text.
 						for (int j = 0; j < 15; j++)      //Long enough to store "There is no way"
 						{
-							whiteText[j] = (char)CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + j);
+							whiteText[j] = (char)CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + j);
 						}
 						//If we are still not moving kick TA in the butt to get her going
 						if (strstr(whiteText, "There is no way") != 0 || strstr(whiteText, "Destination") != 0)
 						{
 							//Since Tibia merely times out the white text not override it, we need to change the text for subsequent iterations.
 							//Let's have fun and give the users hope.  :P
-							CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 9, 'T');
-							CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 10, 'A');
+							CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 9, 'T');
+							CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 10, 'A');
 							//Path blocked (parcels, crates, etc.)
 							globalAutoAttackStateWalker = CToolAutoAttackStateWalker_noPathFound;
 							walking                     = false;
@@ -3792,15 +3792,15 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							char whiteText[15];                             //Stores white text.
 							for (int j = 0; j < 15; j++)      //Long enough to store "There is no way"
 							{
-								whiteText[j] = (char)CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + j);
+								whiteText[j] = (char)CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + j);
 							}
 							//If we are still not moving kick TA in the butt to get her going
 							if (strstr(whiteText, "There is no way") != 0 || strstr(whiteText, "Destination") != 0)
 							{
 								//Since Tibia merely times out the white text not override it, we need to change the text for subsequent iterations.
 								//Let's have fun and give the users hope.  :P
-								CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 9, 'T');
-								CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 10, 'A');
+								CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 9, 'T');
+								CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 10, 'A');
 
 								//Path blocked (parcels, crates, etc.)
 								//One more time through path selection
@@ -3837,14 +3837,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									char whiteText[15];                             //Stores white text.
 									for (int j = 0; j < 15; j++)      //Long enough to store "There is no way"
 									{
-										whiteText[j] = (char)CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + j);
+										whiteText[j] = (char)CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + j);
 									}
 									if (strstr(whiteText, "There is no way") != 0 || strstr(whiteText, "Destination") != 0 || (startPoint.x == self.x && startPoint.y == self.y))
 									{
 										//Since Tibia merely times out the white text not delete it, we need to change the text for subsequent iterations.
 										//Let's have fun and give the users hope.  :P
-										CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 9, 'T');
-										CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 10, 'A');
+										CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 9, 'T');
+										CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 10, 'A');
 										//Path blocked (parcels, crates, etc.)
 										//Oh well, we tried. Let's let TA's executeWalk method take over for awhile.
 										//Proceed with path searching

@@ -309,13 +309,13 @@ void CPackSender::stepMulti(uint8_t* direction, int size)
 	int pathIndAddr = CMemReader::getMemReader().m_memAddressCurrentTileToGo;
 	int pathLenAddr = CMemReader::getMemReader().m_memAddressTilesToGo;
 	int pathStartAddr = CMemReader::getMemReader().m_memAddressPathToGo;
-	CMemUtil::SetMemIntValue(pathIndAddr, 0x0);
-	CMemUtil::SetMemIntValue(pathLenAddr, size);
+	CMemUtil::getMemUtil().SetMemIntValue(pathIndAddr, 0x0);
+	CMemUtil::getMemUtil().SetMemIntValue(pathLenAddr, size);
 	for (i = 0; i < size && i < 10; i++)
 	{
-		CMemUtil::SetMemIntValue(pathStartAddr + 4 * i, direction[i]);
+		CMemUtil::getMemUtil().SetMemIntValue(pathStartAddr + 4 * i, direction[i]);
 	}
-	CMemUtil::SetMemIntValue(CMemReader::getMemReader().m_memAddressFirstCreature + CMemReader::getMemReader().m_memLengthCreature * CMemReader::getMemReader().getLoggedCharNr() + 80, 1);
+	CMemUtil::getMemUtil().SetMemIntValue(CMemReader::getMemReader().m_memAddressFirstCreature + CMemReader::getMemReader().m_memLengthCreature * CMemReader::getMemReader().getLoggedCharNr() + 80, 1);
 
 	char sendbuf[1000];
 

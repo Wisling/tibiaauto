@@ -21,7 +21,7 @@ PyObject *tibiaauto_reader_setProcessId(PyObject *self, PyObject *args)
 	int processId;
 	if (!PyArg_ParseTuple(args, "i", &processId))
 		return NULL;
-	CMemUtil::setGlobalProcessId(processId);
+	CMemUtil::getMemUtil().setGlobalProcessId(processId);
 	Py_INCREF(Py_None);
 	return Py_None;
 }
@@ -644,7 +644,7 @@ PyObject *tibiaauto_reader_setMemIntValue(PyObject *self, PyObject *args)
 			return NULL;
 	}
 
-	CMemUtil::SetMemIntValue(arg1, arg2, arg3);
+	CMemUtil::getMemUtil().SetMemIntValue(arg1, arg2, (arg3 != 0));
 
 	Py_INCREF(Py_None);
 	return Py_None;
@@ -663,7 +663,7 @@ PyObject *tibiaauto_reader_getMemIntValue(PyObject *self, PyObject *args)
 			return NULL;
 	}
 
-	ret1 = CMemUtil::GetMemIntValue(arg1, arg2);
+	ret1 = CMemUtil::getMemUtil().GetMemIntValue(arg1, (arg2 != 0));
 
 	PyObject *ret = Py_BuildValue("i", ret1);
 
@@ -689,7 +689,7 @@ PyObject *tibiaauto_reader_writeDisableRevealCName(PyObject *self, PyObject *arg
 PyObject *tibiaauto_reader_getProcessId(PyObject *self, PyObject *args)
 {
 	
-	int ret1      = CMemUtil::getGlobalProcessId();
+	int ret1      = CMemUtil::getMemUtil().getGlobalProcessId();
 	PyObject *ret = Py_BuildValue("i", ret1);
 
 	return ret;
@@ -698,7 +698,7 @@ PyObject *tibiaauto_reader_getProcessId(PyObject *self, PyObject *args)
 PyObject *tibiaauto_reader_getBaseAddr(PyObject *self, PyObject *args)
 {
 	
-	int ret1 = CMemUtil::getGlobalBaseAddr();
+	int ret1 = CMemUtil::getMemUtil().getGlobalBaseAddr();
 	PyObject *ret = Py_BuildValue("i", ret1);
 
 	return ret;

@@ -79,7 +79,7 @@ void CConfigDialog::OnTest()
 
 	CMemReader& reader = CMemReader::getMemReader();
 
-	CMemUtil::SetMemIntValue(0x00400000 + m_address, m_val);
+	CMemUtil::getMemUtil().SetMemIntValue(0x00400000 + m_address, m_val);
 }
 
 void CConfigDialog::OnTest2()
@@ -114,7 +114,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 
 		UpdateData(true);
 
-		int value = CMemUtil::GetMemIntValue(0x00400000 + m_address);
+		int value = CMemUtil::getMemUtil().GetMemIntValue(0x00400000 + m_address);
 
 
 		m_addressResDec = value;

@@ -97,7 +97,7 @@ void InitTibiaHandle()
 		DWORD pid;
 		DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
 
-		if (pid == CMemUtil::getGlobalProcessId())
+		if (pid == CMemUtil::getMemUtil().getGlobalProcessId())
 			break;
 		tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
 	}
@@ -305,7 +305,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	
 	int m_memAddressRevealCName1 = CTibiaItem::getValueForConst("addrFunRevealCName1");
 	buf[0] = buf[1] = 0;
-	CMemUtil::GetMemRange(m_processId, m_memAddressRevealCName1, m_memAddressRevealCName1 + 2, (char *)buf, 1);
+	CMemUtil::getMemUtil().GetMemRange(m_processId, m_memAddressRevealCName1, m_memAddressRevealCName1 + 2, (char *)buf, 1);
 	if (buf[0] == 0x90 && buf[1] == 0x90)
 		versionOk = 1;
 	if ((buf[0] == 0x75 || buf[0] == 0xEB) && (buf[1] == 0x0A || buf[1] == 0x10 || buf[1] == 0x0E))
@@ -323,12 +323,12 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	}
 
 
-	CMemUtil::setGlobalProcessId(m_processId);
+	CMemUtil::getMemUtil().setGlobalProcessId(m_processId);
 
 	InitialiseIPC();
 
 	CMemReader& reader = CMemReader::getMemReader();
-	CMemUtil::setGlobalProcessId(m_processId);
+	CMemUtil::getMemUtil().setGlobalProcessId(m_processId);
 	
 	m_loadedModules = new CLoadedModules();
 	m_loadedModules->Create(IDD_LOADED_MODULES);
@@ -446,7 +446,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	{
 		char fName[128];
 		char charName[65];
-		reader.GetLoggedChar(CMemUtil::m_globalProcessId, charName, sizeof(charName));
+		reader.GetLoggedChar(CMemUtil::getMemUtil().getGlobalProcessId(), charName, sizeof(charName));
 		sprintf(fName, "tibiaAuto.cfg.%s.xml", charName);
 		char pathbuf[2048];
 		CModuleUtil::getInstallPath(pathbuf);
@@ -525,7 +525,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		refreshToolInfo();
 		char buf[1024];
 		char loggedCharName[65];
-		reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
+		reader.GetLoggedChar(CMemUtil::getMemUtil().getGlobalProcessId(), loggedCharName, sizeof(loggedCharName));
 		sprintf(buf, "Logged as: %s", loggedCharName);
 		CString currentDisplay;
 		m_loginName.GetWindowText(currentDisplay);
@@ -564,7 +564,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 			char path[1024];
 			CModuleUtil::getInstallPath(path);
 			char pathBuf[2048];
-			sprintf(pathBuf, "%s\\tascripts\\module %d statistics.txt", path, CMemUtil::getGlobalProcessId());
+			sprintf(pathBuf, "%s\\tascripts\\module %d statistics.txt", path, CMemUtil::getMemUtil().getGlobalProcessId());
 			std::ofstream fout(pathBuf, std::ios::out | std::ios::app | std::ios::binary);
 			time_t tm = time(NULL);
 			fout.write((char*)&tm, 4);
@@ -575,7 +575,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 	if (nIDEvent == 1006)
 	{
 		char loggedCharName[65];
-		reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
+		reader.GetLoggedChar(CMemUtil::getMemUtil().getGlobalProcessId(), loggedCharName, sizeof(loggedCharName));
 		if (strcmp(loggedCharName, currentIconData.szTip) != 0)
 		{
 			snprintf(currentIconData.szTip, 60, "%s", loggedCharName);
@@ -601,7 +601,7 @@ void CTibiaautoDlg::setShellTray()
 	currentIconData.uID    = 1;
 	currentIconData.hIcon  = AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
 	char loggedCharName[65];
-	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
+	reader.GetLoggedChar(CMemUtil::getMemUtil().getGlobalProcessId(), loggedCharName, sizeof(loggedCharName));
 	snprintf(currentIconData.szTip, 60, "%s", loggedCharName);
 	currentIconData.uCallbackMessage = WM_APP + 1;
 	currentIconData.uFlags           = NIF_ICON | NIF_TIP | NIF_MESSAGE;
@@ -874,7 +874,7 @@ void CTibiaautoDlg::OnSave()
 	CMemReader& reader = CMemReader::getMemReader();
 	char fName[128];
 	char loggedCharName[65];
-	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
+	reader.GetLoggedChar(CMemUtil::getMemUtil().getGlobalProcessId(), loggedCharName, sizeof(loggedCharName));
 	FILE *f = NULL;
 
 	char szFilters[] =
@@ -1056,7 +1056,7 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 
 
 	char loggedCharName[65];
-	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
+	reader.GetLoggedChar(CMemUtil::getMemUtil().getGlobalProcessId(), loggedCharName, sizeof(loggedCharName));
 	sprintf(logBuf, "Loading character '%s' ... started", loggedCharName);
 	m_configDialogStatus->msgAddToLog(logBuf);
 
@@ -1265,7 +1265,7 @@ void CTibiaautoDlg::OnLoad()
 
 	char fName[128];
 	char loggedCharName[65];
-	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
+	reader.GetLoggedChar(CMemUtil::getMemUtil().getGlobalProcessId(), loggedCharName, sizeof(loggedCharName));
 
 	char szFilters[] =
 	        "Tibia Auto config (*.xml)|*.xml|All Files (*.*)|*.*||";
