@@ -1091,7 +1091,7 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 		DOMNode *moduleConfig = configCreator.getConfigForModule(root, it->first.c_str());
 		if (moduleConfig)
 		{
-			sprintf(logBuf, "Loading config for module %s ...", it->first);
+			sprintf(logBuf, "Loading config for module %s ...", it->first.c_str());
 			module->resetConfig();
 			m_configDialogStatus->msgAddToLog(logBuf);
 			configCreator.parseConfigFromNode(module, moduleConfig, "");
