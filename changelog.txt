@@ -1,7 +1,8 @@
-2.64.1 1.?.2015
+2.64.1 1.25.2015
 Enhancements:
- Fluid Drinker: Changed flask dropping from > to >=
+ Map Hacks: Added option to show a manabar above your character
 Defects:
+ Python: Fixed tasender.printText function
  Cavebot: Fixed loot from floor bug causing cavebot to stop working
 
 2.64.0 1.2.2015
