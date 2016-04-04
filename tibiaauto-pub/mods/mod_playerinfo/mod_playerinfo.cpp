@@ -181,13 +181,13 @@ void CMod_playerinfoApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_playerinfoApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_playerinfoApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "enableTimer"))
 		m_configData->enableTimers = atoi(paramValue) != 0;
 }
 
-char *CMod_playerinfoApp::saveConfigParam(char *paramName)
+char *CMod_playerinfoApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -198,15 +198,15 @@ char *CMod_playerinfoApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_playerinfoApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "enableTimer";
-	default:
-		return NULL;
-	}
+	"enableTimer",
+	NULL,
+};
+
+const char **CMod_playerinfoApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_playerinfoApp::getNewSkin(CSkin newSkin)

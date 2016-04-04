@@ -216,9 +216,9 @@ void CConfigCreatorUtil::parseConfigFromNode(IModuleInterface *module, DOMNode *
 			char nodeValue[1024];
 			wcstombs(nodeValue, attrNode->getNodeValue(), 1024);
 			// +8 to skip /config/
-			if (module->isMultiParam(paramName + 8) && !multiParams->isKnownMultiparam(paramName + 8))
+			if (module->isMultiParam(paramName + 8) && !multiParams->isKnownMultiParam(paramName + 8))
 			{
-				multiParams->registerMultiparam(paramName + 8);
+				multiParams->registerMultiParam(paramName + 8);
 				module->resetMultiParamAccess(paramName + 8);
 			}
 			module->loadConfigParam(paramName + 8, nodeValue);

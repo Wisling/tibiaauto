@@ -4173,7 +4173,7 @@ void CMod_cavebotApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_cavebotApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "attack/follow"))
 		m_configData->autoFollow = (atoi(paramValue) ? 1 : 0);
@@ -4394,7 +4394,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->depositLootedItemList = atoi(paramValue);
 }
 
-char *CMod_cavebotApp::saveConfigParam(char *paramName)
+char *CMod_cavebotApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -4524,117 +4524,68 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_cavebotApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "attack/follow";
-	case 1:
-		return "attack/mode";
-	case 2:
-		return "attack/suspendOnEnemey";
-	case 3:
-		return "attack/monster";
-	case 4:
-		return "loot/item/gp";
-	case 5:
-		return "loot/item/custom";
-	case 6:
-		return "loot/item/worm";
-	case 7:
-		return "loot/item/food";
-	case 8:
-		return "loot/other/inbag";
-	case 9:
-		return "loot/other/capacityLimit";
-	case 10:
-		return "walker/waypoint";
-	case 11:
-		return "walker/other/selectMode";
-	case 12:
-		return "walker/other/mapUsed";
-	case 13:
-		return "loot/stats/gather";
-	case 14:
-		return "attack/suspendOnNoMove";
-	case 15:
-		return "attack/range";
-	case 16:
-		return "loot/other/eatFromCorpse";
-	case 17:
-		return "attack/stick";
-	case 18:
-		return "attack/unreachableAfter";
-	case 19:
-		return "attack/suspendAfterUnreachable";
-	case 20:
-		return "attack/attackOnlyAttacking";
-	case 21:
-		return "attack/forceAttackAfterAttack";
-	case 22:
-		return "walker/other/standAfterWaypointReached";
-	case 23:
-		return "depot/entry";
-	case 24:
-		return "general/debug";
-	case 25:
-		return "training/weaponTrain";
-	case 26:
-		return "training/weaponFight";
-	case 27:
-		return "training/fightWhenSurrounded";
-	case 28:
-		return "training/fightWhenAlien";
-	case 29:
-		return "training/bloodHit";
-	case 30:
-		return "training/activate";
-	case 31:
-		return "depot/depotDropInsteadOfDepositon";
-	case 32:
-		return "loot/other/dropNotLooted";
-	case 33:
-		return "loot/other/lootFromFloor";
-	case 34:
-		return "attack/hpAbove";
-	case 35:
-		return "attack/ignore";
-	case 36:
-		return "attack/backattackRunes";
-	case 37:
-		return "attack/shareAlienBackattack";
-	case 38:
-		return "depot/depotCap";
-	case 39:
-		return "training/trainingMode";
-	case 40:
-		return "walker/radius";
-	case 41:
-		return "loot/other/whilekilling";
-	case 42:
-		return "attack/dontAttackPlayers";
-	case 43:
-		return "loot/other/dropList";
-	case 44:
-		return "loot/other/dropWhenCapacityLimitReached";
-	case 45:
-		return "loot/other/dropOnlyLooted";
-	case 46:
-		return "depot/depotModPriority";
-	case 47:
-		return "depot/stopByDepot";
-	case 48:
-		return "depot/depositLootedItemList";
-	case 49:
-		return "attack/attackAllMonsters";
 
-	default:
-		return NULL;
-	}
+	"attack/follow",
+	"attack/mode",
+	"attack/suspendOnEnemey",
+	"attack/monster",
+	"loot/item/gp",
+	"loot/item/custom",
+	"loot/item/worm",
+	"loot/item/food",
+	"loot/other/inbag",
+	"loot/other/capacityLimit",
+	"walker/waypoint",
+	"walker/other/selectMode",
+	"walker/other/mapUsed",
+	"loot/stats/gather",
+	"attack/suspendOnNoMove",
+	"attack/range",
+	"loot/other/eatFromCorpse",
+	"attack/stick",
+	"attack/unreachableAfter",
+	"attack/suspendAfterUnreachable",
+	"attack/attackOnlyAttacking",
+	"attack/forceAttackAfterAttack",
+	"walker/other/standAfterWaypointReached",
+	"depot/entry",
+	"general/debug",
+	"training/weaponTrain",
+	"training/weaponFight",
+	"training/fightWhenSurrounded",
+	"training/fightWhenAlien",
+	"training/bloodHit",
+	"training/activate",
+	"depot/depotDropInsteadOfDepositon",
+	"loot/other/dropNotLooted",
+	"loot/other/lootFromFloor",
+	"attack/hpAbove",
+	"attack/ignore",
+	"attack/backattackRunes",
+	"attack/shareAlienBackattack",
+	"depot/depotCap",
+	"training/trainingMode",
+	"walker/radius",
+	"loot/other/whilekilling",
+	"attack/dontAttackPlayers",
+	"loot/other/dropList",
+	"loot/other/dropWhenCapacityLimitReached",
+	"loot/other/dropOnlyLooted",
+	"depot/depotModPriority",
+	"depot/stopByDepot",
+	"depot/depositLootedItemList",
+	"attack/attackAllMonsters",
+	NULL,
+};
+
+const char **CMod_cavebotApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
-int CMod_cavebotApp::isMultiParam(char *paramName)
+int CMod_cavebotApp::isMultiParam(const char *paramName)
 {
 	if (!strcmp(paramName, "walker/waypoint"))
 		return 1;
@@ -4649,7 +4600,7 @@ int CMod_cavebotApp::isMultiParam(char *paramName)
 	return 0;
 }
 
-void CMod_cavebotApp::resetMultiParamAccess(char *paramName)
+void CMod_cavebotApp::resetMultiParamAccess(const char *paramName)
 {
 	if (!strcmp(paramName, "walker/waypoint"))
 		m_currentWaypointNr = 0;

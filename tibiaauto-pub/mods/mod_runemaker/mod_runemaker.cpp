@@ -292,7 +292,7 @@ void CMod_runemakerApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_runemakerApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_runemakerApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "spell"))
 		strcpy(m_configData->spell, paramValue);
@@ -329,7 +329,7 @@ void CMod_runemakerApp::loadConfigParam(char *paramName, char *paramValue)
 	}
 }
 
-char *CMod_runemakerApp::saveConfigParam(char *paramName)
+char *CMod_runemakerApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -360,41 +360,33 @@ char *CMod_runemakerApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_runemakerApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "spell";
-	case 1:
-		return "mana";
-	case 2:
-		return "manaLimit";
-	case 3:
-		return "soulPoints";
-	case 4:
-		return "premium";
-	case 5:
-		return "maxUse";
-	case 6:
-		return "spells/spell";
-	case 7:
-		return "randomCast";
-	case 8:
-		return "useSpear";
-	default:
-		return NULL;
-	}
+	"spell",
+	"mana",
+	"manaLimit",
+	"soulPoints",
+	"premium",
+	"maxUse",
+	"spells/spell",
+	"randomCast",
+	"useSpear",
+	NULL,
+};
+
+const char **CMod_runemakerApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
-int CMod_runemakerApp::isMultiParam(char *paramName)
+int CMod_runemakerApp::isMultiParam(const char *paramName)
 {
 	if (!strcmp(paramName, "spells/spell"))
 		return 1;
 	return 0;
 }
 
-void CMod_runemakerApp::resetMultiParamAccess(char *paramName)
+void CMod_runemakerApp::resetMultiParamAccess(const char *paramName)
 {
 	if (!strcmp(paramName, "spells/spell"))
 		m_currentSpellNr = 0;

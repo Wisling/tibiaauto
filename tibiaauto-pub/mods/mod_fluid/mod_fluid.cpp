@@ -474,7 +474,7 @@ void CMod_fluidApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_fluidApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_fluidApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "drink/hpH"))
 		m_configData->drinkHpH = atoi(paramValue);
@@ -540,7 +540,7 @@ void CMod_fluidApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->useHotkey = atoi(paramValue);
 }
 
-char *CMod_fluidApp::saveConfigParam(char *paramName)
+char *CMod_fluidApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -611,75 +611,45 @@ char *CMod_fluidApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_fluidApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "drink/hp";
-	case 1:
-		return "drink/mana";
-	case 2:
-		return "other/dropEmpty";
-	case 3:
-		return "drink/hpBelow";
-	case 4:
-		return "drink/manaBelow";
-	case 5:
-		return "other/sleepAfter";
-	case 6:
-		return "drink/hpN";
-	case 7:
-		return "drink/hpS";
-	case 8:
-		return "drink/hpG";
-	case 9:
-		return "drink/manaN";
-	case 10:
-		return "drink/manaS";
-	case 11:
-		return "drink/manaG";
-	case 12:
-		return "drink/hpBelowN";
-	case 13:
-		return "drink/hpBelowS";
-	case 14:
-		return "drink/hpBelowG";
-	case 15:
-		return "drink/manaBelowN";
-	case 16:
-		return "drink/manaBelowS";
-	case 17:
-		return "drink/manaBelowG";
-	case 18:
-		return "custom/item1Below";
-	case 19:
-		return "custom/item1Item";
-	case 20:
-		return "custom/item1Use";
-	case 21:
-		return "custom/item2Below";
-	case 22:
-		return "custom/item2Item";
-	case 23:
-		return "custom/item2Use";
-	case 24:
-		return "drink/hpH";
-	case 25:
-		return "drink/hpU";
-	case 26:
-		return "drink/hpBelowH";
-	case 27:
-		return "drink/hpBelowU";
-	case 28:
-		return "other/randomCast";
-	case 29:
-		return "other/useHotkey";
-	case 30:
-		return "other/dropFlasksAt";
-	default:
-		return NULL;
-	}
+	"drink/hp",
+	"drink/mana",
+	"other/dropEmpty",
+	"drink/hpBelow",
+	"drink/manaBelow",
+	"other/sleepAfter",
+	"drink/hpN",
+	"drink/hpS",
+	"drink/hpG",
+	"drink/manaN",
+	"drink/manaS",
+	"drink/manaG",
+	"drink/hpBelowN",
+	"drink/hpBelowS",
+	"drink/hpBelowG",
+	"drink/manaBelowN",
+	"drink/manaBelowS",
+	"drink/manaBelowG",
+	"custom/item1Below",
+	"custom/item1Item",
+	"custom/item1Use",
+	"custom/item2Below",
+	"custom/item2Item",
+	"custom/item2Use",
+	"drink/hpH",
+	"drink/hpU",
+	"drink/hpBelowH",
+	"drink/hpBelowU",
+	"other/randomCast",
+	"other/useHotkey",
+	"other/dropFlasksAt",
+	NULL,
+};
+
+const char **CMod_fluidApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_fluidApp::getNewSkin(CSkin newSkin)

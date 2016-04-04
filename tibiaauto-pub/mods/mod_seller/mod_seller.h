@@ -43,8 +43,8 @@ public:
 public:
 	void getNewSkin(CSkin);
 	int validateConfig(int showAlerts);
-	void resetMultiParamAccess(char *paramName);
-	int isMultiParam(char *paramName);
+	void resetMultiParamAccess(const char *paramName);
+	int isMultiParam(const char *paramName);
 	// functions from IModuleInterface
 	char * getName();
 	int isStarted();
@@ -57,9 +57,9 @@ public:
 	void enableControls();
 	char *getVersion();
 	void resetConfig();
-	void loadConfigParam(char *paramName, char *paramValue);
-	char *saveConfigParam(char *paramName);
-	char *getConfigParamName(int nr);
+	void loadConfigParam(const char *paramName, char *paramValue);
+	char *saveConfigParam(const char *paramName);
+	const char **getConfigParamNames();
 private:
 	int m_started;
 	int currentPos;

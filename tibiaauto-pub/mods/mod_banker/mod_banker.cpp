@@ -337,7 +337,7 @@ void CMod_bankerApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_bankerApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_bankerApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "BankerName"))
 		sprintf(m_configData->banker.bankerName, "%s", paramValue);
@@ -359,7 +359,7 @@ void CMod_bankerApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->drawUpTo = atoi(paramValue);
 }
 
-char *CMod_bankerApp::saveConfigParam(char *paramName)
+char *CMod_bankerApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = '\0';
@@ -385,32 +385,24 @@ char *CMod_bankerApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_bankerApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "BankerName";
-	case 1:
-		return "BankerPos";
-	case 2:
-		return "DepositTrigger";
-	case 3:
-		return "CashOnHand";
-	case 4:
-		return "ModPriority";
-	case 5:
-		return "ChangeGold";
-	case 6:
-		return "CapsLimit";
-	case 7:
-		return "StopByBanker";
-	case 8:
-		return "DrawUpTo";
-	default:
-		return NULL;
-	}
+	"BankerName",
+	"BankerPos",
+	"DepositTrigger",
+	"CashOnHand",
+	"ModPriority",
+	"ChangeGold",
+	"CapsLimit",
+	"StopByBanker",
+	"DrawUpTo",
+	NULL,
+};
+const char **CMod_bankerApp::getConfigParamNames()
+{
+	return configParamNames;
 }
+
 
 int findBanker(CConfigData *config)
 {

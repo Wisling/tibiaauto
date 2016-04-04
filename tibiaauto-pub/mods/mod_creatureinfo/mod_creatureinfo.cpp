@@ -1807,7 +1807,7 @@ void CMod_creatureinfoApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_creatureinfoApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_creatureinfoApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "player/active"))
 		m_configData->player = atoi(paramValue);
@@ -1845,7 +1845,7 @@ void CMod_creatureinfoApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->rangeZ = atoi(paramValue);
 }
 
-char *CMod_creatureinfoApp::saveConfigParam(char *paramName)
+char *CMod_creatureinfoApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -1888,49 +1888,32 @@ char *CMod_creatureinfoApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_creatureinfoApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "player/active";
-	case 1:
-		return "player/first";
-	case 2:
-		return "player/second";
-	case 3:
-		return "monster/active";
-	case 4:
-		return "monster/first";
-	case 5:
-		return "monster/second";
-	case 6:
-		return "monster/uniqueMonsterNames";
-	case 7:
-		return "self/active";
-	case 8:
-		return "self/first";
-	case 9:
-		return "self/second";
-	case 10:
-		return "allFloorInfo";
-	case 11:
-		return "addRequest";
-	case 12:
-		return "area/collectStats";
-	case 13:
-		return "area/showCreaturesInArea";
-	case 14:
-		return "self/window";
-	case 15:
-		return "self/tray";
-	case 16:
-		return "area/rangeXY";
-	case 17:
-		return "area/rangeZ";
-	default:
-		return NULL;
-	}
+	"player/active",
+	"player/first",
+	"player/second",
+	"monster/active",
+	"monster/first",
+	"monster/second",
+	"monster/uniqueMonsterNames",
+	"self/active",
+	"self/first",
+	"self/second",
+	"allFloorInfo",
+	"addRequest",
+	"area/collectStats",
+	"area/showCreaturesInArea",
+	"self/window",
+	"self/tray",
+	"area/rangeXY",
+	"area/rangeZ",
+	NULL,
+};
+
+const char **CMod_creatureinfoApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_creatureinfoApp::getNewSkin(CSkin newSkin)

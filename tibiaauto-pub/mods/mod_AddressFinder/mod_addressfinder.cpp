@@ -376,7 +376,7 @@ void CMod_addressfinderApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_addressfinderApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_addressfinderApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "ExperienceAddress"))
 		m_configData->experienceAddress = atoi(paramValue);
@@ -384,7 +384,7 @@ void CMod_addressfinderApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->experience = atoi(paramValue);
 }
 
-char *CMod_addressfinderApp::saveConfigParam(char *paramName)
+char *CMod_addressfinderApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = '\0';
@@ -396,17 +396,16 @@ char *CMod_addressfinderApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_addressfinderApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "ExperienceAddress";
-	case 1:
-		return "Experience";
-	default:
-		return NULL;
-	}
+	"ExperienceAddress",
+	"Experience",
+	NULL,
+};
+
+const char **CMod_addressfinderApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_addressfinderApp::getNewSkin(CSkin newSkin)

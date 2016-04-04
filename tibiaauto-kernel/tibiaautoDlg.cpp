@@ -940,9 +940,10 @@ void CTibiaautoDlg::OnSave()
 				DOMNode *moduleConfig = configCreator.getEmptyConfigForModule(module->getModuleName());
 
 				int paramNr;
-				for (paramNr = 0; module->getConfigParamName(paramNr); paramNr++)
+				const char** paramList = module->getConfigParamNames();
+				for (paramNr = 0; paramList[paramNr] != NULL; ++paramNr)
 				{
-					char *paramName = module->getConfigParamName(paramNr);
+					const char *paramName = paramList[paramNr];
 					if (module->isMultiParam(paramName))
 					{
 						module->resetMultiParamAccess(paramName);

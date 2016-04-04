@@ -209,7 +209,7 @@ void Cmod_lightApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void Cmod_lightApp::loadConfigParam(char *paramName, char *paramValue)
+void Cmod_lightApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "lightPower"))
 		m_configData->lightPower = atoi(paramValue);
@@ -217,7 +217,7 @@ void Cmod_lightApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->lightColor = atoi(paramValue);
 }
 
-char *Cmod_lightApp::saveConfigParam(char *paramName)
+char *Cmod_lightApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -230,17 +230,16 @@ char *Cmod_lightApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *Cmod_lightApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "lightPower";
-	case 1:
-		return "lightColor";
-	default:
-		return NULL;
-	}
+	"lightPower",
+	"lightColor",
+	NULL,
+};
+
+const char **Cmod_lightApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void Cmod_lightApp::getNewSkin(CSkin newSkin)

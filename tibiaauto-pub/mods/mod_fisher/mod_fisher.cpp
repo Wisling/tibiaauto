@@ -339,7 +339,7 @@ void CMod_fisherApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_fisherApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_fisherApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "other/fishOnlyWhenCap"))
 		m_configData->fishOnlyWhenCap = atoi(paramValue);
@@ -349,7 +349,7 @@ void CMod_fisherApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->fishOnlyWhenWorms = atoi(paramValue);
 }
 
-char *CMod_fisherApp::saveConfigParam(char *paramName)
+char *CMod_fisherApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -365,19 +365,17 @@ char *CMod_fisherApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_fisherApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "other/fishOnlyWhenCap"; // old: fishCap
-	case 1:
-		return "move/fromHandToCont";
-	case 2:
-		return "other/fishOnlyWhenWorms";
-	default:
-		return NULL;
-	}
+	"other/fishOnlyWhenCap", // old: fishCap
+	"move/fromHandToCont",
+	"other/fishOnlyWhenWorms",
+	NULL,
+};
+
+const char **CMod_fisherApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_fisherApp::getNewSkin(CSkin newSkin)

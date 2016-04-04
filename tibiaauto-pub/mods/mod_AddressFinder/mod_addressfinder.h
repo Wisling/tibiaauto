@@ -56,9 +56,9 @@ public:
 	void enableControls();
 	char *getVersion();
 	void resetConfig();
-	void loadConfigParam(char *paramName, char *paramValue);
-	char *saveConfigParam(char *paramName);
-	char *getConfigParamName(int nr);
+	void loadConfigParam(const char *paramName, char *paramValue);
+	char *saveConfigParam(const char *paramName);
+	const char **getConfigParamNames();
 
 private:
 	int m_started;

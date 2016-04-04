@@ -487,7 +487,7 @@ void CMod_maphackApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_maphackApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_maphackApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "reveal/noFish"))
 		m_configData->revealNoFish = atoi(paramValue);
@@ -503,7 +503,7 @@ void CMod_maphackApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->showManaBar = atoi(paramValue);
 }
 
-char *CMod_maphackApp::saveConfigParam(char *paramName)
+char *CMod_maphackApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -524,25 +524,20 @@ char *CMod_maphackApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_maphackApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "reveal/noFish";
-	case 1:
-		return "reveal/cName";
-	case 2:
-		return "reveal/invisible";
-	case 3:
-		return "reveal/minimap";
-	case 4:
-		return "autoMount";
-	case 5:
-		return "showManaBar";
-	default:
-		return NULL;
-	}
+	"reveal/noFish",
+	"reveal/cName",
+	"reveal/invisible",
+	"reveal/minimap",
+	"autoMount",
+	"showManaBar",
+	NULL,
+};
+
+const char **CMod_maphackApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_maphackApp::getNewSkin(CSkin newSkin)
