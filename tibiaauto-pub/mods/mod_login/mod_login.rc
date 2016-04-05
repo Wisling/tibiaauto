@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -13,13 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Polish resources
+// Polish (Poland) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
-#ifdef _WIN32
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 #pragma code_page(1250)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -27,18 +25,18 @@ LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
     "#define _AFX_NO_OLE_RESOURCES\r\n"
@@ -64,56 +62,40 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 226, 340
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_CONFIG DIALOGEX 0, 0, 226, 340
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: Auto Login"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Login Settings",IDC_FRAME_LOGIN_SETTINGS,7,37,212,101
     GROUPBOX        "Debug Log",IDC_FRAME_DEBUG_LOG,7,217,212,81
-    GROUPBOX        "Backpack Control",IDC_FRAME_BACKPACK_CONTROL,7,140,212,
-                    74
+    GROUPBOX        "Backpack Control",IDC_FRAME_BACKPACK_CONTROL,7,140,212,74
     LTEXT           "Account Number:",IDC_STATIC,14,55,55,14,SS_CENTERIMAGE
     LTEXT           "Password:",IDC_STATIC,14,73,55,14,SS_CENTERIMAGE
     LTEXT           "Connection status: -",IDC_STATUS,14,127,198,8
-    LTEXT           "Character Position:",IDC_STATIC,14,91,67,14,
-                    SS_CENTERIMAGE
-    CTEXT           "Always test auto login before using it!\nPlease also note that backpacks may not all be opened properly even though they are minimized at startup.",
-                    IDC_STATIC,7,7,212,27,WS_BORDER
+    LTEXT           "Character Position:",IDC_STATIC,14,91,67,14,SS_CENTERIMAGE
+    CTEXT           "Always test auto login before using it!\nPlease also note that backpacks may not all be opened properly even though they are minimized at startup.",IDC_STATIC,7,7,212,27,WS_BORDER
     LTEXT           "Login Delay:",IDC_STATIC,14,109,55,14,SS_CENTERIMAGE
     LTEXT           "seconds",IDC_STATIC,145,109,55,14,SS_CENTERIMAGE
     DEFPUSHBUTTON   "OK",IDOK,88,319,50,14
-    CONTROL         "Log into last account",IDC_AUTOPASS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,87,43,82,10
-    EDITTEXT        IDC_ACCOUNT_NUMBER,87,55,90,14,ES_PASSWORD | 
-                    ES_AUTOHSCROLL
+    CONTROL         "Log into last account (unavailable)",IDC_AUTOPASS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,87,43,124,10
+    EDITTEXT        IDC_ACCOUNT_NUMBER,87,55,90,14,ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT        IDC_PASSWORD,87,73,90,14,ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT        IDC_CHAR_POS,87,91,90,14,ES_AUTOHSCROLL
     EDITTEXT        IDC_LOGIN_DELAY,87,109,57,14,ES_AUTOHSCROLL
-    CONTROL         "Open main backpack",IDC_OPEN_BACKPACK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,153,84,10
-    CONTROL         "Open container 1",IDC_OPEN_CONTAINER1,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,163,71,10
-    CONTROL         "Open container 2",IDC_OPEN_CONTAINER2,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,173,71,10
-    CONTROL         "Open container 3",IDC_OPEN_CONTAINER3,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,182,71,10
-    CONTROL         "Open container 4",IDC_OPEN_CONTAINER4,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,192,71,10
-    CONTROL         "Open container 5",IDC_OPEN_CONTAINER5,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,102,163,71,10
-    CONTROL         "Open container 6",IDC_OPEN_CONTAINER6,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,102,173,71,10
-    CONTROL         "Open container 7",IDC_OPEN_CONTAINER7,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,102,183,71,10
-    CONTROL         "Open container 8",IDC_OPEN_CONTAINER8,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,102,193,71,10
-    CONTROL         "Re-log in after death",IDC_LOGIN_AFTER_KILLED,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,202,80,10
-    CONTROL         "List1",IDC_DEBUG,"SysListView32",LVS_REPORT | 
-                    LVS_SINGLESEL | WS_BORDER,14,229,198,63
-    CONTROL         "Enable automatic login",IDC_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,303,212,14
+    CONTROL         "Open main backpack",IDC_OPEN_BACKPACK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,153,84,10
+    CONTROL         "Open container 1",IDC_OPEN_CONTAINER1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,163,71,10
+    CONTROL         "Open container 2",IDC_OPEN_CONTAINER2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,173,71,10
+    CONTROL         "Open container 3",IDC_OPEN_CONTAINER3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,182,71,10
+    CONTROL         "Open container 4",IDC_OPEN_CONTAINER4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,192,71,10
+    CONTROL         "Open container 5",IDC_OPEN_CONTAINER5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,102,163,71,10
+    CONTROL         "Open container 6",IDC_OPEN_CONTAINER6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,102,173,71,10
+    CONTROL         "Open container 7",IDC_OPEN_CONTAINER7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,102,183,71,10
+    CONTROL         "Open container 8",IDC_OPEN_CONTAINER8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,102,193,71,10
+    CONTROL         "Re-log in after death",IDC_LOGIN_AFTER_KILLED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,202,80,10
+    CONTROL         "List1",IDC_DEBUG,"SysListView32",LVS_REPORT | LVS_SINGLESEL | WS_BORDER,14,229,198,63
+    CONTROL         "Enable automatic login",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,303,212,14
 END
 
 
@@ -123,7 +105,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_CONFIG, DIALOG
     BEGIN
@@ -139,20 +121,17 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
-#endif    // Polish resources
+#endif    // Polish (Poland) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
@@ -175,15 +154,13 @@ BEGIN
     BEGIN
         BLOCK "040904B0"
         BEGIN
-            VALUE "CompanyName", "\0"
-            VALUE "FileDescription", "mod_login DLL\0"
-            VALUE "FileVersion", "1, 0, 0, 1\0"
-            VALUE "InternalName", "mod_login\0"
-            VALUE "LegalCopyright", "Copyright (C) 2005\0"
-            VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "mod_login.DLL\0"
-            VALUE "ProductName", "mod_login Dynamic Link Library\0"
-            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "FileDescription", "mod_login DLL"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "mod_login"
+            VALUE "LegalCopyright", "Copyright (C) 2005"
+            VALUE "OriginalFilename", "mod_login.DLL"
+            VALUE "ProductName", "mod_login Dynamic Link Library"
+            VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END
     BLOCK "VarFileInfo"
@@ -192,9 +169,7 @@ BEGIN
     END
 END
 
-#endif    // !_MAC
-
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
