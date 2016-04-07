@@ -69,7 +69,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		if (!reader.isLoggedIn())
 			continue;                   // do not proceed if not connected
 		int continueFishing   = 1;
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
 		if (config->moveFromHandToCont)
 		{
@@ -123,12 +124,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 			delete item;
 		}
-
-		delete self;
 		// refresh self to have correct cap
-		self = reader.readSelfCharacter();
+		reader.readSelfCharacter(&self);
 		// if cap check enabled,
-		if (self->cap < config->fishOnlyWhenCap)
+		if (self.cap < config->fishOnlyWhenCap)
 			continueFishing = 0;
 
 		//New only fish when worms available
@@ -195,12 +194,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			{
 				int tileId = reader.mapGetPointItemId(point(offsetX, offsetY, 0), 0);
 				CPackSender::useWithObjectFromContainerOnFloor(
-				        CTibiaItem::getValueForConst("fishingRod"), fishingRodCont, fishingRodPos, tileId, self->x + offsetX, self->y + offsetY, self->z);
+				        CTibiaItem::getValueForConst("fishingRod"), fishingRodCont, fishingRodPos, tileId, self.x + offsetX, self.y + offsetY, self.z);
 			}
 		}
 
 
-		delete self;
 	}
 	toolThreadShouldStop = 0;
 	return 0;

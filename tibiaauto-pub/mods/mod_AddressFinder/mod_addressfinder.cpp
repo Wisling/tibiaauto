@@ -210,7 +210,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 		for (; loop < comparison.size(); loop++)
 		{
-			tibiaFile.push_back((byte)CMemUtil::GetMemIntValue(0x401000 + loop));
+			tibiaFile.push_back((byte)CMemUtil::getMemUtil().GetMemIntValue(0x401000 + loop));
 		}
 
 		while (loop < 0x5b0ffe)
@@ -230,15 +230,15 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (countSuccess == comparison.size())
 			{
 				AfxMessageBox("Success");
-				config->experienceAddress = CMemUtil::GetMemIntValue(0x401000 + loop + 1);
-				config->experience        = CMemUtil::GetMemIntValue(config->experienceAddress);
+				config->experienceAddress = CMemUtil::getMemUtil().GetMemIntValue(0x401000 + loop + 1);
+				config->experience        = CMemUtil::getMemUtil().GetMemIntValue(config->experienceAddress);
 				toolThreadShouldStop      = 1;
 				break;
 			}
 			else
 			{
 				tibiaFile.pop_front();
-				tibiaFile.push_back((byte)CMemUtil::GetMemIntValue(0x401000 + ++loop));
+				tibiaFile.push_back((byte)CMemUtil::getMemUtil().GetMemIntValue(0x401000 + ++loop));
 			}
 		}
 		char buf[32];

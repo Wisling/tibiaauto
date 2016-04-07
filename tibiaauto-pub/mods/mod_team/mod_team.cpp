@@ -81,7 +81,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	{
 		iter++;
 		Sleep(100);
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
 		if (iter % 50 == 0)
 		{
@@ -92,19 +93,19 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				if (!connectedNodes.isConnected())
 				{
 					// no connected node -> try to login to the master
-					sprintf(buf, "`TA login %d,%d,%d,%d,%d,%d,%d", self->x, self->y, self->z, self->hp, self->maxHp, self->mana, self->maxMana);
+					sprintf(buf, "`TA login %d,%d,%d,%d,%d,%d,%d", self.x, self.y, self.z, self.hp, self.maxHp, self.mana, self.maxMana);
 					CPackSender::tell(buf, connectedNodes.getMasterNode());
 				}
 				else
 				{
 					if (strlen(connectedNodes.getMasterNode()) && !connectedNodes.isCharConnected(connectedNodes.getMasterNode()))
 						connectedNodes.findNewMasterNode();
-					sprintf(buf, "`TA ping %d,%d,%d,%d,%d,%d,%d", self->x, self->y, self->z, self->hp, self->maxHp, self->mana, self->maxMana);
+					sprintf(buf, "`TA ping %d,%d,%d,%d,%d,%d,%d", self.x, self.y, self.z, self.hp, self.maxHp, self.mana, self.maxMana);
 					CPackSender::tell(buf, connectedNodes.getMasterNode());
 				}
 			}
 
-			sprintf(buf, "`TA data %s,%d,%d,%d,%d,%d,%d,%d,0", self->name, self->x, self->y, self->z, self->hp, self->maxHp, self->mana, self->maxMana);
+			sprintf(buf, "`TA data %s,%d,%d,%d,%d,%d,%d,%d,0", self.name, self.x, self.y, self.z, self.hp, self.maxHp, self.mana, self.maxMana);
 			for (i = 0; i < connectedNodes.getMaxNodeCount(); i++)
 			{
 				CConnectedNode *connectedNode = connectedNodes.getNodeByNr(i);
@@ -122,7 +123,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				if (connectedNode->connected && connectedNode->isSlave)
 				{
 					// send our position to all the slaves
-					//sprintf(buf,"`TA ping %d,%d,%d,%d,%d,%d,%d",self->x,self->y,self->z,self->hp,self->maxHp,self->mana,self->maxMana);
+					//sprintf(buf,"`TA ping %d,%d,%d,%d,%d,%d,%d",self.x,self.y,self.z,self.hp,self.maxHp,self.mana,self.maxMana);
 					//CPackSender::tell(buf,connectedNode->charName);
 
 					CPackSender::tell(buf, connectedNode->charName);
@@ -160,7 +161,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					sscanf(msgBuf, "`TA login %d,%d,%d,%d,%d,%d,%d", &x, &y, &z, &hp, &maxHp, &mana, &maxMana);
 					connectedNodes.refreshNodeInfo(nickBuf, hp, mana, maxHp, maxMana, x, y, z, 1, 1);
 
-					sprintf(buf, "`TA ping %d,%d,%d,%d,%d,%d,%d", self->x, self->y, self->z, self->hp, self->maxHp, self->mana, self->maxMana);
+					sprintf(buf, "`TA ping %d,%d,%d,%d,%d,%d,%d", self.x, self.y, self.z, self.hp, self.maxHp, self.mana, self.maxMana);
 					CPackSender::tell(buf, nickBuf);
 				}
 				if (!strncmp(msgBuf, "`TA ping", strlen("`TA ping")))
@@ -201,7 +202,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 
-		delete self;
 	}
 	toolThreadShouldStop = 0;
 	return 0;

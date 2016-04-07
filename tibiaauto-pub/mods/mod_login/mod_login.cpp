@@ -196,10 +196,9 @@ int ensureForeground(HWND hwnd)
 int getSelfHealth()
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int retHealth         = self->hp;
-	delete self;
-	self = NULL;
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	int retHealth         = self.hp;
 	return retHealth;
 }
 
@@ -276,8 +275,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				loginTime = time(NULL) + config->loginDelay;
 				
 				int addr = CTibiaItem::getValueForConst("addrVIP");
-				CMemUtil::GetMemRange(addr - 0x60, addr - 0x60 + 32, accNum);
-				CMemUtil::GetMemRange(addr - 0x48, addr - 0x48 + 32, pass);
+				CMemUtil::getMemUtil().GetMemRange(addr - 0x60, addr - 0x60 + 32, accNum);
+				CMemUtil::getMemUtil().GetMemRange(addr - 0x48, addr - 0x48 + 32, pass);
 			}
 			while (loginTime > time(NULL) && !reader.isLoggedIn())
 			{
@@ -344,7 +343,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			CRect wndRect;
 
 			CSendKeys sk;
-			HWND hwnd = getTibiaWindow(CMemUtil::getGlobalProcessId());
+			HWND hwnd = getTibiaWindow(CMemUtil::getMemUtil().getGlobalProcessId());
 
 			CVariableStore::setVariable("walking_control", "login");
 			CVariableStore::setVariable("walking_priority", "10");

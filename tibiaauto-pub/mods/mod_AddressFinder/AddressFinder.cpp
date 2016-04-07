@@ -179,7 +179,7 @@ bool AddressFinder::getTibiaFileChunk(int size)
 
 	for (int loop = 0; loop < size; loop++)
 	{
-		TibiaFile.push_back((byte)CMemUtil::GetMemIntValue(0x401000 + loop));
+		TibiaFile.push_back((byte)CMemUtil::getMemUtil().GetMemIntValue(0x401000 + loop));
 	}
 
 	if (TibiaFile.size() == size)
@@ -214,7 +214,7 @@ long AddressFinder::doComparison()
 		else
 		{
 			TibiaFile.pop_front();
-			TibiaFile.push_back((byte)CMemUtil::GetMemIntValue(++index));
+			TibiaFile.push_back((byte)CMemUtil::getMemUtil().GetMemIntValue(++index));
 		}
 	}
 	return foundAddress;

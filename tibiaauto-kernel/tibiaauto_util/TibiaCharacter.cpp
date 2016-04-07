@@ -17,6 +17,7 @@ static char THIS_FILE[] = __FILE__;
 
 CTibiaCharacter::CTibiaCharacter()
 {
+	initialized = false;
 	visible = 0;
 	memset(name, 0x00, 32);
 }

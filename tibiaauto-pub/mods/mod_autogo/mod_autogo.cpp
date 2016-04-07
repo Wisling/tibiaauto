@@ -116,7 +116,7 @@ void InitTibiaHandle()
 		DWORD pid;
 		DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
 
-		if (pid == CMemUtil::getGlobalProcessId())
+		if (pid == CMemUtil::getMemUtil().getGlobalProcessId())
 			break;
 		tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
 	}
@@ -128,7 +128,7 @@ void actionTerminate()
 	CMemReader& reader = CMemReader::getMemReader();
 	HANDLE hTibiaProc;
 
-	hTibiaProc = OpenProcess(PROCESS_TERMINATE, true, CMemUtil::getGlobalProcessId());
+	hTibiaProc = OpenProcess(PROCESS_TERMINATE, true, CMemUtil::getMemUtil().getGlobalProcessId());
 
 	TerminateProcess(hTibiaProc, 0);
 
@@ -261,11 +261,11 @@ struct tibiaMessage * triggerMessage()
 		memcpy(nickBuf, mess.payload + 16, nickLen);
 		memcpy(msgBuf, mess.payload + 16 + nickLen, msgLen);
 
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
-		if (_strcmpi(nickBuf, self->name) != 0 && _strcmpi(nickBuf, "Tibia Auto") != 0)
+		if (_strcmpi(nickBuf, self.name) != 0 && _strcmpi(nickBuf, "Tibia Auto") != 0)
 		{
-			delete self;
 			struct tibiaMessage *newMsg = new tibiaMessage();
 			newMsg->type     = infoType;
 			newMsg->chanType = chanType;
@@ -274,7 +274,6 @@ struct tibiaMessage * triggerMessage()
 			masterDebug("triggerMessage Exit");
 			return newMsg;
 		}
-		delete self;
 	}
 	masterDebug("triggerMessage Exit");
 	return NULL;
@@ -892,7 +891,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 	CConfigData *config = (CConfigData *)lpParam;
 	list<Alarm>::iterator alarmItr;
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
 
@@ -901,8 +901,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	int maintainZ               = 0;
 	int sentMessagePathnotfound = 0;
 	//int lastMoved = 0;
-	//int lastHp = self->hp;
-	//int lastMana = self->mana;
+	//int lastHp = self.hp;
+	//int lastMana = self.mana;
 	int recoveryAlarmHp       = 0;
 	int recoveryAlarmMana     = 0;
 	int goPriority            = 0;
@@ -914,7 +914,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	int modRuns = 0;
 	timeLastSS = 0;
 
-	delete self;
 
 	PlaySound(0, 0, 0);
 	alarmItr = config->alarmList.begin();
@@ -928,10 +927,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		Sleep(200);
 		//if we're not looking for messages consume them anyway to avoid buffer overflow/expansion
 		alarmItr = config->alarmList.begin();
-		CTibiaCharacter *self = reader.readSelfCharacter();
-		if (recoveryAlarmMana && self->mana == self->maxMana)
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
+		if (recoveryAlarmMana && self.mana == self.maxMana)
 			recoveryAlarmMana = 0;
-		if (recoveryAlarmHp && self->hp == self->maxMana)
+		if (recoveryAlarmHp && self.hp == self.maxMana)
 			recoveryAlarmHp = 0;
 
 		modRuns++;
@@ -1084,7 +1084,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				// Cast spell ******************
 				if (alarmItr->getCastSpell().GetLength())
 				{
-					if (self->mana >= alarmItr->getManaCost() && time(NULL) - alarmItr->spellCast >= alarmItr->getSpellDelay())
+					if (self.mana >= alarmItr->getManaCost() && time(NULL) - alarmItr->spellCast >= alarmItr->getSpellDelay())
 					{
 						CPackSender::say(alarmItr->getCastSpell());
 						alarmItr->spellCast = time(NULL);
@@ -1273,28 +1273,27 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					keepMaintainPos = 1;
 					if (maintainX == 0)  //Sets position here. Unsets position if not reached here.
 					{
-						maintainX = self->x;
-						maintainY = self->y;
-						maintainZ = self->z;
+						maintainX = self.x;
+						maintainY = self.y;
+						maintainZ = self.z;
 					}
 					int pathSize = 0;
 					uint8_t path[15];
 
-					if (abs(self->x - maintainX) > 1 || abs(self->y - maintainY) > 1 || self->z != maintainZ)
+					if (abs(self.x - maintainX) > 1 || abs(self.y - maintainY) > 1 || self.z != maintainZ)
 					{
 						if (shouldKeepWalking())
 						{
 							// proceed with path searching
-							delete self;
-							self = reader.readSelfCharacter();
-							CModuleUtil::findPathOnMap(self->x, self->y, self->z, maintainX, maintainY, maintainZ, 0, path, 1);
+							reader.readSelfCharacter(&self);
+							CModuleUtil::findPathOnMap(self.x, self.y, self.z, maintainX, maintainY, maintainZ, 0, path, 1);
 							for (; pathSize < 15 && path[pathSize]; pathSize++)
 								;
 							if (pathSize)
 							{
-								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+								CModuleUtil::executeWalk(self.x, self.y, self.z, path);
 							}
-							else if (self->z == maintainZ && abs(self->x - maintainX) < 50 && abs(self->y - maintainY) < 50)
+							else if (self.z == maintainZ && abs(self.x - maintainX) < 50 && abs(self.y - maintainY) < 50)
 							{
 								//Since we should already be close to the position, try to mapclick when map not researched
 								reader.writeGotoCoords(maintainX, maintainY, maintainZ);
@@ -1315,19 +1314,18 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					const char* var = CVariableStore::getVariable("autolooterTm");
 
 
-					if (abs(self->x - config->actX) > 1 || abs(self->y - config->actY) > 1 || self->z != config->actZ)
+					if (abs(self.x - config->actX) > 1 || abs(self.y - config->actY) > 1 || self.z != config->actZ)
 					{
 						if (shouldKeepWalking())
 						{
 							// proceed with path searching
-							delete self;
-							self = reader.readSelfCharacter();
-							CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
+							reader.readSelfCharacter(&self);
+							CModuleUtil::findPathOnMap(self.x, self.y, self.z, config->actX, config->actY, config->actZ, 0, path, 1);
 							for (; pathSize < 15 && path[pathSize]; pathSize++)
 								;
 							if (pathSize)
 							{
-								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+								CModuleUtil::executeWalk(self.x, self.y, self.z, path);
 							}
 							else if (!sentMessagePathnotfound)
 							{
@@ -1361,19 +1359,18 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 					uint8_t path[15];
 
-					if (abs(self->x - config->runawayX) > 1 || abs(self->y - config->runawayY) > 1 || self->z != config->runawayZ)
+					if (abs(self.x - config->runawayX) > 1 || abs(self.y - config->runawayY) > 1 || self.z != config->runawayZ)
 					{
 						// proceed with path searching
 						if (shouldKeepWalking())
 						{
-							delete self;
-							self = reader.readSelfCharacter();
-							CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->runawayX, config->runawayY, config->runawayZ, 0, path, 1);
+							reader.readSelfCharacter(&self);
+							CModuleUtil::findPathOnMap(self.x, self.y, self.z, config->runawayX, config->runawayY, config->runawayZ, 0, path, 1);
 							for (; pathSize < 15 && path[pathSize]; pathSize++)
 								;
 							if (pathSize)
 							{
-								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+								CModuleUtil::executeWalk(self.x, self.y, self.z, path);
 							}
 							else if (!sentMessagePathnotfound)
 							{
@@ -1393,15 +1390,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{        // Depot (Reasoned as, the safest position [because you are protected from attack])
 					int pathSize = 0;
 					uint8_t path[15];
-					struct point p = CModuleUtil::findPathOnMap(self->x, self->y, self->z, 0, 0, 0, 301, path);
+					struct point p = CModuleUtil::findPathOnMap(self.x, self.y, self.z, 0, 0, 0, 301, path);
 					for (; pathSize < 15 && path[pathSize]; pathSize++)
 						;
 					if (shouldKeepWalking())
 					{
-						delete self;
-						self = reader.readSelfCharacter();
+						reader.readSelfCharacter(&self);
 						if (pathSize)
-							CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+							CModuleUtil::executeWalk(self.x, self.y, self.z, path);
 					}
 					if (pathSize == 0)
 					{
@@ -1426,7 +1422,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			maintainY = 0;
 			maintainZ = 0;
 		}
-		delete self;
 		if (msg)
 			delete msg;
 	}

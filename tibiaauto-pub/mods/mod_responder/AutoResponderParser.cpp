@@ -660,13 +660,13 @@ void CAutoResponderParser::replaceSpecialStrings(char *msg, CAutoResponderParser
 	if (strstr(msg, "$s"))
 	{
 		CMemReader& reader = CMemReader::getMemReader();
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 		strcpy(bufStart, msg);
 		bufStart[strstr(msg, "$s") - msg] = 0;
 		strcpy(bufEnd, strstr(msg, "$s") + 2);
-		sprintf(msg, "%s%s%s", bufStart, self->name, bufEnd);
+		sprintf(msg, "%s%s%s", bufStart, self.name, bufEnd);
 		replaceSpecialStrings(msg, context);
-		delete self;
 	}
 
 	if (strstr(msg, "$m"))

@@ -62,9 +62,10 @@ void pickupItemFromFloor(int itemId, int x, int y, int z, int contNr, int slotNr
 {
 	CMemReader& reader = CMemReader::getMemReader();
 
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 	CPackSender::moveObjectFromFloorToContainer(itemId, x, y, z, contNr, slotNr, qty);
-	while (!CModuleUtil::waitForCapsChange(self->cap) && qty > 0)
+	while (!CModuleUtil::waitForCapsChange(self.cap) && qty > 0)
 	{
 		Sleep(CModuleUtil::randomFormula(100, 50));// +1.5 sec wait for caps change
 		qty = max(qty / 2, 1);
@@ -99,7 +100,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			continue;                   // do not proceed if not connected
 		int beginningS = GetTickCount();
 
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 		CTibiaItem *item;
 		CUIntArray itemsAccepted;
 
@@ -195,7 +197,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		delete item;
 
 		// pickup throwable (spears, small stones)
-		if ((config->pickupSpears || config->pickupToHand) && !periodRemaining && self->cap > config->capLimit)
+		if ((config->pickupSpears || config->pickupToHand) && !periodRemaining && self.cap > config->capLimit)
 		{
 			int offsetX = -2;
 			int offsetY = -2;
@@ -232,7 +234,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						openContNr++;
 						if (cont->itemsInside < cont->size)
 						{
-							pickupItemFromFloor(throwableItemId, self->x + offsetX, self->y + offsetY, self->z, 0x40 + contNr, cont->size - 1, reader.itemOnTopQty(offsetX, offsetY));
+							pickupItemFromFloor(throwableItemId, self.x + offsetX, self.y + offsetY, self.z, 0x40 + contNr, cont->size - 1, reader.itemOnTopQty(offsetX, offsetY));
 							// reset offsetXY to avoid pickup up same item to hand
 							offsetX = offsetY = -2;
 
@@ -254,7 +256,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (itemLeftHand->objectId == 0 || itemHandTile->stackable && itemLeftHand->quantity < 100)
 					{
 						// move to left hand
-						pickupItemFromFloor(throwableItemId, self->x + offsetX, self->y + offsetY, self->z, 0x6, 0, reader.itemOnTopQty(offsetX, offsetY));
+						pickupItemFromFloor(throwableItemId, self.x + offsetX, self.y + offsetY, self.z, 0x6, 0, reader.itemOnTopQty(offsetX, offsetY));
 						offsetX = offsetY = -2;
 					}
 				}
@@ -264,7 +266,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (itemRightHand->objectId == 0 || itemHandTile->stackable && itemLeftHand->quantity < 100)
 					{
 						// move to right hand
-						pickupItemFromFloor(throwableItemId, self->x + offsetX, self->y + offsetY, self->z, 0x5, 0, reader.itemOnTopQty(offsetX, offsetY));
+						pickupItemFromFloor(throwableItemId, self.x + offsetX, self.y + offsetY, self.z, 0x5, 0, reader.itemOnTopQty(offsetX, offsetY));
 						offsetX = offsetY = -2;
 					}
 				}
@@ -303,7 +305,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				int qty      = reader.itemOnTopQty(offsetX, offsetY);
 				if (offsetX || offsetY)
 				{
-					CPackSender::moveObjectFromFloorToFloor(objectId, self->x + offsetX, self->y + offsetY, self->z, self->x, self->y, self->z, qty ? qty : 1);
+					CPackSender::moveObjectFromFloorToFloor(objectId, self.x + offsetX, self.y + offsetY, self.z, self.x, self.y, self.z, qty ? qty : 1);
 				}
 				else
 				{
@@ -326,12 +328,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (config->pickupBR)
 						moveToX = 1, moveToY = 1;
 					if (moveToX != -2 || moveToY != -2)
-						CPackSender::moveObjectFromFloorToFloor(objectId, self->x, self->y, self->z, self->x + moveToX, self->y + moveToY, self->z, qty ? qty : 1);
+						CPackSender::moveObjectFromFloorToFloor(objectId, self.x, self.y, self.z, self.x + moveToX, self.y + moveToY, self.z, qty ? qty : 1);
 				}
 				Sleep(CModuleUtil::randomFormula(400, 200));
 			}
 		}
-		delete self;
 	}
 	toolThreadShouldStop = 0;
 	return 0;

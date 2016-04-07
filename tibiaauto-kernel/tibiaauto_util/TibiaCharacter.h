@@ -8,6 +8,7 @@ public:
 	CTibiaCharacter();
 	virtual ~CTibiaCharacter();
 
+	bool initialized;
 	int hp;
 	int mana;
 	int x;

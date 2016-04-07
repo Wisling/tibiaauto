@@ -1168,10 +1168,10 @@ void CAlarmDialog::OnSelchangeAttribute()
 		{
 			m_condition.EnableWindow(false);
 			m_condition.SetCurSel(-1);
-			CTibiaCharacter* self = reader.readSelfCharacter();
+			CTibiaCharacter self;
+			reader.readSelfCharacter(&self);
 			char buf[256];
-			sprintf(buf, "(%d,%d,%d)%d", self->x, self->y, self->z, 2);
-			delete self;
+			sprintf(buf, "(%d,%d,%d)%d", self.x, self.y, self.z, 2);
 			m_trigger.SetWindowText(buf);
 			m_trigger.EnableWindow(true);
 			instructionText.LoadString(IDS_GENERAL_WAYPOINTREACHED);

@@ -81,19 +81,18 @@ static map<int*, int> setHp;
 int RandomVariableMana(int& pt, int command, CConfigData *config)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter* self = reader.readSelfCharacter();
-	int val               = pt < 0 ? max(self->maxMana + pt, self->maxMana / 10) : pt;
+	CTibiaCharacter self;
+	 reader.readSelfCharacter(& self);
+	int val               = pt < 0 ? max(self.maxMana + pt, self.maxMana / 10) : pt;
 	if (!config->randomCast)
 	{
-		delete self;
 		return val;
 	}
 	if (!setMana[&pt])
 		command = MAKE;
 	if (command == MAKE)
 		// within 10% of number with a cutoff at maxMana
-		setMana[&pt] = CModuleUtil::randomFormula(val, (int)(val * .1), max(self->maxMana, val + 1));
-	delete self;
+		setMana[&pt] = CModuleUtil::randomFormula(val, (int)(val * .1), max(self.maxMana, val + 1));
 	return setMana[&pt];
 }
 
@@ -101,11 +100,11 @@ int RandomVariableMana(int& pt, int command, CConfigData *config)
 int RandomVariableHp(int &pt, int command, CConfigData *config)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter* self = reader.readSelfCharacter();
-	int val               = pt < 0 ? max(self->maxHp + pt, self->maxHp / 10) : pt;
+	CTibiaCharacter self;
+	 reader.readSelfCharacter(& self);
+	int val               = pt < 0 ? max(self.maxHp + pt, self.maxHp / 10) : pt;
 	if (!config->randomCast)
 	{
-		delete self;
 		return val;
 	}
 
@@ -113,8 +112,7 @@ int RandomVariableHp(int &pt, int command, CConfigData *config)
 		command = MAKE;
 	if (command == MAKE)
 		// within 10% of number with a min of pt and a max of maxHp
-		setHp[&pt] = CModuleUtil::randomFormula(val, (int)(val * .1), val, max(self->maxHp, val + 1));
-	delete self;
+		setHp[&pt] = CModuleUtil::randomFormula(val, (int)(val * .1), val, max(self.maxHp, val + 1));
 	return setHp[&pt];
 }
 
@@ -122,11 +120,11 @@ int RandomVariableHp(int &pt, int command, CConfigData *config)
 int RandomVariableHpPercent(int &pt, int maxHp, int command, CConfigData *config)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter* self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	 reader.readSelfCharacter(& self);
 	int val               = pt < 0 ? max(maxHp + pt, maxHp / 10) : pt;
 	if (!config->randomCast)
 	{
-		delete self;
 		return val;
 	}
 
@@ -138,7 +136,6 @@ int RandomVariableHpPercent(int &pt, int maxHp, int command, CConfigData *config
 		//return value between 0 and 100
 		setHp[&pt] = CModuleUtil::randomFormula(val, (int)(val * .1), val, max(maxHp, val + 1)) * 100 / maxHp;
 	}
-	delete self;
 	return setHp[&pt];
 }
 
@@ -187,7 +184,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		Sleep(200);
 		if (!reader.isLoggedIn())
 			continue;
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 		int attackedCreature  = reader.getAttackedCreature();
 		int flags             = reader.getSelfEventFlags();
 		//T4: First try to heal/also uses paralysis cure here
@@ -202,31 +200,31 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			config->timedSpellList[loop].randMana = config->timedSpellList[loop].mana;
 		for (loop = 0; loop < config->healList.size(); loop++)
 			config->healList[loop].randTriggerHP = RandomVariableHpPercent(config->healList[loop].triggerHP, config->healList[loop].maxHP, MAKE, config);
-		if (config->life && (config->customSpell && self->hp <= lifeHp || config->vitaSpell && self->hp <= vitaHp || config->granSpell && self->hp <= granHp || config->exuraSpell && self->hp <= exuraHp || ((config->paralysisSpell || config->paralysisIco) && (flags & 32) == 32 && self->mana >= config->exuraSpellMana)))
+		if (config->life && (config->customSpell && self.hp <= lifeHp || config->vitaSpell && self.hp <= vitaHp || config->granSpell && self.hp <= granHp || config->exuraSpell && self.hp <= exuraHp || ((config->paralysisSpell || config->paralysisIco) && (flags & 32) == 32 && self.mana >= config->exuraSpellMana)))
 		{
 			// Akilez:	Give 1st priority to custom spells!
-			if (config->customSpell && self->hp <= lifeHp && self->mana >= config->lifeSpellMana)
+			if (config->customSpell && self.hp <= lifeHp && self.mana >= config->lifeSpellMana)
 			{
 				RandomVariableHp(config->lifeHp, MAKE, config);
 				CPackSender::say(config->lifeSpell);
 				Sleep(820);
 				;
 			}
-			else if (config->vitaSpell && self->hp < vitaHp && self->mana >= config->vitaSpellMana)
+			else if (config->vitaSpell && self.hp < vitaHp && self.mana >= config->vitaSpellMana)
 			{
 				RandomVariableHp(config->vitaHp, MAKE, config);
 				CPackSender::say("exura vita");
 				Sleep(820);
 				;
 			}
-			else if (config->granSpell && self->hp <= granHp && self->mana >= config->granSpellMana)
+			else if (config->granSpell && self.hp <= granHp && self.mana >= config->granSpellMana)
 			{
 				RandomVariableHp(config->granHp, MAKE, config);
 				CPackSender::say("exura gran");
 				Sleep(820);
 				;
 			}
-			else if (config->exuraSpell && self->hp <= exuraHp && self->mana >= config->exuraSpellMana)
+			else if (config->exuraSpell && self.hp <= exuraHp && self.mana >= config->exuraSpellMana)
 			{
 				RandomVariableHp(config->exuraHp, MAKE, config);
 				CPackSender::say("exura");
@@ -255,8 +253,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					CPackSender::sendTAMessage("WARNING!!! Not enough mana to Heal!!!");
 				}
 			}
-			delete self;
-			self = reader.readSelfCharacter();
+			reader.readSelfCharacter(&self);
 		}
 		else if (config->poisonSpell && (flags & 1))
 		{
@@ -269,30 +266,29 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					CPackSender::say("exana pox");
 			}
 		}
-		else if (config->sioSpell && self->mana >= config->sioSpellMana)
+		else if (config->sioSpell && self.mana >= config->sioSpellMana)
 		{
 			int chNr;
 			for (chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 			{
-				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
-				if (ch->tibiaId == 0)
+				CTibiaCharacter ch;
+				reader.readVisibleCreature(&ch, chNr);
+				if (ch.tibiaId == 0)
 				{
-					delete ch;
 					break;
 				}
 				for (size_t loop = 0; loop < config->healList.size(); loop++)
 				{
-					if (OnList(config->healList[loop].name, ch->name) && ch->hpPercLeft <= config->healList[loop].randTriggerHP && ch->visible == 1 && abs(ch->x - self->x) <= 7 && abs(ch->y - self->y) <= 5 && ch->z == self->z)
+					if (OnList(config->healList[loop].name, ch.name) && ch.hpPercLeft <= config->healList[loop].randTriggerHP && ch.visible == 1 && abs(ch.x - self.x) <= 7 && abs(ch.y - self.y) <= 5 && ch.z == self.z)
 					{
 						config->healList[loop].randTriggerHP = RandomVariableHpPercent(config->healList[loop].triggerHP, config->healList[loop].maxHP, MAKE, config);
 						char buf[256];
-						sprintf(buf, "exura sio \"%s\"", ch->name);
+						sprintf(buf, "exura sio \"%s\"", ch.name);
 						CPackSender::say(buf);
 						Sleep(820);
 						;
 					}
 				}
-				delete ch;
 			}
 		}
 		else
@@ -313,15 +309,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			int chNr;
 			for (chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 			{
-				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
-				if (ch->tibiaId == 0)
+				CTibiaCharacter ch;
+				reader.readVisibleCreature(&ch, chNr);
+				if (ch.tibiaId == 0)
 				{
-					delete ch;
 					break;
 				}
-				if (ch->z == self->z && ch->visible && !_strcmpi(_strlwr(config->summonName), _strlwr(ch->name)))
+				if (ch.z == self.z && ch.visible && !_strcmpi(_strlwr(config->summonName), _strlwr(ch.name)))
 					summonCount++;
-				delete ch;
 			}
 		}
 
@@ -333,59 +328,59 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				switch (spell)
 				{
 				case 1:
-					if (self->mana > 115)
+					if (self.mana > 115)
 						sprintf(spellname, "exori");
 					break;
 				case 14:
-					if (self->mana > 340)
+					if (self.mana > 340)
 						sprintf(spellname, "exori gran");
 					break;
 				case 2:
-					if (self->mana > 160)
+					if (self.mana > 160)
 						sprintf(spellname, "exori mas");
 					break;
 				case 3:
-					if (self->mana > 180)
+					if (self.mana > 180)
 						sprintf(spellname, "exevo mas san");
 					break;
 				case 4:
-					if (self->mana > 25)
+					if (self.mana > 25)
 						sprintf(spellname, "exevo flam hur");
 					break;
 				case 5:
-					if (self->mana > 25)
+					if (self.mana > 25)
 						sprintf(spellname, "exevo frigo hur");
 					break;
 				case 6:
-					if (self->mana > 210)
+					if (self.mana > 210)
 						sprintf(spellname, "exevo tera hur");
 					break;
 				case 7:
-					if (self->mana > 170)
+					if (self.mana > 170)
 						sprintf(spellname, "exevo vis hur");
 					break;
 				case 8:
-					if (self->mana > 40)
+					if (self.mana > 40)
 						sprintf(spellname, "exevo vis lux");
 					break;
 				case 9:
-					if (self->mana > 110)
+					if (self.mana > 110)
 						sprintf(spellname, "exevo gran vis lux");
 					break;
 				case 10:
-					if (self->mana > 650)
+					if (self.mana > 650)
 						sprintf(spellname, "exevo gran mas vis");
 					break;
 				case 11:
-					if (self->mana > 1200)
+					if (self.mana > 1200)
 						sprintf(spellname, "exevo gran mas flam");
 					break;
 				case 12:
-					if (self->mana > 770)
+					if (self.mana > 770)
 						sprintf(spellname, "exevo gran mas tera");
 					break;
 				case 13:
-					if (self->mana > 1200)
+					if (self.mana > 1200)
 						sprintf(spellname, "exevo gran mas frigo");
 					break;
 				default:
@@ -401,23 +396,23 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 		//Akilez: Use mana for strike spells
-		else if (config->strike && time(NULL) - lastCastTime >= minCastTime && self->mana >= config->manaStrike && attackedCreature)
+		else if (config->strike && time(NULL) - lastCastTime >= minCastTime && self.mana >= config->manaStrike && attackedCreature)
 		{
 			attackedCreature = reader.getAttackedCreature();
 			//T4: If any creature is attacked
 			if (attackedCreature > 0)
 			{
 				//T4: Get attacked creature stucture
-				CTibiaCharacter *ch = reader.getCharacterByTibiaId(attackedCreature);
-				if (ch)
+				CTibiaCharacter ch;
+				if (reader.getCharacterByTibiaId(&ch, attackedCreature))
 				{
-					currentMonsterNumber = getcurrentMonsterNumberFromName(ch->name);
-					if (ch->z == self->z && ch->name && ch->hpPercLeft && currentMonsterNumber > -1)
+					currentMonsterNumber = getcurrentMonsterNumberFromName(ch.name);
+					if (ch.z == self.z && ch.name && ch.hpPercLeft && currentMonsterNumber > -1)
 					{
-						if ((monstersInfo[currentMonsterNumber].hp * ch->hpPercLeft * .01 > config->strikeSpellHpMin) || (currentMonsterNumber == -1))
+						if ((monstersInfo[currentMonsterNumber].hp * ch.hpPercLeft * .01 > config->strikeSpellHpMin) || (currentMonsterNumber == -1))
 						{
-							int xDist   = abs(self->x - ch->x);
-							int yDist   = abs(self->y - ch->y);
+							int xDist   = abs(self.x - ch.x);
+							int yDist   = abs(self.y - ch.y);
 							int maxDist = max(xDist, yDist);
 							int test    = config->flam + config->frigo + config->mort + config->tera + config->vis;
 
@@ -502,12 +497,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							}
 						}
 					}
-					delete ch;
 				}
 				attackedCreature = 0;
 			}
 		}
-		else if (config->summon && summonCount < config->summonLessThan && self->mana >= config->summonMana)
+		else if (config->summon && summonCount < config->summonLessThan && self.mana >= config->summonMana)
 		{
 			// we should summon something
 			char buf[256];
@@ -517,7 +511,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			;
 		}
 		//T4: Use mana in other purpose otherwise
-		else if (config->mana && self->mana >= manaMana)
+		else if (config->mana && self.mana >= manaMana)
 		{
 			RandomVariableMana(config->manaMana, MAKE, config);
 			CPackSender::say(config->manaSpell);
@@ -527,7 +521,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		{
 			for (loop = 0; loop < config->timedSpellList.size(); loop++)
 			{
-				if (self->mana >= config->timedSpellList[loop].randMana && time(NULL) >= config->timedSpellList[loop].triggerTime)
+				if (self.mana >= config->timedSpellList[loop].randMana && time(NULL) >= config->timedSpellList[loop].triggerTime)
 				{
 					RandomVariableMana(config->timedSpellList[loop].randMana, MAKE, config);
 					config->timedSpellList[loop].triggerTime = time(NULL) + config->timedSpellList[loop].delay;
@@ -535,13 +529,13 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					Sleep(820);
 					;
 				}
-				else if (config->timedSpellList[loop].usePotions && self->mana < config->timedSpellList[loop].randMana && time(NULL) >= config->timedSpellList[loop].triggerTime + 10)
+				else if (config->timedSpellList[loop].usePotions && self.mana < config->timedSpellList[loop].randMana && time(NULL) >= config->timedSpellList[loop].triggerTime + 10)
 				{
 					int contNr;
 					CUIntArray itemArray;
-					if (self->lvl > 80)
+					if (self.lvl > 80)
 						itemArray.Add(CTibiaItem::getValueForConst("fluidManaG"));
-					if (self->lvl > 50)
+					if (self.lvl > 50)
 						itemArray.Add(CTibiaItem::getValueForConst("fluidManaS"));
 					itemArray.Add(CTibiaItem::getValueForConst("fluidMana"));
 					int openContNr  = 0;
@@ -555,7 +549,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							CTibiaItem *item = CModuleUtil::lookupItem(contNr, &itemArray);
 							if (item->objectId)
 							{
-								CPackSender::useItemFromContainerOnCreature(item->objectId, 0x40 + contNr, item->pos, self->tibiaId);
+								CPackSender::useItemFromContainerOnCreature(item->objectId, 0x40 + contNr, item->pos, self.tibiaId);
 								delete item;
 								delete cont;
 								break;
@@ -570,7 +564,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 
-		delete self;
 	}
 	setMana.clear();
 	setHp.clear();
@@ -1497,7 +1490,8 @@ int aoeShouldFire(CConfigData *config)
 	CMemReader& reader = CMemReader::getMemReader();
 
 	
-	CTibiaCharacter *self      = reader.readSelfCharacter();
+	CTibiaCharacter self     ;
+	 reader.readSelfCharacter(&self     );
 
 	// note that each of the int vars here must be = 0 as otherwise only the last one will be = 0
 	int exoriCount   = 0, exoriMasCount = 0, exevoMasSanCount = 0, egmTeraCount = 0, egmFlamCount = 0, egmFrigoCount = 0, egmVisCount = 0;
@@ -1506,17 +1500,17 @@ int aoeShouldFire(CConfigData *config)
 	int facing[6][4] = {0};
 	for (chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 	{
-		CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
-		if (ch->tibiaId == 0)
+		CTibiaCharacter ch;
+		reader.readVisibleCreature(&ch, chNr);
+		if (ch.tibiaId == 0)
 		{
-			delete ch;
 			break;
 		}
-		int monster = getcurrentMonsterNumberFromName(ch->name);
-		if (monster > -1 && _strcmpi(_strlwr(self->name), _strlwr(ch->name)) != 0 && self->z == ch->z && ch->visible == 1 && ch->tibiaId > 0x40000000)
+		int monster = getcurrentMonsterNumberFromName(ch.name);
+		if (monster > -1 && _strcmpi(_strlwr(self.name), _strlwr(ch.name)) != 0 && self.z == ch.z && ch.visible == 1 && ch.tibiaId > 0x40000000)
 		{
-			deltaX = ch->x - self->x;
-			deltaY = ch->y - self->y;
+			deltaX = ch.x - self.x;
+			deltaY = ch.y - self.y;
 
 			if (deltaY - abs(deltaX) >= 0)
 				faceDir = DOWN;
@@ -1622,9 +1616,7 @@ int aoeShouldFire(CConfigData *config)
 				}  // end if 4
 			}  // end if X
 		} // end if Entire
-		delete ch;
 	} // end for
-	delete self;
 
 	// Akilez: now determine the best spell to cast
 	if (config->exori && exoriCount >= config->aoeAffect)

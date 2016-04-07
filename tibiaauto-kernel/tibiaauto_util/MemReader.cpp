@@ -49,7 +49,7 @@ CMemReader::~CMemReader()
 // returns complete CTibiaVIPEntry if 'nr'
 CTibiaVIPEntry *CMemReader::readVIPEntry(int nr)
 {
-	int vipCount = CMemUtil::GetMemIntValue(m_memAddressVIP + 4);
+	int vipCount = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressVIP + 4);
 	if (nr < 0 || nr > vipCount)
 		return NULL;
 	CTibiaVIPEntry *vip = new CTibiaVIPEntry();
@@ -71,36 +71,36 @@ CTibiaVIPEntry *CMemReader::readVIPEntry(int nr)
 	}
 	if (iNR == nr && vipEntryAddr != linkedListAddr)
 	{
-		vip->id     = CMemUtil::GetMemIntValue(vipEntryAddr + 0x10, 0);
-		vip->icon   = CMemUtil::GetMemIntValue(vipEntryAddr + 0x14, 0) & 0xff;
-		vip->notify = CMemUtil::GetMemIntValue(vipEntryAddr + 0x14, 0) >> 8 & 0xff;
+		vip->id     = CMemUtil::getMemUtil().GetMemIntValue(vipEntryAddr + 0x10, 0);
+		vip->icon   = CMemUtil::getMemUtil().GetMemIntValue(vipEntryAddr + 0x14, 0) & 0xff;
+		vip->notify = CMemUtil::getMemUtil().GetMemIntValue(vipEntryAddr + 0x14, 0) >> 8 & 0xff;
 
-		vip->nameLen = CMemUtil::GetMemIntValue(vipEntryAddr + 0x28, 0);
+		vip->nameLen = CMemUtil::getMemUtil().GetMemIntValue(vipEntryAddr + 0x28, 0);
 		if (vip->nameLen >= 16)
 		{
-			int nameAddr = CMemUtil::GetMemIntValue(vipEntryAddr + 0x18, 0);
-			CMemUtil::GetMemRange(nameAddr, nameAddr + 30, vip->name, 0);
+			int nameAddr = CMemUtil::getMemUtil().GetMemIntValue(vipEntryAddr + 0x18, 0);
+			CMemUtil::getMemUtil().GetMemRange(nameAddr, nameAddr + 30, vip->name, 0);
 		}
 		else
 		{
-			CMemUtil::GetMemRange(vipEntryAddr + 0x18, vipEntryAddr + 0x18 + vip->nameLen, vip->name, 0);
+			CMemUtil::getMemUtil().GetMemRange(vipEntryAddr + 0x18, vipEntryAddr + 0x18 + vip->nameLen, vip->name, 0);
 		}
 		vip->name[vip->nameLen] = 0;
 
-		vip->descrLen = CMemUtil::GetMemIntValue(vipEntryAddr + 0x40, 0);
+		vip->descrLen = CMemUtil::getMemUtil().GetMemIntValue(vipEntryAddr + 0x40, 0);
 		if (vip->descrLen >= 16)
 		{
-			int descrAddr = CMemUtil::GetMemIntValue(vipEntryAddr + 0x30, 0);
-			CMemUtil::GetMemRange(descrAddr, descrAddr + vip->descrLen, vip->descr, 0);
+			int descrAddr = CMemUtil::getMemUtil().GetMemIntValue(vipEntryAddr + 0x30, 0);
+			CMemUtil::getMemUtil().GetMemRange(descrAddr, descrAddr + vip->descrLen, vip->descr, 0);
 		}
 		else
 		{
-			CMemUtil::GetMemRange(vipEntryAddr + 0x30, vipEntryAddr + 0x30 + vip->descrLen, vip->descr, 0);
+			CMemUtil::getMemUtil().GetMemRange(vipEntryAddr + 0x30, vipEntryAddr + 0x30 + vip->descrLen, vip->descr, 0);
 		}
 		vip->descr[vip->descrLen] = 0;
 
-		vip->status  = CMemUtil::GetMemIntValue(vipEntryAddr + 0x48, 0) & 0xff;
-		vip->loginTm = CMemUtil::GetMemIntValue(vipEntryAddr + 0x50, 0);//64bit
+		vip->status  = CMemUtil::getMemUtil().GetMemIntValue(vipEntryAddr + 0x48, 0) & 0xff;
+		vip->loginTm = CMemUtil::getMemUtil().GetMemIntValue(vipEntryAddr + 0x50, 0);//64bit
 
 		return vip;
 	}
@@ -119,18 +119,18 @@ long findContainer(int i, long addrCurr, long addrHead, int depth = 0)
 		sprintf(buf, "%d", depth);
 		CPackSender::sendTAMessage(buf);
 	}
-	if (addrCurr != addrHead && CMemUtil::GetMemIntValue(addrCurr + 0x10, 0) == i)
+	if (addrCurr != addrHead && CMemUtil::getMemUtil().GetMemIntValue(addrCurr + 0x10, 0) == i)
 		return addrCurr;
 	if (depth < 5)//binary structure is guaranteed to reach all 16 containers after 4 iterations
 	{
 		for (int adj = 0; adj < 12; adj += 4)
 		{
-			long addrNext = CMemUtil::GetMemIntValue(addrCurr + adj, 0);
+			long addrNext = CMemUtil::getMemUtil().GetMemIntValue(addrCurr + adj, 0);
 			if (addrNext != addrHead)
 			{
 				long ret = findContainer(i, addrNext, addrHead, depth + 1);
 				// verify pointer is the same after reading. if not return 1 to retry
-				if (ret == 1 || addrNext != CMemUtil::GetMemIntValue(addrCurr + adj, 0))
+				if (ret == 1 || addrNext != CMemUtil::getMemUtil().GetMemIntValue(addrCurr + adj, 0))
 					return 1;
 				else if (ret > 1)
 					return ret;
@@ -143,7 +143,7 @@ long findContainer(int i, long addrCurr, long addrHead, int depth = 0)
 
 int CMemReader::readOpenContainerCount()
 {
-	return CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer) + 0x8, 0);
+	return CMemUtil::getMemUtil().GetMemIntValue(CMemUtil::getMemUtil().GetMemIntValue(m_memAddressFirstContainer) + 0x8, 0);
 }
 
 CTibiaContainer *CMemReader::readContainer(int containerNr)
@@ -152,7 +152,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 	//triply linked list
 	//container number
 
-	long addrHead    = CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer) + 4, 0);
+	long addrHead    = CMemUtil::getMemUtil().GetMemIntValue(CMemUtil::getMemUtil().GetMemIntValue(m_memAddressFirstContainer) + 4, 0);
 	long addrIndCont = 1;
 	for (int triesCount = 0; triesCount < 3 && addrIndCont == 1; triesCount++)
 	{
@@ -167,19 +167,19 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 	}
 	if (addrIndCont > 1) // return container
 	{
-		long addrCont = CMemUtil::GetMemIntValue(addrIndCont + 0x14, 0);
+		long addrCont = CMemUtil::getMemUtil().GetMemIntValue(addrIndCont + 0x14, 0);
 		container->flagOnOff = 1;
-		container->number    = CMemUtil::GetMemIntValue(addrCont, 0);
-		//container->???=CMemUtil::GetMemIntValue(addrCont+4,0); // extraInfo
-		//container->???=CMemUtil::GetMemIntValue(addrCont+8,0); // qty
-		container->objectId = CMemUtil::GetMemIntValue(addrCont + 0xC, 0);
-		//container->???=CMemUtil::GetMemIntValue(addrCont+0x30,0);
-		//container->???=CMemUtil::GetMemIntValue(addrCont+0x34,0);
-		//container->???=CMemUtil::GetMemIntValue(addrCont+0x38,0);
-		//container->???=CMemUtil::GetMemIntValue(addrCont+0x3C,0);
-		container->size        = CMemUtil::GetMemIntValue(addrCont + 0x40, 0);
-		container->itemsInside = min(CMemUtil::GetMemIntValue(addrCont + 0x44, 0), container->size);
-		long addrItems = CMemUtil::GetMemIntValue(addrCont + 0x4C, 0);
+		container->number    = CMemUtil::getMemUtil().GetMemIntValue(addrCont, 0);
+		//container->???=CMemUtil::getMemUtil().GetMemIntValue(addrCont+4,0); // extraInfo
+		//container->???=CMemUtil::getMemUtil().GetMemIntValue(addrCont+8,0); // qty
+		container->objectId = CMemUtil::getMemUtil().GetMemIntValue(addrCont + 0xC, 0);
+		//container->???=CMemUtil::getMemUtil().GetMemIntValue(addrCont+0x30,0);
+		//container->???=CMemUtil::getMemUtil().GetMemIntValue(addrCont+0x34,0);
+		//container->???=CMemUtil::getMemUtil().GetMemIntValue(addrCont+0x38,0);
+		//container->???=CMemUtil::getMemUtil().GetMemIntValue(addrCont+0x3C,0);
+		container->size        = CMemUtil::getMemUtil().GetMemIntValue(addrCont + 0x40, 0);
+		container->itemsInside = min(CMemUtil::getMemUtil().GetMemIntValue(addrCont + 0x44, 0), container->size);
+		long addrItems = CMemUtil::getMemUtil().GetMemIntValue(addrCont + 0x4C, 0);
 
 		try //if returns error then addrItems is most likely not a valid address anymore
 		{
@@ -188,8 +188,8 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 				for (int i = 0; i < container->itemsInside; i++)
 				{
 					CTibiaItem *item = new CTibiaItem();
-					item->objectId = CMemUtil::GetMemIntValue(addrItems + i * m_memLengthItem + 8, 0);
-					item->quantity = CMemUtil::GetMemIntValue(addrItems + i * m_memLengthItem + 4, 0);
+					item->objectId = CMemUtil::getMemUtil().GetMemIntValue(addrItems + i * m_memLengthItem + 8, 0);
+					item->quantity = CMemUtil::getMemUtil().GetMemIntValue(addrItems + i * m_memLengthItem + 4, 0);
 					CTibiaTile *tile = CTileReader::getTileReader().getTile(item->objectId);
 					if (!tile)
 					{
@@ -217,24 +217,23 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 	return container;
 }
 
-CTibiaCharacter *CMemReader::readSelfCharacter()
+void CMemReader::readSelfCharacter(CTibiaCharacter* ch)
 {
-	CTibiaCharacter *ch = new CTibiaCharacter();
-
-	ch->hp      = CMemUtil::GetMemIntValue(m_memAddressHP) ^ CMemUtil::GetMemIntValue(m_memAddressXor);
-	ch->mana    = CMemUtil::GetMemIntValue(m_memAddressMana) ^ CMemUtil::GetMemIntValue(m_memAddressXor);
-	ch->maxHp   = CMemUtil::GetMemIntValue(m_memAddressHPMax) ^ CMemUtil::GetMemIntValue(m_memAddressXor);
-	ch->maxMana = CMemUtil::GetMemIntValue(m_memAddressManaMax) ^ CMemUtil::GetMemIntValue(m_memAddressXor);
+	ch->initialized = true;
+	ch->hp      = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressHP) ^ CMemUtil::getMemUtil().GetMemIntValue(m_memAddressXor);
+	ch->mana    = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressMana) ^ CMemUtil::getMemUtil().GetMemIntValue(m_memAddressXor);
+	ch->maxHp   = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressHPMax) ^ CMemUtil::getMemUtil().GetMemIntValue(m_memAddressXor);
+	ch->maxMana = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressManaMax) ^ CMemUtil::getMemUtil().GetMemIntValue(m_memAddressXor);
 	// note: since 8.31 capacity has accuracy to 2 decimal places
-	ch->cap     = (CMemUtil::GetMemIntValue(m_memAddressCap) ^ CMemUtil::GetMemIntValue(m_memAddressXor)) / 100.f;
-	ch->stamina = CMemUtil::GetMemIntValue(m_memAddressStamina);
-	ch->exp     = CMemUtil::GetMemIntValue(m_memAddressExp);
-	//ch->exp += (__int64)CMemUtil::GetMemIntValue(m_memAddressExp+4) << 32; //Note Experience became 64 bits since 8.7
-	ch->lvl          = CMemUtil::GetMemIntValue(m_memAddressLvl);
-	ch->mlvl         = CMemUtil::GetMemIntValue(m_memAddressMlvl);
-	ch->mlvlPercLeft = 100 - CMemUtil::GetMemIntValue(m_memAddressMlvlPercLeft);
-	ch->soulPoints   = CMemUtil::GetMemIntValue(m_memAddressSoulPoints);
-	switch (CMemUtil::GetMemIntValue(m_memAddressVocation))
+	ch->cap     = (CMemUtil::getMemUtil().GetMemIntValue(m_memAddressCap) ^ CMemUtil::getMemUtil().GetMemIntValue(m_memAddressXor)) / 100.f;
+	ch->stamina = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressStamina);
+	ch->exp     = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressExp);
+	//ch->exp += (__int64)CMemUtil::getMemUtil().GetMemIntValue(m_memAddressExp+4) << 32; //Note Experience became 64 bits since 8.7
+	ch->lvl          = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressLvl);
+	ch->mlvl         = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressMlvl);
+	ch->mlvlPercLeft = 100 - CMemUtil::getMemUtil().GetMemIntValue(m_memAddressMlvlPercLeft);
+	ch->soulPoints   = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSoulPoints);
+	switch (CMemUtil::getMemUtil().GetMemIntValue(m_memAddressVocation))
 	{
 	case 0:
 		strncpy(ch->voc, "n", 3);
@@ -264,64 +263,34 @@ CTibiaCharacter *CMemReader::readSelfCharacter()
 		strncpy(ch->voc, "ed", 3);
 		break;
 	}
-
-
-	ch->skillAxe            = CMemUtil::GetMemIntValue(m_memAddressSkillAxe);
-	ch->skillClub           = CMemUtil::GetMemIntValue(m_memAddressSkillClub);
-	ch->skillSword          = CMemUtil::GetMemIntValue(m_memAddressSkillSword);
-	ch->skillDist           = CMemUtil::GetMemIntValue(m_memAddressSkillDist);
-	ch->skillFish           = CMemUtil::GetMemIntValue(m_memAddressSkillFish);
-	ch->skillShield         = CMemUtil::GetMemIntValue(m_memAddressSkillShield);
-	ch->skillFist           = CMemUtil::GetMemIntValue(m_memAddressSkillFist);
-	ch->skillAxePercLeft    = 100 - CMemUtil::GetMemIntValue(m_memAddressSkillAxePercLeft);
-	ch->skillClubPercLeft   = 100 - CMemUtil::GetMemIntValue(m_memAddressSkillClubPercLeft);
-	ch->skillSwordPercLeft  = 100 - CMemUtil::GetMemIntValue(m_memAddressSkillSwordPercLeft);
-	ch->skillDistPercLeft   = 100 - CMemUtil::GetMemIntValue(m_memAddressSkillDistPercLeft);
-	ch->skillFishPercLeft   = 100 - CMemUtil::GetMemIntValue(m_memAddressSkillFishPercLeft);
-	ch->skillShieldPercLeft = 100 - CMemUtil::GetMemIntValue(m_memAddressSkillShieldPercLeft);
-	ch->skillFistPercLeft   = 100 - CMemUtil::GetMemIntValue(m_memAddressSkillFistPercLeft);
+	ch->skillAxe            = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillAxe);
+	ch->skillClub           = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillClub);
+	ch->skillSword          = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillSword);
+	ch->skillDist           = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillDist);
+	ch->skillFish           = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillFish);
+	ch->skillShield         = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillShield);
+	ch->skillFist           = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillFist);
+	ch->skillAxePercLeft    = 100 - CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillAxePercLeft);
+	ch->skillClubPercLeft   = 100 - CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillClubPercLeft);
+	ch->skillSwordPercLeft  = 100 - CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillSwordPercLeft);
+	ch->skillDistPercLeft   = 100 - CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillDistPercLeft);
+	ch->skillFishPercLeft   = 100 - CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillFishPercLeft);
+	ch->skillShieldPercLeft = 100 - CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillShieldPercLeft);
+	ch->skillFistPercLeft   = 100 - CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSkillFistPercLeft);
 
 	ch->visible = 1;
 
 	int loggedCharNr = getLoggedCharNr();
 	if (loggedCharNr >= 0)
-	{
-		CTibiaCharacter *monCh = readVisibleCreature(loggedCharNr);
-		ch->tibiaId = monCh->tibiaId;
-		ch->x       = monCh->x;
-		ch->y       = monCh->y;
-		ch->z       = monCh->z;
-		strcpy(ch->name, monCh->name);
-		ch->lookDirection = monCh->lookDirection;
-		ch->colorHead     = monCh->colorHead;
-		ch->colorBody     = monCh->colorBody;
-		ch->colorLegs     = monCh->colorLegs;
-		ch->colorFoot     = monCh->colorFoot;
-		ch->walkSpeed     = monCh->walkSpeed;
-		ch->skulls        = monCh->skulls;
-		ch->shields       = monCh->shields;
-		ch->outfitId      = monCh->outfitId;
-		ch->mountId       = monCh->mountId;
-		ch->monsterType   = monCh->monsterType;
-		ch->hpPercLeft    = monCh->hpPercLeft;
-		ch->lastAttackTm  = monCh->lastAttackTm;
-		ch->nr            = loggedCharNr;
-		ch->warIcon       = monCh->warIcon;
-		ch->blocking      = monCh->blocking;
-		ch->moving        = monCh->moving;
-
-		delete monCh;
-	}
-
-	return ch;
+		readVisibleCreature(ch, loggedCharNr);
 }
 
 CTibiaItem * CMemReader::readItem(int locationAddress)
 {
 	CTibiaItem *item = new CTibiaItem();
 
-	item->objectId = CMemUtil::GetMemIntValue(locationAddress + 8);
-	item->quantity = CMemUtil::GetMemIntValue(locationAddress + 4);
+	item->objectId = CMemUtil::getMemUtil().GetMemIntValue(locationAddress + 8);
+	item->quantity = CMemUtil::getMemUtil().GetMemIntValue(locationAddress + 4);
 	CTibiaTile *tile = CTileReader::getTileReader().getTile(item->objectId);
 	if (tile && !tile->stackable && item->quantity > 1)
 		item->quantity = 1;
@@ -332,15 +301,14 @@ CTibiaItem * CMemReader::readItem(int locationAddress)
 	return item;
 }
 
-CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
+void CMemReader::readVisibleCreature(CTibiaCharacter* ch, int nr)
 {
-	CTibiaCharacter *ch = new CTibiaCharacter();
-
 	int offset = m_memAddressFirstCreature + nr * m_memLengthCreature;
 	char memcharinfo[1024];
 	memset(memcharinfo, 0, 1024);
-	CMemUtil::GetMemRange(offset, offset + m_memLengthCreature, memcharinfo, 1);
 
+	CMemUtil::getMemUtil().GetMemRange(offset, offset + m_memLengthCreature, memcharinfo, 1);
+	ch->initialized = true;
 	ch->hp       = -1;
 	ch->mana     = -1;
 	ch->tibiaId  = *((int*)memcharinfo);
@@ -403,9 +371,7 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 
 	ch->nr = nr;
 
-	CMemUtil::GetMemRange(offset + 4, offset + 4 + 31, ch->name);
-
-	return ch;
+	CMemUtil::getMemUtil().GetMemRange(offset + 4, offset + 4 + 31, ch->name);
 }
 
 int CMemReader::readBattleListMin()
@@ -415,7 +381,7 @@ int CMemReader::readBattleListMin()
 
 int CMemReader::readBattleListMax()
 {
-	return CMemUtil::GetMemIntValue(m_memAddressBattleMax);
+	return CMemUtil::getMemUtil().GetMemIntValue(m_memAddressBattleMax);
 }
 
 void CMemReader::GetLoggedChar(int processId, char* buf, int bufLen)
@@ -423,20 +389,20 @@ void CMemReader::GetLoggedChar(int processId, char* buf, int bufLen)
 	long selfId;
 	int i;
 
-	CMemUtil::GetMemIntValue(processId, m_memAddressSelfId, &selfId, 1);
+	CMemUtil::getMemUtil().GetMemIntValue(processId, m_memAddressSelfId, &selfId, 1);
 	for (i = 0; i < m_memMaxCreatures; i++)
 	{
 		long creatureId, visible;
 		long offset = m_memAddressFirstCreature + i * m_memLengthCreature;
-		CMemUtil::GetMemIntValue(processId, offset + 0, &creatureId, 1);
-		CMemUtil::GetMemIntValue(processId, offset + 164, &visible, 1);
+		CMemUtil::getMemUtil().GetMemIntValue(processId, offset + 0, &creatureId, 1);
+		CMemUtil::getMemUtil().GetMemIntValue(processId, offset + 164, &visible, 1);
 		if (creatureId == 0)
 			break;
 		if (selfId == creatureId && visible)
 		{
 			char readBuf[32];
 			readBuf[31] = '\0';
-			CMemUtil::GetMemRange(processId, offset + 4, offset + 4 + 31, readBuf, 1);
+			CMemUtil::getMemUtil().GetMemRange(processId, offset + 4, offset + 4 + 31, readBuf, 1);
 			strncpy(buf, readBuf, bufLen);
 			return;
 		};
@@ -446,59 +412,62 @@ void CMemReader::GetLoggedChar(int processId, char* buf, int bufLen)
 
 int CMemReader::getAttackedCreature()
 {
-	return CMemUtil::GetMemIntValue(m_memAddressAttackedCreature);
+	return CMemUtil::getMemUtil().GetMemIntValue(m_memAddressAttackedCreature);
 }
 
 void CMemReader::setAttackedCreature(int tibiaId)
 {
-	CMemUtil::SetMemIntValue(m_memAddressAttackedCreature, tibiaId);
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressAttackedCreature, tibiaId);
 }
 
 int CMemReader::getFollowedCreature()
 {
-	return CMemUtil::GetMemIntValue(m_memAddressFollowedCreature);
+	return CMemUtil::getMemUtil().GetMemIntValue(m_memAddressFollowedCreature);
 }
 
 void CMemReader::setFollowedCreature(int tibiaId)
 {
-	CMemUtil::SetMemIntValue(m_memAddressFollowedCreature, tibiaId);
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressFollowedCreature, tibiaId);
 }
 
 int CMemReader::getNextPacketCount()
 {
-	int ret = CMemUtil::GetMemIntValue(m_memAddressPacketCount) + 1;
-	CMemUtil::SetMemIntValue(m_memAddressPacketCount, ret);
+	int ret = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressPacketCount) + 1;
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressPacketCount, ret);
 	return ret;
 }
 
-CTibiaCharacter *CMemReader::getCharacterByTibiaId(int tibiaId)
+bool CMemReader::getCharacterByTibiaId(CTibiaCharacter * ch, int tibiaId)
 {
 	int i;
 	for (i = 0; i < m_memMaxCreatures; i++)
 	{
 		int offset = m_memAddressFirstCreature + i * m_memLengthCreature;
 
-		if (CMemUtil::GetMemIntValue(offset) == tibiaId)
-			return readVisibleCreature(i);
+		if (CMemUtil::getMemUtil().GetMemIntValue(offset) == tibiaId)
+		{
+			readVisibleCreature(ch, i);
+			return true;
+		}
 	}
-	return NULL;
+	return false;
 }
 
 int CMemReader::getTradeCountSelf()
 {
-	return CMemUtil::GetMemIntValue(m_memAddressTradeCountSelf);
+	return CMemUtil::getMemUtil().GetMemIntValue(m_memAddressTradeCountSelf);
 }
 
 int CMemReader::getTradeCountPartner()
 {
-	return CMemUtil::GetMemIntValue(m_memAddressTradeCountPartner);
+	return CMemUtil::getMemUtil().GetMemIntValue(m_memAddressTradeCountPartner);
 }
 
 CTibiaItem * CMemReader::getTradeItemSelf(int nr)
 {
 	CTibiaItem *item = new CTibiaItem();
-	item->objectId = CMemUtil::GetMemIntValue(m_memAddressTradeFirstItemSelf + nr * m_memLengthItem + 8);
-	item->quantity = CMemUtil::GetMemIntValue(m_memAddressTradeFirstItemSelf + nr * m_memLengthItem + 4);
+	item->objectId = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressTradeFirstItemSelf + nr * m_memLengthItem + 8);
+	item->quantity = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressTradeFirstItemSelf + nr * m_memLengthItem + 4);
 	CTibiaTile *tile = CTileReader::getTileReader().getTile(item->objectId);
 	if (tile && !tile->stackable && item->quantity > 1)
 		item->quantity = 1;
@@ -509,8 +478,8 @@ CTibiaItem * CMemReader::getTradeItemSelf(int nr)
 CTibiaItem * CMemReader::getTradeItemPartner(int nr)
 {
 	CTibiaItem *item = new CTibiaItem();
-	item->objectId = CMemUtil::GetMemIntValue(m_memAddressTradeFirstItemPartner + nr * m_memLengthItem + 8);
-	item->quantity = CMemUtil::GetMemIntValue(m_memAddressTradeFirstItemPartner + nr * m_memLengthItem + 4);
+	item->objectId = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressTradeFirstItemPartner + nr * m_memLengthItem + 8);
+	item->quantity = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressTradeFirstItemPartner + nr * m_memLengthItem + 4);
 	CTibiaTile *tile = CTileReader::getTileReader().getTile(item->objectId);
 	if (tile && !tile->stackable && item->quantity > 1)
 		item->quantity = 1;
@@ -526,27 +495,27 @@ void CMemReader::writeVisibleCreatureName(int chNr, char *name)
 		AfxMessageBox("writeVisibleCreatureName: too long name");
 		return;
 	}
-	CMemUtil::SetMemRange(offset + 4, offset + 4 + (strlen(name) + 1), name);
+	CMemUtil::getMemUtil().SetMemRange(offset + 4, offset + 4 + (strlen(name) + 1), name);
 }
 
 int CMemReader::getSelfEventFlags()
 {
-	return CMemUtil::GetMemIntValue(m_memAddressSelfFlags);//^CMemUtil::GetMemIntValue(m_memAddressFirstCreature-8);
+	return CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSelfFlags);//^CMemUtil::getMemUtil().GetMemIntValue(m_memAddressFirstCreature-8);
 }
 
 int CMemReader::getLoggedCharNr()
 {
 	int i;
 
-	long selfId = CMemUtil::GetMemIntValue(m_memAddressSelfId);
+	long selfId = CMemUtil::getMemUtil().GetMemIntValue(m_memAddressSelfId);
 
 
 	for (i = 0; i < m_memMaxCreatures; i++)
 	{
 		long creatureId, visible;
 		long offset = m_memAddressFirstCreature + i * m_memLengthCreature;
-		creatureId = CMemUtil::GetMemIntValue(offset + 0);
-		visible    = CMemUtil::GetMemIntValue(offset + m_offsetCreatureVisible);
+		creatureId = CMemUtil::getMemUtil().GetMemIntValue(offset + 0);
+		visible    = CMemUtil::getMemUtil().GetMemIntValue(offset + m_offsetCreatureVisible);
 		if (creatureId == 0)
 			break;
 		if (selfId == creatureId && visible)
@@ -559,40 +528,40 @@ int CMemReader::getLoggedCharNr()
 void CMemReader::writeGotoCoords(int x, int y, int z)
 {
 	int chNr = getLoggedCharNr();
-	CMemUtil::SetMemIntValue(m_memAddressGoX, x);
-	CMemUtil::SetMemIntValue(m_memAddressGoY, y);
-	CMemUtil::SetMemIntValue(m_memAddressGoZ, z);
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressGoX, x);
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressGoY, y);
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressGoZ, z);
 	//Manage Tibia's memory
-	CMemUtil::SetMemIntValue(m_memAddressFirstCreature + 80 + chNr * m_memLengthCreature, 1);//enable to accept gotocoords, (80=is char moving param)
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressFirstCreature + 80 + chNr * m_memLengthCreature, 1);//enable to accept gotocoords, (80=is char moving param)
 }
 
 void CMemReader::cancelAttackCoords()
 {
 	int chNr = getLoggedCharNr();
-//	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+80+chNr*m_memLengthCreature,0); will take care of itself
-	CMemUtil::SetMemIntValue(m_memAddressGoX, 0);
-	CMemUtil::SetMemIntValue(m_memAddressGoY, 0);
+//	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressFirstCreature+80+chNr*m_memLengthCreature,0); will take care of itself
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressGoX, 0);
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressGoY, 0);
 	setRemainingTilesToGo(0);//if left at > 0, no actions can be performed
 }
 
 int CMemReader::readCreatureLightPower(int creatureNr)
 {
-	return CMemUtil::GetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 124);
+	return CMemUtil::getMemUtil().GetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 124);
 }
 
 int CMemReader::readCreatureLightColor(int creatureNr)
 {
-	return CMemUtil::GetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 128);
+	return CMemUtil::getMemUtil().GetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 128);
 }
 
 void CMemReader::writeCreatureLightPower(int creatureNr, int value)
 {
-	CMemUtil::SetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 124, value);
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 124, value);
 }
 
 void CMemReader::writeCreatureLightColor(int creatureNr, int value)
 {
-	CMemUtil::SetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 128, value);
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 128, value);
 }
 
 int CMemReader::readSelfLightPower()
@@ -626,7 +595,7 @@ CTibiaMapTile *CMemReader::readMapTile(int tileNr)
 	DWORD TESTtileStart    = tileStart;
 	do
 	{
-		CMemUtil::GetMemRange(tileStart, tileStart + m_memLengthMapTile, (char*)maptile, 0);//this address comes from Tibia itself and need not be shifted
+		CMemUtil::getMemUtil().GetMemRange(tileStart, tileStart + m_memLengthMapTile, (char*)maptile, 0);//this address comes from Tibia itself and need not be shifted
 		if (maptile->count)
 			int a = 0;
 		tileStart     = TESTtileStart;
@@ -645,11 +614,11 @@ int CMemReader::mapGetSelfCellNr()
 {
 	static int prevSelfTileNr  = 0;
 	static int prevSelfTilePos = 0;
-	int wouldReturn            = 0;
-	CTibiaCharacter *self      = readSelfCharacter();
-	if (self->z < 0 || self->z > 15)
+	int wouldReturn = 0;
+	CTibiaCharacter self;
+	readSelfCharacter(&self);
+	if (self.z < 0 || self.z > 15)
 	{
-		delete self;
 		return 0;
 	}
 
@@ -660,9 +629,8 @@ int CMemReader::mapGetSelfCellNr()
 	if (prevSelfTilePos < c && tileId == 99)
 	{
 		int tileCharId = maptile->items[prevSelfTilePos].quantity;
-		if (tileCharId == self->tibiaId)
+		if (tileCharId == self.tibiaId)
 		{
-			delete self;
 			delete maptile;
 			return prevSelfTileNr;
 		}
@@ -671,26 +639,25 @@ int CMemReader::mapGetSelfCellNr()
 	maptile = NULL;
 
 	int floorSize     = m_memMaxMapTiles / 8;
-	int tileNrLowest  = max(0, min(1768, (self->z <= 7) ? floorSize * (7 - self->z) : (floorSize * 2)));
+	int tileNrLowest  = max(0, min(1768, (self.z <= 7) ? floorSize * (7 - self.z) : (floorSize * 2)));
 	int tileNrHighest = tileNrLowest + floorSize;
 /*
         // check using one of 8 memory locations for current cell(this makes the function 100 times faster)
-        int tmp=CMemUtil::GetMemIntValue(dereference(m_memAddressMiniMapStart-4));
+        int tmp=CMemUtil::getMemUtil().GetMemIntValue(dereference(m_memAddressMiniMapStart-4));
         for (int lvl=0;lvl<8;lvl++)
         {
                 int cell=252*lvl+(tmp+116)%(14*18);
                 int pos;
                 int tmo=dereference(m_memAddressMapStart)+cell*m_memLengthMapTile;
-                int count=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile);
+                int count=CMemUtil::getMemUtil().GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile);
                 for (pos=0;pos<count;pos++)
                 {
-                        int tileId=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile+pos*12+4);
+                        int tileId=CMemUtil::getMemUtil().GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile+pos*12+4);
                         if (tileId==99)
                         {
-                                int tileCharId = CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile+pos*12+4+4);
-                                if (tileCharId==self->tibiaId)
+                                int tileCharId = CMemUtil::getMemUtil().GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile+pos*12+4+4);
+                                if (tileCharId==self.tibiaId)
                                 {
-                                        delete self;
                                         prevSelfTileNr=cell;
                                         prevSelfTilePos=pos;
                                         return cell;
@@ -713,9 +680,8 @@ int CMemReader::mapGetSelfCellNr()
 			if (tileId == 99)
 			{
 				int tileCharId = maptile->items[pos].quantity;
-				if (tileCharId == self->tibiaId)
+				if (tileCharId == self.tibiaId)
 				{
-					delete self;
 					delete maptile;
 					prevSelfTileNr  = tileNr;
 					prevSelfTilePos = pos;
@@ -739,9 +705,8 @@ int CMemReader::mapGetSelfCellNr()
 			if (tileId == 99)
 			{
 				int tileCharId = maptile->items[pos].quantity;
-				if (tileCharId == self->tibiaId)
+				if (tileCharId == self.tibiaId)
 				{
-					delete self;
 					delete maptile;
 					prevSelfTileNr  = tileNr;
 					prevSelfTilePos = pos;
@@ -752,7 +717,6 @@ int CMemReader::mapGetSelfCellNr()
 		delete maptile;
 		maptile = NULL;
 	}
-	delete self;
 	return 0;
 }
 
@@ -826,7 +790,7 @@ int CMemReader::mapGetPointItemsCount(point p, int relToCell /*=-1*/)
 	int itemCell            = mapGetCoordCell(mapAddPointToCoord(mapGetCellCoord(relToCell), p));
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr                = mt.count;
-	int count               = CMemUtil::GetMemIntValue(addr, 0);//this address comes from Tibia itself and need not be shifted
+	int count               = CMemUtil::getMemUtil().GetMemIntValue(addr, 0);//this address comes from Tibia itself and need not be shifted
 	if (!mapIsPointInScope(p, relToCell))
 		return 0;
 	return count;
@@ -841,7 +805,7 @@ int CMemReader::mapGetPointItemId(point p, int stackNr, int relToCell /*=-1*/)
 	int itemCell            = mapGetCoordCell(mapAddPointToCoord(mapGetCellCoord(relToCell), p));
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr                = mt.items[stackNr].itemId;
-	int itemId              = CMemUtil::GetMemIntValue(addr, 0);//this address comes from Tibia itself and need not be shifted
+	int itemId              = CMemUtil::getMemUtil().GetMemIntValue(addr, 0);//this address comes from Tibia itself and need not be shifted
 	if (!mapIsPointInScope(p, relToCell))
 		return 0;
 	return itemId;
@@ -856,8 +820,8 @@ void CMemReader::mapSetPointItemId(point p, int stackNr, int tileId, int relToCe
 	int itemCell            = mapGetCoordCell(mapAddPointToCoord(mapGetCellCoord(relToCell), p));
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr                = mt.items[stackNr].itemId;
-	CMemUtil::SetMemIntValue(addr, tileId, 0);//this address comes from Tibia itself and need not be shifted
-	CMemUtil::SetMemIntValue(mt.items[stackNr].frameGroupPtr, 0, 0); //Erase frameGroupPtr so client won't try to continue move phase
+	CMemUtil::getMemUtil().SetMemIntValue(addr, tileId, 0);//this address comes from Tibia itself and need not be shifted
+	CMemUtil::getMemUtil().SetMemIntValue(mt.items[stackNr].frameGroupPtr, 0, 0); //Erase frameGroupPtr so client won't try to continue move phase
 }
 
 void CMemReader::mapSetPointItemsCount(point p, int count, int relToCell /*=-1*/)
@@ -869,16 +833,16 @@ void CMemReader::mapSetPointItemsCount(point p, int count, int relToCell /*=-1*/
 	int itemCell            = mapGetCoordCell(mapAddPointToCoord(mapGetCellCoord(relToCell), p));
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr                = mt.count;
-	CMemUtil::SetMemIntValue(addr, count, 0);//this address comes from Tibia itself and need not be shifted
+	CMemUtil::getMemUtil().SetMemIntValue(addr, count, 0);//this address comes from Tibia itself and need not be shifted
 }
 
-int CMemReader::dereference(int addr, int addBaseAddr /*=1*/)
+int CMemReader::dereference(int addr, bool addBaseAddr /*= true*/)
 {
 	static int lastAddrReq  = 0;
 	static int lastAddrResp = 0;
 	if (0 && lastAddrReq == addr)//Bad idea to return outdated address since Tibia now uses many variable memory addresses.
 		return lastAddrResp;
-	lastAddrResp = CMemUtil::GetMemIntValue(addr, addBaseAddr);
+	lastAddrResp = CMemUtil::getMemUtil().GetMemIntValue(addr, addBaseAddr);
 	lastAddrReq  = addr;
 	return lastAddrResp;
 }
@@ -894,11 +858,11 @@ int CMemReader::mapGetPointItemExtraInfo(point p, int stackNr, int extraType, in
 	int extraInfo           = 0;
 	//these address comes from Tibia itself and need not be shifted
 	if (extraType == 0)
-		extraInfo = CMemUtil::GetMemIntValue(mt.items[stackNr].itemId, 0);
+		extraInfo = CMemUtil::getMemUtil().GetMemIntValue(mt.items[stackNr].itemId, 0);
 	if (extraType == 1)
-		extraInfo = CMemUtil::GetMemIntValue(mt.items[stackNr].quantity, 0);
+		extraInfo = CMemUtil::getMemUtil().GetMemIntValue(mt.items[stackNr].quantity, 0);
 	if (extraType == 2)
-		extraInfo = CMemUtil::GetMemIntValue(mt.items[stackNr].extra, 0);
+		extraInfo = CMemUtil::getMemUtil().GetMemIntValue(mt.items[stackNr].extra, 0);
 	if (!mapIsPointInScope(p, relToCell))
 		return 0;
 	return extraInfo;
@@ -913,7 +877,7 @@ int CMemReader::mapGetPointStackIndex(point p, int stackNr, int relToCell /*=-1*
 	int itemCell            = mapGetCoordCell(mapAddPointToCoord(mapGetCellCoord(relToCell), p));
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr                = mt.stackind[stackNr];
-	int data                = CMemUtil::GetMemIntValue(addr, 0);//this address comes from Tibia itself and need not be shifted
+	int data                = CMemUtil::getMemUtil().GetMemIntValue(addr, 0);//this address comes from Tibia itself and need not be shifted
 	if (!mapIsPointInScope(p, relToCell))
 		return 0;
 	return data;
@@ -921,7 +885,7 @@ int CMemReader::mapGetPointStackIndex(point p, int stackNr, int relToCell /*=-1*
 
 long CMemReader::getCurrentTm()
 {
-	return CMemUtil::GetMemIntValue(m_memAddressCurrentTm);
+	return CMemUtil::getMemUtil().GetMemIntValue(m_memAddressCurrentTm);
 }
 
 void CMemReader::writeEnableRevealCName()
@@ -929,10 +893,10 @@ void CMemReader::writeEnableRevealCName()
 	unsigned char *buf = (unsigned char *)malloc(1);
 	//always jump over exclusion check
 	buf[0] = 0xEB;
-	CMemUtil::SetMemRange(m_memAddressRevealCName1, m_memAddressRevealCName1 + 1, (char *)buf);
+	CMemUtil::getMemUtil().SetMemRange(m_memAddressRevealCName1, m_memAddressRevealCName1 + 1, (char *)buf);
 	//always go through draw sequence
 	buf[0] = 0x00;
-	CMemUtil::SetMemRange(m_memAddressRevealCName2, m_memAddressRevealCName2 + 1, (char *)buf);
+	CMemUtil::getMemUtil().SetMemRange(m_memAddressRevealCName2, m_memAddressRevealCName2 + 1, (char *)buf);
 	free(buf);
 }
 
@@ -941,15 +905,15 @@ void CMemReader::writeDisableRevealCName()
 	unsigned char *buf = (unsigned char *)malloc(1);
 	//always jump over exclusion check
 	buf[0] = 0x75;
-	CMemUtil::SetMemRange(m_memAddressRevealCName1, m_memAddressRevealCName1 + 1, (char *)buf);
+	CMemUtil::getMemUtil().SetMemRange(m_memAddressRevealCName1, m_memAddressRevealCName1 + 1, (char *)buf);
 	//always go through draw sequence
 	buf[0] = 0x34;
-	CMemUtil::SetMemRange(m_memAddressRevealCName2, m_memAddressRevealCName2 + 1, (char *)buf);
+	CMemUtil::getMemUtil().SetMemRange(m_memAddressRevealCName2, m_memAddressRevealCName2 + 1, (char *)buf);
 	/*
 	   buf[0]=7;
-	   CMemUtil::SetMemRange(m_memAddressRevealCName3,m_memAddressRevealCName3+1,(char *)buf);
+	   CMemUtil::getMemUtil().SetMemRange(m_memAddressRevealCName3,m_memAddressRevealCName3+1,(char *)buf);
 	   buf[0]=5;
-	   CMemUtil::SetMemRange(m_memAddressRevealCName4,m_memAddressRevealCName4+1,(char *)buf);
+	   CMemUtil::getMemUtil().SetMemRange(m_memAddressRevealCName4,m_memAddressRevealCName4+1,(char *)buf);
 	 */
 	free(buf);
 }
@@ -957,8 +921,8 @@ void CMemReader::writeDisableRevealCName()
 void CMemReader::setRemainingTilesToGo(int val)
 {
 	int offset = CTibiaItem::getValueForConst("addrOffset");
-	CMemUtil::SetMemIntValue(m_memAddressTilesToGo, val);
-	CMemUtil::SetMemIntValue(offset + CTibiaItem::getValueForConst("addrCurrentTileToGo"), val);
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressTilesToGo, val);
+	CMemUtil::getMemUtil().SetMemIntValue(offset + CTibiaItem::getValueForConst("addrCurrentTileToGo"), val);
 }
 
 CTibiaMiniMap * CMemReader::readMiniMap(int nr)
@@ -969,12 +933,12 @@ CTibiaMiniMap * CMemReader::readMiniMap(int nr)
 
 	int offset = CTibiaItem::getValueForConst("addrMiniMapStart") + CTibiaItem::getValueForConst("lengthMiniMap") * nr;
 
-	retMap->x              = CMemUtil::GetMemIntValue(offset + 0);
-	retMap->y              = CMemUtil::GetMemIntValue(offset + 4);
-	retMap->z              = CMemUtil::GetMemIntValue(offset + 8);
-	retMap->segmentPrev    = CMemUtil::GetMemIntValue(offset + 12);
-	retMap->segmentNext    = CMemUtil::GetMemIntValue(offset + 16);
-	retMap->pointsAttached = CMemUtil::GetMemIntValue(offset + 131236);
+	retMap->x              = CMemUtil::getMemUtil().GetMemIntValue(offset + 0);
+	retMap->y              = CMemUtil::getMemUtil().GetMemIntValue(offset + 4);
+	retMap->z              = CMemUtil::getMemUtil().GetMemIntValue(offset + 8);
+	retMap->segmentPrev    = CMemUtil::getMemUtil().GetMemIntValue(offset + 12);
+	retMap->segmentNext    = CMemUtil::getMemUtil().GetMemIntValue(offset + 16);
+	retMap->pointsAttached = CMemUtil::getMemUtil().GetMemIntValue(offset + 131236);
 
 	return retMap;
 }
@@ -988,18 +952,18 @@ CTibiaMiniMapLabel * CMemReader::readMiniMapLabel(int mapNr, int pointNr)
 	CTibiaMiniMapLabel *retPoint = new CTibiaMiniMapLabel();
 
 	int mapOffset = CTibiaItem::getValueForConst("addrMiniMapStart") + CTibiaItem::getValueForConst("lengthMiniMap") * mapNr;
-	if (pointNr >= CMemUtil::GetMemIntValue(mapOffset + 131236))
+	if (pointNr >= CMemUtil::getMemUtil().GetMemIntValue(mapOffset + 131236))
 	{
 		// point out of range exception
 		delete retPoint;
 		return NULL;
 	}
-	int mapPointAddr   = CMemUtil::GetMemIntValue(mapOffset + 131232);
+	int mapPointAddr   = CMemUtil::getMemUtil().GetMemIntValue(mapOffset + 131232);
 	int mapPointOffset = mapPointAddr + pointNr * CTibiaItem::getValueForConst("lengthMiniMapLabel");
-	retPoint->x    = CMemUtil::GetMemIntValue(mapPointOffset + 0, 0);
-	retPoint->y    = CMemUtil::GetMemIntValue(mapPointOffset + 4, 0);
-	retPoint->type = CMemUtil::GetMemIntValue(mapPointOffset + 8, 0);
-	CMemUtil::GetMemRange(mapPointOffset + 12, mapPointOffset + 12 + 100, retPoint->desc, 0);
+	retPoint->x    = CMemUtil::getMemUtil().GetMemIntValue(mapPointOffset + 0, 0);
+	retPoint->y    = CMemUtil::getMemUtil().GetMemIntValue(mapPointOffset + 4, 0);
+	retPoint->type = CMemUtil::getMemUtil().GetMemIntValue(mapPointOffset + 8, 0);
+	CMemUtil::getMemUtil().GetMemRange(mapPointOffset + 12, mapPointOffset + 12 + 100, retPoint->desc, 0);
 
 	return retPoint;
 }
@@ -1013,7 +977,7 @@ CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int x, int y, int z)
 		CTibiaMiniMap *map = readMiniMap(nr);
 		if (map->z == z && map->x == (int)(x / 256) && map->y == (int)(y / 256))
 		{
-			CTibiaMiniMapPoint *miniMapPoint = new CTibiaMiniMapPoint(x, y, z, (unsigned char)CMemUtil::GetMemIntValue(mapOffset + (y - map->y * 256) + (x - map->x * 256) * 256) % 256, (unsigned char)CMemUtil::GetMemIntValue(mapOffset + (y - map->y * 256) + (x - map->x * 256) * 256 + 256 * 256) % 256);
+			CTibiaMiniMapPoint *miniMapPoint = new CTibiaMiniMapPoint(x, y, z, (unsigned char)CMemUtil::getMemUtil().GetMemIntValue(mapOffset + (y - map->y * 256) + (x - map->x * 256) * 256) % 256, (unsigned char)CMemUtil::getMemUtil().GetMemIntValue(mapOffset + (y - map->y * 256) + (x - map->x * 256) * 256 + 256 * 256) % 256);
 			delete map;
 			delete bogusPoint;
 			return miniMapPoint;
@@ -1079,10 +1043,10 @@ void CMemReader::writeMiniMapPoint(int x, int y, int z, int col, int spd)
 			char colour2[1];
 			char speed2[1];
 
-			CMemUtil::SetMemRange(mapOffset + pointOffset, mapOffset + pointOffset + 1, (char*)colour, 1);
-			CMemUtil::GetMemRange(mapOffset + pointOffset, mapOffset + pointOffset + 1, (char*)colour2, 1);
-			CMemUtil::SetMemRange(mapOffset + 65536 + pointOffset, mapOffset + 65536 + pointOffset + 1, (char*)speed, 1);
-			CMemUtil::GetMemRange(mapOffset + 65536 + pointOffset, mapOffset + 65536 + pointOffset + 1, (char*)speed2, 1);
+			CMemUtil::getMemUtil().SetMemRange(mapOffset + pointOffset, mapOffset + pointOffset + 1, (char*)colour, 1);
+			CMemUtil::getMemUtil().GetMemRange(mapOffset + pointOffset, mapOffset + pointOffset + 1, (char*)colour2, 1);
+			CMemUtil::getMemUtil().SetMemRange(mapOffset + 65536 + pointOffset, mapOffset + 65536 + pointOffset + 1, (char*)speed, 1);
+			CMemUtil::getMemUtil().GetMemRange(mapOffset + 65536 + pointOffset, mapOffset + 65536 + pointOffset + 1, (char*)speed2, 1);
 			//sprintf(buf,"made:(%d,%d),(%x,%x)",colour2[0],speed2[0],mapOffset+pointOffset,mapOffset+65536+pointOffset);
 			//AfxMessageBox(buf);
 			delete map;
@@ -1136,7 +1100,7 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
 {
 	DWORD procId;
 	GetWindowThreadProcessId(hwnd, &procId);
-	if (procId == CMemUtil::m_globalProcessId)
+	if (procId == CMemUtil::getMemUtil().getGlobalProcessId())
 	{
 		CWnd *wnd = new CWnd();
 		wnd->Attach(hwnd);
@@ -1167,22 +1131,22 @@ void CMemReader::setMainTrayText(char *text)
 
 int CMemReader::getPlayerModeAttackType()
 {
-	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrModeAttackType"));
+	return CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrModeAttackType"));
 }
 
 int CMemReader::getPlayerModeFollow()
 {
-	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrModeFollow"));
+	return CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrModeFollow"));
 }
 
 int CMemReader::getPlayerModeAttackPlayers()
 {
-	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrModeAttackPlayers")) & 1;
+	return CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrModeAttackPlayers")) & 1;
 }
 
 int CMemReader::getPlayerModePVP()
 {
-	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrModePVP")) & 1;
+	return CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrModePVP")) & 1;
 }
 
 char * CMemReader::getOpenWindowName()
@@ -1190,53 +1154,53 @@ char * CMemReader::getOpenWindowName()
 	int ptr2 = 0;
 	static char nameBuf[128];
 	memset(nameBuf, 0, 128);
-	ptr2 = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrCurrentWindow"));
+	ptr2 = CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrCurrentWindow"));
 	if (ptr2)
-		CMemUtil::GetMemRange(ptr2 + 84, ptr2 + 84 + 128, nameBuf, 0);//this address comes from Tibia itself and need not be shifted
+		CMemUtil::getMemUtil().GetMemRange(ptr2 + 84, ptr2 + 84 + 128, nameBuf, 0);//this address comes from Tibia itself and need not be shifted
 	return nameBuf;
 }
 
 int CMemReader::getConnectionState()
 {
-	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrConnectionState"));
+	return CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrConnectionState"));
 }
 
 int CMemReader::isLoggedIn()
 {
 	DWORD addr = CTibiaItem::getValueForConst("addrConnectionState");
-	return CMemUtil::GetMemIntValue(addr) == 11;
+	return CMemUtil::getMemUtil().GetMemIntValue(addr) == 11;
 }
 
 void CMemReader::setXRayValues(int v1, int v2)
 {
-	CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrXRay1"), v1);
-	CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrXRay2"), v2);
+	CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrXRay1"), v1);
+	CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrXRay2"), v2);
 }
 
 int CMemReader::getXRayValue1()
 {
-	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrXRay1"));
+	return CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrXRay1"));
 }
 
 int CMemReader::getXRayValue2()
 {
-	return CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrXRay2"));
+	return CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrXRay2"));
 }
 
 void CMemReader::writeCreatureDeltaXY(int creatureNr, int deltaX, int deltaY)
 {
-	CMemUtil::SetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 52, deltaX);
-	CMemUtil::SetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 48, deltaY);
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 52, deltaX);
+	CMemUtil::getMemUtil().SetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 48, deltaY);
 }
 
 int CMemReader::getCreatureDeltaX(int creatureNr)
 {
-	return CMemUtil::GetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 52);
+	return CMemUtil::getMemUtil().GetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 52);
 }
 
 int CMemReader::getCreatureDeltaY(int creatureNr)
 {
-	return CMemUtil::GetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 48);
+	return CMemUtil::getMemUtil().GetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 48);
 }
 
 int CMemReader::itemOnTopIndex(int x, int y, int z /*=0*/)//Now uses Tibia's own indexing system found in memory to determine this
