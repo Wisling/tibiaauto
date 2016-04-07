@@ -37,17 +37,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-
-/////////////////////////////////////////////////////////////////////////////
-// Cmod_fpsApp
-
-BEGIN_MESSAGE_MAP(Cmod_fpsApp, CWinApp)
-//{{AFX_MSG_MAP(Cmod_fpsApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 

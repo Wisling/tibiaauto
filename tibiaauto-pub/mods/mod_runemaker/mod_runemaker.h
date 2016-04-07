@@ -21,23 +21,11 @@
 // See mod_runemaker.cpp for the implementation of this class
 //
 
-class CMod_runemakerApp : public CWinApp, public IModuleInterface
+class CMod_runemakerApp : public IModuleInterface
 {
 public:
 	CMod_runemakerApp();
 	~CMod_runemakerApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_runemakerApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_runemakerApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	void getNewSkin(CSkin);
 	void resetMultiParamAccess(const char *paramName);

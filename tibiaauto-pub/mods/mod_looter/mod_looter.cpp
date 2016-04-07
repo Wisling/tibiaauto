@@ -66,16 +66,6 @@ static char THIS_FILE[] = __FILE__;
 //
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_looterApp
-
-BEGIN_MESSAGE_MAP(CMod_looterApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_looterApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
 int containerNotFull(int containerNr)

@@ -38,18 +38,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-
-/////////////////////////////////////////////////////////////////////////////
-// CMod_sorterApp
-
-BEGIN_MESSAGE_MAP(CMod_sorterApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_sorterApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-//int initializeLootBags();
 int isStackable(int, int);
 
 /////////////////////////////////////////////////////////////////////////////

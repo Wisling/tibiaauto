@@ -54,18 +54,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-/////////////////////////////////////////////////////////////////////////////
-// CMod_cavebotApp
-
-BEGIN_MESSAGE_MAP(CMod_cavebotApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_cavebotApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-// DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-
 // NOTE: those delete trampolines are used to ensure 'secure' delete operation
 //       and force revealing any memory issues faster
 template <class T>

@@ -43,16 +43,6 @@ CToolBankerState globalBankerState = CToolBankerState_notRunning;
 int GUIx                           = 0, GUIy = 0, GUIz = 0;
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_bankerApp
-
-BEGIN_MESSAGE_MAP(CMod_bankerApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_bankerApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
 int RandomTimeBankerSay(int length)

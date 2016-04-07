@@ -63,16 +63,6 @@ static char THIS_FILE[] = __FILE__;
 int numSpellcasterCreatures = 0;
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_spellcasterApp
-
-BEGIN_MESSAGE_MAP(CMod_spellcasterApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_spellcasterApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool functions
 static map<int*, int> setMana;
 static map<int*, int> setHp;

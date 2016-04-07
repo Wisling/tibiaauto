@@ -133,7 +133,7 @@ void LifeDialog::OnToolSpellcasterSio()
 
 void LifeDialog::OnToolSpellcasterHealList()
 {
-	CHealList *dialog = new CHealList(memHealList);
+	CHealList *dialog = new CHealList(memHealList, this);
 	dialog->DoModal();
 	memHealList = dialog->healList;
 	delete dialog;

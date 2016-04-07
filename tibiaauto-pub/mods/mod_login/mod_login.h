@@ -21,23 +21,11 @@
 // See mod_login.cpp for the implementation of this class
 //
 
-class CMod_loginApp : public CWinApp, public IModuleInterface
+class CMod_loginApp : public IModuleInterface
 {
 public:
 	CMod_loginApp();
 	~CMod_loginApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_loginApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_loginApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	void getNewSkin(CSkin);
 	int validateConfig(int showAlerts);

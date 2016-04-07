@@ -61,20 +61,6 @@ static char THIS_FILE[] = __FILE__;
 //
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_showmapApp
-
-BEGIN_MESSAGE_MAP(CMod_showmapApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_showmapApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// Tool functions
-
-
-/////////////////////////////////////////////////////////////////////////////
 // CMod_showmapApp construction
 
 CMod_showmapApp::CMod_showmapApp()

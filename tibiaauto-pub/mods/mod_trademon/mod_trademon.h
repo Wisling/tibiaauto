@@ -22,23 +22,11 @@
 // See mod_trademon.cpp for the implementation of this class
 //
 
-class CMod_trademonApp : public CWinApp, public IModuleInterface
+class CMod_trademonApp : public IModuleInterface
 {
 public:
 	CMod_trademonApp();
 	~CMod_trademonApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_trademonApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_trademonApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	void getNewSkin(CSkin);
 	int validateConfig(int showAlerts);

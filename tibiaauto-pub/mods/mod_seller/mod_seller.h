@@ -23,23 +23,11 @@
 // See mod_seller.cpp for the implementation of this class
 //
 
-class CMod_SellerApp : public CWinApp, public IModuleInterface
+class CMod_SellerApp : public IModuleInterface
 {
 public:
 	CMod_SellerApp();
 	~CMod_SellerApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_SellerApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_SellerApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	void getNewSkin(CSkin);
 	int validateConfig(int showAlerts);

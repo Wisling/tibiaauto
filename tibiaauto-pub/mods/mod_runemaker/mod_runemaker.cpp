@@ -44,17 +44,6 @@ static char THIS_FILE[] = __FILE__;
 #define MAKE 1
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_runemakerApp
-
-BEGIN_MESSAGE_MAP(CMod_runemakerApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_runemakerApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-// DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-
-/////////////////////////////////////////////////////////////////////////////
 const int numCont = 16;//"maxContainers"
 int openContTime[numCont];
 const int minSecondsOpen = 20;

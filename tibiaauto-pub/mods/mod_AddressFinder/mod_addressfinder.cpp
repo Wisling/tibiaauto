@@ -40,20 +40,6 @@ static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
 using namespace std;
-
-/////////////////////////////////////////////////////////////////////////////
-// CMod_addressfinderApp
-
-BEGIN_MESSAGE_MAP(CMod_addressfinderApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_addressfinderApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// Tool functions
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 

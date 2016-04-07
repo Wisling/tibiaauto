@@ -21,23 +21,11 @@
 // See mod_fisher.cpp for the implementation of this class
 //
 
-class CMod_fisherApp : public CWinApp, public IModuleInterface
+class CMod_fisherApp : public IModuleInterface
 {
 public:
 	CMod_fisherApp();
 	~CMod_fisherApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_fisherApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_fisherApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	void getNewSkin(CSkin);
 	int validateConfig(int showAlerts);

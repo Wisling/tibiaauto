@@ -46,16 +46,6 @@ static char THIS_FILE[] = __FILE__;
 
 
 time_t loginTime = 0;
-/////////////////////////////////////////////////////////////////////////////
-// CMod_loginApp
-
-BEGIN_MESSAGE_MAP(CMod_loginApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_loginApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
 extern CRITICAL_SECTION QueueCriticalSection;
 extern char* queue2Message;
 

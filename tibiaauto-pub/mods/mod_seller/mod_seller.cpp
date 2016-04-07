@@ -50,16 +50,6 @@ CToolSellerState globalSellerState = CToolSellerState_notRunning;
 int GUIx                           = 0, GUIy = 0, GUIz = 0, GUINum = 0;
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_SellerApp
-
-BEGIN_MESSAGE_MAP(CMod_SellerApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_SellerApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
 int RandomTimeSellerSay(int length)

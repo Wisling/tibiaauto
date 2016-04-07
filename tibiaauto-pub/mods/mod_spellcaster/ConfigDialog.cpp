@@ -36,12 +36,12 @@ CConfigDialog::CConfigDialog(CMod_spellcasterApp *app, CWnd* pParent /*=NULL*/)
 	m_DialogID[4] = IDD_AOE_DIALOG;
 	m_DialogID[5] = IDD_TIMED_DIALOG;
 
-	m_Dialog[0] = new LifeDialog;
-	m_Dialog[1] = new ManaDialog;
-	m_Dialog[2] = new SummonDialog;
-	m_Dialog[3] = new StrikeDialog;
-	m_Dialog[4] = new AOEDialog;
-	m_Dialog[5] = new TimedDialog;
+	m_Dialog[0] = new LifeDialog(this);
+	m_Dialog[1] = new ManaDialog(this);
+	m_Dialog[2] = new SummonDialog(this);
+	m_Dialog[3] = new StrikeDialog(this);
+	m_Dialog[4] = new AOEDialog(this);
+	m_Dialog[5] = new TimedDialog(this);
 
 	m_nPageCount = 6;
 }

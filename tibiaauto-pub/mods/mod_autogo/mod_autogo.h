@@ -32,23 +32,11 @@ struct tibiaMessage
 int actionPos2ID(int);
 struct tibiaMessage *triggerMessage();
 
-class CMod_autogoApp : public CWinApp, public IModuleInterface
+class CMod_autogoApp : public IModuleInterface
 {
 public:
 	CMod_autogoApp();
 	~CMod_autogoApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_autogoApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_autogoApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	void getNewSkin(CSkin);
 	void resetMultiParamAccess(const char *paramName);

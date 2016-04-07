@@ -27,21 +27,11 @@ struct CGUITreeItemData {
 	}
 };
 
-class CMod_itemconfigApp : public CWinApp, public IModuleInterface
+class CMod_itemconfigApp : public IModuleInterface
 {
 public:
 	CMod_itemconfigApp();
 	~CMod_itemconfigApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_itemconfigApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_itemconfigApp)
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	void getNewSkin(CSkin);
 	// functions from IModuleInterface

@@ -25,23 +25,11 @@ extern DWORD addrFps;
 // See mod_fps.cpp for the implementation of this class
 //
 
-class Cmod_fpsApp : public CWinApp, public IModuleInterface
+class Cmod_fpsApp : public IModuleInterface
 {
 public:
 	Cmod_fpsApp();
 	~Cmod_fpsApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(Cmod_lightApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(Cmod_lightApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	void getNewSkin(CSkin);
 	int validateConfig(int showAlerts);

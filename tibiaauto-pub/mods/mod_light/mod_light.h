@@ -21,23 +21,11 @@
 // See mod_light.cpp for the implementation of this class
 //
 
-class Cmod_lightApp : public CWinApp, public IModuleInterface
+class Cmod_lightApp : public IModuleInterface
 {
 public:
 	Cmod_lightApp();
 	~Cmod_lightApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(Cmod_lightApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(Cmod_lightApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	void getNewSkin(CSkin);
 	int validateConfig(int showAlerts);

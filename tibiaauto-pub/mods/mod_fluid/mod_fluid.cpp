@@ -46,16 +46,6 @@ static char THIS_FILE[] = __FILE__;
 #define MAX_DRINK_FAILS 1000
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_fluidApp
-
-BEGIN_MESSAGE_MAP(CMod_fluidApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_fluidApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
 int drinkFails = 0;

@@ -21,23 +21,11 @@
 // See mod_antylogout.cpp for the implementation of this class
 //
 
-class CMod_antylogoutApp : public CWinApp, public IModuleInterface
+class CMod_antylogoutApp : public IModuleInterface
 {
 public:
 	CMod_antylogoutApp();
 	~CMod_antylogoutApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_antylogoutApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_antylogoutApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	// functions from IModuleInterface
 	char * getName();
