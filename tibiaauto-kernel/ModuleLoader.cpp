@@ -16,9 +16,7 @@ static char THIS_FILE[] = __FILE__;
 // Static definitions
 //////////////////////////////////////////////////////////////////////
 
-IModuleInterface ** CModuleLoader::allModules = NULL;
-int CModuleLoader::allModulesCount        = 0;
-int CModuleLoader::allModulesSize         = 0;
+ModuleMap CModuleLoader::loadedModules;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -72,13 +70,8 @@ IModuleInterface* CModuleLoader::LoadModule(char *moduleName, int pathIsAbsolute
 	}
 	IModuleInterface* ret = factoryFun();
 
-	// put the module onto our static list
-	if (allModulesCount == allModulesSize)
-	{
-		allModulesSize = allModulesSize * 2 + 3;
-		allModules = (IModuleInterface **)realloc(allModules, sizeof(IModuleInterface *) * allModulesSize);
-	}
-	allModules[allModulesCount++] = ret;
+	// put the module onto our list
+	loadedModules[moduleName] = ret;
 	ret->setModuleName(moduleName);
 	ret->init();
 	// 30 is the current kernel version

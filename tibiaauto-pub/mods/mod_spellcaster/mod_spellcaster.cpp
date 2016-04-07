@@ -868,7 +868,7 @@ void CMod_spellcasterApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_spellcasterApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_spellcasterApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "mana"))
 		m_configData->mana = atoi(paramValue);
@@ -1022,7 +1022,7 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName, char *paramValue)
 	}
 }
 
-char *CMod_spellcasterApp::saveConfigParam(char *paramName)
+char *CMod_spellcasterApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -1186,136 +1186,77 @@ char *CMod_spellcasterApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_spellcasterApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "mana";
-	case 1:
-		return "manaMana";
-	case 2:
-		return "manaSpell";
-	case 3:
-		return "life";
-	case 4:
-		return "lifeHp";
-	case 5:
-		return "lifeSpell";
-	case 6:
-		return "lifeSpellMana";
-	case 7:
-		return "summon";
-	case 8:
-		return "summonLessThan";
-	case 9:
-		return "summonName";
-	case 10:
-		return "strike";
-	case 11:
-		return "ExoriFlam";
-	case 12:
-		return "ExoriFrigo";
-	case 13:
-		return "ExoriMort";
-	case 14:
-		return "ExoriTera";
-	case 15:
-		return "ExoriVis";
-	case 16:
-		return "manaStrike";
-	case 17:
-		return "customSpell";
-	case 18:
-		return "exuraSpell";
-	case 19:
-		return "exuraHp";
-	case 20:
-		return "exuraSpellMana";
-	case 21:
-		return "granSpell";
-	case 22:
-		return "granHp";
-	case 23:
-		return "granSpellMana";
-	case 24:
-		return "vitaSpell";
-	case 25:
-		return "vitaHp";
-	case 26:
-		return "vitaSpellMana";
-	case 27:
-		return "defaultStrikeSpell";
-	case 28:
-		return "summonMana";
-	case 29:
-		return "strikeSpellHpMin";
-	case 30:
-		return "poisonSpell";
-	case 31:
-		return "paralysisSpell";
-	case 32:
-		return "paralysisIco";
-	case 33:
-		return "minPoisonDmg";
-	case 34:
-		return "ExoriCon";
-	case 35:
-		return "ExoriSan";
-	case 36:
-		return "ExoriHur";
-	case 37:
-		return "aoe";
-	case 38:
-		return "Exori";
-	case 39:
-		return "ExoriGran";
-	case 40:
-		return "ExoriMas";
-	case 41:
-		return "ExoriMasSan";
-	case 42:
-		return "ExevoFlamHur";
-	case 43:
-		return "ExevoFrigoHur";
-	case 44:
-		return "ExevoTeraHur";
-	case 45:
-		return "ExevoVisHur";
-	case 46:
-		return "ExevoVisLux";
-	case 47:
-		return "ExevoGranVisLux";
-	case 48:
-		return "ExevoGranMasVis";
-	case 49:
-		return "ExevoGranMasFlam";
-	case 50:
-		return "ExevoGranMasTera";
-	case 51:
-		return "ExevoGranMasFrigo";
-	case 52:
-		return "sioSpell";
-	case 53:
-		return "sioSpellMana";
-	case 54:
-		return "healList";
-	case 55:
-		return "aoeAffect";
-	case 56:
-		return "DisableWarning";
-	case 57:
-		return "randomCast";
-	case 58:
-		return "timedSpell";
-	case 59:
-		return "timedSpellList";
-	default:
-		return NULL;
-	}
+	"mana",
+	"manaMana",
+	"manaSpell",
+	"life",
+	"lifeHp",
+	"lifeSpell",
+	"lifeSpellMana",
+	"summon",
+	"summonLessThan",
+	"summonName",
+	"strike",
+	"ExoriFlam",
+	"ExoriFrigo",
+	"ExoriMort",
+	"ExoriTera",
+	"ExoriVis",
+	"manaStrike",
+	"customSpell",
+	"exuraSpell",
+	"exuraHp",
+	"exuraSpellMana",
+	"granSpell",
+	"granHp",
+	"granSpellMana",
+	"vitaSpell",
+	"vitaHp",
+	"vitaSpellMana",
+	"defaultStrikeSpell",
+	"summonMana",
+	"strikeSpellHpMin",
+	"poisonSpell",
+	"paralysisSpell",
+	"paralysisIco",
+	"minPoisonDmg",
+	"ExoriCon",
+	"ExoriSan",
+	"ExoriHur",
+	"aoe",
+	"Exori",
+	"ExoriGran",
+	"ExoriMas",
+	"ExoriMasSan",
+	"ExevoFlamHur",
+	"ExevoFrigoHur",
+	"ExevoTeraHur",
+	"ExevoVisHur",
+	"ExevoVisLux",
+	"ExevoGranVisLux",
+	"ExevoGranMasVis",
+	"ExevoGranMasFlam",
+	"ExevoGranMasTera",
+	"ExevoGranMasFrigo",
+	"sioSpell",
+	"sioSpellMana",
+	"healList",
+	"aoeAffect",
+	"DisableWarning",
+	"randomCast",
+	"timedSpell",
+	"timedSpellList",
+	NULL,
+};
+
+const char **CMod_spellcasterApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
-int CMod_spellcasterApp::isMultiParam(char *paramName)
+int CMod_spellcasterApp::isMultiParam(const char *paramName)
 {
 	if (!strcmp(paramName, "healList"))
 		return 1;
@@ -1324,7 +1265,7 @@ int CMod_spellcasterApp::isMultiParam(char *paramName)
 	return 0;
 }
 
-void CMod_spellcasterApp::resetMultiParamAccess(char *paramName)
+void CMod_spellcasterApp::resetMultiParamAccess(const char *paramName)
 {
 	if (!strcmp(paramName, "healList"))
 		currentPos = 0;

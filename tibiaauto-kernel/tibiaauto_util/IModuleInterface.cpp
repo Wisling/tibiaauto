@@ -66,27 +66,27 @@ void IModuleInterface::resetConfig()
 
 }
 
-void IModuleInterface::loadConfigParam(char *paramName, char *paramValue)
+void IModuleInterface::loadConfigParam(const char *paramName, char *paramValue)
 {
 
 }
 
-char * IModuleInterface::saveConfigParam(char *paramName)
+char * IModuleInterface::saveConfigParam(const char *paramName)
 {
 	return "";
 }
 
-char * IModuleInterface::getConfigParamName(int nr)
+const char ** IModuleInterface::getConfigParamNames()
 {
 	return NULL;
 }
 
-int IModuleInterface::isMultiParam(char *paramName)
+int IModuleInterface::isMultiParam(const char *paramName)
 {
 	return 0;
 }
 
-void IModuleInterface::resetMultiParamAccess(char *paramName)
+void IModuleInterface::resetMultiParamAccess(const char *paramName)
 {
 
 }

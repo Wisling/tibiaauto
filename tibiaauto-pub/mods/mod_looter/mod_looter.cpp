@@ -523,7 +523,7 @@ void CMod_looterApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_looterApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_looterApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "mode/cont1"))
 		m_configData->m_mode1 = atoi(paramValue);
@@ -563,7 +563,7 @@ void CMod_looterApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->m_eatFromCorpse = atoi(paramValue);
 }
 
-char *CMod_looterApp::saveConfigParam(char *paramName)
+char *CMod_looterApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -608,47 +608,31 @@ char *CMod_looterApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_looterApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "mode/cont1";
-	case 1:
-		return "mode/cont2";
-	case 2:
-		return "mode/cont3";
-	case 3:
-		return "mode/cont4";
-	case 4:
-		return "mode/cont5";
-	case 5:
-		return "mode/cont6";
-	case 6:
-		return "mode/cont7";
-	case 7:
-		return "mode/cont8";
-	case 8:
-		return "mode/cont9";
-	case 9:
-		return "mode/cont10";
-	case 10:
-		return "loot/worms";
-	case 11:
-		return "loot/gp";
-	case 12:
-		return "loot/food";
-	case 13:
-		return "loot/custom";
-	case 14:
-		return "other/autoOpen";
-	case 15:
-		return "loot/inDepot";
-	case 16:
-		return "loot/eatFromCorpse";
-	default:
-		return NULL;
-	}
+	"mode/cont1",
+	"mode/cont2",
+	"mode/cont3",
+	"mode/cont4",
+	"mode/cont5",
+	"mode/cont6",
+	"mode/cont7",
+	"mode/cont8",
+	"mode/cont9",
+	"mode/cont10",
+	"loot/worms",
+	"loot/gp",
+	"loot/food",
+	"loot/custom",
+	"other/autoOpen",
+	"loot/inDepot",
+	"loot/eatFromCorpse",
+	NULL,
+};
+
+const char **CMod_looterApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_looterApp::getNewSkin(CSkin newSkin)

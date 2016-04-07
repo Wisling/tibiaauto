@@ -41,7 +41,7 @@ public:
 	void showConfigDialog();
 	char *getVersion();
 	void resetConfig();
-	char *getConfigParamName(int nr);
+	const char **getConfigParamNames();
 private:
 	CConfigData *m_configData;
 	CToolMonsterShow *m_infoDialog;

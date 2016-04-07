@@ -456,7 +456,7 @@ void CMod_SellerApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_SellerApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_SellerApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "StopBySeller"))
 		m_configData->stopBySeller = atoi(paramValue);
@@ -636,7 +636,7 @@ void CMod_SellerApp::loadConfigParam(char *paramName, char *paramValue)
 	}
 }
 
-char *CMod_SellerApp::saveConfigParam(char *paramName)
+char *CMod_SellerApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = '\0';
@@ -819,93 +819,56 @@ char *CMod_SellerApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_SellerApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "Seller1/Name";
-	case 1:
-		return "Seller1/Pos";
-	case 2:
-		return "Seller1/SaleItems/Name";
-	case 3:
-		return "Seller1/SaleItems/SaleTriggerQuantity";
-	case 4:
-		return "Seller2/Name";
-	case 5:
-		return "Seller2/Pos";
-	case 6:
-		return "Seller2/SaleItems/Name";
-	case 7:
-		return "Seller2/SaleItems/SaleTriggerQuantity";
-	case 8:
-		return "Seller3/Name";
-	case 9:
-		return "Seller3/Pos";
-	case 10:
-		return "Seller3/SaleItems/Name";
-	case 11:
-		return "Seller3/SaleItems/SaleTriggerQuantity";
-	case 12:
-		return "Seller4/Name";
-	case 13:
-		return "Seller4/Pos";
-	case 14:
-		return "Seller4/SaleItems/Name";
-	case 15:
-		return "Seller4/SaleItems/SaleTriggerQuantity";
-	case 16:
-		return "Seller1/BuyItems/Name";
-	case 17:
-		return "Seller1/BuyItems/BuyQuantity";
-	case 18:
-		return "Seller1/BuyItems/BuyTriggerQuantity";
-	case 19:
-		return "Seller1/BuyItems/BuyPrice";
-	case 20:
-		return "Seller2/BuyItems/Name";
-	case 21:
-		return "Seller2/BuyItems/BuyQuantity";
-	case 22:
-		return "Seller2/BuyItems/BuyTriggerQuantity";
-	case 23:
-		return "Seller2/BuyItems/BuyPrice";
-	case 24:
-		return "Seller3/BuyItems/Name";
-	case 25:
-		return "Seller3/BuyItems/BuyQuantity";
-	case 26:
-		return "Seller3/BuyItems/BuyTriggerQuantity";
-	case 27:
-		return "Seller3/BuyItems/BuyPrice";
-	case 28:
-		return "Seller4/BuyItems/Name";
-	case 29:
-		return "Seller4/BuyItems/BuyQuantity";
-	case 30:
-		return "Seller4/BuyItems/BuyTriggerQuantity";
-	case 31:
-		return "Seller4/BuyItems/BuyPrice";
-	case 32:
-		return "SellOnCap";
-	case 33:
-		return "SellWhen";
-	case 34:
-		return "SellOnSpace";
-	case 35:
-		return "ModPriority";
-	case 36:
-		return "StopBySeller";
-	case 37:
-		return "SuggestBanker";
+	"Seller1/Name",
+	"Seller1/Pos",
+	"Seller1/SaleItems/Name",
+	"Seller1/SaleItems/SaleTriggerQuantity",
+	"Seller2/Name",
+	"Seller2/Pos",
+	"Seller2/SaleItems/Name",
+	"Seller2/SaleItems/SaleTriggerQuantity",
+	"Seller3/Name",
+	"Seller3/Pos",
+	"Seller3/SaleItems/Name",
+	"Seller3/SaleItems/SaleTriggerQuantity",
+	"Seller4/Name",
+	"Seller4/Pos",
+	"Seller4/SaleItems/Name",
+	"Seller4/SaleItems/SaleTriggerQuantity",
+	"Seller1/BuyItems/Name",
+	"Seller1/BuyItems/BuyQuantity",
+	"Seller1/BuyItems/BuyTriggerQuantity",
+	"Seller1/BuyItems/BuyPrice",
+	"Seller2/BuyItems/Name",
+	"Seller2/BuyItems/BuyQuantity",
+	"Seller2/BuyItems/BuyTriggerQuantity",
+	"Seller2/BuyItems/BuyPrice",
+	"Seller3/BuyItems/Name",
+	"Seller3/BuyItems/BuyQuantity",
+	"Seller3/BuyItems/BuyTriggerQuantity",
+	"Seller3/BuyItems/BuyPrice",
+	"Seller4/BuyItems/Name",
+	"Seller4/BuyItems/BuyQuantity",
+	"Seller4/BuyItems/BuyTriggerQuantity",
+	"Seller4/BuyItems/BuyPrice",
+	"SellOnCap",
+	"SellWhen",
+	"SellOnSpace",
+	"ModPriority",
+	"StopBySeller",
+	"SuggestBanker",
+	NULL,
+};
 
-	default:
-		return NULL;
-	}
+const char **CMod_SellerApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
-int CMod_SellerApp::isMultiParam(char *paramName)
+
+int CMod_SellerApp::isMultiParam(const char *paramName)
 {
 	if (!strcmp(paramName, "Seller1/SaleItems/Name"))
 		return 1;
@@ -958,7 +921,7 @@ int CMod_SellerApp::isMultiParam(char *paramName)
 	return 0;
 }
 
-void CMod_SellerApp::resetMultiParamAccess(char *paramName)
+void CMod_SellerApp::resetMultiParamAccess(const char *paramName)
 {
 	if (!strcmp(paramName, "Seller1/SaleItems/Name"))
 		currentPos = 0;

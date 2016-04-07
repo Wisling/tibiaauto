@@ -31,7 +31,7 @@ CConfigCreatorUtilMultiParams::~CConfigCreatorUtilMultiParams()
 		free(paramsList[i]);
 }
 
-int CConfigCreatorUtilMultiParams::isKnownMultiparam(char *name)
+int CConfigCreatorUtilMultiParams::isKnownMultiParam(const char *name)
 {
 	int i;
 	for (i = 0; i < paramsCount; i++)
@@ -42,7 +42,7 @@ int CConfigCreatorUtilMultiParams::isKnownMultiparam(char *name)
 	return 0;
 }
 
-void CConfigCreatorUtilMultiParams::registerMultiparam(char *name)
+void CConfigCreatorUtilMultiParams::registerMultiParam(const char *name)
 {
 	if (paramsCount >= MAX_MULTIPARAMS)
 		return;

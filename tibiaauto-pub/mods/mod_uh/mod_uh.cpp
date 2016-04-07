@@ -426,7 +426,7 @@ void CMod_uhApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_uhApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_uhApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "self/fallback"))
 		m_configData->m_fallback = atoi(paramValue);
@@ -457,7 +457,7 @@ void CMod_uhApp::loadConfigParam(char *paramName, char *paramValue)
 	}
 }
 
-char *CMod_uhApp::saveConfigParam(char *paramName)
+char *CMod_uhApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -485,41 +485,33 @@ char *CMod_uhApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_uhApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "self/fallback";
-	case 1:
-		return "self/hotkey";
-	case 2:
-		return "self/runetype";
-	case 3:
-		return "other/sleepAfter";
-	case 4:
-		return "self/borderline";
-	case 5:
-		return "grp/borderline";
-	case 6:
-		return "grp/fallback";
-	case 7:
-		return "grp/runetype";
-	case 8:
-		return "grp/member";
-	default:
-		return NULL;
-	}
+	"self/fallback",
+	"self/hotkey",
+	"self/runetype",
+	"other/sleepAfter",
+	"self/borderline",
+	"grp/borderline",
+	"grp/fallback",
+	"grp/runetype",
+	"grp/member",
+	NULL,
+};
+
+const char **CMod_uhApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
-int CMod_uhApp::isMultiParam(char *paramName)
+int CMod_uhApp::isMultiParam(const char *paramName)
 {
 	if (!strcmp(paramName, "grp/member"))
 		return 1;
 	return 0;
 }
 
-void CMod_uhApp::resetMultiParamAccess(char *paramName)
+void CMod_uhApp::resetMultiParamAccess(const char *paramName)
 {
 	if (!strcmp(paramName, "grp/member"))
 		currentMemberPos = 0;

@@ -335,20 +335,23 @@ void CMod_teamApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_teamApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_teamApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 }
 
-char *CMod_teamApp::saveConfigParam(char *paramName)
+char *CMod_teamApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
-
-
 	return buf;
 }
 
-char *CMod_teamApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	return NULL;
+	NULL,
+};
+
+const char **CMod_teamApp::getConfigParamNames()
+{
+	return configParamNames;
 }

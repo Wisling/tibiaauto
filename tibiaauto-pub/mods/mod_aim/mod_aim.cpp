@@ -276,13 +276,13 @@ void CMod_aimApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_aimApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_aimApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "RuneType"))
 		m_configData->RuneType = atoi(paramValue);
 }
 
-char *CMod_aimApp::saveConfigParam(char *paramName)
+char *CMod_aimApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -292,15 +292,15 @@ char *CMod_aimApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_aimApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "RuneType";
-	default:
-		return NULL;
-	}
+	"RuneType",
+	NULL,
+};
+
+const char **CMod_aimApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_aimApp::getNewSkin(CSkin newSkin)

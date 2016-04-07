@@ -158,7 +158,7 @@ void CMod_showmapApp::resetConfig()
 {
 }
 
-void CMod_showmapApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_showmapApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "map/point"))
 	{
@@ -200,7 +200,7 @@ void CMod_showmapApp::loadConfigParam(char *paramName, char *paramValue)
 	configToControls(); // showmap is always on so any changes in the config parameters need to be made to the GUI
 }
 
-char *CMod_showmapApp::saveConfigParam(char *paramName)
+char *CMod_showmapApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	memset(buf, 0, 1024);
@@ -233,23 +233,26 @@ getNextCurrentPoint:
 	return buf;
 }
 
-char *CMod_showmapApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	if (nr == 0)
-		return "map/point";
-	if (nr == 1)
-		return "extendedResearch";
-	return NULL;
+	"map/point",
+	"extendedResearch",
+	NULL,
+};
+
+const char **CMod_showmapApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
-int CMod_showmapApp::isMultiParam(char *paramName)
+int CMod_showmapApp::isMultiParam(const char *paramName)
 {
 	if (!strcmp(paramName, "map/point"))
 		return 1;
 	return 0;
 }
 
-void CMod_showmapApp::resetMultiParamAccess(char *paramName)
+void CMod_showmapApp::resetMultiParamAccess(const char *paramName)
 {
 	currentPointNr = 0;
 }

@@ -50,7 +50,6 @@ BEGIN_MESSAGE_MAP(CMod_xrayApp, CWinApp)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -311,7 +310,7 @@ void CMod_xrayApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_xrayApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_xrayApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "other/autoreset"))
 		m_configData->autoreset = atoi(paramValue);
@@ -319,7 +318,7 @@ void CMod_xrayApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->extrahotkeys = atoi(paramValue);
 }
 
-char *CMod_xrayApp::saveConfigParam(char *paramName)
+char *CMod_xrayApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -333,17 +332,16 @@ char *CMod_xrayApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_xrayApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "other/autoreset";
-	case 1:
-		return "other/extrahotkeys";
-	default:
-		return NULL;
-	}
+	"other/autoreset",
+	"other/extrahotkeys",
+	NULL,
+};
+
+const char **CMod_xrayApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_xrayApp::getNewSkin(CSkin newSkin)

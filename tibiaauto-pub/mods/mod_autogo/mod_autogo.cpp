@@ -1636,7 +1636,7 @@ void CMod_autogoApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_autogoApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_autogoApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 #pragma warning(disable: 4800)
 	if (!strcmp(paramName, "act/x"))
@@ -1766,7 +1766,7 @@ void CMod_autogoApp::loadConfigParam(char *paramName, char *paramValue)
 #pragma warning(default: 4800)
 }
 
-char *CMod_autogoApp::saveConfigParam(char *paramName)
+char *CMod_autogoApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -1861,45 +1861,31 @@ char *CMod_autogoApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_autogoApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "act/x";
-	case 1:
-		return "act/y";
-	case 2:
-		return "act/z";
-	case 3:
-		return "act/direction";
-	case 4:
-		return "runaway/x";
-	case 5:
-		return "runaway/y";
-	case 6:
-		return "runaway/z";
-	case 7:
-		return "triggerMessage";
-	case 8:
-		return "whiteList/List";
-	case 9:
-		return "whiteList/mkBlack";
-	case 10:
-		return "alarmList";
-	case 11:
-		return "options";
-	case 12:
-		return "modPriority";
-	case 13:
-		return "screenshotType";
+	"act/x",
+	"act/y",
+	"act/z",
+	"act/direction",
+	"runaway/x",
+	"runaway/y",
+	"runaway/z",
+	"triggerMessage",
+	"whiteList/List",
+	"whiteList/mkBlack",
+	"alarmList",
+	"options",
+	"modPriority",
+	"screenshotType",
+	NULL,
+};
 
-	default:
-		return NULL;
-	}
+const char **CMod_autogoApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
-int CMod_autogoApp::isMultiParam(char *paramName)
+int CMod_autogoApp::isMultiParam(const char *paramName)
 {
 	if (!strcmp(paramName, "whiteList/List"))
 		return 1;
@@ -1908,7 +1894,7 @@ int CMod_autogoApp::isMultiParam(char *paramName)
 	return 0;
 }
 
-void CMod_autogoApp::resetMultiParamAccess(char *paramName)
+void CMod_autogoApp::resetMultiParamAccess(const char *paramName)
 {
 	if (!strcmp(paramName, "whiteList/List"))
 		currentPos = 0;

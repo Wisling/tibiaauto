@@ -251,7 +251,7 @@ void Cmod_fpsApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void Cmod_fpsApp::loadConfigParam(char *paramName, char *paramValue)
+void Cmod_fpsApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "activeVal"))
 		m_configData->activeVal = atof(paramValue);
@@ -265,7 +265,7 @@ void Cmod_fpsApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->minimizedVal = atof(paramValue);
 }
 
-char *Cmod_fpsApp::saveConfigParam(char *paramName)
+char *Cmod_fpsApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -284,23 +284,19 @@ char *Cmod_fpsApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *Cmod_fpsApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "activeVal";
-	case 1:
-		return "inactive";
-	case 2:
-		return "inactiveVal";
-	case 3:
-		return "minimized";
-	case 4:
-		return "minimizedVal";
-	default:
-		return NULL;
-	}
+	"activeVal",
+	"inactive",
+	"inactiveVal",
+	"minimized",
+	"minimizedVal",
+	NULL,
+};
+
+const char **Cmod_fpsApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void Cmod_fpsApp::getNewSkin(CSkin newSkin)

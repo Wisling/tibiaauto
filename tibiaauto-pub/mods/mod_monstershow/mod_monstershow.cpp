@@ -91,9 +91,14 @@ void CMod_monstershowApp::resetConfig()
 {
 }
 
-char *CMod_monstershowApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	return NULL;
+	NULL,
+};
+
+const char **CMod_monstershowApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_monstershowApp::getNewSkin(CSkin newSkin)

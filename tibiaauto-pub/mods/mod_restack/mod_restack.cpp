@@ -514,7 +514,7 @@ void CMod_restackApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_restackApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_restackApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "ammo/type"))
 		m_configData->ammoType = atoi(paramValue);
@@ -562,7 +562,7 @@ void CMod_restackApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->capLimit = atoi(paramValue);
 }
 
-char *CMod_restackApp::saveConfigParam(char *paramName)
+char *CMod_restackApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -614,57 +614,36 @@ char *CMod_restackApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_restackApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "ammo/type";
-	case 1:
-		return "ammo/at";
-	case 2:
-		return "ammo/to";
-	case 3:
-		return "throwable/type";
-	case 4:
-		return "throwable/at";
-	case 5:
-		return "throwable/to";
-	case 6:
-		return "pickup/spears";
-	case 7:
-		return "pickup/place/UL";
-	case 8:
-		return "pickup/place/UC";
-	case 9:
-		return "pickup/place/UR";
-	case 10:
-		return "pickup/place/CL";
-	case 11:
-		return "pickup/place/CR";
-	case 12:
-		return "pickup/place/BL";
-	case 13:
-		return "pickup/place/BC";
-	case 14:
-		return "pickup/place/BR";
-	case 15:
-		return "throwable/moveCovering";
-	case 16:
-		return "ammo/restackToRight";
-	case 17:
-		return "pickup/toHand";
-	case 18:
-		return "pickup/place/CC";
-	case 19:
-		return "pickup/periodFrom";
-	case 20:
-		return "pickup/periodTo";
-	case 21:
-		return "pickup/capLimit";
-	default:
-		return NULL;
-	}
+	"ammo/type",
+	"ammo/at",
+	"ammo/to",
+	"throwable/type",
+	"throwable/at",
+	"throwable/to",
+	"pickup/spears",
+	"pickup/place/UL",
+	"pickup/place/UC",
+	"pickup/place/UR",
+	"pickup/place/CL",
+	"pickup/place/CR",
+	"pickup/place/BL",
+	"pickup/place/BC",
+	"pickup/place/BR",
+	"throwable/moveCovering",
+	"ammo/restackToRight",
+	"pickup/toHand",
+	"pickup/place/CC",
+	"pickup/periodFrom",
+	"pickup/periodTo",
+	"pickup/capLimit",
+	NULL,
+};
+
+const char **CMod_restackApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_restackApp::getNewSkin(CSkin newSkin)
