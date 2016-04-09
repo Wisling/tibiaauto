@@ -2175,6 +2175,20 @@ PyObject *tibiaauto_kernel_stopModule(PyObject *self, PyObject *args)
 	return Py_None;
 }
 
+PyObject *tibiaauto_kernel_getModuleList(PyObject *self, PyObject *args)
+{
+	PyObject *ret, *item;
+	int i = 0;
+	ret = PyList_New(CModuleLoader::loadedModules.size());
+	if(ret != NULL) {
+		for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.cend(); it++, i++) {
+			item = Py_BuildValue("s", it->first.c_str());
+			PyList_SET_ITEM(ret, i, item);
+		}
+	}
+	return ret;
+}
+
 PyObject *tibiaauto_kernel_getModuleDesc(PyObject *self, PyObject *args)
 {
 	char* arg1;

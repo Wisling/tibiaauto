@@ -478,6 +478,7 @@ static PyMethodDef Methods_taitem[] = {
 static PyMethodDef Methods_takernel[] = {
 	{"startModule", tibiaauto_kernel_startModule, METH_VARARGS},
 	{"stopModule", tibiaauto_kernel_stopModule, METH_VARARGS},
+	{"getModuleList", tibiaauto_kernel_getModuleList, METH_VARARGS},
 	{"getModuleDesc", tibiaauto_kernel_getModuleDesc, METH_VARARGS},
 	{"isModuleStarted", tibiaauto_kernel_isModuleStarted, METH_VARARGS},
 	{"getModuleVersion", tibiaauto_kernel_getModuleVersion, METH_VARARGS},
