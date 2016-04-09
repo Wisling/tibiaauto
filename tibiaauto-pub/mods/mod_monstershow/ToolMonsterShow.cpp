@@ -138,35 +138,33 @@ void CToolMonsterShow::showMonsterDetails(int x, int y)
 
 	int creatureNr;
 
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
 
 	sprintf(buf, "creatures:");
 
 	for (creatureNr = 0; creatureNr < reader.m_memMaxCreatures; creatureNr++)
 	{
-		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
-		if (ch->tibiaId == 0)
+		CTibiaCharacter ch;
+		reader.readVisibleCreature(&ch, creatureNr);
+		if (ch.tibiaId == 0)
 		{
-			delete ch;
 			break;
 		}
-		int relX = 10 + (ch->x - self->x);
-		int relY = 8 + (ch->y - self->y);
-		int relZ = self->z - ch->z;
+		int relX = 10 + (ch.x - self.x);
+		int relY = 8 + (ch.y - self.y);
+		int relZ = self.z - ch.z;
 
-		if (ch->visible && relX == x && relY == y)
+		if (ch.visible && relX == x && relY == y)
 		{
-			sprintf(buf2, "%s [z=%d|hp=%d%%|nr=%d] ", ch->name, relZ, ch->hpPercLeft, creatureNr);
+			sprintf(buf2, "%s [z=%d|hp=%d%%|nr=%d] ", ch.name, relZ, ch.hpPercLeft, creatureNr);
 			strcat(buf, buf2);
 		};
-
-		delete ch;
 	}
 
 	m_monsterInfo.SetWindowText(buf);
 
-	delete self;
 }
 
 void CToolMonsterShow::refreshVisibleCreatures()
@@ -184,7 +182,8 @@ void CToolMonsterShow::refreshVisibleCreatures()
 	char listBufSame[1024];
 	char listBufAbove[1024];
 
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
 	sprintf(listBufBelow, "");
 	sprintf(listBufSame, "");
@@ -200,27 +199,26 @@ void CToolMonsterShow::refreshVisibleCreatures()
 
 	for (creatureNr = 0; creatureNr < reader.m_memMaxCreatures; creatureNr++)
 	{
-		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
-		if (ch->tibiaId == 0)
+		CTibiaCharacter ch;
+		reader.readVisibleCreature(&ch, creatureNr);
+		if (ch.tibiaId == 0)
 		{
-			delete ch;
 			break;
 		}
-		if (ch->visible)
+		if (ch.visible)
 		{
-			x = 10 + (ch->x - self->x);
-			y = 8 + (ch->y - self->y);
-			z = ch->z;
+			x = 10 + (ch.x - self.x);
+			y = 8 + (ch.y - self.y);
+			z = ch.z;
 
-			relZ = self->z - ch->z;
+			relZ = self.z - ch.z;
 
 			if (x < 0 || y < 0 || x > 20 || y > 16)
 			{
 				// monster out of range - it might happen sometimes
-				delete ch;
 				continue;
 			};
-			if (self->z == z && m_monsterButtons[x][y]->GetCheck() == 0)
+			if (self.z == z && m_monsterButtons[x][y]->GetCheck() == 0)
 				m_monsterButtons[x][y]->SetCheck(1);
 			else
 				m_monsterButtons[x][y]->SetCheck(2);
@@ -229,27 +227,24 @@ void CToolMonsterShow::refreshVisibleCreatures()
 			if (relZ < 0)   //below player
 			{
 				if ((m_showOneRelLvl.GetCheck() == 0) || (relZ == -1))
-					sprintf(listBufBelow, "%s%s (%d,%d%%)\r\n", listBufBelow, ch->name, relZ, ch->hpPercLeft);
+					sprintf(listBufBelow, "%s%s (%d,%d%%)\r\n", listBufBelow, ch.name, relZ, ch.hpPercLeft);
 			}
 			else if (relZ > 0)   //above player
 			{
 				if ((m_showOneRelLvl.GetCheck() == 0) || (relZ == 1))
-					sprintf(listBufAbove, "%s%s (%d,%d%%)\r\n", listBufAbove, ch->name, relZ, ch->hpPercLeft);
+					sprintf(listBufAbove, "%s%s (%d,%d%%)\r\n", listBufAbove, ch.name, relZ, ch.hpPercLeft);
 			}
 			else   //same level
 			{
-				sprintf(listBufSame, "%s%s (%d,%d%%)\r\n", listBufSame, ch->name, relZ, ch->hpPercLeft);
+				sprintf(listBufSame, "%s%s (%d,%d%%)\r\n", listBufSame, ch.name, relZ, ch.hpPercLeft);
 			}
 		};
-
-		delete ch;
 	};
 
 	m_monsterInfoBelow.SetWindowText(listBufBelow);
 	m_monsterInfoSame.SetWindowText(listBufSame);
 	m_monsterInfoAbove.SetWindowText(listBufAbove);
 
-	delete self;
 }
 
 void CToolMonsterShow::OnTimer(UINT nIDEvent)
@@ -269,20 +264,18 @@ void CToolMonsterShow::OnTimer(UINT nIDEvent)
 
 		for (creatureNr = 0; creatureNr < reader.m_memMaxCreatures; creatureNr++)
 		{
-			CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
-			if (ch->tibiaId == 0)
+			CTibiaCharacter ch;
+			reader.readVisibleCreature(&ch, creatureNr);
+			if (ch.tibiaId == 0)
 			{
-				delete ch;
 				break;
 			}
-			if (ch->visible)
+			if (ch.visible)
 			{
-				if (ch->monsterType == 20)
+				if (ch.monsterType == 20)
 					// this is a summoned slime - rename it
 					reader.writeVisibleCreatureName(creatureNr, "Summoned Slime");
 			}
-
-			delete ch;
 		}
 
 		if (m_revealSlime.GetCheck())

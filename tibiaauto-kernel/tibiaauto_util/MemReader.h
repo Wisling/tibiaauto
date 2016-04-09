@@ -78,14 +78,14 @@ public:
 	void GetLoggedChar(int processId, char* buf, int bufLen);
 	int readBattleListMax();
 	int readBattleListMin();
-	CTibiaCharacter * readVisibleCreature(int nr);
+	void readVisibleCreature(CTibiaCharacter * ch, int nr);
 	int readOpenContainerCount();
 	CTibiaContainer *readContainer(int containerNr);
 	CTibiaItem * readItem(int locationAddress);
-	CTibiaCharacter *readSelfCharacter();
-	CTibiaCharacter *getCharacterByTibiaId(int tibiaId);
+	void readSelfCharacter(CTibiaCharacter * ch);
+	bool getCharacterByTibiaId(CTibiaCharacter * ch, int tibiaId);
 	CTibiaVIPEntry *readVIPEntry(int nr);
-	int dereference(int addr, int addBaseAddr = 1);
+	int dereference(int addr, bool addBaseAddr = true);
 	int mapGetSelfCellNr();
 	CTibiaMapTile *readMapTile(int tileNr);
 	int itemOnTopIndex(int x, int y, int z = 0);

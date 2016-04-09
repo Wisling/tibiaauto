@@ -18,18 +18,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-
-/////////////////////////////////////////////////////////////////////////////
-// CMod_memdebugApp
-
-BEGIN_MESSAGE_MAP(CMod_memdebugApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_memdebugApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_memdebugApp construction
 

@@ -40,20 +40,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-
-/////////////////////////////////////////////////////////////////////////////
-// CMod_teamApp
-
-BEGIN_MESSAGE_MAP(CMod_teamApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_teamApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
 CConnectedNodes connectedNodes;
-
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -81,7 +68,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	{
 		iter++;
 		Sleep(100);
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
 		if (iter % 50 == 0)
 		{
@@ -92,19 +80,19 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				if (!connectedNodes.isConnected())
 				{
 					// no connected node -> try to login to the master
-					sprintf(buf, "`TA login %d,%d,%d,%d,%d,%d,%d", self->x, self->y, self->z, self->hp, self->maxHp, self->mana, self->maxMana);
+					sprintf(buf, "`TA login %d,%d,%d,%d,%d,%d,%d", self.x, self.y, self.z, self.hp, self.maxHp, self.mana, self.maxMana);
 					CPackSender::tell(buf, connectedNodes.getMasterNode());
 				}
 				else
 				{
 					if (strlen(connectedNodes.getMasterNode()) && !connectedNodes.isCharConnected(connectedNodes.getMasterNode()))
 						connectedNodes.findNewMasterNode();
-					sprintf(buf, "`TA ping %d,%d,%d,%d,%d,%d,%d", self->x, self->y, self->z, self->hp, self->maxHp, self->mana, self->maxMana);
+					sprintf(buf, "`TA ping %d,%d,%d,%d,%d,%d,%d", self.x, self.y, self.z, self.hp, self.maxHp, self.mana, self.maxMana);
 					CPackSender::tell(buf, connectedNodes.getMasterNode());
 				}
 			}
 
-			sprintf(buf, "`TA data %s,%d,%d,%d,%d,%d,%d,%d,0", self->name, self->x, self->y, self->z, self->hp, self->maxHp, self->mana, self->maxMana);
+			sprintf(buf, "`TA data %s,%d,%d,%d,%d,%d,%d,%d,0", self.name, self.x, self.y, self.z, self.hp, self.maxHp, self.mana, self.maxMana);
 			for (i = 0; i < connectedNodes.getMaxNodeCount(); i++)
 			{
 				CConnectedNode *connectedNode = connectedNodes.getNodeByNr(i);
@@ -122,7 +110,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				if (connectedNode->connected && connectedNode->isSlave)
 				{
 					// send our position to all the slaves
-					//sprintf(buf,"`TA ping %d,%d,%d,%d,%d,%d,%d",self->x,self->y,self->z,self->hp,self->maxHp,self->mana,self->maxMana);
+					//sprintf(buf,"`TA ping %d,%d,%d,%d,%d,%d,%d",self.x,self.y,self.z,self.hp,self.maxHp,self.mana,self.maxMana);
 					//CPackSender::tell(buf,connectedNode->charName);
 
 					CPackSender::tell(buf, connectedNode->charName);
@@ -160,7 +148,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					sscanf(msgBuf, "`TA login %d,%d,%d,%d,%d,%d,%d", &x, &y, &z, &hp, &maxHp, &mana, &maxMana);
 					connectedNodes.refreshNodeInfo(nickBuf, hp, mana, maxHp, maxMana, x, y, z, 1, 1);
 
-					sprintf(buf, "`TA ping %d,%d,%d,%d,%d,%d,%d", self->x, self->y, self->z, self->hp, self->maxHp, self->mana, self->maxMana);
+					sprintf(buf, "`TA ping %d,%d,%d,%d,%d,%d,%d", self.x, self.y, self.z, self.hp, self.maxHp, self.mana, self.maxMana);
 					CPackSender::tell(buf, nickBuf);
 				}
 				if (!strncmp(msgBuf, "`TA ping", strlen("`TA ping")))
@@ -201,7 +189,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 
-		delete self;
 	}
 	toolThreadShouldStop = 0;
 	return 0;
@@ -335,20 +322,23 @@ void CMod_teamApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_teamApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_teamApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 }
 
-char *CMod_teamApp::saveConfigParam(char *paramName)
+char *CMod_teamApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
-
-
 	return buf;
 }
 
-char *CMod_teamApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	return NULL;
+	NULL,
+};
+
+const char **CMod_teamApp::getConfigParamNames()
+{
+	return configParamNames;
 }

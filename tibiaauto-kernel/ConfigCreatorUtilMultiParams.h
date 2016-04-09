@@ -14,8 +14,8 @@
 class CConfigCreatorUtilMultiParams
 {
 public:
-	void registerMultiparam(char *name);
-	int isKnownMultiparam(char *name);
+	void registerMultiParam(const char *name);
+	int isKnownMultiParam(const char *name);
 	CConfigCreatorUtilMultiParams();
 	virtual ~CConfigCreatorUtilMultiParams();
 

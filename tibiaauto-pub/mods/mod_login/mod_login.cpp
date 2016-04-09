@@ -46,16 +46,6 @@ static char THIS_FILE[] = __FILE__;
 
 
 time_t loginTime = 0;
-/////////////////////////////////////////////////////////////////////////////
-// CMod_loginApp
-
-BEGIN_MESSAGE_MAP(CMod_loginApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_loginApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
 extern CRITICAL_SECTION QueueCriticalSection;
 extern char* queue2Message;
 
@@ -196,10 +186,9 @@ int ensureForeground(HWND hwnd)
 int getSelfHealth()
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int retHealth         = self->hp;
-	delete self;
-	self = NULL;
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	int retHealth         = self.hp;
 	return retHealth;
 }
 
@@ -276,8 +265,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				loginTime = time(NULL) + config->loginDelay;
 				
 				int addr = CTibiaItem::getValueForConst("addrVIP");
-				CMemUtil::GetMemRange(addr - 0x60, addr - 0x60 + 32, accNum);
-				CMemUtil::GetMemRange(addr - 0x48, addr - 0x48 + 32, pass);
+				CMemUtil::getMemUtil().GetMemRange(addr - 0x60, addr - 0x60 + 32, accNum);
+				CMemUtil::getMemUtil().GetMemRange(addr - 0x48, addr - 0x48 + 32, pass);
 			}
 			while (loginTime > time(NULL) && !reader.isLoggedIn())
 			{
@@ -344,7 +333,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			CRect wndRect;
 
 			CSendKeys sk;
-			HWND hwnd = getTibiaWindow(CMemUtil::getGlobalProcessId());
+			HWND hwnd = getTibiaWindow(CMemUtil::getMemUtil().getGlobalProcessId());
 
 			CVariableStore::setVariable("walking_control", "login");
 			CVariableStore::setVariable("walking_priority", "10");
@@ -858,7 +847,7 @@ void CMod_loginApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_loginApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_loginApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "open/main"))
 		m_configData->openMain = atoi(paramValue);
@@ -890,7 +879,7 @@ void CMod_loginApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->loginAfterKilled = atoi(paramValue);
 }
 
-char *CMod_loginApp::saveConfigParam(char *paramName)
+char *CMod_loginApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -927,41 +916,28 @@ char *CMod_loginApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_loginApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "open/main";
-	case 1:
-		return "open/cont1";
-	case 2:
-		return "open/cont2";
-	case 3:
-		return "open/cont3";
-	case 4:
-		return "open/cont4";
-	case 5:
-		return "open/cont5";
-	case 6:
-		return "open/cont6";
-	case 7:
-		return "open/cont7";
-	case 8:
-		return "open/cont8";
-	case 9:
-		return "loginDelay";
-	case 10:
-		return "autopass";
-	case 11:
-		return "accountname";
-	case 12:
-		return "accountpass";
-	case 13:
-		return "loginAfterKilled";
-	default:
-		return NULL;
-	}
+	"open/main",
+	"open/cont1",
+	"open/cont2",
+	"open/cont3",
+	"open/cont4",
+	"open/cont5",
+	"open/cont6",
+	"open/cont7",
+	"open/cont8",
+	"loginDelay",
+	"autopass",
+	"accountname",
+	"accountpass",
+	"loginAfterKilled",
+	NULL,
+};
+
+const char **CMod_loginApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_loginApp::getNewSkin(CSkin newSkin)

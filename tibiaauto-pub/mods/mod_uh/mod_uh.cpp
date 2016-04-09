@@ -65,17 +65,6 @@ static char THIS_FILE[] = __FILE__;
 //
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_uhApp
-
-BEGIN_MESSAGE_MAP(CMod_uhApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_uhApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
 int toolThreadShouldStop = 0;
@@ -100,9 +89,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		if (!reader.isLoggedIn())
 			continue;                   // do not proceed if not connected
 
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
-		if (self->hp <= config->m_uhBorderline || config->m_hotkeySelf)
+		if (self.hp <= config->m_uhBorderline || config->m_hotkeySelf)
 		{
 			int uhContainer;
 
@@ -151,18 +141,18 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (uhItem->objectId)
 			{
 				CVariableStore::setVariable("UH_needed", "true");
-				if (self->hp <= config->m_uhBorderline)
+				if (self.hp <= config->m_uhBorderline)
 				{
 					CPackSender::useWithObjectFromContainerOnFloor(
 					        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
-					        self->x, self->y, self->z);
+					        self.x, self.y, self.z);
 					Sleep(config->m_sleepAfter);
 				}
 				if (config->m_hotkeySelf)
 				{
 					CPackSender::useWithObjectFromContainerOnFloor(
 					        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
-					        self->x, self->y, self->z, 105);
+					        self.x, self.y, self.z, 105);
 				}
 			}
 			else
@@ -183,17 +173,17 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		int crNr;
 		for (crNr = 0; crNr < reader.m_memMaxCreatures; crNr++)
 		{
-			CTibiaCharacter *ch = reader.readVisibleCreature(crNr);
-			if (ch->tibiaId == 0)
+			CTibiaCharacter ch;
+			reader.readVisibleCreature(&ch, crNr);
+			if (ch.tibiaId == 0)
 			{
-				delete ch;
 				break;
 			}
-			if (ch->visible)
+			if (ch.visible)
 			{
 				char chName[128];
 				memset(chName, 0, 128);
-				memcpy(chName, ch->name, strlen(ch->name));
+				memcpy(chName, ch.name, strlen(ch.name));
 
 				int chToHeal = 0;
 
@@ -204,7 +194,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 						chToHeal = 1;
 				}
-				if (chToHeal && ch->hpPercLeft < config->m_grpBorderline && self->z == ch->z)
+				if (chToHeal && ch.hpPercLeft < config->m_grpBorderline && self.z == ch.z)
 				{
 					CTibiaItem *uhItem = new CTibiaItem();
 					int uhContainer    = -1;
@@ -251,7 +241,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					{
 						CPackSender::useWithObjectFromContainerOnFloor(
 						        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
-						        ch->x, ch->y, ch->z);
+						        ch.x, ch.y, ch.z);
 						Sleep(config->m_sleepAfter);
 					}
 					else
@@ -262,11 +252,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					delete uhItem;
 				}
 			}
-
-			delete ch;
 		}
 
-		delete self;
 	}
 	CVariableStore::setVariable("UH_needed", "false");
 	toolThreadShouldStop = 0;
@@ -428,7 +415,7 @@ void CMod_uhApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_uhApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_uhApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "self/fallback"))
 		m_configData->m_fallback = atoi(paramValue);
@@ -459,7 +446,7 @@ void CMod_uhApp::loadConfigParam(char *paramName, char *paramValue)
 	}
 }
 
-char *CMod_uhApp::saveConfigParam(char *paramName)
+char *CMod_uhApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -487,41 +474,33 @@ char *CMod_uhApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_uhApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "self/fallback";
-	case 1:
-		return "self/hotkey";
-	case 2:
-		return "self/runetype";
-	case 3:
-		return "other/sleepAfter";
-	case 4:
-		return "self/borderline";
-	case 5:
-		return "grp/borderline";
-	case 6:
-		return "grp/fallback";
-	case 7:
-		return "grp/runetype";
-	case 8:
-		return "grp/member";
-	default:
-		return NULL;
-	}
+	"self/fallback",
+	"self/hotkey",
+	"self/runetype",
+	"other/sleepAfter",
+	"self/borderline",
+	"grp/borderline",
+	"grp/fallback",
+	"grp/runetype",
+	"grp/member",
+	NULL,
+};
+
+const char **CMod_uhApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
-int CMod_uhApp::isMultiParam(char *paramName)
+int CMod_uhApp::isMultiParam(const char *paramName)
 {
 	if (!strcmp(paramName, "grp/member"))
 		return 1;
 	return 0;
 }
 
-void CMod_uhApp::resetMultiParamAccess(char *paramName)
+void CMod_uhApp::resetMultiParamAccess(const char *paramName)
 {
 	if (!strcmp(paramName, "grp/member"))
 		currentMemberPos = 0;

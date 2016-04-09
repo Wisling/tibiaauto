@@ -152,30 +152,27 @@ void CKnownInfo::OnSelendokToolcreaturinfoInfoCombo()
 		//T4: Try to find player in BattleList
 		for (int chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 		{
-			CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
-			if (ch->tibiaId == 0)
+			CTibiaCharacter ch;
+			reader.readVisibleCreature(&ch, chNr);
+			if (ch.tibiaId == 0)
 			{
-				delete ch;
 				break;
 			}
-			if (!_strcmpi(ch->name, playersInfo[iSel].name))
+			if (!_strcmpi(ch.name, playersInfo[iSel].name))
 			{
 				found = chNr;
-				delete ch;
 				break;
 			}
-			delete ch;
 		}
 		if (found != -1)
 		{
-			CTibiaCharacter *ch = reader.readVisibleCreature(found);
+			CTibiaCharacter ch;
+			reader.readVisibleCreature(&ch, found);
 
-			sprintf(buffer, "%d/%d", MulDiv(ch->hpPercLeft, playersInfo[iSel].maxHp, 100), playersInfo[iSel].maxHp);
+			sprintf(buffer, "%d/%d", MulDiv(ch.hpPercLeft, playersInfo[iSel].maxHp, 100), playersInfo[iSel].maxHp);
 			m_hp.SetWindowText(buffer);
-			sprintf(buffer, "%d,%d,%d", ch->x, ch->y, ch->z);
+			sprintf(buffer, "%d,%d,%d", ch.x, ch.y, ch.z);
 			m_lastSeen.SetWindowText(buffer);
-
-			delete ch;
 		}
 		else
 		{

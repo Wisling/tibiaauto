@@ -37,17 +37,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-
-/////////////////////////////////////////////////////////////////////////////
-// Cmod_fpsApp
-
-BEGIN_MESSAGE_MAP(Cmod_fpsApp, CWinApp)
-//{{AFX_MSG_MAP(Cmod_fpsApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -71,8 +60,8 @@ void SetFPS(double iFps)
 
 	//T4: Fps value can be set to almost 0
 
-	CMemUtil::SetMemIntValue(addrFps + 88, ifpsVal[0], 0);//this address comes from Tibia itself and need not be shifted
-	CMemUtil::SetMemIntValue(addrFps + 88 + 4, ifpsVal[1], 0);//this address comes from Tibia itself and need not be shifted
+	CMemUtil::getMemUtil().SetMemIntValue(addrFps + 88, ifpsVal[0], 0);//this address comes from Tibia itself and need not be shifted
+	CMemUtil::getMemUtil().SetMemIntValue(addrFps + 88 + 4, ifpsVal[1], 0);//this address comes from Tibia itself and need not be shifted
 }
 
 double GetFPS()
@@ -80,15 +69,15 @@ double GetFPS()
 	CMemReader& reader = CMemReader::getMemReader();
 	
 	if (!addrFps)
-		addrFps = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrFps"));
+		addrFps = CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrFps"));
 
 	double *fpsVal;
 	int ifpsVal[2];
 
 	fpsVal = (double*)ifpsVal;
 
-	ifpsVal[0] = CMemUtil::GetMemIntValue(addrFps + 88, 0);//this address comes from Tibia itself and need not be shifted
-	ifpsVal[1] = CMemUtil::GetMemIntValue(addrFps + 88 + 4, 0);//this address comes from Tibia itself and need not be shifted
+	ifpsVal[0] = CMemUtil::getMemUtil().GetMemIntValue(addrFps + 88, 0);//this address comes from Tibia itself and need not be shifted
+	ifpsVal[1] = CMemUtil::getMemUtil().GetMemIntValue(addrFps + 88 + 4, 0);//this address comes from Tibia itself and need not be shifted
 
 
 	return 1000 / (*fpsVal);
@@ -103,7 +92,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 	oldFps = max(GetFPS(), 20);
 	if (!hTibiaWnd)
-		EnumWindows(EnumWindowsProc, CMemUtil::getGlobalProcessId());
+		EnumWindows(EnumWindowsProc, CMemUtil::getMemUtil().getGlobalProcessId());
 
 
 	while (!toolThreadShouldStop)
@@ -251,7 +240,7 @@ void Cmod_fpsApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void Cmod_fpsApp::loadConfigParam(char *paramName, char *paramValue)
+void Cmod_fpsApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "activeVal"))
 		m_configData->activeVal = atof(paramValue);
@@ -265,7 +254,7 @@ void Cmod_fpsApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->minimizedVal = atof(paramValue);
 }
 
-char *Cmod_fpsApp::saveConfigParam(char *paramName)
+char *Cmod_fpsApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -284,23 +273,19 @@ char *Cmod_fpsApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *Cmod_fpsApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "activeVal";
-	case 1:
-		return "inactive";
-	case 2:
-		return "inactiveVal";
-	case 3:
-		return "minimized";
-	case 4:
-		return "minimizedVal";
-	default:
-		return NULL;
-	}
+	"activeVal",
+	"inactive",
+	"inactiveVal",
+	"minimized",
+	"minimizedVal",
+	NULL,
+};
+
+const char **Cmod_fpsApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void Cmod_fpsApp::getNewSkin(CSkin newSkin)

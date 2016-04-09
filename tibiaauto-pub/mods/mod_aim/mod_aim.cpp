@@ -40,18 +40,6 @@ static char THIS_FILE[] = __FILE__;
 
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_aimApp
-
-
-BEGIN_MESSAGE_MAP(CMod_aimApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_aimApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
 int toolThreadShouldStop = 0;
@@ -64,25 +52,25 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 	//CPackSender::sendAutoAimConfig(1,config->onlyCreatures,config->aimPlayersFromBattle);
 	
-	CTibiaCharacter *sel = reader.readSelfCharacter();
-	float caps           = sel->cap;
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	float caps           = self.cap;
 	FILE* f              = fopen("C:/srangp.txt", "wb");
 	while (!toolThreadShouldStop)
 	{
 		Sleep(100);
-		delete sel;
-		sel = reader.readSelfCharacter();
-		if (caps != sel->cap && sel->cap > 5000)
+		reader.readSelfCharacter(&self);
+		if (caps != self.cap && self.cap > 5000)
 		{
 			int addy = CTibiaItem::getValueForConst("addrCap");
 			for (int i = 0; i < 20; i++)
 			{
-				int a = CMemUtil::GetMemIntValue(addy + (i - 10) * 4);
+				int a = CMemUtil::getMemUtil().GetMemIntValue(addy + (i - 10) * 4);
 				fprintf(f, "%8x", a);
 			}
 			fprintf(f, "\n");
 			fflush(f);
-			caps = sel->cap;
+			caps = self.cap;
 		}
 	}
 	while (!toolThreadShouldStop)
@@ -101,9 +89,9 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		if (attackedCreature)
 		{
 			//T4: Get attacked creature structure
-			CTibiaCharacter *ch = reader.getCharacterByTibiaId(attackedCreature);
+			CTibiaCharacter ch;
 
-			if (ch)
+			if (reader.getCharacterByTibiaId(&ch, attackedCreature))
 			{
 				//T4: Check containers for the same rune as in hand
 				int contNr;
@@ -137,10 +125,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							delete runeItem;
 						}
 					};
-
 					delete cont;
 				}
-				delete ch;
 			}
 		}
 	}
@@ -278,13 +264,13 @@ void CMod_aimApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_aimApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_aimApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "RuneType"))
 		m_configData->RuneType = atoi(paramValue);
 }
 
-char *CMod_aimApp::saveConfigParam(char *paramName)
+char *CMod_aimApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -294,15 +280,15 @@ char *CMod_aimApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_aimApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "RuneType";
-	default:
-		return NULL;
-	}
+	"RuneType",
+	NULL,
+};
+
+const char **CMod_aimApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_aimApp::getNewSkin(CSkin newSkin)

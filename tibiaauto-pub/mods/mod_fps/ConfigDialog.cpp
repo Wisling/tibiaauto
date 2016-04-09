@@ -149,10 +149,10 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		char buf[128];
 		unsigned long ifpsCur[2];
 
-		addrFps = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrFps"));
+		addrFps = CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrFps"));
 
-		ifpsCur[0] = CMemUtil::GetMemIntValue(addrFps + 0x60, 0);//this address comes from Tibia itself and need not be shifted
-		ifpsCur[1] = CMemUtil::GetMemIntValue(addrFps + 0x60 + 4, 0);//this address comes from Tibia itself and need not be shifted
+		ifpsCur[0] = CMemUtil::getMemUtil().GetMemIntValue(addrFps + 0x60, 0);//this address comes from Tibia itself and need not be shifted
+		ifpsCur[1] = CMemUtil::getMemUtil().GetMemIntValue(addrFps + 0x60 + 4, 0);//this address comes from Tibia itself and need not be shifted
 		sprintf(buf, "Current FPS rate: %d, %d", ifpsCur[0], ifpsCur[1]);
 		m_fpsRate.SetWindowText(buf);
 
@@ -210,9 +210,9 @@ BOOL CConfigDialog::OnInitDialog()
 	CMemReader& reader = CMemReader::getMemReader();
 	
 
-	addrFps = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrFps"));
+	addrFps = CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrFps"));
 
-	EnumWindows(EnumWindowsProc, CMemUtil::getGlobalProcessId());
+	EnumWindows(EnumWindowsProc, CMemUtil::getMemUtil().getGlobalProcessId());
 
 	SetTimer(1000, 500, NULL);
 

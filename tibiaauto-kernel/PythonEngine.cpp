@@ -181,7 +181,8 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
    {
         CMemReader& reader = CMemReader::getMemReader();
 
-        CTibiaCharacter *selfCh = reader.readSelfCharacter();
+        CTibiaCharacter selfCh;
+         reader.readSelfCharacter(&selfCh);
         PyObject *ret =
                 Py_BuildValue("{s:i,s:i,s:i,s:i,s:i}",
                 "hp",selfCh->hp,
@@ -473,15 +474,14 @@ static PyMethodDef Methods_taitem[] = {
 	{NULL, NULL}         /* Sentinel */
 };
 
-
 static PyMethodDef Methods_takernel[] = {
 	{"startModule", tibiaauto_kernel_startModule, METH_VARARGS},
 	{"stopModule", tibiaauto_kernel_stopModule, METH_VARARGS},
-	{"getModuleCount", tibiaauto_kernel_getModuleCount, METH_VARARGS},
-	{"getModuleName", tibiaauto_kernel_getModuleName, METH_VARARGS},
 	{"getModuleDesc", tibiaauto_kernel_getModuleDesc, METH_VARARGS},
-	{"isModuleStarted", tibiaauto_kernel_isModuleStarted, METH_VARARGS},
 	{"getModuleVersion", tibiaauto_kernel_getModuleVersion, METH_VARARGS},
+	{"isModuleStarted", tibiaauto_kernel_isModuleStarted, METH_VARARGS},
+	{"getModuleParam", tibiaauto_kernel_getModuleParam, METH_VARARGS},
+	{"setModuleParam", tibiaauto_kernel_setModuleParam, METH_VARARGS},
 
 	{"startPythonModule", tibiaauto_kernel_startPythonModule, METH_VARARGS},
 	{"stopPythonModule", tibiaauto_kernel_stopPythonModule, METH_VARARGS},

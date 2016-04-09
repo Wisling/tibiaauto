@@ -182,23 +182,23 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		char buf[32];
 		sprintf(buf, "0x%X", m_addressFinder.addresses.expAddress);
 		m_experienceAddress.SetWindowText(buf);
-		sprintf(buf, "%d", CMemUtil::GetMemIntValue(m_addressFinder.addresses.expAddress));
+		sprintf(buf, "%d", CMemUtil::getMemUtil().GetMemIntValue(m_addressFinder.addresses.expAddress));
 		m_experience.SetWindowText(buf);
 		sprintf(buf, "0x%X", m_addressFinder.addresses.flagsAddress);
 		m_flagsAddress.SetWindowText(buf);
-		sprintf(buf, "%d", CMemUtil::GetMemIntValue(m_addressFinder.addresses.flagsAddress));
+		sprintf(buf, "%d", CMemUtil::getMemUtil().GetMemIntValue(m_addressFinder.addresses.flagsAddress));
 		m_flags.SetWindowText(buf);
 		sprintf(buf, "0x%X", m_addressFinder.addresses.fistPercentLeftAddress);
 		m_fistPercentLeftAddress.SetWindowText(buf);
-		sprintf(buf, "%d", CMemUtil::GetMemIntValue(m_addressFinder.addresses.fistPercentLeftAddress));
+		sprintf(buf, "%d", CMemUtil::getMemUtil().GetMemIntValue(m_addressFinder.addresses.fistPercentLeftAddress));
 		m_fistPercentLeft.SetWindowText(buf);
 		sprintf(buf, "0x%X", m_addressFinder.addresses.fistSkillAddress);
 		m_fistSkillAddress.SetWindowText(buf);
-		sprintf(buf, "%d", CMemUtil::GetMemIntValue(m_addressFinder.addresses.fistSkillAddress));
+		sprintf(buf, "%d", CMemUtil::getMemUtil().GetMemIntValue(m_addressFinder.addresses.fistSkillAddress));
 		m_fistSkill.SetWindowText(buf);
-		sprintf(buf, "%d", CMemUtil::GetMemIntValue(m_addressFinder.addresses.fishSkillAddress));
+		sprintf(buf, "%d", CMemUtil::getMemUtil().GetMemIntValue(m_addressFinder.addresses.fishSkillAddress));
 		m_fishSkill.SetWindowText(buf);
-		sprintf(buf, "%d", CMemUtil::GetMemIntValue(m_addressFinder.addresses.fishSkillAddress));
+		sprintf(buf, "%d", CMemUtil::getMemUtil().GetMemIntValue(m_addressFinder.addresses.fishSkillAddress));
 		m_fishSkill.SetWindowText(buf);
 
 		SetTimer(nIDEvent, 500, NULL);
@@ -219,7 +219,7 @@ BOOL CConfigDialog::OnInitDialog()
 	DoSetButtonSkin();
 	CMemReader& reader = CMemReader::getMemReader();
 
-	m_addressFinder.addresses.flagsAddress                 = CMemUtil::GetMemIntValue(m_addressFinder.getFlagsAddress());
+	m_addressFinder.addresses.flagsAddress                 = CMemUtil::getMemUtil().GetMemIntValue(m_addressFinder.getFlagsAddress());
 	m_addressFinder.addresses.fistPercentLeftAddress       = m_addressFinder.addresses.flagsAddress + 4;
 	m_addressFinder.addresses.fistSkillAddress             = m_addressFinder.addresses.flagsAddress + 32;
 	m_addressFinder.addresses.fishSkillAddress             = m_addressFinder.addresses.flagsAddress + 56;
@@ -270,7 +270,7 @@ void CConfigDialog::OnBeginOutput()
 	fflush(outputFile);
 	for (int loop = m_outputStartByte; loop < m_outputEndByte; loop++)
 	{
-		byte foundByte = (byte)CMemUtil::GetMemIntValue(loop);
+		byte foundByte = (byte)CMemUtil::getMemUtil().GetMemIntValue(loop);
 		sprintf(buf, "\tComparison.push_back(0x%x);\r\n\tMask.push_back(1);\r\n", foundByte);
 		fprintf(outputFile, buf);
 		fflush(outputFile);

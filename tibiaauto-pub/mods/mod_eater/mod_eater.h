@@ -21,23 +21,11 @@
 // See mod_eater.cpp for the implementation of this class
 //
 
-class CMod_eaterApp : public CWinApp, public IModuleInterface
+class CMod_eaterApp : public IModuleInterface
 {
 public:
 	CMod_eaterApp();
 	~CMod_eaterApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_eaterApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_eaterApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	// functions from IModuleInterface
 	char * getName();

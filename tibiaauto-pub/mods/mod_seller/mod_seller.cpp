@@ -50,16 +50,6 @@ CToolSellerState globalSellerState = CToolSellerState_notRunning;
 int GUIx                           = 0, GUIy = 0, GUIz = 0, GUINum = 0;
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_SellerApp
-
-BEGIN_MESSAGE_MAP(CMod_SellerApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_SellerApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
 int RandomTimeSellerSay(int length)
@@ -456,7 +446,7 @@ void CMod_SellerApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_SellerApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_SellerApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "StopBySeller"))
 		m_configData->stopBySeller = atoi(paramValue);
@@ -636,7 +626,7 @@ void CMod_SellerApp::loadConfigParam(char *paramName, char *paramValue)
 	}
 }
 
-char *CMod_SellerApp::saveConfigParam(char *paramName)
+char *CMod_SellerApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = '\0';
@@ -819,93 +809,56 @@ char *CMod_SellerApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_SellerApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "Seller1/Name";
-	case 1:
-		return "Seller1/Pos";
-	case 2:
-		return "Seller1/SaleItems/Name";
-	case 3:
-		return "Seller1/SaleItems/SaleTriggerQuantity";
-	case 4:
-		return "Seller2/Name";
-	case 5:
-		return "Seller2/Pos";
-	case 6:
-		return "Seller2/SaleItems/Name";
-	case 7:
-		return "Seller2/SaleItems/SaleTriggerQuantity";
-	case 8:
-		return "Seller3/Name";
-	case 9:
-		return "Seller3/Pos";
-	case 10:
-		return "Seller3/SaleItems/Name";
-	case 11:
-		return "Seller3/SaleItems/SaleTriggerQuantity";
-	case 12:
-		return "Seller4/Name";
-	case 13:
-		return "Seller4/Pos";
-	case 14:
-		return "Seller4/SaleItems/Name";
-	case 15:
-		return "Seller4/SaleItems/SaleTriggerQuantity";
-	case 16:
-		return "Seller1/BuyItems/Name";
-	case 17:
-		return "Seller1/BuyItems/BuyQuantity";
-	case 18:
-		return "Seller1/BuyItems/BuyTriggerQuantity";
-	case 19:
-		return "Seller1/BuyItems/BuyPrice";
-	case 20:
-		return "Seller2/BuyItems/Name";
-	case 21:
-		return "Seller2/BuyItems/BuyQuantity";
-	case 22:
-		return "Seller2/BuyItems/BuyTriggerQuantity";
-	case 23:
-		return "Seller2/BuyItems/BuyPrice";
-	case 24:
-		return "Seller3/BuyItems/Name";
-	case 25:
-		return "Seller3/BuyItems/BuyQuantity";
-	case 26:
-		return "Seller3/BuyItems/BuyTriggerQuantity";
-	case 27:
-		return "Seller3/BuyItems/BuyPrice";
-	case 28:
-		return "Seller4/BuyItems/Name";
-	case 29:
-		return "Seller4/BuyItems/BuyQuantity";
-	case 30:
-		return "Seller4/BuyItems/BuyTriggerQuantity";
-	case 31:
-		return "Seller4/BuyItems/BuyPrice";
-	case 32:
-		return "SellOnCap";
-	case 33:
-		return "SellWhen";
-	case 34:
-		return "SellOnSpace";
-	case 35:
-		return "ModPriority";
-	case 36:
-		return "StopBySeller";
-	case 37:
-		return "SuggestBanker";
+	"Seller1/Name",
+	"Seller1/Pos",
+	"Seller1/SaleItems/Name",
+	"Seller1/SaleItems/SaleTriggerQuantity",
+	"Seller2/Name",
+	"Seller2/Pos",
+	"Seller2/SaleItems/Name",
+	"Seller2/SaleItems/SaleTriggerQuantity",
+	"Seller3/Name",
+	"Seller3/Pos",
+	"Seller3/SaleItems/Name",
+	"Seller3/SaleItems/SaleTriggerQuantity",
+	"Seller4/Name",
+	"Seller4/Pos",
+	"Seller4/SaleItems/Name",
+	"Seller4/SaleItems/SaleTriggerQuantity",
+	"Seller1/BuyItems/Name",
+	"Seller1/BuyItems/BuyQuantity",
+	"Seller1/BuyItems/BuyTriggerQuantity",
+	"Seller1/BuyItems/BuyPrice",
+	"Seller2/BuyItems/Name",
+	"Seller2/BuyItems/BuyQuantity",
+	"Seller2/BuyItems/BuyTriggerQuantity",
+	"Seller2/BuyItems/BuyPrice",
+	"Seller3/BuyItems/Name",
+	"Seller3/BuyItems/BuyQuantity",
+	"Seller3/BuyItems/BuyTriggerQuantity",
+	"Seller3/BuyItems/BuyPrice",
+	"Seller4/BuyItems/Name",
+	"Seller4/BuyItems/BuyQuantity",
+	"Seller4/BuyItems/BuyTriggerQuantity",
+	"Seller4/BuyItems/BuyPrice",
+	"SellOnCap",
+	"SellWhen",
+	"SellOnSpace",
+	"ModPriority",
+	"StopBySeller",
+	"SuggestBanker",
+	NULL,
+};
 
-	default:
-		return NULL;
-	}
+const char **CMod_SellerApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
-int CMod_SellerApp::isMultiParam(char *paramName)
+
+int CMod_SellerApp::isMultiParam(const char *paramName)
 {
 	if (!strcmp(paramName, "Seller1/SaleItems/Name"))
 		return 1;
@@ -958,7 +911,7 @@ int CMod_SellerApp::isMultiParam(char *paramName)
 	return 0;
 }
 
-void CMod_SellerApp::resetMultiParamAccess(char *paramName)
+void CMod_SellerApp::resetMultiParamAccess(const char *paramName)
 {
 	if (!strcmp(paramName, "Seller1/SaleItems/Name"))
 		currentPos = 0;
@@ -1013,28 +966,26 @@ void CMod_SellerApp::resetMultiParamAccess(char *paramName)
 int findSeller(CConfigData *config, int traderNum)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z)
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	if (config->targetX == self.x && config->targetY == self.y && config->targetZ == self.z)
 	{
 		memset(config->path, 0, 15);
-		delete self;
 		return 1;
 	}
 	GUIx   = config->sellerList[traderNum].sellerX;
 	GUIy   = config->sellerList[traderNum].sellerY;
 	GUIz   = config->sellerList[traderNum].sellerZ;
 	GUINum = traderNum;
-	struct point nearestSell = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->sellerList[traderNum].sellerX, config->sellerList[traderNum].sellerY, config->sellerList[traderNum].sellerZ, 0, config->path, 3);
+	struct point nearestSell = CModuleUtil::findPathOnMap(self.x, self.y, self.z, config->sellerList[traderNum].sellerX, config->sellerList[traderNum].sellerY, config->sellerList[traderNum].sellerZ, 0, config->path, 3);
 	if (nearestSell.x && nearestSell.y && nearestSell.z)
 	{
 		config->targetX = nearestSell.x;
 		config->targetY = nearestSell.y;
 		config->targetZ = nearestSell.z;
-		delete self;
 //			AfxMessageBox("Seller Found moving");
 		return 1;
 	}
-	delete self;
 //			AfxMessageBox("Seller Not Found");
 	return 0;
 }
@@ -1069,59 +1020,53 @@ int moveToSeller(CConfigData *config, int traderNum)
 		//Find a location close enough to NPC
 		if (!positionFound)
 		{
-			CTibiaCharacter* self = reader.readSelfCharacter();
-			CModuleUtil::executeWalk(self->x, self->y, self->z, config->path);
-			if (self->x == config->targetX && self->y == config->targetY && self->z == config->targetZ)
+			CTibiaCharacter self;
+			reader.readSelfCharacter(&self);
+			CModuleUtil::executeWalk(self.x, self.y, self.z, config->path);
+			if (self.x == config->targetX && self.y == config->targetY && self.z == config->targetZ)
 				positionFound = 1;
-			delete self;
 		}
 		else     //Approach NPC after finding them
 		{
 			for (int i = 0; i < reader.m_memMaxCreatures; i++)
 			{
-				CTibiaCharacter* mon = reader.readVisibleCreature(i);
-				if (mon->tibiaId == 0)
+				CTibiaCharacter mon;
+				reader.readVisibleCreature(&mon, i);
+				if (mon.tibiaId == 0)
 				{
-					delete mon;
 					break;
 				}
-				int len = strlen(mon->name);
+				int len = strlen(mon.name);
 				// since sellerList[traderNum].sellerName may include city, match first part of name
-				if (strncmp(config->sellerList[traderNum].sellerName, mon->name, len) == 0 && (config->sellerList[traderNum].sellerName[len] == 0 || config->sellerList[traderNum].sellerName[len] == ' '))
+				if (strncmp(config->sellerList[traderNum].sellerName, mon.name, len) == 0 && (config->sellerList[traderNum].sellerName[len] == 0 || config->sellerList[traderNum].sellerName[len] == ' '))
 				{
 					for (int tries = 0; tries < 2; tries++) // should only need 1 try, but we'd need to start over if we don't make it
 					{
-						CTibiaCharacter* self = reader.readSelfCharacter();
-						delete mon;
-						mon = reader.readVisibleCreature(i);
+						CTibiaCharacter self;
+						reader.readSelfCharacter(&self);
+						reader.readVisibleCreature(&mon, i);
 
 						struct point nearestSell = point(0, 0, 0);
 						int rad                  = 2;
 						while (nearestSell.x == 0 && rad <= 3)//find paths increasingly farther away
 						{
-							nearestSell = CModuleUtil::findPathOnMap(self->x, self->y, self->z, mon->x, mon->y, mon->z, 0, config->path, rad++);
+							nearestSell = CModuleUtil::findPathOnMap(self.x, self.y, self.z, mon.x, mon.y, mon.z, 0, config->path, rad++);
 						}
-						if (nearestSell.x && nearestSell.y && nearestSell.z == self->z)
+						if (nearestSell.x && nearestSell.y && nearestSell.z == self.z)
 						{
-							CModuleUtil::executeWalk(self->x, self->y, self->z, config->path);
+							CModuleUtil::executeWalk(self.x, self.y, self.z, config->path);
 							if (CModuleUtil::waitToStandOnSquare(nearestSell.x, nearestSell.y))
 							{
-								delete mon;
-								mon = reader.readVisibleCreature(i);
-								if (!(abs(self->x - mon->x) <= 3 && abs(self->y - mon->y) <= 3 && self->z == mon->z))
+								reader.readVisibleCreature(&mon, i);
+								if (!(abs(self.x - mon.x) <= 3 && abs(self.y - mon.y) <= 3 && self.z == mon.z))
 								{
-									delete self;
 									continue;
 								}
-								delete mon;
-								delete self;
 								return 1;
 							}
 						}
-						delete self;
 					}
 				}
-				delete mon;
 			}
 			positionFound = 0;
 		}
@@ -1132,9 +1077,6 @@ int moveToSeller(CConfigData *config, int traderNum)
 int sellItems(CConfigData *config, int traderNum)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-
-	
-	
 	CTibiaContainer *cont;
 	int itemCount;
 	int done = -1;
@@ -1168,11 +1110,12 @@ int sellItems(CConfigData *config, int traderNum)
 						itemCount = countAllItemsOfType(objectId);
 						while (itemCount > 0)
 						{
-							CTibiaCharacter *self = reader.readSelfCharacter();
+							CTibiaCharacter self;
+							reader.readSelfCharacter(&self);
 							CPackSender::npcSell(objectId, min(itemCount, MAX_BUYSELL_ITEMS));
 							itemCount -= min(itemCount, MAX_BUYSELL_ITEMS);
 							Sleep(RandomTimeSeller());
-							if (CModuleUtil::waitForCapsChange(self->cap))
+							if (CModuleUtil::waitForCapsChange(self.cap))
 							{
 								if (done != 0)
 									done = 1;
@@ -1181,7 +1124,6 @@ int sellItems(CConfigData *config, int traderNum)
 							{
 								done = 0;
 							}
-							delete self;
 						}
 					}
 				}
@@ -1230,11 +1172,12 @@ int buyItems(CConfigData *config, int traderNum)
 
 		while (itemCount > 0)
 		{
-			CTibiaCharacter *self = reader.readSelfCharacter();
+			CTibiaCharacter self;
+			reader.readSelfCharacter(&self);
 			CPackSender::npcBuy(objectId, min(itemCount, MAX_BUYSELL_ITEMS), 0, 0);
 			itemCount -= min(itemCount, MAX_BUYSELL_ITEMS);
 			Sleep(RandomTimeSeller());
-			if (CModuleUtil::waitForCapsChange(self->cap))
+			if (CModuleUtil::waitForCapsChange(self.cap))
 			{
 				if (done != 0)
 					done = 1;
@@ -1243,7 +1186,6 @@ int buyItems(CConfigData *config, int traderNum)
 			{
 				done = 0;
 			}
-			delete self;
 		}
 	}
 	return done == 1 ? 1 : 0;
@@ -1344,7 +1286,8 @@ bool shouldGo(CConfigData *config)
 	//char buf[64];
 	
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
 
 	int count      = 0;
@@ -1352,14 +1295,12 @@ bool shouldGo(CConfigData *config)
 	bool should    = false;
 	for (int i = 0; i < MAX_SELLERS; i++)
 	{
-		if (config->sellOnCap && self->cap < config->sellWhen && individualShouldGo(config, i))
+		if (config->sellOnCap && self.cap < config->sellWhen && individualShouldGo(config, i))
 		{
-			delete self;
 			return true;
 		}
 		if (config->sellOnSpace && !spaceAvailable() && individualShouldGo(config, i))
 		{
-			delete self;
 			return true;
 		}
 		for (int j = 0; j < MAX_SELLER_ITEMS; j++)
@@ -1402,7 +1343,6 @@ bool shouldGo(CConfigData *config)
 		}
 	}
 //	should?AfxMessageBox("Should go"):AfxMessageBox("Should not go");
-	delete self;
 	return should;
 }
 

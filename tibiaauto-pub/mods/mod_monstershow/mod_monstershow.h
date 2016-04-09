@@ -17,23 +17,11 @@
 /////////////////////////////////////////////////////////////////////////////
 //
 
-class CMod_monstershowApp : public CWinApp, public IModuleInterface
+class CMod_monstershowApp : public IModuleInterface
 {
 public:
 	CMod_monstershowApp();
 	~CMod_monstershowApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_monstershowApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_monstershowApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	void getNewSkin(CSkin);
 	// functions from IModuleInterface
@@ -41,7 +29,7 @@ public:
 	void showConfigDialog();
 	char *getVersion();
 	void resetConfig();
-	char *getConfigParamName(int nr);
+	const char **getConfigParamNames();
 private:
 	CConfigData *m_configData;
 	CToolMonsterShow *m_infoDialog;

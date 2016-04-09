@@ -38,18 +38,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-
-/////////////////////////////////////////////////////////////////////////////
-// CMod_sorterApp
-
-BEGIN_MESSAGE_MAP(CMod_sorterApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_sorterApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-//int initializeLootBags();
 int isStackable(int, int);
 
 /////////////////////////////////////////////////////////////////////////////
@@ -342,7 +330,7 @@ void CMod_sorterApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_sorterApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_sorterApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	char tempHold[64];
 	sscanf(paramValue, "%d,%d,%[^#]", &m_currentBagEntryNr, &m_currentSlotEntryNr, &tempHold);
@@ -362,7 +350,7 @@ void CMod_sorterApp::loadConfigParam(char *paramName, char *paramValue)
 	}
 }
 
-char *CMod_sorterApp::saveConfigParam(char *paramName)
+char *CMod_sorterApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -394,25 +382,25 @@ char *CMod_sorterApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_sorterApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "bag/entry";
-	default:
-		return NULL;
-	}
+	"bag/entry",
+	NULL,
+};
+
+const char **CMod_sorterApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
-int CMod_sorterApp::isMultiParam(char *paramName)
+int CMod_sorterApp::isMultiParam(const char *paramName)
 {
 	if (!strcmp(paramName, "bag/entry"))
 		return 1;
 	return 0;
 }
 
-void CMod_sorterApp::resetMultiParamAccess(char *paramName)
+void CMod_sorterApp::resetMultiParamAccess(const char *paramName)
 {
 	if (!strcmp(paramName, "bag/entry"))
 	{

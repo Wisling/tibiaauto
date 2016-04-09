@@ -21,23 +21,11 @@
 // See mod_fluid.cpp for the implementation of this class
 //
 
-class CMod_fluidApp : public CWinApp, public IModuleInterface
+class CMod_fluidApp : public IModuleInterface
 {
 public:
 	CMod_fluidApp();
 	~CMod_fluidApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_fluidApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_fluidApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	void getNewSkin(CSkin);
 	int validateConfig(int showAlerts);
@@ -53,9 +41,9 @@ public:
 	void enableControls();
 	char *getVersion();
 	void resetConfig();
-	void loadConfigParam(char *paramName, char *paramValue);
-	char *saveConfigParam(char *paramName);
-	char *getConfigParamName(int nr);
+	void loadConfigParam(const char *paramName, char *paramValue);
+	char *saveConfigParam(const char *paramName);
+	const char **getConfigParamNames();
 private:
 	int m_started;
 	CConfigDialog * m_configDialog;

@@ -39,18 +39,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-
-/////////////////////////////////////////////////////////////////////////////
-// CMod_xrayApp
-
-BEGIN_MESSAGE_MAP(CMod_xrayApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_xrayApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -93,14 +81,15 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		if (!reader.isLoggedIn())
 			continue;                   // do not proceed if not connected
 
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
-		if (config->autoreset && (self->x != lastX || self->y != lastY || self->z != lastZ))
+		if (config->autoreset && (self.x != lastX || self.y != lastY || self.z != lastZ))
 		{
 			reader.setXRayValues(7, 2);
-			lastX = self->x;
-			lastY = self->y;
-			lastZ = self->z;
+			lastX = self.x;
+			lastY = self.y;
+			lastZ = self.z;
 		}
 
 
@@ -141,21 +130,21 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				// ground = 7. 6->5->4 and so are higher levels
 				// 8 -> 9 -> 10 and so are lower levels.
 
-				if (self->z <= 7)
+				if (self.z <= 7)
 				{
 					// Can only go down as many times as you are away from the 7th-1 floor
 					// prevents possible crash when looking at ground floor and you go down 1 floor
-					groundlevel = max(groundlevel, 7 - ((self->z == 7 ? 7 : 6) - self->z));
+					groundlevel = max(groundlevel, 7 - ((self.z == 7 ? 7 : 6) - self.z));
 					// Can only go up as many times as you are away from the 0th floor
 					// prevents possible crash when looking at top floor and you go up 1 floor
-					groundlevel = min(groundlevel, 7 - ((self->z == 0 ? 0 : 1) - self->z));
+					groundlevel = min(groundlevel, 7 - ((self.z == 0 ? 0 : 1) - self.z));
 					reader.setXRayValues(groundlevel, 2);
 				}
 
-				if (self->z > 7)
+				if (self.z > 7)
 				{
 					// Can only go down as many times as you are away from the 15th floor, but not below 0
-					undergroundlevel = max(undergroundlevel, max(0, 2 - (15 - self->z)));
+					undergroundlevel = max(undergroundlevel, max(0, 2 - (15 - self.z)));
 					// Can only go up to 7 only up to 4 is useful though
 					undergroundlevel = min(undergroundlevel, 7);
 					reader.setXRayValues(7, undergroundlevel);
@@ -164,7 +153,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		}
 
 
-		delete self;
 	}
 
 
@@ -311,7 +299,7 @@ void CMod_xrayApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_xrayApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_xrayApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "other/autoreset"))
 		m_configData->autoreset = atoi(paramValue);
@@ -319,7 +307,7 @@ void CMod_xrayApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->extrahotkeys = atoi(paramValue);
 }
 
-char *CMod_xrayApp::saveConfigParam(char *paramName)
+char *CMod_xrayApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -333,17 +321,16 @@ char *CMod_xrayApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_xrayApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "other/autoreset";
-	case 1:
-		return "other/extrahotkeys";
-	default:
-		return NULL;
-	}
+	"other/autoreset",
+	"other/extrahotkeys",
+	NULL,
+};
+
+const char **CMod_xrayApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_xrayApp::getNewSkin(CSkin newSkin)

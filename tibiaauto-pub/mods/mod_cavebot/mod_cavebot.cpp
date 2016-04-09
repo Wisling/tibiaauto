@@ -54,18 +54,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-/////////////////////////////////////////////////////////////////////////////
-// CMod_cavebotApp
-
-BEGIN_MESSAGE_MAP(CMod_cavebotApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_cavebotApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-// DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-
 // NOTE: those delete trampolines are used to ensure 'secure' delete operation
 //       and force revealing any memory issues faster
 template <class T>
@@ -230,22 +218,19 @@ void dumpCreatureInfo(char *info, unsigned int tibiaId)
 	int nr = -1;
 	for (i = 0; i < reader.m_memMaxCreatures; i++)
 	{
-		CTibiaCharacter *ch = reader.readVisibleCreature(i);
+		CTibiaCharacter ch;
+		reader.readVisibleCreature(&ch, i);
 
-		if (ch->tibiaId == tibiaId)
+		if (ch.tibiaId == tibiaId)
 		{
 			nr = i;
-			deleteAndNull(ch);
 			break;
 		}
-		else if (ch->tibiaId == 0)
+		else if (ch.tibiaId == 0)
 		{
-			delete ch;
 			registerDebug("dumpCreatureInfo: Creature ID not found.");
 			return;
 		}
-
-		deleteAndNull(ch);
 	}
 
 	int offset = reader.m_memAddressFirstCreature + nr * reader.m_memLengthCreature;
@@ -257,7 +242,7 @@ void dumpCreatureInfo(char *info, unsigned int tibiaId)
 		for (i = 0; i < reader.m_memLengthCreature; i += 4)
 		{
 			char buf[128];
-			int val = CMemUtil::GetMemIntValue(offset + i);
+			int val = CMemUtil::getMemUtil().GetMemIntValue(offset + i);
 			sprintf(buf, "offset %d -> %d", i, val);
 			registerDebug(buf);
 		}
@@ -279,7 +264,8 @@ int depotCheckCanGo(CConfigData *config)
 	
 	
 	CUIntArray depotListObjects;
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 	int i;
 	for (i = 0; i < MAX_DEPOTTRIGGERCOUNT && config->depotTrigger[i].itemName[0] > 0; i++)
 	{
@@ -351,7 +337,6 @@ int depotCheckCanGo(CConfigData *config)
 
 
 exitDCG:
-	deleteAndNull(self);
 	return ret;
 }
 
@@ -362,10 +347,9 @@ int depotCheckShouldGo(CConfigData *config)
 {
 	int ret = 0;
 	CMemReader& reader = CMemReader::getMemReader();
-	
-	
-	CTibiaCharacter *self      = reader.readSelfCharacter();
-	if (self->cap < config->depotCap)
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	if (self.cap < config->depotCap)
 	{
 		if (depotCheckCanGo(config))
 		{
@@ -414,7 +398,6 @@ int depotCheckShouldGo(CConfigData *config)
 	}
 
 exitDSG:
-	deleteAndNull(self);
 	return ret;
 }
 
@@ -425,9 +408,6 @@ void depotCheck(CConfigData *config)
 {
 	CMemReader& reader = CMemReader::getMemReader();
 
-	
-	
-
 	if (globalAutoAttackStateDepot == CToolAutoAttackStateDepot_notFound)
 		lastDepotPathNotFoundTm = time(NULL);
 
@@ -435,7 +415,8 @@ void depotCheck(CConfigData *config)
 		registerDebug("Depot check");
 	if (globalAutoAttackStateDepot == CToolAutoAttackStateDepot_notRunning)
 	{
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 		if (!persistentShouldGo && depotCheckShouldGo(config))
 			persistentShouldGo = 1;
 		const char* controller = CVariableStore::getVariable("walking_control");
@@ -485,7 +466,7 @@ void depotCheck(CConfigData *config)
 			 */
 
 			uint8_t path[15];
-			struct point nearestDepot = CModuleUtil::findPathOnMap(self->x, self->y, self->z, 0, 0, 0, 301, path);
+			struct point nearestDepot = CModuleUtil::findPathOnMap(self.x, self.y, self.z, 0, 0, 0, 301, path);
 			depotX = nearestDepot.x;
 			depotY = nearestDepot.y;
 			depotZ = nearestDepot.z;
@@ -509,11 +490,8 @@ void depotCheck(CConfigData *config)
 				if (config->debug)
 					registerDebug("Depot not found - depot state: not found");
 			}
-
-			deleteAndNull(self);
 			return;
 		}
-		deleteAndNull(self);
 	}
 	if (globalAutoAttackStateDepot == CToolAutoAttackStateDepot_walking)
 	{
@@ -528,18 +506,19 @@ void depotCheck(CConfigData *config)
 		{
 			if (config->debug)
 				registerDebug("Walking to a depot section");
-			CTibiaCharacter *self = reader.readSelfCharacter();
+			CTibiaCharacter self;
+			reader.readSelfCharacter(&self);
 			// check whether the depot is reachable
 			uint8_t path[15];
 			if (config->debug)
 				registerDebug("findPathOnMap: depot walker");
-			CModuleUtil::findPathOnMap(self->x, self->y, self->z, depotX, depotY, depotZ, 301, path);
+			CModuleUtil::findPathOnMap(self.x, self.y, self.z, depotX, depotY, depotZ, 301, path);
 			if (!path[0] || !CTibiaMap::getTibiaMap().isPointAvailable(depotX, depotY, depotZ))
 			{
 				if (config->debug)
 					registerDebug("Path to the current depot not found: must find a new one");
 				// path to the current depot not found, must find a new depot
-				struct point nearestDepot = CModuleUtil::findPathOnMap(self->x, self->y, self->z, 0, 0, 0, 301, path);
+				struct point nearestDepot = CModuleUtil::findPathOnMap(self.x, self.y, self.z, 0, 0, 0, 301, path);
 				depotX = nearestDepot.x;
 				depotY = nearestDepot.y;
 				depotZ = nearestDepot.z;
@@ -569,16 +548,15 @@ void depotCheck(CConfigData *config)
 				if (config->debug)
 					registerDebug("Currently selected depot is reachable");
 			}
-
-			deleteAndNull(self);
 		}
 	}
 	if (globalAutoAttackStateDepot == CToolAutoAttackStateDepot_notFound)
 	{
 		// not depot found - but try finding another one
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 		uint8_t path[15];
-		struct point nearestDepot = CModuleUtil::findPathOnMap(self->x, self->y, self->z, 0, 0, 0, 301, path);
+		struct point nearestDepot = CModuleUtil::findPathOnMap(self.x, self.y, self.z, 0, 0, 0, 301, path);
 		depotX = nearestDepot.x;
 		depotY = nearestDepot.y;
 		depotZ = nearestDepot.z;
@@ -603,8 +581,6 @@ void depotCheck(CConfigData *config)
 			if (config->debug)
 				registerDebug("Depot not found - depot state: not found (again)");
 		}
-
-		deleteAndNull(self);
 	}
 }
 
@@ -612,9 +588,10 @@ int depotDepositOpenChest(int x, int y, int z)
 {
 	CMemReader& reader = CMemReader::getMemReader();
 
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 	int depotContNr       = -1;
-	int count             = reader.mapGetPointItemsCount(point(x - self->x, y - self->y, 0));
+	int count             = reader.mapGetPointItemsCount(point(x - self.x, y - self.y, 0));
 	int pos               = 0;
 	if (count > 10)
 		count = 10;    // ? should have written down why I put this here
@@ -622,13 +599,13 @@ int depotDepositOpenChest(int x, int y, int z)
 	int lockerId = 0;
 	for (pos = 0; pos < count; pos++)
 	{
-		int tileId       = reader.mapGetPointItemId(point(x - self->x, y - self->y, 0), pos);
+		int tileId       = reader.mapGetPointItemId(point(x - self.x, y - self.y, 0), pos);
 		CTibiaTile* tile = CTileReader::getTileReader().getTile(tileId);
 		if (!tile->notMoveable && !tile->isDepot && pos != count - 1)
 		{
 			//leave at least 1 object that is either movable or the depot box on the tile(For depositing in container in house)
-			int qty = reader.mapGetPointItemExtraInfo(point(x - self->x, y - self->y, 0), pos, 1);
-			CPackSender::moveObjectFromFloorToFloor(tileId, x, y, z, self->x, self->y, self->z, qty ? qty : 1);
+			int qty = reader.mapGetPointItemExtraInfo(point(x - self.x, y - self.y, 0), pos, 1);
+			CPackSender::moveObjectFromFloorToFloor(tileId, x, y, z, self.x, self.y, self.z, qty ? qty : 1);
 			Sleep(CModuleUtil::randomFormula(400, 200));
 			pos--;
 			count--;
@@ -640,7 +617,7 @@ int depotDepositOpenChest(int x, int y, int z)
 		}
 	}
 	if (!lockerId && count)
-		lockerId = reader.itemOnTopCode(x - self->x, y - self->y); //use the topmost item as the depot container(useful for bags within houses)
+		lockerId = reader.itemOnTopCode(x - self.x, y - self.y); //use the topmost item as the depot container(useful for bags within houses)
 	if (lockerId)
 	{
 		// this is the depot chest so open it
@@ -663,7 +640,6 @@ int depotDepositOpenChest(int x, int y, int z)
 		}
 		deleteAndNull(cont);
 	}
-	deleteAndNull(self);
 	return depotContNr;
 }
 
@@ -672,7 +648,6 @@ int depotDepositOpenChest(int x, int y, int z)
 int depotTryMovingItemToContainer(int objectId, int sourceContNr, int sourcePos, int qty, int destContNr, int shouldCheckCaps = 0)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-
 
 	CTibiaTile *tile = CTileReader::getTileReader().getTile(objectId);
 	if (tile == NULL)
@@ -710,9 +685,10 @@ int depotTryMovingItemToContainer(int objectId, int sourceContNr, int sourcePos,
 	{
 		if (shouldCheckCaps) // do more checking and retries in case we do not have enough caps
 		{
-			CTibiaCharacter* self = reader.readSelfCharacter();
+			CTibiaCharacter self;
+			reader.readSelfCharacter(&self);
 			CPackSender::moveObjectBetweenContainers(objectId, 0x40 + sourceContNr, sourcePos, 0x40 + destContNr, destPos, qtyToMove);
-			if (CModuleUtil::waitForCapsChange(self->cap))
+			if (CModuleUtil::waitForCapsChange(self.cap))
 			{
 				Sleep(CModuleUtil::randomFormula(300, 100));
 			}
@@ -721,44 +697,39 @@ int depotTryMovingItemToContainer(int objectId, int sourceContNr, int sourcePos,
 				if (qtyToMove != 1)
 				{
 					CPackSender::moveObjectBetweenContainers(objectId, 0x40 + sourceContNr, sourcePos, 0x40 + destContNr, destPos, 1);
-					if (CModuleUtil::waitForCapsChange(self->cap))
+					if (CModuleUtil::waitForCapsChange(self.cap))
 					{
 						Sleep(CModuleUtil::randomFormula(300, 100));
 					}
 					else  // exit if fails to move even 1 item
 					{
-						deleteAndNull(self);
 						qtyToMove = 0;
 						goto exitTryMoving;
 					}
-					CTibiaCharacter* selfAfter = reader.readSelfCharacter();
-					float weight               = self->cap - selfAfter->cap;
+					CTibiaCharacter selfAfter;
+					reader.readSelfCharacter(&selfAfter);
+					float weight  = self.cap - selfAfter.cap;
 					if (weight > 0)  // if we have a valid weight,
 					{
-						qtyToMove = min(qtyToMove, int(selfAfter->cap / (weight + .01)));
+						qtyToMove = min(qtyToMove, int(selfAfter.cap / (weight + .01)));
 						CPackSender::moveObjectBetweenContainers(objectId, 0x40 + sourceContNr, sourcePos, 0x40 + destContNr, destPos, qtyToMove);
-						if (CModuleUtil::waitForCapsChange(selfAfter->cap))
+						if (CModuleUtil::waitForCapsChange(selfAfter.cap))
 						{
 							Sleep(CModuleUtil::randomFormula(300, 100));
 						}
 						else
 						{
-							deleteAndNull(self);
-							deleteAndNull(selfAfter);
 							qtyToMove = 0;
 							goto exitTryMoving;
 						}
 					}
-					deleteAndNull(selfAfter);
 				}
 				else
 				{
-					deleteAndNull(self);
 					qtyToMove = 0;
 					goto exitTryMoving;
 				}
 			}
-			deleteAndNull(self);
 		}
 		else
 		{
@@ -970,12 +941,10 @@ void listAllItemsInContainers(CUIntArray& sortedObjectIDs, CUIntArray& outObject
 void depotDeposit(CConfigData *config)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-
-	
-	
-	CTibiaCharacter *self      = reader.readSelfCharacter();
-	int depotContNr            = -1;
-	int depotContNr2           = -1;
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	int depotContNr           = -1;
+	int depotContNr2          = -1;
 	/*
 	 * Now we must do:
 	 * 1. locate depot chest (optional)
@@ -992,9 +961,9 @@ void depotDeposit(CConfigData *config)
 			{
 				if (x || y)
 				{
-					if (CTibiaMap::getTibiaMap().getPointType(self->x + x, self->y + y, self->z) == MAP_POINT_TYPE_DEPOT)//is depot spot
+					if (CTibiaMap::getTibiaMap().getPointType(self.x + x, self.y + y, self.z) == MAP_POINT_TYPE_DEPOT)//is depot spot
 					{
-						depotContNr = depotDepositOpenChest(self->x + x, self->y + y, self->z);
+						depotContNr = depotDepositOpenChest(self.x + x, self.y + y, self.z);
 						if (depotContNr != -1)
 						{
 							x = 999;
@@ -1008,7 +977,6 @@ void depotDeposit(CConfigData *config)
 		{
 			// can't open depot chest ?!?!?
 			// so cancel depositing and proceed to walking
-			deleteAndNull(self);
 			globalAutoAttackStateDepot = CToolAutoAttackStateDepot_walking;
 			return;
 		}
@@ -1073,11 +1041,11 @@ void depotDeposit(CConfigData *config)
 									else
 									{
 										// move onto the floor
-										CTibiaCharacter *selftmp = reader.readSelfCharacter();
-										CPackSender::moveObjectFromContainerToFloor(objectToMove, 0x40 + contNr, item->pos, self->x, self->y, self->z, itemQty ? itemQty : 1);
-										CModuleUtil::waitForCapsChange(selftmp->cap);
+										CTibiaCharacter selftmp;
+										reader.readSelfCharacter(&selftmp);
+										CPackSender::moveObjectFromContainerToFloor(objectToMove, 0x40 + contNr, item->pos, self.x, self.y, self.z, itemQty ? itemQty : 1);
+										CModuleUtil::waitForCapsChange(selftmp.cap);
 										Sleep(CModuleUtil::randomFormula(300, 100));
-										deleteAndNull(selftmp);
 									}
 								}
 								totalQty -= itemQty;
@@ -1240,11 +1208,11 @@ DPfinish:
 									else
 									{
 										// move onto the floor
-										CTibiaCharacter *selftmp = reader.readSelfCharacter();
-										CPackSender::moveObjectFromContainerToFloor(objectToMove, 0x40 + contNr, item->pos, self->x, self->y, self->z, itemQty ? itemQty : 1);
-										CModuleUtil::waitForCapsChange(selftmp->cap);
+										CTibiaCharacter selftmp;
+										reader.readSelfCharacter(&selftmp);
+										CPackSender::moveObjectFromContainerToFloor(objectToMove, 0x40 + contNr, item->pos, self.x, self.y, self.z, itemQty ? itemQty : 1);
+										CModuleUtil::waitForCapsChange(selftmp.cap);
 										Sleep(CModuleUtil::randomFormula(300, 100));
-										deleteAndNull(selftmp);
 									}
 								}
 								totalQty -= itemQty;
@@ -1260,8 +1228,6 @@ DPfinish2:
 
 	CVariableStore::setVariable("walking_control", "depotwalker");
 	CVariableStore::setVariable("walking_priority", config->depotModPriorityStr);
-
-
 	// all is finished :) - we can go back to the hunting area
 	if (!config->depotDropInsteadOfDeposit)
 	{
@@ -1285,7 +1251,6 @@ DPfinish2:
 	depotX                     = depotY = depotZ = 0;
 	waypointTargetX            = waypointTargetY = waypointTargetZ = 0;
 	persistentShouldGo         = 0;
-	deleteAndNull(self);
 }
 
 /**
@@ -1525,11 +1490,11 @@ void dropItemsFromContainer(int contNr, int x, int y, int z, CUIntArray* dropIte
 int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 {
 	char buf[256];
-	CMemReader& reader = CMemReader::getMemReader();
-	
-	CTibiaCharacter *self      = reader.readSelfCharacter();
+	CMemReader& reader = CMemReader::getMemReader();	
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
-	if (config->lootFromFloor && self->cap > config->capacityLimit)
+	if (config->lootFromFloor && self.cap > config->capacityLimit)
 	{
 		if (config->debug)
 			registerDebug("Entering 'loot from floor' area");
@@ -1563,7 +1528,6 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 			if (config->debug)
 				registerDebug("Loot from floor: no free container found");
 			// no free place in container found - exit
-			deleteAndNull(self);
 			return 0;
 		}
 		else
@@ -1659,8 +1623,9 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 					sprintf(buf, "findPathOnMap: loot from floor (%d, %d) %x", x, y, foundLootedObjectId);
 					registerDebug(buf);
 				}
-				CTibiaCharacter *self2 = reader.readSelfCharacter();
-				struct point destPoint = CModuleUtil::findPathOnMap(self2->x, self2->y, self2->z, self->x + x, self->y + y, self->z, 0, path, shouldStandOn ? 0 : 1);
+				CTibiaCharacter self2;
+				reader.readSelfCharacter(&self2);
+				struct point destPoint = CModuleUtil::findPathOnMap(self2.x, self2.y, self2.z, self.x + x, self.y + y, self.z, 0, path, shouldStandOn ? 0 : 1);
 				for (pathSize = 0; pathSize < 15 && path[pathSize]; pathSize++)
 				{
 				}
@@ -1668,7 +1633,6 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 				//continue if farther than 10 spaces or path does not include enough info to get there(meaning floor change)
 				if (pathSize >= 10 || pathSize < x + y - 3)
 				{
-					deleteAndNull(self2);
 					continue;
 				}
 
@@ -1684,30 +1648,29 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 					//CPackSender::stopAll();
 					//sprintf(buf, "Walking attempt: %d\nPath Size: %d", walkItem, pathSize);
 					//AfxMessageBox(buf);
-					CModuleUtil::executeWalk(self2->x, self2->y, self2->z, path);
+					CModuleUtil::executeWalk(self2.x, self2.y, self2.z, path);
 					// wait for reaching final point
 					CModuleUtil::waitToStandOnSquare(destPoint.x, destPoint.y);
 				}
 				else
 				{
-					sprintf(buf, "Loot from floor: aiks, no path found (%d,%d,%d)->(%d,%d,%d)!", self2->x, self2->y, self2->z, self->x + x, self->y + y, self->z);
+					sprintf(buf, "Loot from floor: aiks, no path found (%d,%d,%d)->(%d,%d,%d)!", self2.x, self2.y, self2.z, self.x + x, self.y + y, self.z);
 					if (config->debug)
 						registerDebug(buf);
-					deleteAndNull(self2);
 					continue;
 				}
-				deleteAndNull(self2);
 			}
-			CTibiaCharacter *self2 = reader.readSelfCharacter();
-			int itemX              = self->x + x - self2->x;
-			int itemY              = self->y + y - self2->y;
+			CTibiaCharacter self2;
+			reader.readSelfCharacter(&self2);
+			int itemX              = self.x + x - self2.x;
+			int itemY              = self.y + y - self2.y;
 
 			sprintf(buf, "Loot from floor: found looted object id=0x%x at %d,%d", foundLootedObjectId, itemX, itemY);
 			if (config->debug)
 				registerDebug(buf);
 
 			//If failed to get within 1 square, let cavebot take over again
-			if (!(abs(itemX) <= 1 && abs(itemY) <= 1 && self2->z == self->z))
+			if (!(abs(itemX) <= 1 && abs(itemY) <= 1 && self2.z == self.z))
 				break;
 
 			//Uncover Item
@@ -1721,7 +1684,7 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 					for (offsetY = -1; offsetY <= 1; offsetY++)
 					{
 						// double loop break!
-						if (self2->x + offsetX != self->x + x && self2->y + offsetY != self->y + y && CTibiaMap::getTibiaMap().isPointAvailable(self2->x + offsetX, self2->y + offsetY, self2->z) && reader.mapGetPointItemsCount(point(offsetX, offsetY, 0)) < 9)
+						if (self2.x + offsetX != self.x + x && self2.y + offsetY != self.y + y && CTibiaMap::getTibiaMap().isPointAvailable(self2.x + offsetX, self2.y + offsetY, self2.z) && reader.mapGetPointItemsCount(point(offsetX, offsetY, 0)) < 9)
 						{
 							//force loop break;
 							foundSpace = 1;
@@ -1729,7 +1692,7 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 						}
 					}
 				}
-				if (!(self2->x == self->x + x && self2->y == self->y + y))
+				if (!(self2.x == self.x + x && self2.y == self.y + y))
 				{
 					offsetX    = 0;
 					offsetY    = 0;
@@ -1760,7 +1723,7 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 					}
 					for (int i = 0; i < numItems; i++)
 					{
-						CPackSender::moveObjectFromFloorToFloor(itemIds[i], self->x + x, self->y + y, self->z, self2->x + offsetX, self2->y + offsetY, self2->z, itemQtys[i] ? itemQtys[i] : 1);
+						CPackSender::moveObjectFromFloorToFloor(itemIds[i], self.x + x, self.y + y, self.z, self2.x + offsetX, self2.y + offsetY, self2.z, itemQtys[i] ? itemQtys[i] : 1);
 						Sleep(CModuleUtil::randomFormula(400, 200));
 					}
 				}
@@ -1768,7 +1731,6 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 				{
 					if (config->debug)
 						registerDebug("Loot from floor: bad luck - no place to throw junk.");
-					deleteAndNull(self2);
 					continue;
 				}
 			}
@@ -1779,9 +1741,9 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 				if (config->debug)
 					registerDebug("Loot from floor: picking up item");
 				int qty = reader.itemOnTopQty(itemX, itemY);
-				CPackSender::moveObjectFromFloorToContainer(foundLootedObjectId, self->x + x, self->y + y, self->z, 0x40 + freeContNr, freeContPos, qty ? qty : 1);
+				CPackSender::moveObjectFromFloorToContainer(foundLootedObjectId, self.x + x, self.y + y, self.z, 0x40 + freeContNr, freeContPos, qty ? qty : 1);
 				Sleep(CModuleUtil::randomFormula(400, 200));
-				if (CModuleUtil::waitForCapsChange(self->cap))
+				if (CModuleUtil::waitForCapsChange(self.cap))
 					return 1;
 				else
 					return 0; //Item could not be picked up for some reason.
@@ -1792,21 +1754,15 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 					registerDebug("Loot from floor: tough luck - item is not on top. Please wait and try again.");
 			}
 			//If gotten this far, let cavebot takeover for a bit
-			deleteAndNull(self2);
 			break;
 		}
-	} // if (config->lootFromFloor&&self->cap>config->capacityLimit) {
-	deleteAndNull(self);
+	} // if (config->lootFromFloor&&self.cap>config->capacityLimit) {
 	return 0;
 }
 
 void fireRunesAgainstCreature(CConfigData *config, int creatureId)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-
-	
-	
-
 	int contNr, realContNr;
 	CUIntArray acceptedItems;
 	CTibiaItem *rune = new CTibiaItem();
@@ -1941,10 +1897,9 @@ int AttackCreature(CConfigData *config, int id)
 {
 	CMemReader& reader = CMemReader::getMemReader();
 
-	CTibiaCharacter *self       = reader.readSelfCharacter();
-	CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(id);
+	CTibiaCharacter attackedCh;
 	int oldId                   = reader.getAttackedCreature();
-	if (attackedCh)
+	if (reader.getCharacterByTibiaId(&attackedCh, id))
 	{
 		if (oldId != id)
 		{
@@ -1957,17 +1912,12 @@ int AttackCreature(CConfigData *config, int id)
 			if (config->debug && id)
 			{
 				char buf[128];
-				sprintf(buf, "used to be=%d, set to=%d, now attacking=%d,hp=%d", oldId, id, reader.getAttackedCreature(), attackedCh->hpPercLeft);
+				sprintf(buf, "used to be=%d, set to=%d, now attacking=%d,hp=%d", oldId, id, reader.getAttackedCreature(), attackedCh.hpPercLeft);
 				registerDebug(buf);
 			}
-			deleteAndNull(self);
-			deleteAndNull(attackedCh);
 			return 1;
 		}
-		deleteAndNull(attackedCh);
 	}
-	deleteAndNull(self);
-	//attackedCh is NULL
 	return 0;
 }
 
@@ -1989,16 +1939,16 @@ int taxiDist(int x1, int y1, int x2, int y2)
 int canGetToPoint(int X, int Y, int Z)
 {
 	/*
-	   CMemReader& reader = CMemReader::getMemReader();
-	   uint8_t path[15];
-	   CTibiaCharacter *self = reader.readSelfCharacter();
-	   CModuleUtil::findPathOnMap(self->x,self->y,self->z,actualTargetX,actualTargetY,actualTargetZ,0,path);
-	   deleteAndNull(self);
-	   CPackSenderProxy sender;
-	   char buf[111];
-	   sprintf(buf,"%d,%d,%d,%d",path&&path[0]&&!path[8],path,path[0],path[8]);
-	   CPackSender::sendTAMessage(buf);
-	   return path&&path[0]&&!path[14];*/
+	CMemReader& reader = CMemReader::getMemReader();
+	uint8_t path[15];
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	CModuleUtil::findPathOnMap(self.x,self.y,self.z,actualTargetX,actualTargetY,actualTargetZ,0,path);
+	CPackSenderProxy sender;
+	char buf[111];
+	sprintf(buf,"%d,%d,%d,%d",path&&path[0]&&!path[8],path,path[0],path[8]);
+	CPackSender::sendTAMessage(buf);
+	return path&&path[0]&&!path[14];*/
 	return 1;
 }
 
@@ -2091,31 +2041,25 @@ int messageThereIsNoWay(int creatureNr)
 	if (creatureNr == -1)
 		return 0;
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int x                 = self->x;
-	int y                 = self->y;
-	delete self;
-	self = NULL;
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	int x = self.x;
+	int y = self.y;
 
 	for (int t = 0; t < 30; t++)
 	{
 		CIpcMessage mess;
-		CTibiaCharacter *creature = reader.readVisibleCreature(creatureNr);
-		self = reader.readSelfCharacter();
+		CTibiaCharacter creature;
+		reader.readVisibleCreature(&creature, creatureNr);
+		reader.readSelfCharacter(&self);
 		if (CIPCBackPipe::readFromPipe(&mess, 1103))
 		{
-			delete self;
-			delete creature;
 			return 1;
 		}
-		else if ((self->x != x || self->y != y) || taxiDist(self->x, self->y, creature->x, creature->y) == 0)
+		else if ((self.x != x || self.y != y) || taxiDist(self.x, self.y, creature.x, creature.y) == 0)
 		{
-			delete self;
-			delete creature;
 			return 0;
 		}
-		delete self;
-		delete creature;
 		Sleep(50);
 	}
 	return 0;
@@ -2147,12 +2091,11 @@ DWORD WINAPI queueThreadProc(LPVOID lpParam)
 			sscanf(var, "%d %d", &tibiaId, &endTime);
 			CVariableStore::setVariable("autolooterTm", "wait");
 
-			CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(tibiaId);
-			if (attackedCh)
+			CTibiaCharacter attackedCh;
+			if (reader.getCharacterByTibiaId(&attackedCh, tibiaId))
 			{
-				CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
-				corpseQueue.Add(Corpse(attackedCh->x, attackedCh->y, attackedCh->z, GetTickCount()));
-				deleteAndNull(attackedCh);
+				CModuleUtil::waitForCreatureDisappear(attackedCh.nr);
+				corpseQueue.Add(Corpse(attackedCh.x, attackedCh.y, attackedCh.z, GetTickCount()));
 			}
 		}
 	}
@@ -2190,8 +2133,9 @@ DWORD WINAPI lootThreadProc(LPVOID lpParam)
 			lootContNr[1] = reader.findNextClosedContainer(lootContNr[0]);
 
 			globalAutoAttackStateLoot = CToolAutoAttackStateLoot_opening;
-			CTibiaCharacter* self = reader.readSelfCharacter();
-			int corpseId          = reader.itemOnTopCode(corpseCh.x - self->x, corpseCh.y - self->y);
+			CTibiaCharacter self;
+			CMemReader::getMemReader().readSelfCharacter(&self);
+			int corpseId          = reader.itemOnTopCode(corpseCh.x - self.x, corpseCh.y - self.y);
 			CTibiaTile *tile      = CTileReader::getTileReader().getTile(corpseId);
 			if (corpseId && tile && tile->isContainer) //If there is no corpse ID, TA has "lost" the body. No sense in trying to open something that won't be there.
 			{       // Open corpse to container, wait to get to corpse on ground and wait for open
@@ -2255,7 +2199,7 @@ DWORD WINAPI lootThreadProc(LPVOID lpParam)
 							for (lootTakeItem = 0; lootTakeItem < 1; lootTakeItem++)
 							{
 								globalAutoAttackStateLoot = CToolAutoAttackStateLoot_moveing;
-								if (self->cap > config->capacityLimit)
+								if (self.cap > config->capacityLimit)
 									CModuleUtil::lootItemFromContainer(contNr, &acceptedItems, lootContNr[0], lootContNr[1]);
 								if (config->eatFromCorpse)
 								{
@@ -2265,9 +2209,10 @@ DWORD WINAPI lootThreadProc(LPVOID lpParam)
 							}
 							if (config->dropNotLooted)
 							{
-								CTibiaCharacter *self = reader.readSelfCharacter();
+								CTibiaCharacter self;
+								reader.readSelfCharacter(&self);
 								if (config->dropWhenCapacityLimitReached
-								    && self->cap < config->capacityLimit
+								    && self.cap < config->capacityLimit
 								    && !config->dropOnlyLooted
 								    || !config->dropWhenCapacityLimitReached
 								    && config->dropListCount != 0)
@@ -2282,7 +2227,7 @@ DWORD WINAPI lootThreadProc(LPVOID lpParam)
 									}
 									dropItemsFromContainer(contNr, corpseCh.x, corpseCh.y, corpseCh.z, &droppedItems);
 								}
-								else if (self->cap < config->capacityLimit && config->dropOnlyLooted)
+								else if (self.cap < config->capacityLimit && config->dropOnlyLooted)
 								{
 									dropItemsFromContainer(contNr, corpseCh.x, corpseCh.y, corpseCh.z, &acceptedItems);
 								}
@@ -2290,7 +2235,6 @@ DWORD WINAPI lootThreadProc(LPVOID lpParam)
 								{
 									dropItemsFromContainer(contNr, corpseCh.x, corpseCh.y, corpseCh.z);
 								}
-								delete self;
 							}
 							globalAutoAttackStateLoot = CToolAutoAttackStateLoot_closing;
 							Sleep(CModuleUtil::randomFormula(250, 50)); //Add short delay for autostacker to take items
@@ -2309,7 +2253,6 @@ DWORD WINAPI lootThreadProc(LPVOID lpParam)
 			}
 			if (!corpseQueue.GetCount())
 				CVariableStore::setVariable("autolooterTm", "");
-			delete self;
 		}
 		if (globalAutoAttackStateAttack == CToolAutoAttackStateAttack_macroPause)
 			globalAutoAttackStateLoot = CToolAutoAttackStateLoot_macroPause;
@@ -2324,8 +2267,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReader& reader = CMemReader::getMemReader();
 
-	
-	
 	CConfigData *config        = (CConfigData *)lpParam;
 	int pid                    = GetCurrentProcessId();
 	CSharedMemory sh_mem("TibiaAuto", 1024, shMemInit);
@@ -2598,7 +2539,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		modRuns++;//for performing actions once every 10 iterations
 		if (modRuns == 1000000000)
 			modRuns = 0;
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
 		int depotS = GetTickCount();
 		/**
@@ -2645,7 +2587,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		 * 2. we are not in a half sleep (no walking) mode
 		 * 3. there is something to loot
 		 */
-		int moving = CMemUtil::GetMemIntValue(reader.m_memAddressTilesToGo);
+		int moving = CMemUtil::getMemUtil().GetMemIntValue(reader.m_memAddressTilesToGo);
 		if (config->lootFromFloor && lootFromFloorArr.GetSize() && !isInHalfSleep() && isLooterDone(config))
 		{
 			static time_t lastFullDroppedLootCheckTm  = 0;
@@ -2688,14 +2630,15 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		   Start attack process
 		 ******/
 		//if (!reader.getAttackedCreature()) currentlyAttackedCreatureNr = -1;//this is not needed yet(but may be)
-		CTibiaCharacter *attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
+		CTibiaCharacter attackedCh;
+		reader.readVisibleCreature(&attackedCh, currentlyAttackedCreatureNr);
 
 		// keep track of how long standing in same place for info to user
-		if (lastStandingX != self->x || lastStandingY != self->y || lastStandingZ != self->z)
+		if (lastStandingX != self.x || lastStandingY != self.y || lastStandingZ != self.z)
 		{
-			lastStandingX = self->x;
-			lastStandingY = self->y;
-			lastStandingZ = self->z;
+			lastStandingX = self.x;
+			lastStandingY = self.y;
+			lastStandingZ = self.z;
 			currentPosTM  = time(NULL);
 		}
 		/**
@@ -2706,12 +2649,12 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		{
 			globalAutoAttackStateLoot = CToolAutoAttackStateLoot_macroPause;
 		}
-		else if (currentlyAttackedCreatureNr != -1 && (self->cap > config->capacityLimit || config->eatFromCorpse || config->dropNotLooted) && (config->lootFood || config->lootGp || config->lootWorms || config->lootCustom || config->eatFromCorpse || config->dropNotLooted))
+		else if (currentlyAttackedCreatureNr != -1 && (self.cap > config->capacityLimit || config->eatFromCorpse || config->dropNotLooted) && (config->lootFood || config->lootGp || config->lootWorms || config->lootCustom || config->eatFromCorpse || config->dropNotLooted))
 		{
 			// now 's see whether creature is still alive or not
-			if (!attackedCh->hpPercLeft &&
-			    abs(attackedCh->x - self->x) + abs(attackedCh->y - self->y) <= 10 &&
-			    attackedCh->z == self->z)
+			if (!attackedCh.hpPercLeft &&
+			    abs(attackedCh.x - self.x) + abs(attackedCh.y - self.y) <= 10 &&
+			    attackedCh.z == self.z)
 			{
 				if (config->debug)
 					registerDebug("Looter: Creature is dead.");
@@ -2722,7 +2665,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 //				unsigned int lootMessageTm;
 //				CString lootCreatureName;
 //				CString lootString;
-//				CString attackChreatureName=attackedCh->name;
+//				CString attackChreatureName=attackedCh.name;
 //				attackChreatureName.MakeLower();
 //				while(CIPCBackPipe::readFromPipe(&mess,1104)){
 //					unsigned int _lootMessageTm = *(unsigned int*)(mess.payload);
@@ -2738,7 +2681,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 //				int msSinceKill = reader.getCurrentTm()-lootMessageTm;
 //				if(msSinceKill < 1500 && lootString.Compare("nothing")==0){ // if recent creature contains nothing then don't loot
 //					char buf[1024];
-//					sprintf(buf,"Looter: Loot message says creature contains nothing. For %s piped info:%d, %s, %s",attackedCh->name,msSinceKill,lootCreatureName[0],lootString[0]);
+//					sprintf(buf,"Looter: Loot message says creature contains nothing. For %s piped info:%d, %s, %s",attackedCh.name,msSinceKill,lootCreatureName[0],lootString[0]);
 //					if (config->debug) registerDebug(buf);
 //				}else{
 				if (1)
@@ -2761,15 +2704,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						char buf[30];
 						memset(buf, 0, 30);
 						autolooterTm = time(NULL) + 10;
-						sprintf(buf, "%d %d", attackedCh->tibiaId, autolooterTm);
+						sprintf(buf, "%d %d", attackedCh.tibiaId, autolooterTm);
 						CVariableStore::setVariable("autolooterTm", buf);
 
 						if (config->debug)
 							registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & changing attackedCh");
 						currentlyAttackedCreatureNr = -1;
 						reader.setAttackedCreature(0);
-						deleteAndNull(attackedCh);
-						attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
+						reader.readVisibleCreature(&attackedCh, currentlyAttackedCreatureNr);
 					}
 					else
 					{
@@ -2796,20 +2738,19 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						// attacked creature dead, near me, same floor
 						globalAutoAttackStateLoot = CToolAutoAttackStateLoot_opening;
 
-						CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
-						deleteAndNull(self);
-						self = reader.readSelfCharacter();
+						CModuleUtil::waitForCreatureDisappear(attackedCh.nr);
+						reader.readSelfCharacter(&self);
 
-						int corpseId = reader.itemOnTopCode(attackedCh->x - self->x, attackedCh->y - self->y);
+						int corpseId = reader.itemOnTopCode(attackedCh.x - self.x, attackedCh.y - self.y);
 						if (corpseId && CTileReader::getTileReader().getTile(corpseId)->isContainer) //If there is no corpse ID, TA has "lost" the body. No sense in trying to open something that won't be there.
 						{       // Open corpse to container, wait to get to corpse on ground and wait for open
-							CPackSender::openContainerFromFloor(corpseId, attackedCh->x, attackedCh->y, attackedCh->z, lootContNr[0]);
+							CPackSender::openContainerFromFloor(corpseId, attackedCh.x, attackedCh.y, attackedCh.z, lootContNr[0]);
 
-							if (!CModuleUtil::waitToApproachSquare(attackedCh->x, attackedCh->y))
+							if (!CModuleUtil::waitToApproachSquare(attackedCh.x, attackedCh.y))
 							{
 								//(waitToApproachSquare returns false) => (corpse >1 sqm away and not reached yet), so try again
-								CPackSender::openContainerFromFloor(corpseId, attackedCh->x, attackedCh->y, attackedCh->z, lootContNr[0]);
-								CModuleUtil::waitToApproachSquare(attackedCh->x, attackedCh->y);
+								CPackSender::openContainerFromFloor(corpseId, attackedCh.x, attackedCh.y, attackedCh.z, lootContNr[0]);
+								CModuleUtil::waitToApproachSquare(attackedCh.x, attackedCh.y);
 							}
 
 							//Normal looting if autolooter not enabled
@@ -2858,17 +2799,17 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 											{
 												int i, len;
 												char statChName[128];
-												for (i = 0, strcpy(statChName, attackedCh->name), len = strlen(statChName); i < len; i++)
+												for (i = 0, strcpy(statChName, attackedCh.name), len = strlen(statChName); i < len; i++)
 												{
 													if (statChName[i] == '[')
 														statChName[i] = '\0';
 												}
 
 												CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
-												checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), 100 + itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), config->lootInBags && contNr == lootContNr[1], attackedCh->x, attackedCh->y, attackedCh->z);
+												checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), 100 + itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), config->lootInBags && contNr == lootContNr[1], attackedCh.x, attackedCh.y, attackedCh.z);
 												if (checksum < 0)
 													checksum *= -1;
-												fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, config->lootInBags && contNr == lootContNr[1], attackedCh->x, attackedCh->y, attackedCh->z, checksum);
+												fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, config->lootInBags && contNr == lootContNr[1], attackedCh.x, attackedCh.y, attackedCh.z, checksum);
 											}
 										}
 										deleteAndNull(lootCont);
@@ -2906,7 +2847,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 											registerDebug("Looting from container number", intstr(contNrInd).c_str());
 										for (lootTakeItem = 0; lootTakeItem < 1; lootTakeItem++)
 										{
-											if (self->cap > config->capacityLimit)
+											if (self.cap > config->capacityLimit)
 												CModuleUtil::lootItemFromContainer(contNr, &acceptedItems, lootContNr[0], lootContNr[1]);
 											if (config->eatFromCorpse)
 											{
@@ -2916,16 +2857,17 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 										}
 										if (config->dropNotLooted)
 										{
-											CTibiaCharacter *self = reader.readSelfCharacter();
-											if (attackedCh->z != self->z)
+											CTibiaCharacter self;
+											reader.readSelfCharacter(&self);
+											if (attackedCh.z != self.z)
 											{
-												dumpCreatureInfo("XXXYYYZZZ Creature replaced??", attackedCh->tibiaId);
+												dumpCreatureInfo("XXXYYYZZZ Creature replaced??", attackedCh.tibiaId);
 												char buf[1111];
-												sprintf(buf, "Drop looted?? %x,%d (%d,%d,%d)", attackedCh->tibiaId, attackedCh->nr, attackedCh->x, attackedCh->y, attackedCh->z);
+												sprintf(buf, "Drop looted?? %x,%d (%d,%d,%d)", attackedCh.tibiaId, attackedCh.nr, attackedCh.x, attackedCh.y, attackedCh.z);
 												//AfxMessageBox(buf);
 											}
 											if (config->dropWhenCapacityLimitReached
-											    && self->cap < config->capacityLimit
+											    && self.cap < config->capacityLimit
 											    && !config->dropOnlyLooted
 											    || !config->dropWhenCapacityLimitReached
 											    && config->dropListCount != 0)
@@ -2938,23 +2880,22 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 													if (itemid)
 														droppedItems.Add(itemid);
 												}
-												dropItemsFromContainer(contNr, attackedCh->x, attackedCh->y, attackedCh->z, &droppedItems);
+												dropItemsFromContainer(contNr, attackedCh.x, attackedCh.y, attackedCh.z, &droppedItems);
 												if (config->debug)
 													registerDebug("Dropping custom items from container:", intstr(contNrInd).c_str());
 											}
-											else if (self->cap < config->capacityLimit && config->dropOnlyLooted)
+											else if (self.cap < config->capacityLimit && config->dropOnlyLooted)
 											{
-												dropItemsFromContainer(contNr, attackedCh->x, attackedCh->y, attackedCh->z, &acceptedItems);
+												dropItemsFromContainer(contNr, attackedCh.x, attackedCh.y, attackedCh.z, &acceptedItems);
 												if (config->debug)
 													registerDebug("Dropping loot items from container:", intstr(contNrInd).c_str());
 											}
 											else if (!config->dropWhenCapacityLimitReached && config->dropListCount == 0)
 											{
-												dropItemsFromContainer(contNr, attackedCh->x, attackedCh->y, attackedCh->z);
+												dropItemsFromContainer(contNr, attackedCh.x, attackedCh.y, attackedCh.z);
 												if (config->debug)
 													registerDebug("Dropping all items from container:", intstr(contNrInd).c_str());
 											}
-											delete self;
 										}
 
 										//CPackSender::sendTAMessage("[debug] closing bag");
@@ -2983,15 +2924,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & changing attackedCh");
 						currentlyAttackedCreatureNr = -1;
 						reader.setAttackedCreature(0);
-						deleteAndNull(attackedCh);
-						attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
+					reader.readVisibleCreature(&attackedCh, currentlyAttackedCreatureNr);
 					}//if lootWhileKilling enabled
 				}//if loot msg is "nothing"
 			}
 			else  // if creatureIsNotDead
 			{
 				char debugBuf[256];
-				sprintf(debugBuf, "Attacked creature info: x dist=%d y dist=%d z dist=%d id=%d visible=%d hp=%d", abs(self->x - attackedCh->x), abs(self->y - attackedCh->y), abs(self->z - attackedCh->z), attackedCh->tibiaId, attackedCh->visible, attackedCh->hpPercLeft);
+				sprintf(debugBuf, "Attacked creature info: x dist=%d y dist=%d z dist=%d id=%d visible=%d hp=%d", abs(self.x - attackedCh.x), abs(self.y - attackedCh.y), abs(self.z - attackedCh.z), attackedCh.tibiaId, attackedCh.visible, attackedCh.hpPercLeft);
 				if (config->debug)
 					registerDebug(debugBuf);
 			}
@@ -3012,39 +2952,38 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		}
 		// if client thinks we are not attacking anything, then
 		// send "attack new target" to it and increment failed attack for creatureNr by 1
-		if (reader.getAttackedCreature() == 0 && currentlyAttackedCreatureNr != -1 && (attackedCh && attackedCh->hpPercLeft))
+		if (reader.getAttackedCreature() == 0 && currentlyAttackedCreatureNr != -1 && (attackedCh.initialized && attackedCh.hpPercLeft))
 		{
 			char buf[256];
-			sprintf(buf, "Resetting attacked creature to %d,%d,%d [1]", currentlyAttackedCreatureNr, reader.getAttackedCreature(), attackedCh->hpPercLeft);
+			sprintf(buf, "Resetting attacked creature to %d,%d,%d [1]", currentlyAttackedCreatureNr, reader.getAttackedCreature(), attackedCh.hpPercLeft);
 			if (config->debug)
 				registerDebug(buf);
 
 			creatureList[currentlyAttackedCreatureNr].failedAttacks++;
-			AttackCreature(config, attackedCh->tibiaId);
+			AttackCreature(config, attackedCh.tibiaId);
 			char debugBuf[256];
-			sprintf(debugBuf, "Attacked creature info: x dist=%d y dist=%d z dist=%d id=%d visible=%d hp=%d", abs(self->x - attackedCh->x), abs(self->y - attackedCh->y), abs(self->z - attackedCh->z), attackedCh->tibiaId, attackedCh->visible, attackedCh->hpPercLeft);
+			sprintf(debugBuf, "Attacked creature info: x dist=%d y dist=%d z dist=%d id=%d visible=%d hp=%d", abs(self.x - attackedCh.x), abs(self.y - attackedCh.y), abs(self.z - attackedCh.z), attackedCh.tibiaId, attackedCh.visible, attackedCh.hpPercLeft);
 			//AfxMessageBox(debugBuf);
 			if (config->debug)
 				registerDebug("Incrementing failed attempts since something cancelled attacking creature.");
 		}
-		else if (reader.getAttackedCreature() && attackedCh && reader.getAttackedCreature() != attackedCh->tibiaId)
+		else if (reader.getAttackedCreature() && attackedCh.initialized && reader.getAttackedCreature() != attackedCh.tibiaId)
 		{
 			//wis: keep player-chosen creature as attackee
-			CTibiaCharacter *attCh = reader.getCharacterByTibiaId(reader.getAttackedCreature());
-			if (attCh)
+			CTibiaCharacter attCh;
+			if (reader.getCharacterByTibiaId(&attCh, reader.getAttackedCreature()))
 			{
-				currentlyAttackedCreatureNr = attCh->nr;
+				currentlyAttackedCreatureNr = attCh.nr;
 				char buf[128];
 				sprintf(buf, "Setting attacked creature to %d [1]", currentlyAttackedCreatureNr);
 				if (config->debug)
 					registerDebug(buf);
-				deleteAndNull(attCh);
 			}
 			//attCh is NULL
 		}
 		//if autofollow on, still not <=1 from creature and standing for > 2s refresh attack and add fail attack
 		//wait .5 secs between failed attacks
-		else if (currentlyAttackedCreatureNr != -1 && config->autoFollow && creatureList[currentlyAttackedCreatureNr].distance(self->x, self->y) > 1 && time(NULL) - currentPosTM > (2.5 + .5 * creatureList[currentlyAttackedCreatureNr].failedAttacks))
+		else if (currentlyAttackedCreatureNr != -1 && config->autoFollow && creatureList[currentlyAttackedCreatureNr].distance(self.x, self.y) > 1 && time(NULL) - currentPosTM > (2.5 + .5 * creatureList[currentlyAttackedCreatureNr].failedAttacks))
 		{
 			if (creatureList[currentlyAttackedCreatureNr].tibiaId)
 			{
@@ -3056,9 +2995,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					registerDebug(buf);
 			}
 		}
-
-		deleteAndNull(attackedCh);
-
 		// refresh information
 		int currentTm           = reader.getCurrentTm();
 		int playersOnScreen     = 0;
@@ -3068,29 +3004,29 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		int crNr;
 		for (crNr = 0; crNr < reader.m_memMaxCreatures; crNr++)
 		{
-			CTibiaCharacter *ch = reader.readVisibleCreature(crNr);
-			if (ch->tibiaId == 0)
+			CTibiaCharacter ch;
+			reader.readVisibleCreature(&ch, crNr);
+			if (ch.tibiaId == 0)
 			{
 				creatureList[crNr].tibiaId = 0; //Needed since list is now cleaned on logout so that creatures later in this list don't need to be overwritten with 0's
-				delete ch;
 				break;
 			}
 			/**
 			 * creature ID for creature number has changed,
 			 * so new creature is occupying the slot already
 			 */
-			if (creatureList[crNr].tibiaId != ch->tibiaId && currentlyAttackedCreatureNr != crNr)
+			if (creatureList[crNr].tibiaId != ch.tibiaId && currentlyAttackedCreatureNr != crNr)
 			{
 				time_t keepAttackTm = creatureList[crNr].lastAttackTm;
 				creatureList[crNr]              = Creature();
 				creatureList[crNr].lastAttackTm = keepAttackTm;
-				creatureList[crNr].tibiaId      = ch->tibiaId;
+				creatureList[crNr].tibiaId      = ch.tibiaId;
 
 				int monstListNr;
 				//Get name and take care of monsters numbered by TA's creature info
 				int i, len;
 				char statChName[128];
-				for (i = 0, strcpy(statChName, ch->name), len = strlen(statChName); i < len; i++)
+				for (i = 0, strcpy(statChName, ch.name), len = strlen(statChName); i < len; i++)
 				{
 					if (statChName[i] == '[')
 						statChName[i] = '\0';
@@ -3098,7 +3034,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				strcpy(creatureList[crNr].name, statChName);
 
 				// if attackAllMonsters set default priority to lowest and overwrite with actual priority
-				if (config->attackAllMonsters && ch->tibiaId >= 0x40001000)
+				if (config->attackAllMonsters && ch.tibiaId >= 0x40001000)
 					creatureList[crNr].listPriority = 1;
 				// scan creature list to find its priority
 				for (monstListNr = 0; monstListNr < config->monsterCount && monstListNr < MAX_MONSTERLISTCOUNT; monstListNr++)
@@ -3126,13 +3062,13 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				}
 
 				//ignore self forever
-				if (ch->tibiaId == self->tibiaId)
+				if (ch.tibiaId == self.tibiaId)
 					creatureList[crNr].isIgnoredUntil = 1555555555;                      //ignore forever
 			}
-			if (ch->visible == 0 || abs(self->x - ch->x) > 7 || abs(self->y - ch->y) > 5 || ch->z != self->z)
+			if (ch.visible == 0 || abs(self.x - ch.x) > 7 || abs(self.y - ch.y) > 5 || ch.z != self.z)
 			{
 				creatureList[crNr].isOnscreen      = 0;
-				creatureList[crNr].isWithinMargins = ch->visible && ch->z == self->z;
+				creatureList[crNr].isWithinMargins = ch.visible && ch.z == self.z;
 				if (creatureList[crNr].tibiaId < 0x40000000 && creatureList[crNr].isWithinMargins)
 					playersOnScreen++;
 			}
@@ -3141,40 +3077,40 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				if (crNr == currentlyAttackedCreatureNr)
 				{
 					//if creature we are attacking has lost health, record time of bloodhit
-					if (ch->hpPercLeft < creatureList[crNr].hpPercLeft)
+					if (ch.hpPercLeft < creatureList[crNr].hpPercLeft)
 						lastAttackedCreatureBloodHit = time(NULL);
 					//determine if creature reached to ignore creature if not reached in time
-					if (!reachedAttackedCreature && (time(NULL) - lastAttackedCreatureBloodHit < 1 || creatureList[crNr].distance(self->x, self->y) <= 1))
+					if (!reachedAttackedCreature && (time(NULL) - lastAttackedCreatureBloodHit < 1 || creatureList[crNr].distance(self.x, self.y) <= 1))
 						reachedAttackedCreature = 1;
 					//if attacked creature has not been reached after given time, ignore creature
 					if (!reachedAttackedCreature && time(NULL) - firstCreatureAttackTM > config->unreachableAfter)
 						creatureList[crNr].isIgnoredUntil = time(NULL) + config->suspendAfterUnreachable;
 				}
-				// Attack time has changed. We interpret this by saying that ch->tibiaId is attacking us
+				// Attack time has changed. We interpret this by saying that ch.tibiaId is attacking us
 				// even if ID changed, since 'lastAttackTm' is NOT updated when Tibia reuses slot.
-				if (creatureList[crNr].lastAttackTm != ch->lastAttackTm && currentTm - ch->lastAttackTm < attackConsiderPeriod)
+				if (creatureList[crNr].lastAttackTm != ch.lastAttackTm && currentTm - ch.lastAttackTm < attackConsiderPeriod)
 				{
 					creatureList[crNr].isAttacking = 1;
 					char buf[256];
-					sprintf(buf, "lastAttackTm change for %d: was %d/%d is %d/%d", creatureList[crNr].tibiaId, creatureList[crNr].lastAttackTm, ch->tibiaId, ch->lastAttackTm);
+					sprintf(buf, "lastAttackTm change for %d: was %d/%d is %d/%d", creatureList[crNr].tibiaId, creatureList[crNr].lastAttackTm, ch.tibiaId, ch.lastAttackTm);
 					if (config->debug)
 						registerDebug(buf);
 				}
-				else if (currentTm - ch->lastAttackTm >= attackConsiderPeriod)
+				else if (currentTm - ch.lastAttackTm >= attackConsiderPeriod)
 				{
 					creatureList[crNr].isAttacking = 0;
 				}
-				creatureList[crNr].lastAttackTm    = ch->lastAttackTm;
-				creatureList[crNr].x               = ch->x;
-				creatureList[crNr].y               = ch->y;
-				creatureList[crNr].z               = ch->z;
+				creatureList[crNr].lastAttackTm    = ch.lastAttackTm;
+				creatureList[crNr].x               = ch.x;
+				creatureList[crNr].y               = ch.y;
+				creatureList[crNr].z               = ch.z;
 				creatureList[crNr].isOnscreen      = 1;
 				creatureList[crNr].isWithinMargins = 1;
-				creatureList[crNr].isDead          = (ch->hpPercLeft == 0);
-				creatureList[crNr].hpPercLeft      = ch->hpPercLeft;
+				creatureList[crNr].isDead          = (ch.hpPercLeft == 0);
+				creatureList[crNr].hpPercLeft      = ch.hpPercLeft;
 				creatureList[crNr].isIgnoredUntil  = (creatureList[crNr].isIgnoredUntil < time(NULL)) ? 0 : creatureList[crNr].isIgnoredUntil;
 				//outfit type&& head color==0 <=> creature is invisible
-				creatureList[crNr].isInvisible = (ch->monsterType == 0 && ch->colorHead == 0);
+				creatureList[crNr].isInvisible = (ch.monsterType == 0 && ch.colorHead == 0);
 
 				//ignore creatures with >=3 failed attacks for 30 secs
 				if (creatureList[crNr].failedAttacks >= 3 && !creatureList[crNr].isInvisible && strcmp(creatureList[crNr].name, "Warlock") && strcmp(creatureList[crNr].name, "Infernalist"))
@@ -3184,7 +3120,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (config->debug)
 						registerDebug("Ignore creatures with >=3 failed attacks");
 				} //else if creature attacking us from 1 away but ignored for <5 mins, unignore
-				else if (creatureList[crNr].isIgnoredUntil - time(NULL) < 9999 && !creatureList[crNr].isInvisible && (creatureList[crNr].distance(self->x, self->y) <= 1 && currentlyAttackedCreatureNr != -1))
+				else if (creatureList[crNr].isIgnoredUntil - time(NULL) < 9999 && !creatureList[crNr].isInvisible && (creatureList[crNr].distance(self.x, self.y) <= 1 && currentlyAttackedCreatureNr != -1))
 				{
 					creatureList[crNr].isIgnoredUntil = 0;
 				}
@@ -3192,14 +3128,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				//update environmental variables
 
 				//changed to exclude the criteria of attacking, do not count oneself, count players only if they are attacking you
-				//if (creatureList[crNr].isAttacking && taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
-				if ((creatureList[crNr].tibiaId > 0x40000000 || creatureList[crNr].isAttacking) && creatureList[crNr].tibiaId != self->tibiaId && self->z == creatureList[crNr].z && taxiDist(self->x, self->y, creatureList[crNr].x, creatureList[crNr].y) <= 1)
+				//if (creatureList[crNr].isAttacking && taxiDist(self.x,self.y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
+				if ((creatureList[crNr].tibiaId > 0x40000000 || creatureList[crNr].isAttacking) && creatureList[crNr].tibiaId != self.tibiaId && self.z == creatureList[crNr].z && taxiDist(self.x, self.y, creatureList[crNr].x, creatureList[crNr].y) <= 1)
 					monstersSurrounding++;
 
-				if (crNr != self->nr && creatureList[crNr].tibiaId < 0x40000000 && creatureList[crNr].isWithinMargins)
+				if (crNr != self.nr && creatureList[crNr].tibiaId < 0x40000000 && creatureList[crNr].isWithinMargins)
 					playersOnScreen++;
 				//Edit: Alien creature if monster or attacking player to avoid switching weapons when interrupted by player
-				if (crNr != self->nr && !creatureList[crNr].listPriority && creatureList[crNr].isOnscreen && (creatureList[crNr].tibiaId > 0x40000000 || creatureList[crNr].isAttacking))
+				if (crNr != self.nr && !creatureList[crNr].listPriority && creatureList[crNr].isOnscreen && (creatureList[crNr].tibiaId > 0x40000000 || creatureList[crNr].isAttacking))
 					alienCreatureForTrainerFound = 1;
 
 				// if sharing alien backattack is active, then we may attack
@@ -3219,7 +3155,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							// avoid looping with out own attack target
 							sh_mem.GetValue((char *)valueHeader.wszValueName, &attackTibiaId, &len);
 
-							if (attackTibiaId == ch->tibiaId)
+							if (attackTibiaId == ch.tibiaId)
 							{
 								if (config->debug)
 									registerDebug("Setting isAttacking because of shm info");
@@ -3229,11 +3165,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					}
 				}
 			}// if visible
-			deleteAndNull(ch);
 			if (config->debug && modRuns % 10 == 0 && creatureList[crNr].isOnscreen)
 			{
 				char buf[256];
-				sprintf(buf, "%s, nr=%d, isatta=%d, isonscreen=%d, iswithinmargins=%d, atktm=%d ID=%d ignore=%d,x=%d,y=%d,z=%d", crNr != self->nr ? creatureList[crNr].name : "****", crNr, creatureList[crNr].isAttacking, creatureList[crNr].isOnscreen, creatureList[crNr].isWithinMargins, creatureList[crNr].lastAttackTm, creatureList[crNr].tibiaId, creatureList[crNr].isIgnoredUntil ? creatureList[crNr].isIgnoredUntil - time(NULL) : 0, creatureList[crNr].x, creatureList[crNr].y, creatureList[crNr].z);
+				sprintf(buf, "%s, nr=%d, isatta=%d, isonscreen=%d, iswithinmargins=%d, atktm=%d ID=%d ignore=%d,x=%d,y=%d,z=%d", crNr != self.nr ? creatureList[crNr].name : "****", crNr, creatureList[crNr].isAttacking, creatureList[crNr].isOnscreen, creatureList[crNr].isWithinMargins, creatureList[crNr].lastAttackTm, creatureList[crNr].tibiaId, creatureList[crNr].isIgnoredUntil ? creatureList[crNr].isIgnoredUntil - time(NULL) : 0, creatureList[crNr].x, creatureList[crNr].y, creatureList[crNr].z);
 				registerDebug(buf);
 			}
 		}//end for
@@ -3244,7 +3179,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (creatureList[crNr].tibiaId == 0)
 				break;
 			//If cannot attack, don't
-			if (!creatureList[crNr].isOnscreen || creatureList[crNr].isInvisible || creatureList[crNr].isDead || crNr == self->nr || (reader.getSelfEventFlags() & 16384 /*PZ zone*/) != 0)
+			if (!creatureList[crNr].isOnscreen || creatureList[crNr].isInvisible || creatureList[crNr].isDead || crNr == self.nr || (reader.getSelfEventFlags() & 16384 /*PZ zone*/) != 0)
 				continue;
 			//If shouldn't attack, don't
 			if (creatureList[crNr].hpPercLeft < config->attackHpAbove)
@@ -3265,7 +3200,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					registerDebug("Quit Case:only attack attacking");
 				continue;
 			}
-			if ((!creatureList[crNr].isAttacking || creatureList[crNr].hpPercLeft == 100) && maxDist(self->x, self->y, creatureList[crNr].x, creatureList[crNr].y) > config->attackRange)
+			if ((!creatureList[crNr].isAttacking || creatureList[crNr].hpPercLeft == 100) && maxDist(self.x, self.y, creatureList[crNr].x, creatureList[crNr].y) > config->attackRange)
 			{
 				if (config->debug && modRuns % 10 == 0)
 					registerDebug("Quit Case:out of range");
@@ -3302,8 +3237,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			//if bestCreatureNr is not picked yet switch to first reasonable option
 			if (bestCreatureNr == -1)
 				bestCreatureNr = crNr;
-			int isCloser  = taxiDist(self->x, self->y, creatureList[crNr].x, creatureList[crNr].y) + 1 < taxiDist(self->x, self->y, creatureList[bestCreatureNr].x, creatureList[bestCreatureNr].y);
-			int isFarther = taxiDist(self->x, self->y, creatureList[crNr].x, creatureList[crNr].y) - 1 > taxiDist(self->x, self->y, creatureList[bestCreatureNr].x, creatureList[bestCreatureNr].y);
+			int isCloser  = taxiDist(self.x, self.y, creatureList[crNr].x, creatureList[crNr].y) + 1 < taxiDist(self.x, self.y, creatureList[bestCreatureNr].x, creatureList[bestCreatureNr].y);
+			int isFarther = taxiDist(self.x, self.y, creatureList[crNr].x, creatureList[crNr].y) - 1 > taxiDist(self.x, self.y, creatureList[bestCreatureNr].x, creatureList[bestCreatureNr].y);
 			if (isCloser)
 			{
 				if (creatureList[bestCreatureNr].isAttacking &&
@@ -3380,7 +3315,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
                         }
  */
 			char buf[256];
-			sprintf(buf, "Nr=%d, name=%s\t isAttacking=%d, Prio=%d, fail#=%d, hp%%=%d, Id=%d, Onscreen=%d, Invis=%d, Dead=%d, lastAttackTm=%d, IgnoredUntil=%d, shouldAttack=%d, dist=%d", crNr, creatureList[crNr].name, creatureList[crNr].isAttacking, creatureList[crNr].listPriority, creatureList[crNr].failedAttacks, creatureList[crNr].hpPercLeft, creatureList[crNr].tibiaId, creatureList[crNr].isOnscreen, creatureList[crNr].isInvisible, creatureList[crNr].isDead, creatureList[crNr].lastAttackTm, creatureList[crNr].isIgnoredUntil, crNr == bestCreatureNr, taxiDist(self->x, self->y, creatureList[crNr].x, creatureList[crNr].y));
+			sprintf(buf, "Nr=%d, name=%s\t isAttacking=%d, Prio=%d, fail#=%d, hp%%=%d, Id=%d, Onscreen=%d, Invis=%d, Dead=%d, lastAttackTm=%d, IgnoredUntil=%d, shouldAttack=%d, dist=%d", crNr, creatureList[crNr].name, creatureList[crNr].isAttacking, creatureList[crNr].listPriority, creatureList[crNr].failedAttacks, creatureList[crNr].hpPercLeft, creatureList[crNr].tibiaId, creatureList[crNr].isOnscreen, creatureList[crNr].isInvisible, creatureList[crNr].isDead, creatureList[crNr].lastAttackTm, creatureList[crNr].isIgnoredUntil, crNr == bestCreatureNr, taxiDist(self.x, self.y, creatureList[crNr].x, creatureList[crNr].y));
 			if (config->debug)
 				registerDebug(buf);
 		}
@@ -3396,11 +3331,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			     || creatureList[currentlyAttackedCreatureNr].hpPercLeft < config->attackHpAbove
 			     || config->dontAttackPlayers && creatureList[currentlyAttackedCreatureNr].tibiaId<0x40000000
 			                                                                                       || config->attackOnlyAttacking && !creatureList[currentlyAttackedCreatureNr].isAttacking
-			                                                                                       || maxDist(self->x, self->y, creatureList[currentlyAttackedCreatureNr].x, creatureList[currentlyAttackedCreatureNr].y)>config->attackRange && creatureList[currentlyAttackedCreatureNr].hpPercLeft > 15 // only switch when the monstr is out of range if they don't seem to be inconveniently 'running in low health'
+			                                                                                       || maxDist(self.x, self.y, creatureList[currentlyAttackedCreatureNr].x, creatureList[currentlyAttackedCreatureNr].y)>config->attackRange && creatureList[currentlyAttackedCreatureNr].hpPercLeft > 15 // only switch when the monstr is out of range if they don't seem to be inconveniently 'running in low health'
 			     || creatureList[currentlyAttackedCreatureNr].isIgnoredUntil
 			     || config->suspendOnEnemy && playersOnScreen && creatureList[currentlyAttackedCreatureNr].isAttacking == 0
 			     || !(creatureList[currentlyAttackedCreatureNr].listPriority || config->forceAttackAfterAttack && creatureList[currentlyAttackedCreatureNr].isAttacking))
-			    && (isLooterDone(config) || maxDist(self->x, self->y, creatureList[bestCreatureNr].x, creatureList[bestCreatureNr].y) <= 1))
+			    && (isLooterDone(config) || maxDist(self.x, self.y, creatureList[bestCreatureNr].x, creatureList[bestCreatureNr].y) <= 1))
 			{
 				currentlyAttackedCreatureNr = bestCreatureNr;
 			}
@@ -3445,9 +3380,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		trainingCheck(config, currentlyAttackedCreatureNr, alienCreatureForTrainerFound, monstersSurrounding, lastAttackedCreatureBloodHit, &attackMode);
 		SendAttackMode(attackMode, config->autoFollow, -1, -1);
 
-		CTibiaCharacter *attackCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
+		CTibiaCharacter attackCh;
+		reader.readVisibleCreature(&attackCh, currentlyAttackedCreatureNr);
 		//perform server visible tasks if we have something to attack
-		if (currentlyAttackedCreatureNr != -1 && attackCh->hpPercLeft)//uses most recent hpPercLeft to prevent crash??
+		if (currentlyAttackedCreatureNr != -1 && attackCh.hpPercLeft)//uses most recent hpPercLeft to prevent crash??
 		{
 			CIpcMessage mess;
 			while (CIPCBackPipe::readFromPipe(&mess, 1103))
@@ -3467,7 +3403,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (!creatureList[currentlyAttackedCreatureNr].listPriority)
 			{
 				globalAutoAttackStateAttack = CToolAutoAttackStateAttack_attackingAlienFound;
-				if (config->backattackRunes && self->hp > self->maxHp / 2)
+				if (config->backattackRunes && self.hp > self.maxHp / 2)
 				{
 					if (config->debug)
 						registerDebug("Firing SD at enemy");
@@ -3481,7 +3417,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (config->debug)
 			{
 				char buf[256];
-				sprintf(buf, "Attacking Nr=%d name=%s point=%d,%d,%d id=%d ignore=%d hp%%=%d", bestCreatureNr, creatureList[bestCreatureNr].name, creatureList[bestCreatureNr].x, creatureList[bestCreatureNr].y, creatureList[bestCreatureNr].z, creatureList[bestCreatureNr].tibiaId, creatureList[bestCreatureNr].isIgnoredUntil, attackCh->hpPercLeft);
+				sprintf(buf, "Attacking Nr=%d name=%s point=%d,%d,%d id=%d ignore=%d hp%%=%d", bestCreatureNr, creatureList[bestCreatureNr].name, creatureList[bestCreatureNr].x, creatureList[bestCreatureNr].y, creatureList[bestCreatureNr].z, creatureList[bestCreatureNr].tibiaId, creatureList[bestCreatureNr].isIgnoredUntil, attackCh.hpPercLeft);
 				registerDebug(buf);
 			}
 		}
@@ -3492,7 +3428,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (config->debug)
 				registerDebug("No attack target found");
 		}
-		deleteAndNull(attackCh);
 		/*****
 		   End attack process
 		 ******/
@@ -3520,7 +3455,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		 ******/
 		if (currentlyAttackedCreatureNr == -1 && isLooterDone(config))//wis:make sure doesn't start while looting last monster
 		{       //Waypoint selection algorithim	starts here
-			if (self->x == depotX && self->y == depotY && self->z == depotZ)
+			if (self.x == depotX && self.y == depotY && self.z == depotZ)
 			{
 				if (config->debug)
 					registerDebug("Depot reached");
@@ -3528,7 +3463,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				// then do the depot stuff
 				depotDeposit(config);
 			}
-			else if (actualTargetX == self->x && actualTargetY == self->y && actualTargetZ == self->z && depotX == 0)
+			else if (actualTargetX == self.x && actualTargetY == self.y && actualTargetZ == self.z && depotX == 0)
 			{
 				if (config->debug)
 					registerDebug("Waypoint reached");
@@ -3547,7 +3482,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				globalAutoAttackStateWalker = CToolAutoAttackStateWalker_standing;
 				if (config->debug)
 					registerDebug("Standing");
-				deleteAndNull(self);
 				continue;
 			}
 			// no target found - go somewhere
@@ -3572,7 +3506,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (!waypointsCount)
 					{
 						globalAutoAttackStateWalker = CToolAutoAttackStateWalker_noWaypoints;
-						deleteAndNull(self);
 						continue;
 					}
 					int nextWaypoint = 0;
@@ -3640,17 +3573,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					char buf[256];
 					uint8_t path[15];
-
-					deleteAndNull(self);
-					self = reader.readSelfCharacter();
-
+					reader.readSelfCharacter(&self);
 					// proceed with path searching
-					sprintf(buf, "findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)", self->x, self->y, self->z, waypointTargetX, waypointTargetY, waypointTargetZ);
+					sprintf(buf, "findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)", self.x, self.y, self.z, waypointTargetX, waypointTargetY, waypointTargetZ);
 					if (config->debug)
 						registerDebug(buf);
 
 					int ticksStart  = GetTickCount();
-					point destPoint = CModuleUtil::findPathOnMap(self->x, self->y, self->z, waypointTargetX, waypointTargetY, waypointTargetZ, (depotX ? 301 : 0), path, (rand() % max(1, config->radius)) + 1);
+					point destPoint = CModuleUtil::findPathOnMap(self.x, self.y, self.z, waypointTargetX, waypointTargetY, waypointTargetZ, (depotX ? 301 : 0), path, (rand() % max(1, config->radius)) + 1);
 					actualTargetX = destPoint.x;
 					actualTargetY = destPoint.y;
 					actualTargetZ = destPoint.z;
@@ -3684,9 +3614,9 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					for (pathSize = 0; pathSize < 15 && path[pathSize]; pathSize++)
 					{
 					}
-					if (actualTargetX && (pathSize || self->x == actualTargetX && actualTargetY == self->y && self->z == actualTargetZ))
+					if (actualTargetX && (pathSize || self.x == actualTargetX && actualTargetY == self.y && self.z == actualTargetZ))
 					{
-						CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+						CModuleUtil::executeWalk(self.x, self.y, self.z, path);
 						globalAutoAttackStateWalker = CToolAutoAttackStateWalker_ok;
 						if (config->debug)
 							registerDebug("Walking: execute walk");
@@ -3725,19 +3655,15 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					//First: Let's map our path
 					char buf[256];
 					uint8_t path[15];
-
-					deleteAndNull(self);
-					self = reader.readSelfCharacter();
+					reader.readSelfCharacter(&self);
 					bool walking = false;
-					if (self->z == waypointTargetZ)
+					if (self.z == waypointTargetZ)
 					{
 						//Let's try "clicking" there (Attempt 1)
-						deleteAndNull(self);
-						self = reader.readSelfCharacter();
 						point startPoint;
-						startPoint.x  = self->x;
-						startPoint.y  = self->y;
-						startPoint.z  = self->z;
+						startPoint.x  = self.x;
+						startPoint.y  = self.y;
+						startPoint.z  = self.z;
 						actualTargetX = waypointTargetX;
 						actualTargetY = waypointTargetY;
 						actualTargetZ = waypointTargetZ;
@@ -3746,7 +3672,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						//Wait long enough to get a proper response from the white text
 						int timeIn  = GetTickCount();
 						int timeOut = GetTickCount();
-						while (startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 1000)
+						while (startPoint.x != self.x || startPoint.y != self.y || timeOut - timeIn < 1000)
 						{
 							timeOut = GetTickCount();
 							Sleep(50);
@@ -3754,15 +3680,15 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						char whiteText[15];                             //Stores white text.
 						for (int j = 0; j < 15; j++)      //Long enough to store "There is no way"
 						{
-							whiteText[j] = (char)CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + j);
+							whiteText[j] = (char)CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + j);
 						}
 						//If we are still not moving kick TA in the butt to get her going
 						if (strstr(whiteText, "There is no way") != 0 || strstr(whiteText, "Destination") != 0)
 						{
 							//Since Tibia merely times out the white text not override it, we need to change the text for subsequent iterations.
 							//Let's have fun and give the users hope.  :P
-							CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 9, 'T');
-							CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 10, 'A');
+							CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 9, 'T');
+							CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 10, 'A');
 							//Path blocked (parcels, crates, etc.)
 							globalAutoAttackStateWalker = CToolAutoAttackStateWalker_noPathFound;
 							walking                     = false;
@@ -3775,11 +3701,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (!walking)
 					{
 						// proceed with path searching
-						sprintf(buf, "findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)", self->x, self->y, self->z, waypointTargetX, waypointTargetY, waypointTargetZ);
+						sprintf(buf, "findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)", self.x, self.y, self.z, waypointTargetX, waypointTargetY, waypointTargetZ);
 						if (config->debug)
 							registerDebug(buf);
 						int ticksStart  = GetTickCount();
-						point destPoint = CModuleUtil::findPathOnMap(self->x, self->y, self->z, waypointTargetX, waypointTargetY, waypointTargetZ, 0, path, (rand() % max(1, config->radius)) + 1);
+						point destPoint = CModuleUtil::findPathOnMap(self.x, self.y, self.z, waypointTargetX, waypointTargetY, waypointTargetZ, 0, path, (rand() % max(1, config->radius)) + 1);
 						actualTargetX = destPoint.x;
 						actualTargetY = destPoint.y;
 						actualTargetZ = destPoint.z;
@@ -3800,26 +3726,25 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						pathPoint.z = 0;
 						//We con only "click" a path to points on our level
 						pathPoint = CModuleUtil::GetPathTab(pathPointIndex);
-						while (pathPoint.z != self->z && pathPointIndex < pathPointCount)
+						while (pathPoint.z != self.z && pathPointIndex < pathPointCount)
 						{
 							pathPoint = CModuleUtil::GetPathTab(++pathPointIndex);
 						}
-						sprintf(buf, "self: (%d, %d, %d)\npathPoint: (%d, %d, %d),Index: %d", self->x, self->y, self->z, pathPoint.x, pathPoint.y, pathPoint.z, pathPointIndex);
+						sprintf(buf, "self: (%d, %d, %d)\npathPoint: (%d, %d, %d),Index: %d", self.x, self.y, self.z, pathPoint.x, pathPoint.y, pathPoint.z, pathPointIndex);
 						if (config->debug)
 							registerDebug(buf);
-						deleteAndNull(self);
-						self = reader.readSelfCharacter();
+						reader.readSelfCharacter(&self);
 						//Are we close to needing to change levels?
-						if (abs(self->x - pathPoint.x) <= 2 && abs(self->y - pathPoint.y) <= 2)
+						if (abs(self.x - pathPoint.x) <= 2 && abs(self.y - pathPoint.y) <= 2)
 						{
 							//For short paths TA map method proves best especially near rope spots and teleporters
 							int pathSize;
 							for (pathSize = 0; pathSize < 15 && path[pathSize]; pathSize++)
 							{
 							}
-							if (pathSize || self->x == actualTargetX && actualTargetY == self->y && self->z == actualTargetZ)
+							if (pathSize || self.x == actualTargetX && actualTargetY == self.y && self.z == actualTargetZ)
 							{
-								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+								CModuleUtil::executeWalk(self.x, self.y, self.z, path);
 								globalAutoAttackStateWalker = CToolAutoAttackStateWalker_ok;
 								if (config->debug)
 									registerDebug("Walking: execute walk");
@@ -3836,35 +3761,34 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							}
 						}
 						//Did we find a pathPoint on our level?
-						else if (pathPoint.z == self->z)
+						else if (pathPoint.z == self.z)
 						{
 							//Found it! Let's try "clicking" there (Attempt 2)
-							deleteAndNull(self);
-							self = reader.readSelfCharacter();
+							reader.readSelfCharacter(&self);
 							point startPoint;
-							startPoint.x = self->x;
-							startPoint.y = self->y;
-							startPoint.z = self->z;
+							startPoint.x = self.x;
+							startPoint.y = self.y;
+							startPoint.z = self.z;
 							reader.writeGotoCoords(pathPoint.x, pathPoint.y, pathPoint.z);
 							//Wait long enough to get a proper responce from the white text
 							int timeIn  = GetTickCount();
 							int timeOut = GetTickCount();
-							while (startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 500)
+							while (startPoint.x != self.x || startPoint.y != self.y || timeOut - timeIn < 500)
 							{
 								timeOut = GetTickCount();
 							}
 							char whiteText[15];                             //Stores white text.
 							for (int j = 0; j < 15; j++)      //Long enough to store "There is no way"
 							{
-								whiteText[j] = (char)CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + j);
+								whiteText[j] = (char)CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + j);
 							}
 							//If we are still not moving kick TA in the butt to get her going
 							if (strstr(whiteText, "There is no way") != 0 || strstr(whiteText, "Destination") != 0)
 							{
 								//Since Tibia merely times out the white text not override it, we need to change the text for subsequent iterations.
 								//Let's have fun and give the users hope.  :P
-								CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 9, 'T');
-								CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 10, 'A');
+								CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 9, 'T');
+								CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 10, 'A');
 
 								//Path blocked (parcels, crates, etc.)
 								//One more time through path selection
@@ -3875,57 +3799,56 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 								pathPoint.z     = 0;
 								//We con only "click" a path to points on our level
 								pathPoint = CModuleUtil::GetPathTab(pathPointIndex);
-								while (pathPoint.z != self->z && pathPointIndex < pathPointCount)
+								while (pathPoint.z != self.z && pathPointIndex < pathPointCount)
 								{
 									pathPoint = CModuleUtil::GetPathTab(++pathPointIndex);
 								}
-								sprintf(buf, "self: (%d, %d, %d)\nHalf-Range pathPoint: (%d, %d, %d)<Index: %d", self->x, self->y, self->z, pathPoint.x, pathPoint.y, pathPoint.z, pathPointIndex);
+								sprintf(buf, "self: (%d, %d, %d)\nHalf-Range pathPoint: (%d, %d, %d)<Index: %d", self.x, self.y, self.z, pathPoint.x, pathPoint.y, pathPoint.z, pathPointIndex);
 								if (config->debug)
 									registerDebug(buf);
 								//Did we find a pathPoint on our level?
-								if (pathPoint.z == self->z)
+								if (pathPoint.z == self.z)
 								{
 									//Found it! Let's try "clicking" there (Attempt 3)
-									deleteAndNull(self);
-									self         = reader.readSelfCharacter();
-									startPoint.x = self->x;
-									startPoint.y = self->y;
-									startPoint.z = self->z;
+									reader.readSelfCharacter(&self);
+									startPoint.x = self.x;
+									startPoint.y = self.y;
+									startPoint.z = self.z;
 									reader.writeGotoCoords(pathPoint.x, pathPoint.y, pathPoint.z);
 									//Wait longer this time to get a proper responce from the white text
 									int timeIn  = GetTickCount();
 									int timeOut = GetTickCount();
-									while (startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 1000)
+									while (startPoint.x != self.x || startPoint.y != self.y || timeOut - timeIn < 1000)
 									{
 										timeOut = GetTickCount();
 									}
 									char whiteText[15];                             //Stores white text.
 									for (int j = 0; j < 15; j++)      //Long enough to store "There is no way"
 									{
-										whiteText[j] = (char)CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + j);
+										whiteText[j] = (char)CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + j);
 									}
-									if (strstr(whiteText, "There is no way") != 0 || strstr(whiteText, "Destination") != 0 || (startPoint.x == self->x && startPoint.y == self->y))
+									if (strstr(whiteText, "There is no way") != 0 || strstr(whiteText, "Destination") != 0 || (startPoint.x == self.x && startPoint.y == self.y))
 									{
 										//Since Tibia merely times out the white text not delete it, we need to change the text for subsequent iterations.
 										//Let's have fun and give the users hope.  :P
-										CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 9, 'T');
-										CMemUtil::SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 10, 'A');
+										CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 9, 'T');
+										CMemUtil::getMemUtil().SetMemIntValue(CTibiaItem::getValueForConst("addrWhiteMessage") + 10, 'A');
 										//Path blocked (parcels, crates, etc.)
 										//Oh well, we tried. Let's let TA's executeWalk method take over for awhile.
 										//Proceed with path searching
-										sprintf(buf, "findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)", self->x, self->y, self->z, waypointTargetX, waypointTargetY, waypointTargetZ);
+										sprintf(buf, "findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)", self.x, self.y, self.z, waypointTargetX, waypointTargetY, waypointTargetZ);
 										if (config->debug)
 											registerDebug(buf);
 										int ticksStart  = GetTickCount();
-										point destPoint = CModuleUtil::findPathOnMap(self->x, self->y, self->z, waypointTargetX, waypointTargetY, waypointTargetZ, 0, path, (rand() % max(1, config->radius)) + 1);
+										point destPoint = CModuleUtil::findPathOnMap(self.x, self.y, self.z, waypointTargetX, waypointTargetY, waypointTargetZ, 0, path, (rand() % max(1, config->radius)) + 1);
 										int ticksEnd    = GetTickCount();
 										int pathSize;
 										for (pathSize = 0; pathSize < 15 && path[pathSize]; pathSize++)
 										{
 										}
-										if (pathSize || self->x == destPoint.x && destPoint.y == self->y && self->z == destPoint.z)
+										if (pathSize || self.x == destPoint.x && destPoint.y == self.y && self.z == destPoint.z)
 										{
-											CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+											CModuleUtil::executeWalk(self.x, self.y, self.z, path);
 											globalAutoAttackStateWalker = CToolAutoAttackStateWalker_ok;
 											if (config->debug)
 												registerDebug("Walking: execute walk");
@@ -3959,9 +3882,9 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							for (pathSize = 0; pathSize < 15 && path[pathSize]; pathSize++)
 							{
 							}
-							if (pathSize || self->x == actualTargetX && actualTargetY == self->y && self->z == actualTargetZ)
+							if (pathSize || self.x == actualTargetX && actualTargetY == self.y && self.z == actualTargetZ)
 							{
-								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+								CModuleUtil::executeWalk(self.x, self.y, self.z, path);
 								globalAutoAttackStateWalker = CToolAutoAttackStateWalker_ok;
 								if (config->debug)
 									registerDebug("Walking: execute walk");
@@ -3998,8 +3921,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				TIMING_TOTALS[2] = 0;
 			}
 		}
-
-		deleteAndNull(self);
 	} // while
 
 	if (shareAlienBackattack)
@@ -4012,8 +3933,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	CPackSender::attack(0);
 
 	reader.cancelAttackCoords();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	deleteAndNull(self);
 	// restore attack mode
 	SendAttackMode(reader.getPlayerModeAttackType(), reader.getPlayerModeFollow(), -1, -1);
 
@@ -4047,6 +3966,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 CMod_cavebotApp::CMod_cavebotApp()
 {
+	m_currentWaypointNr = 0;
+	m_currentMonsterNr = 0;
+	m_currentIgnoreNr = 0;
+	m_currentDepotEntryNr = 0;
+	m_currentDroplistEntryNr = 0;
 	m_configDialog = NULL;
 	m_started      = 0;
 	m_configData   = new CConfigData();
@@ -4237,7 +4161,7 @@ void CMod_cavebotApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_cavebotApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "attack/follow"))
 		m_configData->autoFollow = (atoi(paramValue) ? 1 : 0);
@@ -4458,7 +4382,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->depositLootedItemList = atoi(paramValue);
 }
 
-char *CMod_cavebotApp::saveConfigParam(char *paramName)
+char *CMod_cavebotApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -4588,117 +4512,68 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_cavebotApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "attack/follow";
-	case 1:
-		return "attack/mode";
-	case 2:
-		return "attack/suspendOnEnemey";
-	case 3:
-		return "attack/monster";
-	case 4:
-		return "loot/item/gp";
-	case 5:
-		return "loot/item/custom";
-	case 6:
-		return "loot/item/worm";
-	case 7:
-		return "loot/item/food";
-	case 8:
-		return "loot/other/inbag";
-	case 9:
-		return "loot/other/capacityLimit";
-	case 10:
-		return "walker/waypoint";
-	case 11:
-		return "walker/other/selectMode";
-	case 12:
-		return "walker/other/mapUsed";
-	case 13:
-		return "loot/stats/gather";
-	case 14:
-		return "attack/suspendOnNoMove";
-	case 15:
-		return "attack/range";
-	case 16:
-		return "loot/other/eatFromCorpse";
-	case 17:
-		return "attack/stick";
-	case 18:
-		return "attack/unreachableAfter";
-	case 19:
-		return "attack/suspendAfterUnreachable";
-	case 20:
-		return "attack/attackOnlyAttacking";
-	case 21:
-		return "attack/forceAttackAfterAttack";
-	case 22:
-		return "walker/other/standAfterWaypointReached";
-	case 23:
-		return "depot/entry";
-	case 24:
-		return "general/debug";
-	case 25:
-		return "training/weaponTrain";
-	case 26:
-		return "training/weaponFight";
-	case 27:
-		return "training/fightWhenSurrounded";
-	case 28:
-		return "training/fightWhenAlien";
-	case 29:
-		return "training/bloodHit";
-	case 30:
-		return "training/activate";
-	case 31:
-		return "depot/depotDropInsteadOfDepositon";
-	case 32:
-		return "loot/other/dropNotLooted";
-	case 33:
-		return "loot/other/lootFromFloor";
-	case 34:
-		return "attack/hpAbove";
-	case 35:
-		return "attack/ignore";
-	case 36:
-		return "attack/backattackRunes";
-	case 37:
-		return "attack/shareAlienBackattack";
-	case 38:
-		return "depot/depotCap";
-	case 39:
-		return "training/trainingMode";
-	case 40:
-		return "walker/radius";
-	case 41:
-		return "loot/other/whilekilling";
-	case 42:
-		return "attack/dontAttackPlayers";
-	case 43:
-		return "loot/other/dropList";
-	case 44:
-		return "loot/other/dropWhenCapacityLimitReached";
-	case 45:
-		return "loot/other/dropOnlyLooted";
-	case 46:
-		return "depot/depotModPriority";
-	case 47:
-		return "depot/stopByDepot";
-	case 48:
-		return "depot/depositLootedItemList";
-	case 49:
-		return "attack/attackAllMonsters";
 
-	default:
-		return NULL;
-	}
+	"attack/follow",
+	"attack/mode",
+	"attack/suspendOnEnemey",
+	"attack/monster",
+	"loot/item/gp",
+	"loot/item/custom",
+	"loot/item/worm",
+	"loot/item/food",
+	"loot/other/inbag",
+	"loot/other/capacityLimit",
+	"walker/waypoint",
+	"walker/other/selectMode",
+	"walker/other/mapUsed",
+	"loot/stats/gather",
+	"attack/suspendOnNoMove",
+	"attack/range",
+	"loot/other/eatFromCorpse",
+	"attack/stick",
+	"attack/unreachableAfter",
+	"attack/suspendAfterUnreachable",
+	"attack/attackOnlyAttacking",
+	"attack/forceAttackAfterAttack",
+	"walker/other/standAfterWaypointReached",
+	"depot/entry",
+	"general/debug",
+	"training/weaponTrain",
+	"training/weaponFight",
+	"training/fightWhenSurrounded",
+	"training/fightWhenAlien",
+	"training/bloodHit",
+	"training/activate",
+	"depot/depotDropInsteadOfDepositon",
+	"loot/other/dropNotLooted",
+	"loot/other/lootFromFloor",
+	"attack/hpAbove",
+	"attack/ignore",
+	"attack/backattackRunes",
+	"attack/shareAlienBackattack",
+	"depot/depotCap",
+	"training/trainingMode",
+	"walker/radius",
+	"loot/other/whilekilling",
+	"attack/dontAttackPlayers",
+	"loot/other/dropList",
+	"loot/other/dropWhenCapacityLimitReached",
+	"loot/other/dropOnlyLooted",
+	"depot/depotModPriority",
+	"depot/stopByDepot",
+	"depot/depositLootedItemList",
+	"attack/attackAllMonsters",
+	NULL,
+};
+
+const char **CMod_cavebotApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
-int CMod_cavebotApp::isMultiParam(char *paramName)
+int CMod_cavebotApp::isMultiParam(const char *paramName)
 {
 	if (!strcmp(paramName, "walker/waypoint"))
 		return 1;
@@ -4713,7 +4588,7 @@ int CMod_cavebotApp::isMultiParam(char *paramName)
 	return 0;
 }
 
-void CMod_cavebotApp::resetMultiParamAccess(char *paramName)
+void CMod_cavebotApp::resetMultiParamAccess(const char *paramName)
 {
 	if (!strcmp(paramName, "walker/waypoint"))
 		m_currentWaypointNr = 0;

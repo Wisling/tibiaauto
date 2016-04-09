@@ -32,20 +32,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-
-/////////////////////////////////////////////////////////////////////////////
-// CMod_monstershowApp
-
-BEGIN_MESSAGE_MAP(CMod_monstershowApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_monstershowApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_monstershowApp construction
@@ -91,9 +79,14 @@ void CMod_monstershowApp::resetConfig()
 {
 }
 
-char *CMod_monstershowApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	return NULL;
+	NULL,
+};
+
+const char **CMod_monstershowApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_monstershowApp::getNewSkin(CSkin newSkin)

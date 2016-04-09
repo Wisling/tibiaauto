@@ -450,7 +450,7 @@ void Protocol::outputPacket(NetworkMessage &msg)
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
 	char pathBuf[2048];
-	sprintf(pathBuf, "%s\\tascripts\\botting %d statistics.txt", path, CMemUtil::getGlobalProcessId());
+	sprintf(pathBuf, "%s\\tascripts\\botting %d statistics.txt", path, CMemUtil::getMemUtil().getGlobalProcessId());
 	std::ofstream fout(pathBuf, std::ios::out | std::ios::app | std::ios::binary);
 	time_t tm = time(NULL);
 	fout.write((char*)&tm, 4);

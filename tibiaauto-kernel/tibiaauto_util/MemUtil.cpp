@@ -16,13 +16,18 @@ static char THIS_FILE[] = __FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-HANDLE CMemUtil::m_prevProcessHandle = NULL;
-long CMemUtil::m_prevProcessId       = -1L;
-long CMemUtil::m_prevProcessIdBase   = -1L;
-long CMemUtil::m_prevBaseAddr        = NULL;
-long CMemUtil::m_globalProcessId     = -1L;
-long CMemUtil::m_globalBaseAddr      = NULL;
-
+CMemUtil::CMemUtil()
+{
+	m_prevProcessHandle = NULL;
+	m_prevProcessId = -1L;
+	m_prevProcessIdBase = -1L;
+	m_prevBaseAddr = NULL;
+	m_globalProcessId = -1L;
+	m_globalBaseAddr = NULL;
+	LARGE_INTEGER perfFreq;
+	QueryPerformanceFrequency(&perfFreq);
+	m_cacheTimeoutTicks = (perfFreq.QuadPart * MEMORY_CACHE_VALID_TIME) / 1000;
+}
 
 BOOL CMemUtil::AdjustPrivileges()
 {
@@ -49,8 +54,8 @@ BOOL CMemUtil::AdjustPrivileges()
 	}
 
 	ZeroMemory(&tp, sizeof(tp));
-	tp.PrivilegeCount           = 1;
-	tp.Privileges[0].Luid       = luid;
+	tp.PrivilegeCount = 1;
+	tp.Privileges[0].Luid = luid;
 	tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
 	/* Adjust Token Privileges */
@@ -79,7 +84,7 @@ HANDLE CMemUtil::gethandle(long processId)
 			m_prevProcessId = -1;
 			return NULL;
 		}
-		m_prevProcessId     = processId;
+		m_prevProcessId = processId;
 		m_prevProcessHandle = dwHandle;
 	}
 	else
@@ -89,7 +94,7 @@ HANDLE CMemUtil::gethandle(long processId)
 	return dwHandle;
 }
 
-int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, int addBaseAddress)
+int CMemUtil::readmemory(DWORD processId, DWORD memAddress, char* result, DWORD size, bool addBaseAddress, bool useCache /*= 1*/)
 {
 	HANDLE dwHandle = gethandle(processId);
 	if (dwHandle == NULL)
@@ -99,8 +104,25 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 		ptr = (void *)(memAddress - 0x400000 + GetProcessBaseAddr(processId));
 	else
 		ptr = (void *)memAddress;
-	DWORD bytesRead;
-	if (ReadProcessMemory(dwHandle, ptr, result, size, &bytesRead))
+	DWORD alignedAddr = ((DWORD)ptr) & (0xFFFFFFFF - (MEMORY_CACHE_ENTRY_SIZE - 1));
+	DWORD alignOffset = ((DWORD)ptr) & (MEMORY_CACHE_ENTRY_SIZE - 1);
+	if (useCache && size + alignOffset <= MEMORY_CACHE_ENTRY_SIZE)
+	{
+		LARGE_INTEGER currentTimestamp;
+		QueryPerformanceCounter(&currentTimestamp);
+		if (m_memoryCache[alignedAddr].expirationTime < currentTimestamp.QuadPart)
+		{
+			// Entry needs refreshing
+			DWORD ret = readmemory(processId, alignedAddr, m_memoryCache[alignedAddr].value, MEMORY_CACHE_ENTRY_SIZE, 0, false);
+			if (ret != 0)
+				return ret;
+		}
+		// Load the entry data
+		m_memoryCache[alignedAddr].expirationTime = currentTimestamp.QuadPart + m_cacheTimeoutTicks;
+		memcpy(result, (m_memoryCache[alignedAddr].value + alignOffset), size);
+		return 0;
+	}
+	if (ReadProcessMemory(dwHandle, ptr, result, size, NULL))
 	{
 		return 0;
 	}
@@ -134,7 +156,7 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 		if (::GetLastError() == ERROR_NOACCESS)
 		{
 			CloseHandle(dwHandle);
-			dwHandle            = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, m_prevProcessId);
+			dwHandle = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, m_prevProcessId);
 			m_prevProcessHandle = dwHandle;
 			if (ReadProcessMemory(dwHandle, ptr, result, size, NULL))
 				return 0;
@@ -193,7 +215,7 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 	}
 }
 
-int CMemUtil::writememory(int processId, int memAddress, int* value, int size, int addBaseAddress)
+int CMemUtil::writememory(DWORD processId, DWORD memAddress, int* value, DWORD size, bool addBaseAddress)
 {
 	HANDLE dwHandle = gethandle(processId);
 	if (dwHandle == NULL)
@@ -205,6 +227,13 @@ int CMemUtil::writememory(int processId, int memAddress, int* value, int size, i
 	else
 		ptr = (void *)memAddress;
 	DWORD bytesWritten;
+	DWORD alignedAddr = ((DWORD)ptr) & (0xFFFFFFFF - (MEMORY_CACHE_ENTRY_SIZE - 1));
+	DWORD alignOffset = ((DWORD)ptr) & (MEMORY_CACHE_ENTRY_SIZE - 1);
+	if (size + alignOffset <= MEMORY_CACHE_ENTRY_SIZE)
+	{
+		// Invalidate related cache entry
+		m_memoryCache[alignedAddr].expirationTime = 0;
+	}
 	if (WriteProcessMemory(dwHandle, ptr, value, size, &bytesWritten))
 	{
 		return 0;
@@ -224,7 +253,7 @@ int CMemUtil::writememory(int processId, int memAddress, int* value, int size, i
 		}
 		if (::GetLastError() == ERROR_NOACCESS)
 		{
-			dwHandle            = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, m_prevProcessId);
+			dwHandle = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, m_prevProcessId);
 			m_prevProcessHandle = dwHandle;
 			if (WriteProcessMemory(dwHandle, ptr, value, size, NULL))
 				return 0;
@@ -246,10 +275,10 @@ int CMemUtil::GetProcessBaseAddr(int processId)
 	else
 	{
 		m_prevProcessIdBase = -1;
-		m_prevBaseAddr      = NULL;
+		m_prevBaseAddr = NULL;
 	}
 
-	int ret                 = 0;
+	int ret = 0;
 	int isNotFromNormalScan = 0;
 	if (dwHandle)
 	{
@@ -276,7 +305,7 @@ int CMemUtil::GetProcessBaseAddr(int processId)
 				MODULEINFO moduleInfo;
 				GetModuleInformation(dwHandle, modules[i], &moduleInfo, sizeof(moduleInfo));
 				isNotFromNormalScan = 1;
-				ret                 = (int)moduleInfo.lpBaseOfDll;
+				ret = (int)moduleInfo.lpBaseOfDll;
 			}
 		}
 		free(modules);
@@ -286,28 +315,28 @@ int CMemUtil::GetProcessBaseAddr(int processId)
 		AfxMessageBox("While finding base address, main module was no first or was not named \"Tibia.exe\".");
 	if (ret)
 	{
-		m_prevBaseAddr      = ret;
+		m_prevBaseAddr = ret;
 		m_prevProcessIdBase = processId;
 	}
 	return ret;
 }
 
-int CMemUtil::GetMemIntValue(long processId, DWORD memAddress, long int *value, int addBaseAddress)
+int CMemUtil::GetMemIntValue(long processId, DWORD memAddress, long int *value, bool addBaseAddress)
 {
-	return readmemory(processId, memAddress, (int*)value, sizeof(long int), addBaseAddress);
+	return readmemory(processId, memAddress, (char*)value, sizeof(long int), addBaseAddress);
 }
 
-int CMemUtil::GetMemRange(long processId, DWORD memAddressStart, DWORD memAddressEnd, char *result, int addBaseAddress)
+int CMemUtil::GetMemRange(long processId, DWORD memAddressStart, DWORD memAddressEnd, char *result, bool addBaseAddress)
 {
-	return readmemory(processId, memAddressStart, (int*)result, memAddressEnd - memAddressStart, addBaseAddress);
+	return readmemory(processId, memAddressStart, result, memAddressEnd - memAddressStart, addBaseAddress);
 }
 
-void CMemUtil::GetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *ret, int addBaseAddress /*=1*/)
+void CMemUtil::GetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *ret, bool addBaseAddress /*= true*/)
 {
 	GetMemRange(m_globalProcessId, memAddressStart, memAddressEnd, ret, addBaseAddress);
 };
 
-long int CMemUtil::GetMemIntValue(DWORD memAddress, int addBaseAddress /*=1*/)
+long int CMemUtil::GetMemIntValue(DWORD memAddress, bool addBaseAddress /*= true*/)
 {
 	long int value;
 	int ret = CMemUtil::GetMemIntValue(m_globalProcessId, memAddress, &value, addBaseAddress);
@@ -321,27 +350,27 @@ long int CMemUtil::GetMemIntValue(DWORD memAddress, int addBaseAddress /*=1*/)
 	return value;
 };
 
-int CMemUtil::SetMemIntValue(DWORD memAddress, long int value, int addBaseAddress /*=1*/)
+int CMemUtil::SetMemIntValue(DWORD memAddress, long int value, bool addBaseAddress /*= true*/)
 {
 	return SetMemIntValue(m_globalProcessId, memAddress, value, addBaseAddress);
 }
 
-int CMemUtil::SetMemIntValue(long processId, DWORD memAddress, long int value, int addBaseAddress)
+int CMemUtil::SetMemIntValue(long processId, DWORD memAddress, long int value, bool addBaseAddress)
 {
 	return writememory(processId, memAddress, (int*)&value, sizeof(long int), addBaseAddress);
 }
 
-int CMemUtil::SetMemByteValue(long processId, DWORD memAddress, char value, int addBaseAddress)
+int CMemUtil::SetMemByteValue(long processId, DWORD memAddress, char value, bool addBaseAddress)
 {
 	return writememory(processId, memAddress, (int*)&value, sizeof(char), addBaseAddress);
 }
 
-int CMemUtil::SetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddress /*=1*/)
+int CMemUtil::SetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, bool addBaseAddress /*= true*/)
 {
 	return SetMemRange(m_globalProcessId, memAddressStart, memAddressEnd, data, addBaseAddress);
 }
 
-int CMemUtil::SetMemRange(int processId, DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddress)
+int CMemUtil::SetMemRange(int processId, DWORD memAddressStart, DWORD memAddressEnd, char *data, bool addBaseAddress)
 {
 	return writememory(processId, memAddressStart, (int*)data, memAddressEnd - memAddressStart, addBaseAddress);
 }

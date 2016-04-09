@@ -37,18 +37,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-
-/////////////////////////////////////////////////////////////////////////////
-// CMod_fisherApp
-
-BEGIN_MESSAGE_MAP(CMod_fisherApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_fisherApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -69,7 +57,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		if (!reader.isLoggedIn())
 			continue;                   // do not proceed if not connected
 		int continueFishing   = 1;
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
 		if (config->moveFromHandToCont)
 		{
@@ -123,12 +112,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 			delete item;
 		}
-
-		delete self;
 		// refresh self to have correct cap
-		self = reader.readSelfCharacter();
+		reader.readSelfCharacter(&self);
 		// if cap check enabled,
-		if (self->cap < config->fishOnlyWhenCap)
+		if (self.cap < config->fishOnlyWhenCap)
 			continueFishing = 0;
 
 		//New only fish when worms available
@@ -195,12 +182,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			{
 				int tileId = reader.mapGetPointItemId(point(offsetX, offsetY, 0), 0);
 				CPackSender::useWithObjectFromContainerOnFloor(
-				        CTibiaItem::getValueForConst("fishingRod"), fishingRodCont, fishingRodPos, tileId, self->x + offsetX, self->y + offsetY, self->z);
+				        CTibiaItem::getValueForConst("fishingRod"), fishingRodCont, fishingRodPos, tileId, self.x + offsetX, self.y + offsetY, self.z);
 			}
 		}
 
 
-		delete self;
 	}
 	toolThreadShouldStop = 0;
 	return 0;
@@ -341,7 +327,7 @@ void CMod_fisherApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_fisherApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_fisherApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "other/fishOnlyWhenCap"))
 		m_configData->fishOnlyWhenCap = atoi(paramValue);
@@ -351,7 +337,7 @@ void CMod_fisherApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->fishOnlyWhenWorms = atoi(paramValue);
 }
 
-char *CMod_fisherApp::saveConfigParam(char *paramName)
+char *CMod_fisherApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -367,19 +353,17 @@ char *CMod_fisherApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_fisherApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "other/fishOnlyWhenCap"; // old: fishCap
-	case 1:
-		return "move/fromHandToCont";
-	case 2:
-		return "other/fishOnlyWhenWorms";
-	default:
-		return NULL;
-	}
+	"other/fishOnlyWhenCap", // old: fishCap
+	"move/fromHandToCont",
+	"other/fishOnlyWhenWorms",
+	NULL,
+};
+
+const char **CMod_fisherApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_fisherApp::getNewSkin(CSkin newSkin)

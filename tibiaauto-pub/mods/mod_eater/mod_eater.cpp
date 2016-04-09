@@ -65,18 +65,7 @@ static char THIS_FILE[] = __FILE__;
 //
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_eaterApp
-
-BEGIN_MESSAGE_MAP(CMod_eaterApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_eaterApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool functions
-
 int RandomEaterWaitTime(int digestTime)
 {
 	/***************************
@@ -165,13 +154,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (foodItem->objectId)
 			{
 				//Previously used "self" variable was unneeded, changed variable name for clarity
-				CTibiaCharacter* self = reader.readSelfCharacter();
+				CTibiaCharacter self;
+				reader.readSelfCharacter(&self);
 				//Eat only if the character has less than full health or mana and only if not in a protection zone
 				int flags = reader.getSelfEventFlags();
-				if (!(flags & 0x4000) && (self->mana < self->maxMana || self->hp < self->maxHp))
+				if (!(flags & 0x4000) && (self.mana < self.maxMana || self.hp < self.maxHp))
 					CPackSender::useItemInContainer(foodItem->objectId, 0x40 + foodContainer, foodItem->pos);
 
-				if (CModuleUtil::waitForCapsChange(self->cap))
+				if (CModuleUtil::waitForCapsChange(self.cap))
 				{
 					digestTime += CTibiaItem::getFoodTimeAtIndex(CTibiaItem::getFoodIndex(foodItem->objectId));
 					if (i != 1)
@@ -182,10 +172,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					failedTimes += 1;
 					Sleep(CModuleUtil::randomFormula(100, 50));//sleep for much less time
 				}
-
-				delete self;
-				self = NULL;
-
 				//Assume we are full and wait for however long the food we tried to eat lasts
 				if (failedTimes >= 2)
 				{

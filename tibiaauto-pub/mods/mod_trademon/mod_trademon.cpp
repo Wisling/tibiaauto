@@ -35,17 +35,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-
-/////////////////////////////////////////////////////////////////////////////
-// CMod_trademonApp
-
-BEGIN_MESSAGE_MAP(CMod_trademonApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_trademonApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
@@ -325,7 +314,7 @@ void CMod_trademonApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_trademonApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_trademonApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "tradeTalker"))
 		m_configData->tradeTalk = atoi(paramValue);
@@ -350,7 +339,7 @@ void CMod_trademonApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->tradeMon = atoi(paramValue);
 }
 
-char *CMod_trademonApp::saveConfigParam(char *paramName)
+char *CMod_trademonApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -377,31 +366,23 @@ char *CMod_trademonApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_trademonApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "tradeTalker";
-	case 1:
-		return "message";
-	case 2:
-		return "channel";
-	case 3:
-		return "channelInterval";
-	case 4:
-		return "yell";
-	case 5:
-		return "yellInterval";
-	case 6:
-		return "say";
-	case 7:
-		return "sayInterval";
-	case 8:
-		return "tradeMon";
-	default:
-		return NULL;
-	}
+	"tradeTalker",
+	"message",
+	"channel",
+	"channelInterval",
+	"yell",
+	"yellInterval",
+	"say",
+	"sayInterval",
+	"tradeMon",
+	NULL,
+};
+
+const char **CMod_trademonApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_trademonApp::getNewSkin(CSkin newSkin)

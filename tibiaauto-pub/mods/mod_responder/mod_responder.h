@@ -17,23 +17,11 @@
 /////////////////////////////////////////////////////////////////////////////
 //
 
-class CMod_responderApp : public CWinApp, public IModuleInterface
+class CMod_responderApp : public IModuleInterface
 {
 public:
 	CMod_responderApp();
 	~CMod_responderApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_responderApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_responderApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	void getNewSkin(CSkin);
 	void stop();

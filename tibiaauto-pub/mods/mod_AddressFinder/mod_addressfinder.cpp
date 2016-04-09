@@ -40,20 +40,6 @@ static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
 using namespace std;
-
-/////////////////////////////////////////////////////////////////////////////
-// CMod_addressfinderApp
-
-BEGIN_MESSAGE_MAP(CMod_addressfinderApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_addressfinderApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// Tool functions
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -210,7 +196,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 		for (; loop < comparison.size(); loop++)
 		{
-			tibiaFile.push_back((byte)CMemUtil::GetMemIntValue(0x401000 + loop));
+			tibiaFile.push_back((byte)CMemUtil::getMemUtil().GetMemIntValue(0x401000 + loop));
 		}
 
 		while (loop < 0x5b0ffe)
@@ -230,15 +216,15 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (countSuccess == comparison.size())
 			{
 				AfxMessageBox("Success");
-				config->experienceAddress = CMemUtil::GetMemIntValue(0x401000 + loop + 1);
-				config->experience        = CMemUtil::GetMemIntValue(config->experienceAddress);
+				config->experienceAddress = CMemUtil::getMemUtil().GetMemIntValue(0x401000 + loop + 1);
+				config->experience        = CMemUtil::getMemUtil().GetMemIntValue(config->experienceAddress);
 				toolThreadShouldStop      = 1;
 				break;
 			}
 			else
 			{
 				tibiaFile.pop_front();
-				tibiaFile.push_back((byte)CMemUtil::GetMemIntValue(0x401000 + ++loop));
+				tibiaFile.push_back((byte)CMemUtil::getMemUtil().GetMemIntValue(0x401000 + ++loop));
 			}
 		}
 		char buf[32];
@@ -376,7 +362,7 @@ void CMod_addressfinderApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_addressfinderApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_addressfinderApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "ExperienceAddress"))
 		m_configData->experienceAddress = atoi(paramValue);
@@ -384,7 +370,7 @@ void CMod_addressfinderApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->experience = atoi(paramValue);
 }
 
-char *CMod_addressfinderApp::saveConfigParam(char *paramName)
+char *CMod_addressfinderApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = '\0';
@@ -396,17 +382,16 @@ char *CMod_addressfinderApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_addressfinderApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "ExperienceAddress";
-	case 1:
-		return "Experience";
-	default:
-		return NULL;
-	}
+	"ExperienceAddress",
+	"Experience",
+	NULL,
+};
+
+const char **CMod_addressfinderApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_addressfinderApp::getNewSkin(CSkin newSkin)

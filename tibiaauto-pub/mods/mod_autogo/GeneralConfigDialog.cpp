@@ -169,7 +169,7 @@ CString capturePosition(CString name)
 			DWORD pid;
 			DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHwnd, &pid);
 
-			if (pid == CMemUtil::getGlobalProcessId())
+			if (pid == CMemUtil::getMemUtil().getGlobalProcessId())
 				break;
 			tibiaHwnd = FindWindowEx(NULL, tibiaHwnd, "TibiaClient", NULL);
 		}
@@ -458,18 +458,18 @@ void GeneralConfigDialog::OnTimer(UINT nIDEvent)
 	if (nIDEvent == 1001)
 	{
 		CMemReader& reader = CMemReader::getMemReader();
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 		CString buf;
-		if (lastX != self->x || lastY != self->y || lastZ != self->z)
+		if (lastX != self.x || lastY != self.y || lastZ != self.z)
 		{
-			buf.Format("%d", self->x);
+			buf.Format("%d", self.x);
 			m_curX.SetWindowText(buf);
-			buf.Format("%d", self->y);
+			buf.Format("%d", self.y);
 			m_curY.SetWindowText(buf);
-			buf.Format("%d", self->z);
+			buf.Format("%d", self.z);
 			m_curZ.SetWindowText(buf);
 		}
-		delete self;
 	}
 	CDialog::OnTimer(nIDEvent);
 }

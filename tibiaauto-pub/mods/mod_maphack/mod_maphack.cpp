@@ -39,18 +39,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-
-/////////////////////////////////////////////////////////////////////////////
-// CMod_maphackApp
-
-BEGIN_MESSAGE_MAP(CMod_maphackApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_maphackApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -76,10 +64,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 		if (config->revealNoFish && iter % 4 == 0)//Checks every 0.8 seconds
 		{
-			CTibiaCharacter* self = reader.readSelfCharacter();
+			CTibiaCharacter self;
+			 reader.readSelfCharacter(& self);
 
 			static int lastFishX = 0, lastFishY = 0, lastFishZ = 0;
-			if (lastFishX != self->x || lastFishY != self->y || lastFishZ != self->z || iter % (4 * 2) == 0)//runs at least every 1.6 seconds if not moved
+			if (lastFishX != self.x || lastFishY != self.y || lastFishZ != self.z || iter % (4 * 2) == 0)//runs at least every 1.6 seconds if not moved
 			{
 				int x, y;
 				for (x = -7; x <= 7; x++)
@@ -91,11 +80,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							reader.mapSetPointItemId(point(x, y, 0), 0, 727);
 					}
 				}
-				lastFishX = self->x;
-				lastFishY = self->y;
-				lastFishZ = self->z;
+				lastFishX = self.x;
+				lastFishY = self.y;
+				lastFishZ = self.z;
 			}
-			delete self;
 		}
 		if (config->revealCName && iter % 5 == 0)
 			reader.writeEnableRevealCName();
@@ -113,8 +101,9 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		}
 		if (config->autoMount && iter % 5 == 2)
 		{
-			CTibiaCharacter* self = reader.readSelfCharacter();
-			if (self->monsterType != 0 && self->colorHead != 0 && self->mountId == 0 && !(reader.getSelfEventFlags() & 16384 /*INPZ*/))
+			CTibiaCharacter self;
+			 reader.readSelfCharacter(& self);
+			if (self.monsterType != 0 && self.colorHead != 0 && self.mountId == 0 && !(reader.getSelfEventFlags() & 16384 /*INPZ*/))
 			{
 				if (!mountStarted)
 				{
@@ -131,7 +120,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			{
 				mountStarted = 0;
 			}
-			delete self;
 		}
 		if (config->showManaBar && !manaBarStarted)
 		{
@@ -141,10 +129,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		if (config->minimapResearch && iter % 2 == 0)
 		{
 			char buf[1111];
-			CTibiaCharacter* self = reader.readSelfCharacter();
+			CTibiaCharacter self;
+			 reader.readSelfCharacter(& self);
 
 			static int lastX = 0, lastY = 0, lastZ = 0, lastMinZ = 0, lastMaxZ = 0;
-			if (lastX != self->x || lastY != self->y || lastZ != self->z)
+			if (lastX != self.x || lastY != self.y || lastZ != self.z)
 			{
 				//
 				char mapArrCol[18][14][8];
@@ -154,23 +143,23 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				memset(mapArrSpd, 0, 18 * 14 * 8);
 
 				int x, y, z;
-				int sigX = max(-1, min(1, self->x - lastX));
-				int sigY = max(-1, min(1, self->y - lastY));
-				int sigZ = max(-1, min(1, self->z - lastZ));
+				int sigX = max(-1, min(1, self.x - lastX));
+				int sigY = max(-1, min(1, self.y - lastY));
+				int sigZ = max(-1, min(1, self.z - lastZ));
 
-				int minZ = (self->z <= 7 ? -self->z : -2);
-				int maxZ = (self->z <= 7 ? 7 - self->z : min(2, 15 - self->z));
+				int minZ = (self.z <= 7 ? -self.z : -2);
+				int maxZ = (self.z <= 7 ? 7 - self.z : min(2, 15 - self.z));
 				int minY = -6;
 				int maxY = 7;
 				int minX = -8;
 				int maxX = 9;
 
-				int minNewZ = max(minZ, min(maxZ, (lastZ - self->z) + (sigZ == 1 ? lastMaxZ : lastMinZ) + sigZ));
-				int maxNewZ = minNewZ + max(minZ - maxZ - 1, min(maxZ - minZ + 1, (self->z - lastZ) + (sigZ == 1 ? maxZ - lastMaxZ : minZ - lastMinZ)));
-				int minNewY = max(minY, min(maxY, (lastY - self->y) + (sigY == 1 ? maxY : minY) + sigY));
-				int maxNewY = minNewY + max(minY - maxY - 1, min(maxY - minY + 1, self->y - lastY));
-				int minNewX = max(minX, min(maxX, (lastX - self->x) + (sigX == 1 ? maxX : minX) + sigX));
-				int maxNewX = minNewX + max(minX - maxX - 1, min(maxX - minX + 1, self->x - lastX));
+				int minNewZ = max(minZ, min(maxZ, (lastZ - self.z) + (sigZ == 1 ? lastMaxZ : lastMinZ) + sigZ));
+				int maxNewZ = minNewZ + max(minZ - maxZ - 1, min(maxZ - minZ + 1, (self.z - lastZ) + (sigZ == 1 ? maxZ - lastMaxZ : minZ - lastMinZ)));
+				int minNewY = max(minY, min(maxY, (lastY - self.y) + (sigY == 1 ? maxY : minY) + sigY));
+				int maxNewY = minNewY + max(minY - maxY - 1, min(maxY - minY + 1, self.y - lastY));
+				int minNewX = max(minX, min(maxX, (lastX - self.x) + (sigX == 1 ? maxX : minX) + sigX));
+				int maxNewX = minNewX + max(minX - maxX - 1, min(maxX - minX + 1, self.x - lastX));
 
 
 				sprintf(buf, "%x looping sigs(%d,%d,%d) x:%d to %d  y:%d to %d  z:%d to %d minmax's %d,%d  %d,%d  %d,%d", &mapArrCol, sigX, sigY, sigZ, minNewX, maxNewX, minNewY, maxNewY, minNewZ, maxNewZ, minX, maxX, minY, maxY, minZ, maxZ);
@@ -214,7 +203,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 								mapSpeed  = 100;
 								continue;
 							}
-							sprintf(buf, "Drawing (%d,%d,%d) %d %d", self->x + x, self->y + y, self->z + z, mapColour, mapSpeed);
+							sprintf(buf, "Drawing (%d,%d,%d) %d %d", self.x + x, self.y + y, self.z + z, mapColour, mapSpeed);
 							//AfxMessageBox(buf);
 							mapArrCol[x - minX][y - minY][z - minZ] = mapColour;
 							mapArrSpd[x - minX][y - minY][z - minZ] = mapSpeed;
@@ -258,7 +247,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 								mapSpeed  = 100;
 								continue;
 							}
-							sprintf(buf, "Drawing (%d,%d,%d) %d %d", self->x + x, self->y + y, self->z + z, mapColour, mapSpeed);
+							sprintf(buf, "Drawing (%d,%d,%d) %d %d", self.x + x, self.y + y, self.z + z, mapColour, mapSpeed);
 							//AfxMessageBox(buf);
 							mapArrCol[x - minX][y - minY][z - minZ] = mapColour;
 							mapArrSpd[x - minX][y - minY][z - minZ] = mapSpeed;
@@ -304,50 +293,49 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 								mapSpeed  = 100;
 								continue;
 							}
-							sprintf(buf, "Drawing (%d,%d,%d) %d %d", self->x + x, self->y + y, self->z + z, mapColour, mapSpeed);
+							sprintf(buf, "Drawing (%d,%d,%d) %d %d", self.x + x, self.y + y, self.z + z, mapColour, mapSpeed);
 							//AfxMessageBox(buf);
 							mapArrCol[x - minX][y - minY][z - minZ] = mapColour;
 							mapArrSpd[x - minX][y - minY][z - minZ] = mapSpeed;
 						}
 					}
 				}
-				CTibiaCharacter* newSelf = reader.readSelfCharacter();
+				CTibiaCharacter newself;
+				reader.readSelfCharacter(&newself);
 				//int fileExists;
 				int last = 0;
-				if (newSelf->z == self->z)//since we used relToCell only floorchanges drastically matter
+				if (newself.z == self.z)//since we used relToCell only floorchanges drastically matter
 				{       // tiles changed between read from tibia and write to map are excluded
 					for (z = minZ; z <= maxZ; z++)
 					{
-						for (x = -8 + max(0, newSelf->x - self->x); x <= 9 + min(0, newSelf->x - self->x); x++)
+						for (x = -8 + max(0, newself.x - self.x); x <= 9 + min(0, newself.x - self.x); x++)
 						{
-							for (y = -6 + max(0, newSelf->y - self->y); y <= 7 + min(0, newSelf->y - self->y); y++)
+							for (y = -6 + max(0, newself.y - self.y); y <= 7 + min(0, newself.y - self.y); y++)
 							{
 /*
-                                                                if (last !=(int)((self->x+x-z)/256)*256*30+(int)((self->y+y-z)/256)*30+self->z+z){
+                                                                if (last !=(int)((self.x+x-z)/256)*256*30+(int)((self.y+y-z)/256)*30+self.z+z){
                                                                         char filename[1024+20];
-                                                                        sprintf(filename,"%s%s%03d%03d%02d.map",getenv("USERPROFILE"),"/Application Data/Tibia/Automap/",(int)((self->x+x-z)/256),(int)((self->y+y-z)/256),self->z+z);
+                                                                        sprintf(filename,"%s%s%03d%03d%02d.map",getenv("USERPROFILE"),"/Application Data/Tibia/Automap/",(int)((self.x+x-z)/256),(int)((self.y+y-z)/256),self.z+z);
                                                                         FILE *f=fopen(filename,"r");
                                                                         fileExists=(f?1:0);
                                                                         if (f) fclose(f);
-                                                                        last =(int)((self->x+x-z)/256)*256*30+(int)((self->y+y-z)/256)*30+self->z+z;
+                                                                        last =(int)((self.x+x-z)/256)*256*30+(int)((self.y+y-z)/256)*30+self.z+z;
                                                                 }
  */
 								//if(mapArrSpd[x-(-8)][y-(-6)][z-minZ]!=0 && (mapArrCol[x-(-8)][y-(-6)][z-minZ]!=0 || fileExists)){
 								if (mapArrSpd[x - (-8)][y - (-6)][z - minZ] != 0)
-									reader.writeMiniMapPoint(self->x + x - z, self->y + y - z, self->z + z, mapArrCol[x - (-8)][y - (-6)][z - minZ], mapArrSpd[x - (-8)][y - (-6)][z - minZ]);
+									reader.writeMiniMapPoint(self.x + x - z, self.y + y - z, self.z + z, mapArrCol[x - (-8)][y - (-6)][z - minZ], mapArrSpd[x - (-8)][y - (-6)][z - minZ]);
 							}
 						}
 					}
-					lastX = self->x;
-					lastY = self->y;
-					lastZ = self->z;
+					lastX = self.x;
+					lastY = self.y;
+					lastZ = self.z;
 
 					lastMinZ = minZ;
 					lastMaxZ = maxZ;
 				}
-				delete newSelf;
 			}
-			delete self;
 		}
 	}
 
@@ -487,7 +475,7 @@ void CMod_maphackApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_maphackApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_maphackApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "reveal/noFish"))
 		m_configData->revealNoFish = atoi(paramValue);
@@ -503,7 +491,7 @@ void CMod_maphackApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->showManaBar = atoi(paramValue);
 }
 
-char *CMod_maphackApp::saveConfigParam(char *paramName)
+char *CMod_maphackApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -524,25 +512,20 @@ char *CMod_maphackApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_maphackApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "reveal/noFish";
-	case 1:
-		return "reveal/cName";
-	case 2:
-		return "reveal/invisible";
-	case 3:
-		return "reveal/minimap";
-	case 4:
-		return "autoMount";
-	case 5:
-		return "showManaBar";
-	default:
-		return NULL;
-	}
+	"reveal/noFish",
+	"reveal/cName",
+	"reveal/invisible",
+	"reveal/minimap",
+	"autoMount",
+	"showManaBar",
+	NULL,
+};
+
+const char **CMod_maphackApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_maphackApp::getNewSkin(CSkin newSkin)

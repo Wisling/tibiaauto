@@ -43,16 +43,6 @@ CToolBankerState globalBankerState = CToolBankerState_notRunning;
 int GUIx                           = 0, GUIy = 0, GUIz = 0;
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_bankerApp
-
-BEGIN_MESSAGE_MAP(CMod_bankerApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_bankerApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
 int RandomTimeBankerSay(int length)
@@ -337,7 +327,7 @@ void CMod_bankerApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_bankerApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_bankerApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "BankerName"))
 		sprintf(m_configData->banker.bankerName, "%s", paramValue);
@@ -359,7 +349,7 @@ void CMod_bankerApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->drawUpTo = atoi(paramValue);
 }
 
-char *CMod_bankerApp::saveConfigParam(char *paramName)
+char *CMod_bankerApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = '\0';
@@ -385,56 +375,46 @@ char *CMod_bankerApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_bankerApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "BankerName";
-	case 1:
-		return "BankerPos";
-	case 2:
-		return "DepositTrigger";
-	case 3:
-		return "CashOnHand";
-	case 4:
-		return "ModPriority";
-	case 5:
-		return "ChangeGold";
-	case 6:
-		return "CapsLimit";
-	case 7:
-		return "StopByBanker";
-	case 8:
-		return "DrawUpTo";
-	default:
-		return NULL;
-	}
+	"BankerName",
+	"BankerPos",
+	"DepositTrigger",
+	"CashOnHand",
+	"ModPriority",
+	"ChangeGold",
+	"CapsLimit",
+	"StopByBanker",
+	"DrawUpTo",
+	NULL,
+};
+const char **CMod_bankerApp::getConfigParamNames()
+{
+	return configParamNames;
 }
+
 
 int findBanker(CConfigData *config)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z)
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
+	if (config->targetX == self.x && config->targetY == self.y && config->targetZ == self.z)
 	{
 		memset(config->path, 0, 15);
-		delete self;
 		return 1;
 	}
 	GUIx = config->banker.bankerX;
 	GUIy = config->banker.bankerY;
 	GUIz = config->banker.bankerZ;
-	struct point nearestBank = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->banker.bankerX, config->banker.bankerY, config->banker.bankerZ, 0, config->path, 3);
+	struct point nearestBank = CModuleUtil::findPathOnMap(self.x, self.y, self.z, config->banker.bankerX, config->banker.bankerY, config->banker.bankerZ, 0, config->path, 3);
 	if (nearestBank.x && nearestBank.y && nearestBank.z)
 	{
 		config->targetX = nearestBank.x;
 		config->targetY = nearestBank.y;
 		config->targetZ = nearestBank.z;
-		delete self;
 		return 1;
 	}
-	delete self;
 	return 0;
 }
 
@@ -459,61 +439,55 @@ int shouldKeepWalking()
 
 int moveToBanker(CConfigData *config)
 {
-	CMemReader& reader = CMemReader::getMemReader();
-	
+	CMemReader& reader = CMemReader::getMemReader();	
 
 	static int positionFound = 0;
+	CTibiaCharacter self;
 	if (shouldKeepWalking())
 	{
 		//Find a location close enough to NPC
 		if (!positionFound)
 		{
-			CTibiaCharacter* self = reader.readSelfCharacter();
-			CModuleUtil::executeWalk(self->x, self->y, self->z, config->path);
-			if (self->x == config->targetX && self->y == config->targetY && self->z == config->targetZ)
+			reader.readSelfCharacter(&self);
+			CModuleUtil::executeWalk(self.x, self.y, self.z, config->path);
+			if (self.x == config->targetX && self.y == config->targetY && self.z == config->targetZ)
 				positionFound = 1;
-			delete self;
 		}
 		else     //Approach NPC after finding them
 		{
 			for (int i = 0; i < reader.m_memMaxCreatures; i++)
 			{
-				CTibiaCharacter* mon = reader.readVisibleCreature(i);
+				CTibiaCharacter mon;
+				reader.readVisibleCreature(&mon, i);
 				// since banker.bankerName may include city, match first part of name
-				if (mon->tibiaId == 0)
+				if (mon.tibiaId == 0)
 				{
-					delete mon;
 					break;
 				}
-				int len = strlen(mon->name);
-				if (strncmp(config->banker.bankerName, mon->name, len) == 0 && (config->banker.bankerName[len] == 0 || config->banker.bankerName[len] == ' '))
+				int len = strlen(mon.name);
+				if (strncmp(config->banker.bankerName, mon.name, len) == 0 && (config->banker.bankerName[len] == 0 || config->banker.bankerName[len] == ' '))
 				{
 					for (int tries = 0; tries < 2; tries++) // should only need 1 try, but we'd need to start over if we don't make it
 					{
-						CTibiaCharacter* self = reader.readSelfCharacter();
-						delete mon;
-						mon = reader.readVisibleCreature(i);
+						reader.readSelfCharacter(&self);
+						reader.readVisibleCreature(&mon, i);
 
 						struct point nearestBank = point(0, 0, 0);
 						int rad                  = 2;
 						while (nearestBank.x == 0 && rad <= 3)//find paths increasingly farther away
 						{
-							nearestBank = CModuleUtil::findPathOnMap(self->x, self->y, self->z, mon->x, mon->y, mon->z, 0, config->path, rad++);
+							nearestBank = CModuleUtil::findPathOnMap(self.x, self.y, self.z, mon.x, mon.y, mon.z, 0, config->path, rad++);
 						}
-						if (nearestBank.x && nearestBank.y && nearestBank.z == self->z)
+						if (nearestBank.x && nearestBank.y && nearestBank.z == self.z)
 						{
-							CModuleUtil::executeWalk(self->x, self->y, self->z, config->path);
+							CModuleUtil::executeWalk(self.x, self.y, self.z, config->path);
 							if (CModuleUtil::waitToStandOnSquare(nearestBank.x, nearestBank.y))
 							{
-								delete mon;
-								delete self;
 								return 1;
 							}
 						}
-						delete self;
 					}
 				}
-				delete mon;
 			}
 			positionFound = 0;
 		}
@@ -534,9 +508,9 @@ int depositGold()
 	CMemReader& reader = CMemReader::getMemReader();
 
 
-	CTibiaCharacter* self = reader.readSelfCharacter();
-	float origcaps        = self->cap;
-	delete self;
+	CTibiaCharacter self;
+	 reader.readSelfCharacter(& self);
+	float origcaps        = self.cap;
 
 	int moneycount = countAllItemsOfType(CTibiaItem::getValueForConst("GP"), true);
 	moneycount += countAllItemsOfType(CTibiaItem::getValueForConst("PlatinumCoin"), true) * 100;
@@ -558,7 +532,8 @@ int withdrawGold(CConfigData *config, int suggestedWithdrawAmount)
 	
 	CMemReader& reader = CMemReader::getMemReader();
 
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 	char withdrawBuf[32];
 
 	sprintf(withdrawBuf, "withdraw %d", config->cashOnHand + suggestedWithdrawAmount);
@@ -567,12 +542,10 @@ int withdrawGold(CConfigData *config, int suggestedWithdrawAmount)
 	Sleep(RandomTimeBankerSay(strlen("yes")));
 	CPackSender::sayNPC("yes");
 
-	if (CModuleUtil::waitForCapsChange(self->cap))
+	if (CModuleUtil::waitForCapsChange(self.cap))
 	{
-		delete self;
 		return 1;
 	}
-	delete self;
 	return 0;
 }
 
@@ -582,9 +555,9 @@ int changeGold()
 
 	
 
-	CTibiaCharacter* self = reader.readSelfCharacter();
-	float origcaps        = self->cap;
-	delete self;
+	CTibiaCharacter self;
+	 reader.readSelfCharacter(& self);
+	float origcaps        = self.cap;
 	int retval = 0;
 
 	int goldId    = CTibiaItem::getValueForConst("GP");
@@ -706,9 +679,9 @@ int shouldBank(CConfigData *config)
 	CMemReader& reader = CMemReader::getMemReader();
 	
 
-	CTibiaCharacter* self = reader.readSelfCharacter();
-	int belowCaps         = self->cap < config->capsLimit;
-	delete self;
+	CTibiaCharacter self;
+	 reader.readSelfCharacter(& self);
+	int belowCaps         = self.cap < config->capsLimit;
 
 
 	int goldId       = CTibiaItem::getValueForConst("GP");
@@ -740,8 +713,8 @@ int canBank(CConfigData *config)
 	CMemReader& reader = CMemReader::getMemReader();
 	
 
-	CTibiaCharacter* self = reader.readSelfCharacter();
-	delete self;
+	CTibiaCharacter self;
+	 reader.readSelfCharacter(& self);
 
 
 	int goldId       = CTibiaItem::getValueForConst("GP");

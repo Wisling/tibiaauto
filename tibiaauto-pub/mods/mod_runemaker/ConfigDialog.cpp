@@ -221,7 +221,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		// container refresh event
 		CMemReader& reader = CMemReader::getMemReader();
 		
-		CTibiaCharacter *myself    = reader.readSelfCharacter();
+		CTibiaCharacter myself   ;
+		 reader.readSelfCharacter(&myself   );
 		int i;
 		char buf[256];
 
@@ -323,18 +324,14 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		m_soulPoints.GetWindowText(buf, 127);
 		int spTime = 0;
 		if (blanksCount && atoi(buf))
-			spTime = (myself->soulPoints / atoi(buf)) * (blanksTime / blanksCount);
+			spTime = (myself.soulPoints / atoi(buf)) * (blanksTime / blanksCount);
 		int spTimeH   = spTime / 3600;
 		int spTimeMin = (spTime / 60) % 60;
 		int spTimeSec = spTime % 60;
 
 		sprintf(buf, "Soulpoints for: %dh %dmin %ds", spTimeH, spTimeMin, spTimeSec);
 		m_infoSoulpointsTime.SetWindowText(buf);
-
-
 		SetTimer(1001, 250, NULL);
-		delete myself;
-
 		break;
 	}
 	};

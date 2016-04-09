@@ -66,16 +66,6 @@ static char THIS_FILE[] = __FILE__;
 //
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_looterApp
-
-BEGIN_MESSAGE_MAP(CMod_looterApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_looterApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
 int containerNotFull(int containerNr)
@@ -132,8 +122,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		if (!config->m_lootInDepot && flags & 0x4000)
 			continue;
 
-		CTibiaCharacter *self       = reader.readSelfCharacter();
-		CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
+		CTibiaCharacter attackedCh;
+		reader.getCharacterByTibiaId(&attackedCh, lastAttackedMonster);
 
 		//Check if container is closed, then no need to close it
 		if (config->m_autoOpen)
@@ -150,17 +142,17 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 		/*** killed monster opening part ***/
-		if (config->m_autoOpen && lastAttackedMonster && (!attackedCh || attackedCh->hpPercLeft == 0))
+		if (config->m_autoOpen && lastAttackedMonster && (!attackedCh.initialized || attackedCh.hpPercLeft == 0))
 		{
 			//::MessageBox(NULL,"x 1","x",0);
 
-			if (attackedCh)
+			if (attackedCh.initialized)
 			{
-				if (!attackedCh->hpPercLeft && abs(self->x - attackedCh->x) <= 1 && abs(self->y - attackedCh->y) <= 1 && self->z == attackedCh->z)
+				if (!attackedCh.hpPercLeft && abs(self.x - attackedCh.x) <= 1 && abs(self.y - attackedCh.y) <= 1 && self.z == attackedCh.z)
 				{
 					//Sleep(1000);
 					// the creature is dead and we can try to open its corpse
-					int corpseId = reader.itemOnTopCode(attackedCh->x - self->x, attackedCh->y - self->y);
+					int corpseId = reader.itemOnTopCode(attackedCh.x - self.x, attackedCh.y - self.y);
 
 
 					// now close containers 7-9 which we use for auto-opening purposes
@@ -182,20 +174,15 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					CTibiaContainer *cont[3] = {NULL, NULL, NULL};
 
 					// now open corpse and all its containers
-
-					delete self;
-					self = reader.readSelfCharacter();
-					delete attackedCh;
-					attackedCh = NULL;
-					attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
-					if (attackedCh)
+					reader.readSelfCharacter(&self);
+					if (reader.getCharacterByTibiaId(&attackedCh, lastAttackedMonster))
 					{
-						CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
-						int corpseId     = reader.itemOnTopCode(attackedCh->x - self->x, attackedCh->y - self->y);
+						CModuleUtil::waitForCreatureDisappear(attackedCh.nr);
+						int corpseId     = reader.itemOnTopCode(attackedCh.x - self.x, attackedCh.y - self.y);
 						CTibiaTile *tile = CTileReader::getTileReader().getTile(corpseId);
 						if (corpseId && tile->isContainer)
 						{
-							CPackSender::openContainerFromFloor(corpseId, attackedCh->x, attackedCh->y, attackedCh->z, lastLootContNr[0]);
+							CPackSender::openContainerFromFloor(corpseId, attackedCh.x, attackedCh.y, attackedCh.z, lastLootContNr[0]);
 							CModuleUtil::waitForOpenContainer(lastLootContNr[0], 1);
 							cont[0] = reader.readContainer(lastLootContNr[0]);
 							if (cont[0]->flagOnOff)
@@ -228,7 +215,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									{
 										int i, len;
 										char statChName[128];
-										for (i = 0, strcpy(statChName, attackedCh->name), len = strlen(statChName); i < len; i++)
+										for (i = 0, strcpy(statChName, attackedCh.name), len = strlen(statChName); i < len; i++)
 										{
 											if (statChName[i] == '[')
 												statChName[i] = '\0';
@@ -237,10 +224,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 										int killNr = rand();
 										int checksum;
 
-										checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), -1, corpseId, 0, 2, attackedCh->x, attackedCh->y, attackedCh->z);
+										checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), -1, corpseId, 0, 2, attackedCh.x, attackedCh.y, attackedCh.z);
 										if (checksum < 0)
 											checksum *= -1;
-										fprintf(lootStatsFile, "%lld,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, -1, corpseId, 0, 2, attackedCh->x, attackedCh->y, attackedCh->z, checksum);
+										fprintf(lootStatsFile, "%lld,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, -1, corpseId, 0, 2, attackedCh.x, attackedCh.y, attackedCh.z, checksum);
 
 										CTibiaContainer *lootCont = cont[0];
 										int itemNr;
@@ -248,10 +235,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 										{
 											CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
 
-											checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), 0, attackedCh->x, attackedCh->y, attackedCh->z);
+											checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), 0, attackedCh.x, attackedCh.y, attackedCh.z);
 											if (checksum < 0)
 												checksum *= -1;
-											fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 0, attackedCh->x, attackedCh->y, attackedCh->z, checksum);
+											fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 0, attackedCh.x, attackedCh.y, attackedCh.z, checksum);
 										}
 
 
@@ -263,10 +250,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 											{
 												CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
 
-												checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), 100 + itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), 1, attackedCh->x, attackedCh->y, attackedCh->z);
+												checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), 100 + itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), 1, attackedCh.x, attackedCh.y, attackedCh.z);
 												if (checksum < 0)
 													checksum *= -1;
-												fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 1, attackedCh->x, attackedCh->y, attackedCh->z, checksum);
+												fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 1, attackedCh.x, attackedCh.y, attackedCh.z, checksum);
 											}
 										}
 										if (cont[2])
@@ -277,10 +264,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 											{
 												CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
 
-												checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(attackedCh->name), 100 + itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), 2, attackedCh->x, attackedCh->y, attackedCh->z);
+												checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(attackedCh.name), 100 + itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), 2, attackedCh.x, attackedCh.y, attackedCh.z);
 												if (checksum < 0)
 													checksum *= -1;
-												fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, attackedCh->name, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 2, attackedCh->x, attackedCh->y, attackedCh->z, checksum);
+												fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, attackedCh.name, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 2, attackedCh.x, attackedCh.y, attackedCh.z, checksum);
 											}
 										}
 
@@ -304,11 +291,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 			lastAttackedMonster = 0;
 		}
-		if (attackedCh && attackedCh->hpPercLeft != 0 && lastAttackedMonster || !lastAttackedMonster)
+		if (attackedCh.initialized && attackedCh.hpPercLeft != 0 && lastAttackedMonster || !lastAttackedMonster)
 			lastAttackedMonster = reader.getAttackedCreature();
-		delete self;
-		if (attackedCh)
-			delete attackedCh;        //attackedCh is null if not present
 		/*** moving part ***/
 
 		/**
@@ -529,7 +513,7 @@ void CMod_looterApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_looterApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_looterApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "mode/cont1"))
 		m_configData->m_mode1 = atoi(paramValue);
@@ -569,7 +553,7 @@ void CMod_looterApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->m_eatFromCorpse = atoi(paramValue);
 }
 
-char *CMod_looterApp::saveConfigParam(char *paramName)
+char *CMod_looterApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -614,47 +598,31 @@ char *CMod_looterApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_looterApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "mode/cont1";
-	case 1:
-		return "mode/cont2";
-	case 2:
-		return "mode/cont3";
-	case 3:
-		return "mode/cont4";
-	case 4:
-		return "mode/cont5";
-	case 5:
-		return "mode/cont6";
-	case 6:
-		return "mode/cont7";
-	case 7:
-		return "mode/cont8";
-	case 8:
-		return "mode/cont9";
-	case 9:
-		return "mode/cont10";
-	case 10:
-		return "loot/worms";
-	case 11:
-		return "loot/gp";
-	case 12:
-		return "loot/food";
-	case 13:
-		return "loot/custom";
-	case 14:
-		return "other/autoOpen";
-	case 15:
-		return "loot/inDepot";
-	case 16:
-		return "loot/eatFromCorpse";
-	default:
-		return NULL;
-	}
+	"mode/cont1",
+	"mode/cont2",
+	"mode/cont3",
+	"mode/cont4",
+	"mode/cont5",
+	"mode/cont6",
+	"mode/cont7",
+	"mode/cont8",
+	"mode/cont9",
+	"mode/cont10",
+	"loot/worms",
+	"loot/gp",
+	"loot/food",
+	"loot/custom",
+	"other/autoOpen",
+	"loot/inDepot",
+	"loot/eatFromCorpse",
+	NULL,
+};
+
+const char **CMod_looterApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_looterApp::getNewSkin(CSkin newSkin)

@@ -38,18 +38,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-
-/////////////////////////////////////////////////////////////////////////////
-// CMod_restackApp
-
-BEGIN_MESSAGE_MAP(CMod_restackApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_restackApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -62,9 +50,10 @@ void pickupItemFromFloor(int itemId, int x, int y, int z, int contNr, int slotNr
 {
 	CMemReader& reader = CMemReader::getMemReader();
 
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 	CPackSender::moveObjectFromFloorToContainer(itemId, x, y, z, contNr, slotNr, qty);
-	while (!CModuleUtil::waitForCapsChange(self->cap) && qty > 0)
+	while (!CModuleUtil::waitForCapsChange(self.cap) && qty > 0)
 	{
 		Sleep(CModuleUtil::randomFormula(100, 50));// +1.5 sec wait for caps change
 		qty = max(qty / 2, 1);
@@ -99,7 +88,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			continue;                   // do not proceed if not connected
 		int beginningS = GetTickCount();
 
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 		CTibiaItem *item;
 		CUIntArray itemsAccepted;
 
@@ -195,7 +185,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		delete item;
 
 		// pickup throwable (spears, small stones)
-		if ((config->pickupSpears || config->pickupToHand) && !periodRemaining && self->cap > config->capLimit)
+		if ((config->pickupSpears || config->pickupToHand) && !periodRemaining && self.cap > config->capLimit)
 		{
 			int offsetX = -2;
 			int offsetY = -2;
@@ -232,7 +222,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						openContNr++;
 						if (cont->itemsInside < cont->size)
 						{
-							pickupItemFromFloor(throwableItemId, self->x + offsetX, self->y + offsetY, self->z, 0x40 + contNr, cont->size - 1, reader.itemOnTopQty(offsetX, offsetY));
+							pickupItemFromFloor(throwableItemId, self.x + offsetX, self.y + offsetY, self.z, 0x40 + contNr, cont->size - 1, reader.itemOnTopQty(offsetX, offsetY));
 							// reset offsetXY to avoid pickup up same item to hand
 							offsetX = offsetY = -2;
 
@@ -254,7 +244,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (itemLeftHand->objectId == 0 || itemHandTile->stackable && itemLeftHand->quantity < 100)
 					{
 						// move to left hand
-						pickupItemFromFloor(throwableItemId, self->x + offsetX, self->y + offsetY, self->z, 0x6, 0, reader.itemOnTopQty(offsetX, offsetY));
+						pickupItemFromFloor(throwableItemId, self.x + offsetX, self.y + offsetY, self.z, 0x6, 0, reader.itemOnTopQty(offsetX, offsetY));
 						offsetX = offsetY = -2;
 					}
 				}
@@ -264,7 +254,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (itemRightHand->objectId == 0 || itemHandTile->stackable && itemLeftHand->quantity < 100)
 					{
 						// move to right hand
-						pickupItemFromFloor(throwableItemId, self->x + offsetX, self->y + offsetY, self->z, 0x5, 0, reader.itemOnTopQty(offsetX, offsetY));
+						pickupItemFromFloor(throwableItemId, self.x + offsetX, self.y + offsetY, self.z, 0x5, 0, reader.itemOnTopQty(offsetX, offsetY));
 						offsetX = offsetY = -2;
 					}
 				}
@@ -303,7 +293,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				int qty      = reader.itemOnTopQty(offsetX, offsetY);
 				if (offsetX || offsetY)
 				{
-					CPackSender::moveObjectFromFloorToFloor(objectId, self->x + offsetX, self->y + offsetY, self->z, self->x, self->y, self->z, qty ? qty : 1);
+					CPackSender::moveObjectFromFloorToFloor(objectId, self.x + offsetX, self.y + offsetY, self.z, self.x, self.y, self.z, qty ? qty : 1);
 				}
 				else
 				{
@@ -326,12 +316,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (config->pickupBR)
 						moveToX = 1, moveToY = 1;
 					if (moveToX != -2 || moveToY != -2)
-						CPackSender::moveObjectFromFloorToFloor(objectId, self->x, self->y, self->z, self->x + moveToX, self->y + moveToY, self->z, qty ? qty : 1);
+						CPackSender::moveObjectFromFloorToFloor(objectId, self.x, self.y, self.z, self.x + moveToX, self.y + moveToY, self.z, qty ? qty : 1);
 				}
 				Sleep(CModuleUtil::randomFormula(400, 200));
 			}
 		}
-		delete self;
 	}
 	toolThreadShouldStop = 0;
 	return 0;
@@ -513,7 +502,7 @@ void CMod_restackApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_restackApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_restackApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "ammo/type"))
 		m_configData->ammoType = atoi(paramValue);
@@ -561,7 +550,7 @@ void CMod_restackApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->capLimit = atoi(paramValue);
 }
 
-char *CMod_restackApp::saveConfigParam(char *paramName)
+char *CMod_restackApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -613,57 +602,36 @@ char *CMod_restackApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_restackApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "ammo/type";
-	case 1:
-		return "ammo/at";
-	case 2:
-		return "ammo/to";
-	case 3:
-		return "throwable/type";
-	case 4:
-		return "throwable/at";
-	case 5:
-		return "throwable/to";
-	case 6:
-		return "pickup/spears";
-	case 7:
-		return "pickup/place/UL";
-	case 8:
-		return "pickup/place/UC";
-	case 9:
-		return "pickup/place/UR";
-	case 10:
-		return "pickup/place/CL";
-	case 11:
-		return "pickup/place/CR";
-	case 12:
-		return "pickup/place/BL";
-	case 13:
-		return "pickup/place/BC";
-	case 14:
-		return "pickup/place/BR";
-	case 15:
-		return "throwable/moveCovering";
-	case 16:
-		return "ammo/restackToRight";
-	case 17:
-		return "pickup/toHand";
-	case 18:
-		return "pickup/place/CC";
-	case 19:
-		return "pickup/periodFrom";
-	case 20:
-		return "pickup/periodTo";
-	case 21:
-		return "pickup/capLimit";
-	default:
-		return NULL;
-	}
+	"ammo/type",
+	"ammo/at",
+	"ammo/to",
+	"throwable/type",
+	"throwable/at",
+	"throwable/to",
+	"pickup/spears",
+	"pickup/place/UL",
+	"pickup/place/UC",
+	"pickup/place/UR",
+	"pickup/place/CL",
+	"pickup/place/CR",
+	"pickup/place/BL",
+	"pickup/place/BC",
+	"pickup/place/BR",
+	"throwable/moveCovering",
+	"ammo/restackToRight",
+	"pickup/toHand",
+	"pickup/place/CC",
+	"pickup/periodFrom",
+	"pickup/periodTo",
+	"pickup/capLimit",
+	NULL,
+};
+
+const char **CMod_restackApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_restackApp::getNewSkin(CSkin newSkin)

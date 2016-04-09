@@ -61,18 +61,6 @@ static char THIS_FILE[] = __FILE__;
 //
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_itemconfigApp
-
-BEGIN_MESSAGE_MAP(CMod_itemconfigApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_itemconfigApp)
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// Tool functions
-
-
-/////////////////////////////////////////////////////////////////////////////
 // CMod_itemconfigApp construction
 
 CMod_itemconfigApp::CMod_itemconfigApp()
@@ -145,7 +133,7 @@ void CMod_itemconfigApp::controlsToConfig()
 		m_infoDialog->ControlsToConfig();
 }
 
-void CMod_itemconfigApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_itemconfigApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	
 	if (!strcmp(paramName, "lootedItems"))
@@ -157,7 +145,7 @@ void CMod_itemconfigApp::loadConfigParam(char *paramName, char *paramValue)
 	}
 }
 
-char *CMod_itemconfigApp::saveConfigParam(char *paramName)
+char *CMod_itemconfigApp::saveConfigParam(const char *paramName)
 {
 	
 	static char buf[1024];
@@ -168,28 +156,25 @@ char *CMod_itemconfigApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_itemconfigApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	//Removed since config can be changed even when not opened
-	//if (!m_infoDialog) return NULL;//special case where user has not opened the itemConfig
+	"lootedItems",
+	NULL,
+};
 
-	switch (nr)
-	{
-	case 0:
-		return "lootedItems";
-	default:
-		return NULL;
-	}
+const char **CMod_itemconfigApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
-int CMod_itemconfigApp::isMultiParam(char *paramName)
+int CMod_itemconfigApp::isMultiParam(const char *paramName)
 {
 	if (!strcmp(paramName, "lootedItems"))
 		return 1;
 	return 0;
 }
 
-void CMod_itemconfigApp::resetMultiParamAccess(char *paramName)
+void CMod_itemconfigApp::resetMultiParamAccess(const char *paramName)
 {
 	if (!strcmp(paramName, "lootedItems"))
 		currentPos = 0;

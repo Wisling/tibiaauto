@@ -21,23 +21,11 @@
 // See mod_grouping.cpp for the implementation of this class
 //
 
-class CMod_groupingApp : public CWinApp, public IModuleInterface
+class CMod_groupingApp : public IModuleInterface
 {
 public:
 	CMod_groupingApp();
 	~CMod_groupingApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_groupingApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_groupingApp)
-	// NOTE - the ClassWizard will add and remove member functions here.
-	//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	// functions from IModuleInterface
 	char * getName();

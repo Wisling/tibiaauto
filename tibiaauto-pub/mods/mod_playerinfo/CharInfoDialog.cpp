@@ -108,7 +108,8 @@ END_MESSAGE_MAP()
 void CCharInfoDialog::resetCounters()
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *ch = reader.readSelfCharacter();
+	CTibiaCharacter ch;
+	 reader.readSelfCharacter(&ch);
 
 	playerInfo.timeStart = time(NULL);
 
@@ -124,31 +125,29 @@ void CCharInfoDialog::resetCounters()
 		expForLvlDiff = ((2 + lvl) * (3 + lvl) / 2 - 4 * (lvl + 1) + 3) * 100;
 		expForLvl    += expForLvlDiff;
 
-		if (expForLvl > ch->exp)
+		if (expForLvl > ch.exp)
 		{
-			expLeft    = expForLvl - ch->exp;
+			expLeft    = expForLvl - ch.exp;
 			percForLvl = MulDiv(expLeft, 100, expForLvlDiff);
 			break;
 		}
 	}
 
-	playerInfo.expStart                      = ch->exp;
-	playerInfo.skill[SKILL_LEVEL].start      = ch->lvl * 100 + (100 - percForLvl);
-	playerInfo.skill[SKILL_MAGICLEVEL].start = ch->mlvl * 100 + (100 - ch->mlvlPercLeft);
-	playerInfo.skill[SKILL_FIST].start       = ch->skillFist * 100 + (100 - ch->skillFistPercLeft);
-	playerInfo.skill[SKILL_CLUB].start       = ch->skillClub * 100 + (100 - ch->skillClubPercLeft);
-	playerInfo.skill[SKILL_SWORD].start      = ch->skillSword * 100 + (100 - ch->skillSwordPercLeft);
-	playerInfo.skill[SKILL_AXE].start        = ch->skillAxe * 100 + (100 - ch->skillAxePercLeft);
-	playerInfo.skill[SKILL_DIST].start       = ch->skillDist * 100 + (100 - ch->skillDistPercLeft);
-	playerInfo.skill[SKILL_SHIELD].start     = ch->skillShield * 100 + (100 - ch->skillShieldPercLeft);
-	playerInfo.skill[SKILL_FISH].start       = ch->skillFish * 100 + (100 - ch->skillFishPercLeft);
+	playerInfo.expStart                      = ch.exp;
+	playerInfo.skill[SKILL_LEVEL].start      = ch.lvl * 100 + (100 - percForLvl);
+	playerInfo.skill[SKILL_MAGICLEVEL].start = ch.mlvl * 100 + (100 - ch.mlvlPercLeft);
+	playerInfo.skill[SKILL_FIST].start       = ch.skillFist * 100 + (100 - ch.skillFistPercLeft);
+	playerInfo.skill[SKILL_CLUB].start       = ch.skillClub * 100 + (100 - ch.skillClubPercLeft);
+	playerInfo.skill[SKILL_SWORD].start      = ch.skillSword * 100 + (100 - ch.skillSwordPercLeft);
+	playerInfo.skill[SKILL_AXE].start        = ch.skillAxe * 100 + (100 - ch.skillAxePercLeft);
+	playerInfo.skill[SKILL_DIST].start       = ch.skillDist * 100 + (100 - ch.skillDistPercLeft);
+	playerInfo.skill[SKILL_SHIELD].start     = ch.skillShield * 100 + (100 - ch.skillShieldPercLeft);
+	playerInfo.skill[SKILL_FISH].start       = ch.skillFish * 100 + (100 - ch.skillFishPercLeft);
 
 	playerInfo.spell[SPELL_INVISIBLE].lasts   = 200;
 	playerInfo.spell[SPELL_HASTE].lasts       = 30;
 	playerInfo.spell[SPELL_STRONGHASTE].lasts = 20;
 	playerInfo.spell[SPELL_SHIELD].lasts      = 200;
-
-	delete ch;
 }
 
 void CCharInfoDialog::DoSetButtonSkin()
@@ -197,7 +196,8 @@ void CCharInfoDialog::OnResetCounters()
 void CCharInfoDialog::dataCalc()
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *ch = reader.readSelfCharacter();
+	CTibiaCharacter ch;
+	reader.readSelfCharacter(&ch);
 
 	//T4: Exp calculation
 	long lvl;
@@ -212,9 +212,9 @@ void CCharInfoDialog::dataCalc()
 		expForLvlDiff = ((2 + lvl) * (3 + lvl) / 2 - 4 * (lvl + 1) + 3) * 100;
 		expForLvl    += expForLvlDiff;
 
-		if (expForLvl > ch->exp)
+		if (expForLvl > ch.exp)
 		{
-			expLeft    = expForLvl - ch->exp;
+			expLeft    = expForLvl - ch.exp;
 			percForLvl = MulDiv(expLeft, 100, expForLvlDiff);
 			break;
 		}
@@ -223,32 +223,32 @@ void CCharInfoDialog::dataCalc()
 	playerInfo.timeCurrent = time(NULL);
 	time_t timeDiff = playerInfo.timeCurrent - playerInfo.timeStart;
 
-	playerInfo.hp         = ch->hp;
-	playerInfo.maxHp      = ch->maxHp;
-	playerInfo.mana       = ch->mana;
-	playerInfo.maxMana    = ch->maxMana;
-	playerInfo.soulPoints = ch->soulPoints;
-	playerInfo.stamina    = ch->stamina;
-	playerInfo.capacity   = ch->cap;
-	strncpy(playerInfo.voc, ch->voc, 3);
+	playerInfo.hp         = ch.hp;
+	playerInfo.maxHp      = ch.maxHp;
+	playerInfo.mana       = ch.mana;
+	playerInfo.maxMana    = ch.maxMana;
+	playerInfo.soulPoints = ch.soulPoints;
+	playerInfo.stamina    = ch.stamina;
+	playerInfo.capacity   = ch.cap;
+	strncpy(playerInfo.voc, ch.voc, 3);
 
-	if (!strcmp(ch->voc, "k") || !strcmp(ch->voc, "ek")) //Knight
-		playerInfo.maxCapacity = 270 + ch->lvl * 25;
-	else if (!strcmp(ch->voc, "p") || !strcmp(ch->voc, "rp")) //Pall
-		playerInfo.maxCapacity = 310 + ch->lvl * 20;
+	if (!strcmp(ch.voc, "k") || !strcmp(ch.voc, "ek")) //Knight
+		playerInfo.maxCapacity = 270 + ch.lvl * 25;
+	else if (!strcmp(ch.voc, "p") || !strcmp(ch.voc, "rp")) //Pall
+		playerInfo.maxCapacity = 310 + ch.lvl * 20;
 	else   //Rest
-		playerInfo.maxCapacity = 390 + ch->lvl * 10;
+		playerInfo.maxCapacity = 390 + ch.lvl * 10;
 
 	//Exp stats
-	playerInfo.expCurrent = ch->exp;
+	playerInfo.expCurrent = ch.exp;
 	playerInfo.expLvl     = expForLvlDiff;
 	playerInfo.expLeft    = expLeft;
 	if (timeDiff)
 		playerInfo.expPerHour = MulDiv(playerInfo.expCurrent - playerInfo.expStart, 3600, (int)timeDiff);
 
 	//Skills
-	unsigned long skillLvl[9]      = {ch->lvl, ch->mlvl, ch->skillFist, ch->skillClub, ch->skillSword, ch->skillAxe, ch->skillDist, ch->skillShield, ch->skillFish};
-	unsigned long skillPercLeft[9] = {percForLvl, ch->mlvlPercLeft, ch->skillFistPercLeft, ch->skillClubPercLeft, ch->skillSwordPercLeft, ch->skillAxePercLeft, ch->skillDistPercLeft, ch->skillShieldPercLeft, ch->skillFishPercLeft};
+	unsigned long skillLvl[9]      = {ch.lvl, ch.mlvl, ch.skillFist, ch.skillClub, ch.skillSword, ch.skillAxe, ch.skillDist, ch.skillShield, ch.skillFish};
+	unsigned long skillPercLeft[9] = {percForLvl, ch.mlvlPercLeft, ch.skillFistPercLeft, ch.skillClubPercLeft, ch.skillSwordPercLeft, ch.skillAxePercLeft, ch.skillDistPercLeft, ch.skillShieldPercLeft, ch.skillFishPercLeft};
 
 	//Lvl
 	playerInfo.skill[SKILL_LEVEL].lvl      = skillLvl[SKILL_LEVEL];
@@ -297,9 +297,9 @@ void CCharInfoDialog::dataCalc()
 		memcpy(msgBuf, mess.payload + 16 + nickLen, msgLen);
 
 
-		if ((infoType == 1) && (strcmp(nickBuf, ch->name) == 0) && (strcmp(nickBuf, "Tibia Auto") != 0))
+		if ((infoType == 1) && (strcmp(nickBuf, ch.name) == 0) && (strcmp(nickBuf, "Tibia Auto") != 0))
 		{
-//			sprintf(buf,"nick: '%s', msg: '%s', name: '%s', type: '%d'", nickBuf, msgBuf, ch->name, infoType);
+//			sprintf(buf,"nick: '%s', msg: '%s', name: '%s', type: '%d'", nickBuf, msgBuf, ch.name, infoType);
 //			CPackSender::sendTAMessage(buf);
 
 			if ((_strcmpi(msgBuf, "utana vid ") == 0) || (strcmp(msgBuf, "test invis") == 0))  //invisible
@@ -343,7 +343,6 @@ void CCharInfoDialog::dataCalc()
 				playerInfo.spell[i].warning |= 0x02;
 		}
 	}
-	delete ch;
 }
 
 void CCharInfoDialog::dataShow()

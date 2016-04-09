@@ -42,5 +42,5 @@ CTibiaMapTileItemAddress::CTibiaMapTileItemAddress(int initAddr = 0)
 	val2     = initAddr + 16;
 	val3     = initAddr + 20;
 	val4     = initAddr + 24;
-	val5     = initAddr + 28;
+	frameGroupPtr     = initAddr + 28;
 }

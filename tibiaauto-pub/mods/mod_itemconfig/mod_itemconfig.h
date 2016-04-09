@@ -27,21 +27,11 @@ struct CGUITreeItemData {
 	}
 };
 
-class CMod_itemconfigApp : public CWinApp, public IModuleInterface
+class CMod_itemconfigApp : public IModuleInterface
 {
 public:
 	CMod_itemconfigApp();
 	~CMod_itemconfigApp();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMod_itemconfigApp)
-	//}}AFX_VIRTUAL
-
-	//{{AFX_MSG(CMod_itemconfigApp)
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-
 public:
 	void getNewSkin(CSkin);
 	// functions from IModuleInterface
@@ -51,11 +41,11 @@ public:
 	void enableControls();
 	void configToControls();
 	void controlsToConfig();
-	void loadConfigParam(char *paramName, char *paramValue);
-	char *saveConfigParam(char *paramName);
-	char *getConfigParamName(int nr);
-	int isMultiParam(char *paramName);
-	void resetMultiParamAccess(char *paramName);
+	void loadConfigParam(const char *paramName, char *paramValue);
+	char *saveConfigParam(const char *paramName);
+	const char **getConfigParamNames();
+	int isMultiParam(const char *paramName);
+	void resetMultiParamAccess(const char *paramName);
 	char *getVersion();
 private:
 	CConfigData *m_configData;

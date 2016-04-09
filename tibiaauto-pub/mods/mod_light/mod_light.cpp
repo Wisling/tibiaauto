@@ -35,17 +35,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-
-/////////////////////////////////////////////////////////////////////////////
-// Cmod_lightApp
-
-BEGIN_MESSAGE_MAP(Cmod_lightApp, CWinApp)
-//{{AFX_MSG_MAP(Cmod_lightApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -209,7 +198,7 @@ void Cmod_lightApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void Cmod_lightApp::loadConfigParam(char *paramName, char *paramValue)
+void Cmod_lightApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "lightPower"))
 		m_configData->lightPower = atoi(paramValue);
@@ -217,7 +206,7 @@ void Cmod_lightApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->lightColor = atoi(paramValue);
 }
 
-char *Cmod_lightApp::saveConfigParam(char *paramName)
+char *Cmod_lightApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -230,17 +219,16 @@ char *Cmod_lightApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *Cmod_lightApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "lightPower";
-	case 1:
-		return "lightColor";
-	default:
-		return NULL;
-	}
+	"lightPower",
+	"lightColor",
+	NULL,
+};
+
+const char **Cmod_lightApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void Cmod_lightApp::getNewSkin(CSkin newSkin)

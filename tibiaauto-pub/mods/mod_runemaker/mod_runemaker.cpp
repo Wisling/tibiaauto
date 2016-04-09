@@ -44,17 +44,6 @@ static char THIS_FILE[] = __FILE__;
 #define MAKE 1
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_runemakerApp
-
-BEGIN_MESSAGE_MAP(CMod_runemakerApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_runemakerApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-// DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-
-/////////////////////////////////////////////////////////////////////////////
 const int numCont = 16;//"maxContainers"
 int openContTime[numCont];
 const int minSecondsOpen = 20;
@@ -65,11 +54,11 @@ int RandomVariableMana(int &pt, int command, CConfigData *config)
 {
 	CMemReader& reader = CMemReader::getMemReader();
 
-	CTibiaCharacter* self = reader.readSelfCharacter();
-	int val               = pt < 0 ? max(self->maxMana + pt, self->maxMana / 10) : pt;
+	CTibiaCharacter self;
+	 reader.readSelfCharacter(& self);
+	int val               = pt < 0 ? max(self.maxMana + pt, self.maxMana / 10) : pt;
 	if (!config->randomCast)
 	{
-		delete self;
 		return val;
 	}
 	if (!setMana[&pt])
@@ -78,12 +67,11 @@ int RandomVariableMana(int &pt, int command, CConfigData *config)
 	{
 	
 		// within 10% of number with a cutoff at maxMana
-		setMana[&pt] = CModuleUtil::randomFormula(val, (int)(val * 0.1), val, max(self->maxMana, val + 1));
+		setMana[&pt] = CModuleUtil::randomFormula(val, (int)(val * 0.1), val, max(self.maxMana, val + 1));
 		char buf[111];
 		sprintf(buf, "%d", setMana[&pt]);
 		CPackSender::sendTAMessage(buf);
 	}
-	delete self;
 	return setMana[&pt];
 }
 
@@ -106,7 +94,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		Sleep(900);
 		if (!reader.isLoggedIn())
 			continue;                   // do not proceed if not connected
-		CTibiaCharacter *myself = reader.readSelfCharacter();
+		CTibiaCharacter myself;
+		 reader.readSelfCharacter(&myself);
 
 		int blanksCount = 0;
 		int openContNr  = 0;
@@ -124,23 +113,22 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			};
 			delete container;
 		}
-		if (myself->soulPoints >= config->soulPoints)
+		if (myself.soulPoints >= config->soulPoints)
 		{
 			for (; blanksCount > 0; blanksCount--)
 			{
 				int manaLimit = RandomVariableMana(config->makeNow ? config->mana : (config->manaLimit > config->mana) ? config->manaLimit : config->mana, GET, config);
-				if (myself->mana >= manaLimit)
+				if (myself.mana >= manaLimit)
 				{
 					RandomVariableMana(config->makeNow ? config->mana : (config->manaLimit > config->mana) ? config->manaLimit : config->mana, MAKE, config);
 					// cast spell
 					CPackSender::say((LPCTSTR)config->spell);
-					CModuleUtil::waitForManaDecrease(myself->mana);
+					CModuleUtil::waitForManaDecrease(myself.mana);
 					if (!config->maxUse)
 						break; //even if we have the mana and blank runes/spears do not continue casting
 				}
 			}
 		}
-		delete myself;
 	}
 	setMana.clear();
 	toolThreadShouldStop = 0;
@@ -293,7 +281,7 @@ void CMod_runemakerApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_runemakerApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_runemakerApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "spell"))
 		strcpy(m_configData->spell, paramValue);
@@ -330,7 +318,7 @@ void CMod_runemakerApp::loadConfigParam(char *paramName, char *paramValue)
 	}
 }
 
-char *CMod_runemakerApp::saveConfigParam(char *paramName)
+char *CMod_runemakerApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -361,41 +349,33 @@ char *CMod_runemakerApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_runemakerApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "spell";
-	case 1:
-		return "mana";
-	case 2:
-		return "manaLimit";
-	case 3:
-		return "soulPoints";
-	case 4:
-		return "premium";
-	case 5:
-		return "maxUse";
-	case 6:
-		return "spells/spell";
-	case 7:
-		return "randomCast";
-	case 8:
-		return "useSpear";
-	default:
-		return NULL;
-	}
+	"spell",
+	"mana",
+	"manaLimit",
+	"soulPoints",
+	"premium",
+	"maxUse",
+	"spells/spell",
+	"randomCast",
+	"useSpear",
+	NULL,
+};
+
+const char **CMod_runemakerApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
-int CMod_runemakerApp::isMultiParam(char *paramName)
+int CMod_runemakerApp::isMultiParam(const char *paramName)
 {
 	if (!strcmp(paramName, "spells/spell"))
 		return 1;
 	return 0;
 }
 
-void CMod_runemakerApp::resetMultiParamAccess(char *paramName)
+void CMod_runemakerApp::resetMultiParamAccess(const char *paramName)
 {
 	if (!strcmp(paramName, "spells/spell"))
 		m_currentSpellNr = 0;

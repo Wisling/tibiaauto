@@ -104,16 +104,6 @@ int Monster_GetHp(char *name);
 int Monster_GetExp(char *name);
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_creatureinfoApp
-
-BEGIN_MESSAGE_MAP(CMod_creatureinfoApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_creatureinfoApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
 int playersCount;       //T4: First is reserved for self
@@ -352,8 +342,9 @@ void Expression_Tags_All(char* tagName, char* svalue, creature *data, CTibiaChar
 	else if (!_strcmpi(tagName, "relz"))
 	{
 		CMemReader& reader = CMemReader::getMemReader();
-		CTibiaCharacter *self = reader.readSelfCharacter();
-		int relz              = self->z - ch->z;
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
+		int relz = self.z - ch->z;
 		if (relz != 0)
 		{
 			if (relz > 0)
@@ -365,7 +356,6 @@ void Expression_Tags_All(char* tagName, char* svalue, creature *data, CTibiaChar
 		{
 			lstrcpy(svalue, "");
 		}
-		delete self;
 	}
 }
 
@@ -793,14 +783,15 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	{
 		CCreaturesReader cReader;
 		CMemReader& reader = CMemReader::getMemReader();
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
 		char crStatCreature[128];
 		int crStatMaxValue = 0;
 		sprintf(crStatCreature, "<none>");
 
 
-		char **crList = cReader.findCreatureStatInArea(self->x, self->y, self->z, config->rangeXY, config->rangeZ);
+		char **crList = cReader.findCreatureStatInArea(self.x, self.y, self.z, config->rangeXY, config->rangeZ);
 
 		int pos;
 		for (pos = 0; crList[pos]; pos++)
@@ -821,13 +812,13 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 		lstrcpy(svalue, crStatCreature);
 
 
-		delete self;
 	}
 	else if (!_strcmpi(tagName, "crstatMostExp"))
 	{
 		CCreaturesReader cReader;
 		CMemReader& reader = CMemReader::getMemReader();
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
 		//int x,y;
 		char crStatCreature[128];
@@ -835,7 +826,7 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 		sprintf(crStatCreature, "<none>");
 
 
-		char **crList = cReader.findCreatureStatInArea(self->x, self->y, self->z, config->rangeXY, config->rangeZ);
+		char **crList = cReader.findCreatureStatInArea(self.x, self.y, self.z, config->rangeXY, config->rangeZ);
 
 		int pos;
 		for (pos = 0; crList[pos]; pos++)
@@ -849,14 +840,8 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 
 			free(crList[pos]);
 		}
-
-
 		free(crList);
-
 		lstrcpy(svalue, crStatCreature);
-
-
-		delete self;
 	}
 }
 
@@ -1296,20 +1281,17 @@ void ReadPipeInfo()
 								lstrcpyn(resGuildDescription, msgBuf + pmatch[7].rm_so, min(127, pmatch[7].rm_eo - pmatch[7].rm_so + 1));
 						}
 
-						CTibiaCharacter *self     = reader.readSelfCharacter();
-						CTibiaCharacter *selfName = reader.readVisibleCreature(reader.getLoggedCharNr());
+						CTibiaCharacter self;
+						reader.readSelfCharacter(&self);
 
-						lstrcpyn(playersInfo[0].name, selfName->name, 32);
+						lstrcpyn(playersInfo[0].name, self.name, 32);
 						playersInfo[0].type  = TYPE_SELF;
-						playersInfo[0].maxHp = self->maxHp;
+						playersInfo[0].maxHp = self.maxHp;
 						playersInfo[0].vocId = Player_Vocation2VocID(resVoc);
-						playersInfo[0].level = self->lvl;
+						playersInfo[0].level = self.lvl;
 						lstrcpyn(playersInfo[0].guildName, resGuildName, 31);
 						lstrcpyn(playersInfo[0].guildRank, resGuildRank, 31);
 						lstrcpyn(playersInfo[0].guildDescription, resGuildDescription, 31);
-
-						delete self;
-						delete selfName;
 					}
 					else
 					{
@@ -1418,7 +1400,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		//T4: Parse info messages
 		ReadPipeInfo();
 
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
 		time_t curTime = time(NULL);
 
@@ -1426,22 +1409,20 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		for (chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 		{
 			//T4: Check all chars in BattleList
-			CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
-			if (ch->tibiaId == 0)
+			CTibiaCharacter ch;
+			reader.readVisibleCreature(&ch, chNr);
+			if (ch.tibiaId == 0)
 			{
-				delete ch;
 				break;
 			}
 			if (config->collectStats)
 			{
 				// collect statistics, but for monsters only
-
-
-				if (ch->visible && ch->tibiaId > 0x40000000)
+				if (ch.visible && ch.tibiaId > 0x40000000)
 				{
 					// see if we ever before have seen this creature
 					// if not we refresh data about it every 30 seconds
-					creatureData crData = crMap[creatureKey(ch->tibiaId)];
+					creatureData crData = crMap[creatureKey(ch.tibiaId)];
 					if (!crData.tibiaId || (crData.tibiaId && curTime - crData.tm > 30))
 					{
 						char installPath[1024];
@@ -1453,7 +1434,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						{
 							char statChName[128];
 							int i, len;
-							for (i = 0, strcpy(statChName, ch->name), len = strlen(statChName); i < len; i++)
+							for (i = 0, strcpy(statChName, ch.name), len = strlen(statChName); i < len; i++)
 							{
 								if (statChName[i] == '[')
 									statChName[i] = '\0';
@@ -1461,19 +1442,19 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 							time_t tm    = time(NULL);
 							int r        = rand();
-							int checksum = (int)(r * 15 + tm + ch->tibiaId * 3 + ch->x * 5 + ch->y * 7 + ch->z * 11 + strlen(statChName) * 13 + ch->walkSpeed * 17);
-							//int checksum=r*15+tm+ch->tibiaId*3+ch->x*5+ch->y*7+ch->z*11+strlen(statChName)*13;
-							fprintf(f, "%d,%d,%d,%d,%d,", tm, ch->tibiaId, ch->x, ch->y, ch->z);
-							fprintf(f, "'%s',%d,%d,%d\n", statChName, ch->walkSpeed, r, checksum);
+							int checksum = (int)(r * 15 + tm + ch.tibiaId * 3 + ch.x * 5 + ch.y * 7 + ch.z * 11 + strlen(statChName) * 13 + ch.walkSpeed * 17);
+							//int checksum=r*15+tm+ch.tibiaId*3+ch.x*5+ch.y*7+ch.z*11+strlen(statChName)*13;
+							fprintf(f, "%d,%d,%d,%d,%d,", tm, ch.tibiaId, ch.x, ch.y, ch.z);
+							fprintf(f, "'%s',%d,%d,%d\n", statChName, ch.walkSpeed, r, checksum);
 							fclose(f);
 						}
-						crMap[creatureKey(ch->tibiaId)].tibiaId = ch->tibiaId;
-						crMap[creatureKey(ch->tibiaId)].tm      = time(NULL);
+						crMap[creatureKey(ch.tibiaId)].tibiaId = ch.tibiaId;
+						crMap[creatureKey(ch.tibiaId)].tm      = time(NULL);
 					}
 				}
 			}
 
-			if (ch->visible && abs(self->x - ch->x) <= 7 && abs(self->y - ch->y) <= 5 && (config->allFloorInfo ? 1 : ch->z == self->z))
+			if (ch.visible && abs(self.x - ch.x) <= 7 && abs(self.y - ch.y) <= 5 && (config->allFloorInfo ? 1 : ch.z == self.z))
 			{
 				char line1[MAX_LINE_LEN];
 				char line2[MAX_LINE_LEN];
@@ -1482,20 +1463,20 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 				int found = 0;
 				//T4: Apply custom text only to creatures on same z
-				if (ch->tibiaId == self->tibiaId)
+				if (ch.tibiaId == self.tibiaId)
 				{
 					//T4: Self
-					if (!_strcmpi(playersInfo[0].name, ch->name))
+					if (!_strcmpi(playersInfo[0].name, ch.name))
 						//T4: Sending info msg is needed to know guild info
 						found = 1;
 					else
 						playersInfo[0].type = TYPE_SELF;
 					if (config->self)
 					{
-						Expression_GatherData(&selfLine1, (creature*)&playersInfo[0], self, config);
-						Expression_GatherData(&selfLine2, (creature*)&playersInfo[0], self, config);
-						Expression_GatherData(&selfLineWindow, (creature*)&playersInfo[0], self, config);
-						Expression_GatherData(&selfLineTray, (creature*)&playersInfo[0], self, config);
+						Expression_GatherData(&selfLine1, (creature*)&playersInfo[0], &self, config);
+						Expression_GatherData(&selfLine2, (creature*)&playersInfo[0], &self, config);
+						Expression_GatherData(&selfLineWindow, (creature*)&playersInfo[0], &self, config);
+						Expression_GatherData(&selfLineTray, (creature*)&playersInfo[0], &self, config);
 
 						Expression_Exec(&selfLine1, line1);
 						Expression_Exec(&selfLine2, line2);
@@ -1503,7 +1484,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						Expression_Exec(&selfLineTray, lineTray);
 
 
-						CPackSender::sendCreatureInfo(ch->name, line1, line2);
+						CPackSender::sendCreatureInfo(ch.name, line1, line2);
 						reader.setMainWindowText(lineWindow);
 						reader.setMainTrayText(lineTray);
 					}
@@ -1517,14 +1498,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					//T4: We found a visible monster or player
 					int i;
 
-					if (ch->tibiaId < 0x40000000)
+					if (ch.tibiaId < 0x40000000)
 					{
 						if (config->player)
 						{
 							//T4: This is a player
 							for (i = 1; i < playersCount; i++)
 							{
-								if (!_strcmpi(playersInfo[i].name, ch->name))
+								if (!_strcmpi(playersInfo[i].name, ch.name))
 								{
 									//T4: Player found in Known list
 									found = 1;
@@ -1533,13 +1514,13 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							}
 							if (found)
 							{
-								Expression_GatherData(&playerLine1, (creature*)&playersInfo[i], ch, config);
-								Expression_GatherData(&playerLine2, (creature*)&playersInfo[i], ch, config);
+								Expression_GatherData(&playerLine1, (creature*)&playersInfo[i], &ch, config);
+								Expression_GatherData(&playerLine2, (creature*)&playersInfo[i], &ch, config);
 							}
 							else
 							{
-								Expression_GatherData(&playerLine1, NULL, ch, config);
-								Expression_GatherData(&playerLine2, NULL, ch, config);
+								Expression_GatherData(&playerLine1, NULL, &ch, config);
+								Expression_GatherData(&playerLine2, NULL, &ch, config);
 							}
 
 							//strcpy(line1,config->player1);
@@ -1547,7 +1528,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							Expression_Exec(&playerLine1, line1);
 							Expression_Exec(&playerLine2, line2);
 
-							CPackSender::sendCreatureInfo(ch->name, line1, line2);
+							CPackSender::sendCreatureInfo(ch.name, line1, line2);
 						}
 						else
 						{
@@ -1561,7 +1542,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							//T4: This is a monster/npc
 							char name[40];
 							//T4: Extract name from BattleList string;
-							Monster_GetName(ch->name, name);
+							Monster_GetName(ch.name, name);
 							for (i = 0; i < monstersCount; i++)
 							{
 								if (!_strcmpi(monstersInfo[i].name, name))
@@ -1570,8 +1551,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									if (config->uniqueMonsterNames)
 									{
 										//T4: We have to add number to name because we need unique names
-										Monster_SetNameNumber(name, ch->nr, name);
-										reader.writeVisibleCreatureName(ch->nr, name);
+										Monster_SetNameNumber(name, ch.nr, name);
+										reader.writeVisibleCreatureName(ch.nr, name);
 									}
 
 									found = 1;
@@ -1580,13 +1561,13 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							}
 							if (found)
 							{
-								Expression_GatherData(&monsterLine1, (creature*)&monstersInfo[i], ch, config);
-								Expression_GatherData(&monsterLine2, (creature*)&monstersInfo[i], ch, config);
+								Expression_GatherData(&monsterLine1, (creature*)&monstersInfo[i], &ch, config);
+								Expression_GatherData(&monsterLine2, (creature*)&monstersInfo[i], &ch, config);
 							}
 							else
 							{
-								Expression_GatherData(&monsterLine1, NULL, ch, config);
-								Expression_GatherData(&monsterLine2, NULL, ch, config);
+								Expression_GatherData(&monsterLine1, NULL, &ch, config);
+								Expression_GatherData(&monsterLine2, NULL, &ch, config);
 							}
 
 							Expression_Exec(&monsterLine1, line1);
@@ -1600,37 +1581,35 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						}
 					}
 				}
-				if (!found && lookCount[ch->tibiaId] < 7)
+				if (!found && lookCount[ch.tibiaId] < 7)
 				{
 					// creature not yet known - send "look" command
 					CPackSender::ignoreLook(time(NULL) + 2);
-					CPackSender::look(ch->x, ch->y, ch->z, 99);
-					lookCount[ch->tibiaId] = lookCount[ch->tibiaId] + 1;
-					if (config->addRequest && ch->walkSpeed >= 350)
+					CPackSender::look(ch.x, ch.y, ch.z, 99);
+					lookCount[ch.tibiaId] = lookCount[ch.tibiaId] + 1;
+					if (config->addRequest && ch.walkSpeed >= 350)
 					{
-						if (ch->lookDirection == 0)
-							CPackSender::look(ch->x, ch->y - 1, ch->z, 99);
+						if (ch.lookDirection == 0)
+							CPackSender::look(ch.x, ch.y - 1, ch.z, 99);
 
-						else if (ch->lookDirection == 1)
-							CPackSender::look(ch->x + 1, ch->y, ch->z, 99);
+						else if (ch.lookDirection == 1)
+							CPackSender::look(ch.x + 1, ch.y, ch.z, 99);
 
-						else if (ch->lookDirection == 2)
-							CPackSender::look(ch->x, ch->y + 1, ch->z, 99);
+						else if (ch.lookDirection == 2)
+							CPackSender::look(ch.x, ch.y + 1, ch.z, 99);
 
-						else if (ch->lookDirection == 3)
-							CPackSender::look(ch->x - 1, ch->y, ch->z, 99);
+						else if (ch.lookDirection == 3)
+							CPackSender::look(ch.x - 1, ch.y, ch.z, 99);
 					}
-					Sleep(RandomTimeCreatureInfo(self, ch));
+					Sleep(RandomTimeCreatureInfo(&self, &ch));
 				}
 			}
-			delete ch;
 		}
-		delete self;
 	}
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 	reader.setMainWindowText("Tibia");
 	reader.setMainTrayText("<Running Tibia Auto>"); // back to the default setting
-	delete self;
 	//T4: Tool has been disabled, so clean all mess
 	CPackSender::sendClearCreatureInfo();
 	if (config->uniqueMonsterNames)
@@ -1639,16 +1618,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		for (chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 		{
 			char name[40];
-			CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
-			if (ch->tibiaId == 0)
+			CTibiaCharacter ch;
+			reader.readVisibleCreature(&ch, chNr);
+			if (ch.tibiaId == 0)
 			{
-				delete ch;
 				break;
 			}
-			Monster_GetName(ch->name, name);
-			reader.writeVisibleCreatureName(ch->nr, name);
-
-			delete ch;
+			Monster_GetName(ch.name, name);
+			reader.writeVisibleCreatureName(ch.nr, name);
 		}
 	}
 	toolThreadShouldStop = 0;
@@ -1820,7 +1797,7 @@ void CMod_creatureinfoApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_creatureinfoApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_creatureinfoApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "player/active"))
 		m_configData->player = atoi(paramValue);
@@ -1858,7 +1835,7 @@ void CMod_creatureinfoApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->rangeZ = atoi(paramValue);
 }
 
-char *CMod_creatureinfoApp::saveConfigParam(char *paramName)
+char *CMod_creatureinfoApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -1901,49 +1878,32 @@ char *CMod_creatureinfoApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_creatureinfoApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "player/active";
-	case 1:
-		return "player/first";
-	case 2:
-		return "player/second";
-	case 3:
-		return "monster/active";
-	case 4:
-		return "monster/first";
-	case 5:
-		return "monster/second";
-	case 6:
-		return "monster/uniqueMonsterNames";
-	case 7:
-		return "self/active";
-	case 8:
-		return "self/first";
-	case 9:
-		return "self/second";
-	case 10:
-		return "allFloorInfo";
-	case 11:
-		return "addRequest";
-	case 12:
-		return "area/collectStats";
-	case 13:
-		return "area/showCreaturesInArea";
-	case 14:
-		return "self/window";
-	case 15:
-		return "self/tray";
-	case 16:
-		return "area/rangeXY";
-	case 17:
-		return "area/rangeZ";
-	default:
-		return NULL;
-	}
+	"player/active",
+	"player/first",
+	"player/second",
+	"monster/active",
+	"monster/first",
+	"monster/second",
+	"monster/uniqueMonsterNames",
+	"self/active",
+	"self/first",
+	"self/second",
+	"allFloorInfo",
+	"addRequest",
+	"area/collectStats",
+	"area/showCreaturesInArea",
+	"self/window",
+	"self/tray",
+	"area/rangeXY",
+	"area/rangeZ",
+	NULL,
+};
+
+const char **CMod_creatureinfoApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_creatureinfoApp::getNewSkin(CSkin newSkin)

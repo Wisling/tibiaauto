@@ -46,16 +46,6 @@ static char THIS_FILE[] = __FILE__;
 #define MAX_DRINK_FAILS 1000
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_fluidApp
-
-BEGIN_MESSAGE_MAP(CMod_fluidApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_fluidApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
 int drinkFails = 0;
@@ -65,46 +55,44 @@ static map<int*, int> setMana;
 int RandomVariableHp(int &pt, int command, CConfigData *config, CTibiaCharacter* selfIn = NULL)
 {
 	CMemReader& reader    = CMemReader::getMemReader();
-	CTibiaCharacter* self = selfIn;
-	if (selfIn == NULL)
-		self = reader.readSelfCharacter();
-	int val = pt < 0 ? max(self->maxHp + pt, self->maxHp / 10) : pt;
+	CTibiaCharacter self;
+	if (!selfIn)
+		reader.readSelfCharacter(&self);
+	else
+		self = *selfIn; // Copy data happily
+	int val = pt < 0 ? max(self.maxHp + pt, self.maxHp / 10) : pt;
 	if (!config->randomCast)
 	{
-		if (selfIn != self)
-			delete self;
-		return val;
+		if (!selfIn)
+			return val;
 	}
 	if (!setHp[&pt])
 		command = MAKE;
 	if (command == MAKE)
 		// within 10% of number with a min of pt and a max of maxHp
-		setHp[&pt] = CModuleUtil::randomFormula(val, (int)(val * 0.05), max(self->maxHp, val + 1));
-	if (selfIn != self)
-		delete self;
+		setHp[&pt] = CModuleUtil::randomFormula(val, (int)(val * 0.05), max(self.maxHp, val + 1));
 	return setHp[&pt];
 }
 
 int RandomVariableMana(int &pt, int command, CConfigData *config, CTibiaCharacter* selfIn = NULL)
 {
 	CMemReader& reader    = CMemReader::getMemReader();
-	CTibiaCharacter* self = selfIn;
-	if (selfIn == NULL)
-		self = reader.readSelfCharacter();
-	int val = pt < 0 ? max(self->maxMana + pt, self->maxMana / 10) : pt;
+	CTibiaCharacter self;
+	if (!selfIn)
+		reader.readSelfCharacter(&self);
+	else
+		self = *selfIn; // Copy data happily
+	int val = pt < 0 ? max(self.maxMana + pt, self.maxMana / 10) : pt;
 	if (!config->randomCast)
 	{
-		if (selfIn != self)
-			delete self;
-		return val;
+		if (!selfIn)
+			return val;
 	}
 	if (!setMana[&pt])
 		command = MAKE;
 	if (command == MAKE)
 		// within 10% of number with a cutoff at maxMana
-		setMana[&pt] = CModuleUtil::randomFormula(val, (int)(val * 0.05), max(self->maxMana, val + 1));
-	if (selfIn != self)
-		delete self;
+		setMana[&pt] = CModuleUtil::randomFormula(val, (int)(val * 0.05), max(self.maxMana, val + 1));
 	return setMana[&pt];
 }
 
@@ -124,12 +112,13 @@ int tryDrinking(int itemId, int itemType, int drink, int hotkey, int hpBelow, in
 	int drank = 0;
 
 	itemArray.Add(itemId);
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
 	if (hotkey)
 	{
-		CPackSender::useItemOnCreature(itemId, self->tibiaId);
-		if (CModuleUtil::waitForHpManaIncrease(self->hp, self->mana))//most likely using item succeeded
+		CPackSender::useItemOnCreature(itemId, self.tibiaId);
+		if (CModuleUtil::waitForHpManaIncrease(self.hp, self.mana))//most likely using item succeeded
 		{
 			drank      = 1;
 			drinkFails = 0;
@@ -159,9 +148,9 @@ int tryDrinking(int itemId, int itemType, int drink, int hotkey, int hpBelow, in
 
 				if (item->objectId)
 				{
-					if ((self->hp < hpBelow || hpBelow == -1) && (self->mana < manaBelow || manaBelow == -1) && drink)
+					if ((self.hp < hpBelow || hpBelow == -1) && (self.mana < manaBelow || manaBelow == -1) && drink)
 					{
-						CPackSender::useItemFromContainerOnCreature(itemId, 0x40 + contNr, item->pos, self->tibiaId);
+						CPackSender::useItemFromContainerOnCreature(itemId, 0x40 + contNr, item->pos, self.tibiaId);
 						drank      = 1;
 						drinkFails = 0;
 					}
@@ -173,7 +162,6 @@ int tryDrinking(int itemId, int itemType, int drink, int hotkey, int hpBelow, in
 			delete cont;
 		}
 	}
-	delete self;
 	return drank;
 }
 
@@ -194,98 +182,99 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 		int drank = 0;
 
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 
-		int hpBelowU         = RandomVariableHp(config->hpBelowU, GET, config, self);
-		int hpBelowG         = RandomVariableHp(config->hpBelowG, GET, config, self);
-		int hpBelowS         = RandomVariableHp(config->hpBelowS, GET, config, self);
-		int hpBelowN         = RandomVariableHp(config->hpBelowN, GET, config, self);
-		int hpBelowH         = RandomVariableHp(config->hpBelowH, GET, config, self);
-		int hpBelow          = RandomVariableHp(config->hpBelow, GET, config, self);
-		int customItem1Below = RandomVariableHp(config->customItem1Below, GET, config, self);
+		int hpBelowU = RandomVariableHp(config->hpBelowU, GET, config, &self);
+		int hpBelowG = RandomVariableHp(config->hpBelowG, GET, config, &self);
+		int hpBelowS = RandomVariableHp(config->hpBelowS, GET, config, &self);
+		int hpBelowN = RandomVariableHp(config->hpBelowN, GET, config, &self);
+		int hpBelowH = RandomVariableHp(config->hpBelowH, GET, config, &self);
+		int hpBelow = RandomVariableHp(config->hpBelow, GET, config, &self);
+		int customItem1Below = RandomVariableHp(config->customItem1Below, GET, config, &self);
 
-		int manaBelowG       = RandomVariableMana(config->manaBelowG, GET, config, self);
-		int manaBelowS       = RandomVariableMana(config->manaBelowS, GET, config, self);
-		int manaBelowN       = RandomVariableMana(config->manaBelowN, GET, config, self);
-		int manaBelow        = RandomVariableMana(config->manaBelow, GET, config, self);
-		int customItem2Below = RandomVariableMana(config->customItem2Below, GET, config, self);
+		int manaBelowG = RandomVariableMana(config->manaBelowG, GET, config, &self);
+		int manaBelowS = RandomVariableMana(config->manaBelowS, GET, config, &self);
+		int manaBelowN = RandomVariableMana(config->manaBelowN, GET, config, &self);
+		int manaBelow = RandomVariableMana(config->manaBelow, GET, config, &self);
+		int customItem2Below = RandomVariableMana(config->customItem2Below, GET, config, &self);
 
 		// handle  potions
-		if (!drank && (self->hp < self->maxHp && self->hp < hpBelowU && config->drinkHpU) && self->lvl >= 130)
+		if (!drank && (self.hp < self.maxHp && self.hp < hpBelowU && config->drinkHpU) && self.lvl >= 130)
 		{
 			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidLifeU"), 0, config->drinkHpU, config->useHotkey, hpBelowU, -1);
 			if (drank)
-				RandomVariableHp(config->hpBelowU, MAKE, config, self);
+				RandomVariableHp(config->hpBelowU, MAKE, config, &self);
 		}
-		if (!drank && (self->hp < self->maxHp && self->hp < hpBelowG && config->drinkHpG) && self->lvl >= 80)
+		if (!drank && (self.hp < self.maxHp && self.hp < hpBelowG && config->drinkHpG) && self.lvl >= 80)
 		{
 			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidLifeG"), 0, config->drinkHpG, config->useHotkey, hpBelowG, -1);
 			if (drank)
-				RandomVariableHp(config->hpBelowG, MAKE, config, self);
+				RandomVariableHp(config->hpBelowG, MAKE, config, &self);
 		}
-		if (!drank && (self->hp < self->maxHp && self->hp < hpBelowS && config->drinkHpS) && self->lvl >= 50)
+		if (!drank && (self.hp < self.maxHp && self.hp < hpBelowS && config->drinkHpS) && self.lvl >= 50)
 		{
 			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidLifeS"), 0, config->drinkHpS, config->useHotkey, hpBelowS, -1);
 			if (drank)
-				RandomVariableHp(config->hpBelowS, MAKE, config, self);
+				RandomVariableHp(config->hpBelowS, MAKE, config, &self);
 		}
-		if (!drank && (self->hp < self->maxHp && self->hp < hpBelowN && config->drinkHpN))
+		if (!drank && (self.hp < self.maxHp && self.hp < hpBelowN && config->drinkHpN))
 		{
 			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidLife"), 0, config->drinkHpN, config->useHotkey, hpBelowN, -1);
 			if (drank)
-				RandomVariableHp(config->hpBelowN, MAKE, config, self);
+				RandomVariableHp(config->hpBelowN, MAKE, config, &self);
 		}
-		if (!drank && (self->hp < self->maxHp && self->hp < hpBelowH && config->drinkHpH))
+		if (!drank && (self.hp < self.maxHp && self.hp < hpBelowH && config->drinkHpH))
 		{
 			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidLifeH"), 0, config->drinkHpH, config->useHotkey, hpBelowH, -1);
 			if (drank)
-				RandomVariableHp(config->hpBelowH, MAKE, config, self);
+				RandomVariableHp(config->hpBelowH, MAKE, config, &self);
 		}
-		if (!drank && (self->hp < self->maxHp && self->hp < hpBelow && config->drinkHp))
+		if (!drank && (self.hp < self.maxHp && self.hp < hpBelow && config->drinkHp))
 		{
 			drank |= tryDrinking(CTibiaItem::getValueForConst("fluid"), 11, config->drinkHp, config->useHotkey, hpBelow, -1);
 			if (drank)
-				RandomVariableHp(config->hpBelow, MAKE, config, self);
+				RandomVariableHp(config->hpBelow, MAKE, config, &self);
 		}
 
-		if (!drank && (self->hp < self->maxHp && self->hp < customItem1Below && config->customItem1Use))
+		if (!drank && (self.hp < self.maxHp && self.hp < customItem1Below && config->customItem1Use))
 		{
 			drank |= tryDrinking(config->customItem1Item, 0, config->customItem1Use, config->useHotkey, customItem1Below, -1);
 			if (drank)
-				RandomVariableHp(config->customItem1Below, MAKE, config, self);
+				RandomVariableHp(config->customItem1Below, MAKE, config, &self);
 		}
 
 
-		if (!drank && (self->mana < self->maxMana && self->mana < manaBelowG && config->drinkManaG) && self->lvl >= 80)
+		if (!drank && (self.mana < self.maxMana && self.mana < manaBelowG && config->drinkManaG) && self.lvl >= 80)
 		{
 			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidManaG"), 0, config->drinkManaG, config->useHotkey, -1, manaBelowG);
 			if (drank)
-				RandomVariableMana(config->manaBelowG, MAKE, config, self);
+				RandomVariableMana(config->manaBelowG, MAKE, config, &self);
 		}
-		if (!drank && (self->mana < self->maxMana && self->mana < manaBelowS && config->drinkManaS) && self->lvl >= 50)
+		if (!drank && (self.mana < self.maxMana && self.mana < manaBelowS && config->drinkManaS) && self.lvl >= 50)
 		{
 			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidManaS"), 0, config->drinkManaS, config->useHotkey, -1, manaBelowS);
 			if (drank)
-				RandomVariableMana(config->manaBelowS, MAKE, config, self);
+				RandomVariableMana(config->manaBelowS, MAKE, config, &self);
 		}
-		if (!drank && (self->mana < self->maxMana && self->mana < manaBelowN && config->drinkManaN))
+		if (!drank && (self.mana < self.maxMana && self.mana < manaBelowN && config->drinkManaN))
 		{
 			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidMana"), 0, config->drinkManaN, config->useHotkey, -1, manaBelowN);
 			if (drank)
-				RandomVariableMana(config->manaBelowN, MAKE, config, self);
+				RandomVariableMana(config->manaBelowN, MAKE, config, &self);
 		}
-		if (!drank && (self->mana < self->maxMana && self->mana < manaBelow && config->drinkMana))
+		if (!drank && (self.mana < self.maxMana && self.mana < manaBelow && config->drinkMana))
 		{
 			drank |= tryDrinking(CTibiaItem::getValueForConst("fluid"), 10, config->drinkMana, config->useHotkey, -1, manaBelow);
 			if (drank)
-				RandomVariableMana(config->manaBelow, MAKE, config, self);
+				RandomVariableMana(config->manaBelow, MAKE, config, &self);
 		}
 
-		if (!drank && (self->mana < self->maxMana && self->mana < customItem2Below && config->customItem2Use))
+		if (!drank && (self.mana < self.maxMana && self.mana < customItem2Below && config->customItem2Use))
 		{
 			drank |= tryDrinking(config->customItem2Item, 0, config->customItem2Use, config->useHotkey, -1, customItem2Below);
 			if (drank)
-				RandomVariableMana(config->customItem2Below, MAKE, config, self);
+				RandomVariableMana(config->customItem2Below, MAKE, config, &self);
 		}
 
 
@@ -320,7 +309,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					CTibiaItem *item = CModuleUtil::lookupItem(contNr, &itemArray);
 					if (item->objectId && item->quantity >= config->dropFlasksAt)
 					{
-						CPackSender::moveObjectFromContainerToFloor(item->objectId, 0x40 + contNr, item->pos, self->x, self->y, self->z, item->quantity ? item->quantity : 1);
+						CPackSender::moveObjectFromContainerToFloor(item->objectId, 0x40 + contNr, item->pos, self.x, self.y, self.z, item->quantity ? item->quantity : 1);
 						Sleep(CModuleUtil::randomFormula(config->sleep, 200, 0));
 						delete item;
 						delete cont;
@@ -333,7 +322,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 
-		delete self;
 	}
 	setMana.clear();
 	setHp.clear();
@@ -476,7 +464,7 @@ void CMod_fluidApp::resetConfig()
 	m_configData = new CConfigData();
 }
 
-void CMod_fluidApp::loadConfigParam(char *paramName, char *paramValue)
+void CMod_fluidApp::loadConfigParam(const char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "drink/hpH"))
 		m_configData->drinkHpH = atoi(paramValue);
@@ -542,7 +530,7 @@ void CMod_fluidApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->useHotkey = atoi(paramValue);
 }
 
-char *CMod_fluidApp::saveConfigParam(char *paramName)
+char *CMod_fluidApp::saveConfigParam(const char *paramName)
 {
 	static char buf[1024];
 	buf[0] = 0;
@@ -613,75 +601,45 @@ char *CMod_fluidApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_fluidApp::getConfigParamName(int nr)
+static const char *configParamNames[] =
 {
-	switch (nr)
-	{
-	case 0:
-		return "drink/hp";
-	case 1:
-		return "drink/mana";
-	case 2:
-		return "other/dropEmpty";
-	case 3:
-		return "drink/hpBelow";
-	case 4:
-		return "drink/manaBelow";
-	case 5:
-		return "other/sleepAfter";
-	case 6:
-		return "drink/hpN";
-	case 7:
-		return "drink/hpS";
-	case 8:
-		return "drink/hpG";
-	case 9:
-		return "drink/manaN";
-	case 10:
-		return "drink/manaS";
-	case 11:
-		return "drink/manaG";
-	case 12:
-		return "drink/hpBelowN";
-	case 13:
-		return "drink/hpBelowS";
-	case 14:
-		return "drink/hpBelowG";
-	case 15:
-		return "drink/manaBelowN";
-	case 16:
-		return "drink/manaBelowS";
-	case 17:
-		return "drink/manaBelowG";
-	case 18:
-		return "custom/item1Below";
-	case 19:
-		return "custom/item1Item";
-	case 20:
-		return "custom/item1Use";
-	case 21:
-		return "custom/item2Below";
-	case 22:
-		return "custom/item2Item";
-	case 23:
-		return "custom/item2Use";
-	case 24:
-		return "drink/hpH";
-	case 25:
-		return "drink/hpU";
-	case 26:
-		return "drink/hpBelowH";
-	case 27:
-		return "drink/hpBelowU";
-	case 28:
-		return "other/randomCast";
-	case 29:
-		return "other/useHotkey";
-	case 30:
-		return "other/dropFlasksAt";
-	default:
-		return NULL;
-	}
+	"drink/hp",
+	"drink/mana",
+	"other/dropEmpty",
+	"drink/hpBelow",
+	"drink/manaBelow",
+	"other/sleepAfter",
+	"drink/hpN",
+	"drink/hpS",
+	"drink/hpG",
+	"drink/manaN",
+	"drink/manaS",
+	"drink/manaG",
+	"drink/hpBelowN",
+	"drink/hpBelowS",
+	"drink/hpBelowG",
+	"drink/manaBelowN",
+	"drink/manaBelowS",
+	"drink/manaBelowG",
+	"custom/item1Below",
+	"custom/item1Item",
+	"custom/item1Use",
+	"custom/item2Below",
+	"custom/item2Item",
+	"custom/item2Use",
+	"drink/hpH",
+	"drink/hpU",
+	"drink/hpBelowH",
+	"drink/hpBelowU",
+	"other/randomCast",
+	"other/useHotkey",
+	"other/dropFlasksAt",
+	NULL,
+};
+
+const char **CMod_fluidApp::getConfigParamNames()
+{
+	return configParamNames;
 }
 
 void CMod_fluidApp::getNewSkin(CSkin newSkin)

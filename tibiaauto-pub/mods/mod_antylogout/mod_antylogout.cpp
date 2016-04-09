@@ -66,16 +66,6 @@ static char THIS_FILE[] = __FILE__;
 //
 
 /////////////////////////////////////////////////////////////////////////////
-// CMod_antylogoutApp
-
-BEGIN_MESSAGE_MAP(CMod_antylogoutApp, CWinApp)
-//{{AFX_MSG_MAP(CMod_antylogoutApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
 int RandomTimeAntylogout()
@@ -114,7 +104,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		{
 			randomSeconds = RandomTimeAntylogout();
 
-			CTibiaCharacter *self = reader.readSelfCharacter();
+			CTibiaCharacter self;
+			reader.readSelfCharacter(&self);
 			int r                 = rand() % numActions;
 			if (lastRandomAction == r && time(NULL) - sameActionTm > timeLimit)
 				while (r != lastRandomAction)
@@ -128,16 +119,16 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			{
 			case 0:
 				CPackSender::ignoreLook(time(NULL) + 1);
-				CPackSender::look(self->x, self->y, self->z, 0);
+				CPackSender::look(self.x, self.y, self.z, 0);
 				break;
 			case 1:
-				if (self->lookDirection == 0)
+				if (self.lookDirection == 0)
 					CPackSender::turnUp();
-				else if (self->lookDirection == 1)
+				else if (self.lookDirection == 1)
 					CPackSender::turnRight();
-				else if (self->lookDirection == 2)
+				else if (self.lookDirection == 2)
 					CPackSender::turnDown();
-				else if (self->lookDirection == 3)
+				else if (self.lookDirection == 3)
 					CPackSender::turnLeft();
 				break;
 				//case 2:
@@ -148,7 +139,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				//Request list of channels
 				//	CPackSender::sendDirectPacket("\x97"); creates a window that gets in the way of the user
 			}
-			delete self;
 		}
 	}
 

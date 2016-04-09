@@ -596,17 +596,15 @@ void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int crea
 
 void autoAimAttack(int runeId)
 {
-	CMemReader& reader = CMemReader::getMemReader();
-	
+	CMemReader& reader = CMemReader::getMemReader();	
 	int attackedCreature       = reader.getAttackedCreature();
+	CTibiaCharacter ch;
 
-	CTibiaCharacter *ch = reader.getCharacterByTibiaId(attackedCreature);
-
-	if (ch)
+	if (reader.getCharacterByTibiaId(&ch, attackedCreature))
 	{
-		int chX = ch->x;
-		int chY = ch->y;
-		int chZ = ch->z;
+		int chX = ch.x;
+		int chY = ch.y;
+		int chZ = ch.z;
 		int contNr;
 		int openContNr  = 0;
 		int openContMax = reader.readOpenContainerCount();
@@ -625,19 +623,17 @@ void autoAimAttack(int runeId)
 				if (runeItem->objectId)
 				{
 					if (autoAimOnlyCreatures)
-						castRuneAgainstCreature(0x40 + contNr, runeItem->pos, runeId, ch->tibiaId);
+						castRuneAgainstCreature(0x40 + contNr, runeItem->pos, runeId, ch.tibiaId);
 					else
-						castRuneAgainstHuman(0x40 + contNr, runeItem->pos, runeId, ch->x, ch->y, ch->z);
+						castRuneAgainstHuman(0x40 + contNr, runeItem->pos, runeId, ch.x, ch.y, ch.z);
 					delete runeItem;
 					delete cont;
-					delete ch;
 					return;
 				}
 				delete runeItem;
 			};
 			delete cont;
 		}
-		delete ch;
 	}
 }
 
@@ -800,11 +796,10 @@ int parseMessageForTibiaAction(char *buf, int len)
 		    playerId < 0x40000000)
 		{
 			CMemReader& reader = CMemReader::getMemReader();
-			CTibiaCharacter *ch = reader.getCharacterByTibiaId(playerId);
-			if (ch)
+			CTibiaCharacter ch;
+			if (reader.getCharacterByTibiaId(&ch, playerId))
 			{
-				castRuneAgainstHuman(contNr, itemPos, objectId, ch->x, ch->y, ch->z);
-				delete ch;
+				castRuneAgainstHuman(contNr, itemPos, objectId, ch.x, ch.y, ch.z);
 				return 1;
 			}
 		}
@@ -1241,17 +1236,18 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 	char *creatureID = (char*)(creaturePointer);
 
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 
-	if (strcmp(self->name, creatureID) == 0 && showManaBar)
+	if (strcmp(self.name, creatureID) == 0 && showManaBar)
 	{
 		OUTmyDrawRect(ecx, nSurface, nX, nY-5, nWeight, nHeight, nRed, nGreen, nBlue); //draw hp bar 5 pixels higher
 
 		if (!(!nRed && !nGreen && !nBlue)) //if it is not black bar being drawn
 		{
-			float myRed = ((1 - ((float)self->mana / (float)self->maxMana)) * 0xC0);
-			float myBlue = ((float)self->mana / (float)self->maxMana) * 0xC0;
-			float hpPorc = ((float)self->hp / (float)self->maxHp);
+			float myRed = ((1 - ((float)self.mana / (float)self.maxMana)) * 0xC0);
+			float myBlue = ((float)self.mana / (float)self.maxMana) * 0xC0;
+			float hpPorc = ((float)self.hp / (float)self.maxHp);
 
 			int luminosity;
 
@@ -1284,7 +1280,7 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 			if (myRed < 0)
 				myRed = 0;
 
-			float myWeight = ((float)self->mana / (float)self->maxMana) * 0x1A; // "0x1A" is the maxWeight of colored bar
+			float myWeight = ((float)self.mana / (float)self.maxMana) * 0x1A; // "0x1A" is the maxWeight of colored bar
 
 			OUTmyDrawRect(ecx, nSurface, nX, nY, int(myWeight), nHeight, int(myRed), 0, int(myBlue));
 		}
@@ -1294,7 +1290,6 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 	}
 	else
 		OUTmyDrawRect(ecx, nSurface, nX, nY, nWeight, nHeight, nRed, nGreen, nBlue);
-	delete self;
 
 }
 
@@ -1381,9 +1376,10 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 			taMessageEnd = 0;
 	}
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaCharacter *self = reader.readSelfCharacter();
+	CTibiaCharacter self;
+	reader.readSelfCharacter(&self);
 	int creatureID = *(int*)(lpText - 4); //Character ID is currently stored in data before text string
-	if (self->tibiaId == creatureID)
+	if (self.tibiaId == creatureID)
 	{
 		if (showManaBar){ // print name a bit higher for extra space to input the second bar
 			nY = nY - 5;
@@ -1398,7 +1394,6 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 
 		}
 	}
-	delete self;
 
 	int ret = OUTmyPrintText(nSurface, nX, nY, nFont, nRed, nGreen, nBlue, lpText, nAlign);
 	return ret;
@@ -2148,7 +2143,7 @@ void InitialisePlayerInfoHack()
 
 void InitialiseProxyClasses()
 {
-	CMemUtil::setGlobalProcessId(GetCurrentProcessId());
+	CMemUtil::getMemUtil().setGlobalProcessId(GetCurrentProcessId());
 }
 
 WNDPROC wndProcOriginal = NULL;

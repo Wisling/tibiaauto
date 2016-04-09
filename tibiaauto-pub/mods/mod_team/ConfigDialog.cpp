@@ -105,7 +105,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	if (nIDEvent == 1001)
 	{
 		CMemReader& reader = CMemReader::getMemReader();
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter self;
+		reader.readSelfCharacter(&self);
 		int i;
 		KillTimer(1001);
 
@@ -124,7 +125,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 				char buf[256];
 				CConnectedNode *connectedNode = connectedNodes.getNodeByNr(nodeNr);
 				m_slaveList.SetItemText(i, 0, connectedNode->charName);
-				sprintf(buf, "(%d,%d,%d)", self->x - connectedNode->x, self->y - connectedNode->y, self->z - connectedNode->z);
+				sprintf(buf, "(%d,%d,%d)", self.x - connectedNode->x, self.y - connectedNode->y, self.z - connectedNode->z);
 				m_slaveList.SetItemText(i, 2, buf);
 				sprintf(buf, "%d/%d", connectedNode->hp, connectedNode->maxHp);
 				m_slaveList.SetItemText(i, 3, buf);
@@ -151,7 +152,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			{
 				char buf[256];
 				m_slaveList.InsertItem(0, connectedNode->charName);
-				sprintf(buf, "(%d,%d,%d)", self->x - connectedNode->x, self->y - connectedNode->y, self->z - connectedNode->z);
+				sprintf(buf, "(%d,%d,%d)", self.x - connectedNode->x, self.y - connectedNode->y, self.z - connectedNode->z);
 				m_slaveList.SetItemText(0, 2, buf);
 				sprintf(buf, "%d/%d", connectedNode->hp, connectedNode->maxHp);
 				m_slaveList.SetItemText(0, 3, buf);
@@ -167,7 +168,6 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 				m_slaveList.SetItemData(0, i);
 			}
 		}
-		delete self;
 
 
 		SetTimer(1001, 500, NULL);

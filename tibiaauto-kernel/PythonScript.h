@@ -9,7 +9,14 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+// Prevent linking to python24_d.lib, unavailable in general python release
+#ifdef _DEBUG
+#undef _DEBUG
 #include "python.h"
+#define _DEBUG
+#else
+#include "python.h"
+#endif
 
 #include "PythonEngine.h"
 
