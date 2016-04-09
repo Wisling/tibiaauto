@@ -197,7 +197,7 @@ void CCharInfoDialog::dataCalc()
 {
 	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter ch;
-	 reader.readSelfCharacter(&ch);
+	reader.readSelfCharacter(&ch);
 
 	//T4: Exp calculation
 	long lvl;

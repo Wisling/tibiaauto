@@ -309,8 +309,6 @@ void CMemReader::readVisibleCreature(CTibiaCharacter* ch, int nr)
 
 	CMemUtil::getMemUtil().GetMemRange(offset, offset + m_memLengthCreature, memcharinfo, 1);
 	ch->initialized = true;
-	ch->hp       = -1;
-	ch->mana     = -1;
 	ch->tibiaId  = *((int*)memcharinfo);
 	ch->z        = *((int*)(memcharinfo + 36));
 	ch->y        = *((int*)(memcharinfo + 40));
@@ -367,10 +365,7 @@ void CMemReader::readVisibleCreature(CTibiaCharacter* ch, int nr)
 	//ch->alwayszero=*((int*)(memcharinfo+208));
 	//ch->treepointer2=*((int*)(memcharinfo+212));
 	//ch->alwayszero=*((int*)(memcharinfo+216));
-
-
 	ch->nr = nr;
-
 	CMemUtil::getMemUtil().GetMemRange(offset + 4, offset + 4 + 31, ch->name);
 }
 

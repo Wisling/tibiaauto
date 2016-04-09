@@ -19,7 +19,9 @@ CTibiaCharacter::CTibiaCharacter()
 {
 	initialized = false;
 	visible = 0;
-	memset(name, 0x00, 32);
+	name[0] = 0x00;
+	hp = -1;
+	mana = -1;
 }
 
 CTibiaCharacter::~CTibiaCharacter()
