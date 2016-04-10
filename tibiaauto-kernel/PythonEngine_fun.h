@@ -177,9 +177,12 @@ PyObject *tibiaauto_item_getItemsCorpsesCount(PyObject *self, PyObject *args);
 PyObject *tibiaauto_item_getItemsLooted(PyObject *self, PyObject *args);
 PyObject *tibiaauto_item_getItemsLootedId(PyObject *self, PyObject *args);
 PyObject *tibiaauto_item_getItemsLootedCount(PyObject *self, PyObject *args);
+PyObject *tibiaauto_kernel_getModuleCount(PyObject *self, PyObject *args);
+PyObject *tibiaauto_kernel_getModuleName(PyObject *self, PyObject *args);
 /* Deprecated Section End*/
 PyObject *tibiaauto_kernel_startModule(PyObject *self, PyObject *args);
 PyObject *tibiaauto_kernel_stopModule(PyObject *self, PyObject *args);
+PyObject *tibiaauto_kernel_getModuleList(PyObject *self, PyObject *args);
 PyObject *tibiaauto_kernel_getModuleDesc(PyObject *self, PyObject *args);
 PyObject *tibiaauto_kernel_getModuleVersion(PyObject *self, PyObject *args);
 PyObject *tibiaauto_kernel_isModuleStarted(PyObject *self, PyObject *args);
