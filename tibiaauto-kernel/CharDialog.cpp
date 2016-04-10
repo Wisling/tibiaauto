@@ -56,7 +56,7 @@ void CCharDialog::OnCharRefresh()
 {
 	CMemReader& reader = CMemReader::getMemReader();
 	char buf[256];
-	//int procFound[65536];
+	char buf2[32];
 	int *procFound = new int[65536];
 	memset(procFound, 0x00, sizeof(int) * 65536);
 	PROCESSENTRY32 procEntry;
@@ -67,6 +67,8 @@ void CCharDialog::OnCharRefresh()
 	do
 	{
 		int pos, len = strlen(procEntry.szExeFile);
+		int foundPos;
+		bool insert = true;
 		for (pos = 0; pos < len; pos++)
 			procEntry.szExeFile[pos] = (char)tolower(procEntry.szExeFile[pos]);
 		if (!strcmp(procEntry.szExeFile, "tibia.exe"))
@@ -75,11 +77,21 @@ void CCharDialog::OnCharRefresh()
 			reader.GetLoggedChar(procEntry.th32ProcessID, loggedCharName, sizeof(loggedCharName));
 
 			sprintf(buf, "[%5d] %s", procEntry.th32ProcessID, loggedCharName);
-			if (m_charList.FindStringExact(-1, buf) == -1)
+			sprintf(buf2, "[%5d]", procEntry.th32ProcessID);
+			foundPos = m_charList.FindString(-1, buf2);
+			if (foundPos != -1)
+			{
+				CString curString;
+				m_charList.GetLBText(foundPos, curString);
+				if (curString.Compare(buf) == 0)
+					insert = false;
+				else
+					m_charList.DeleteString(foundPos);
+			}
+			if(insert)
 			{
 				m_charList.AddString(buf);
 				m_charList.SetItemData(m_charList.FindStringExact(-1, buf), procEntry.th32ProcessID);
-				m_charList.SetCurSel(0);
 			}
 
 			procFound[procEntry.th32ProcessID] = 1;
@@ -95,6 +107,8 @@ void CCharDialog::OnCharRefresh()
 		if (!procFound[m_charList.GetItemData(i)])
 			m_charList.DeleteString(i);
 	};
+	if (m_charList.GetCurSel() == -1)
+		m_charList.SetCurSel(0);
 
 	CloseHandle(procSnapshortHandle);
 	delete []procFound;

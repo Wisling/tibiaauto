@@ -6,7 +6,7 @@
 using namespace std;
 
 #define MEMORY_CACHE_VALID_TIME 2 // Milliseconds
-#define MEMORY_CACHE_ENTRY_SIZE 32 // Bytes, must be a power of 2
+#define MEMORY_CACHE_ENTRY_SIZE 512 // Bytes, must be a power of 2
 struct MemoryCacheEntry
 {
 	LONGLONG expirationTime;
@@ -27,16 +27,16 @@ public:
 		return singleton;
 	}
 
-	int SetMemRange(int processId, DWORD memAddressStart, DWORD memAddressEnd, char *data, bool addBaseAddress);
-	int SetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, bool addBaseAddress = true);
-	long int GetMemIntValue(DWORD memAddress, bool addBaseAddress = true);
-	int GetMemIntValue(long processId, DWORD memAddress, long int *value, bool addBaseAddress);
-	int SetMemIntValue(long processId, DWORD memAddress, long int value, bool addBaseAddress);
-	int SetMemIntValue(DWORD memAddress, long int value, bool addBaseAddress = true);
-	int SetMemByteValue(long processId, DWORD memAddress, char value, bool addBaseAddress);
+	int SetMemRange(int processId, DWORD memAddressStart, DWORD memAddressEnd, char *data, bool addBaseAddress, bool useCache = true);
+	int SetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, bool addBaseAddress = true, bool useCache = true);
+	long int GetMemIntValue(DWORD memAddress, bool addBaseAddress = true, bool useCache = true);
+	int GetMemIntValue(long processId, DWORD memAddress, long int *value, bool addBaseAddress, bool useCache = true);
+	int SetMemIntValue(long processId, DWORD memAddress, long int value, bool addBaseAddress, bool useCache = true);
+	int SetMemIntValue(DWORD memAddress, long int value, bool addBaseAddress = true, bool useCache = true);
+	int SetMemByteValue(long processId, DWORD memAddress, char value, bool addBaseAddress, bool useCache = true);
 	BOOL AdjustPrivileges();
-	void GetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *ret, bool addBaseAddress = true);
-	int GetMemRange(long processId, DWORD memAddressStart, DWORD memAddressEnd, char *result, bool addBaseAddress);
+	void GetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *ret, bool addBaseAddress = true, bool useCache = true);
+	int GetMemRange(long processId, DWORD memAddressStart, DWORD memAddressEnd, char *result, bool addBaseAddress, bool useCache = true);
 	int GetProcessBaseAddr(int processId);
 
 	void setGlobalProcessId(int procId)
@@ -63,7 +63,7 @@ private:
 	long m_globalBaseAddr;
 	long m_globalProcessId;
 	HANDLE gethandle(long processId);
-	int readmemory(DWORD processId, DWORD memAddress, char* result, DWORD size, bool addBaseAddress, bool useCache = 1);
-	int writememory(DWORD processId, DWORD memAddress, int* value, DWORD size, bool addBaseAddress);
+	int readmemory(DWORD processId, DWORD memAddress, char* result, DWORD size, bool addBaseAddress, bool useCache = true);
+	int writememory(DWORD processId, DWORD memAddress, int* value, DWORD size, bool addBaseAddress, bool useCache = true);
 };
 
