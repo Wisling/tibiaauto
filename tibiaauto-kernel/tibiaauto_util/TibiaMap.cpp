@@ -267,6 +267,7 @@ int CTibiaMap::calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ
 	if (currentPointType == MAP_POINT_TYPE_OPEN_HOLE || 
 		currentPointType == MAP_POINT_TYPE_STAIRS ||
 		currentPointType == MAP_POINT_TYPE_TELEPORT ||
+		currentPointType == MAP_POINT_TYPE_USABLE_TELEPORT ||
 		currentPointType == MAP_POINT_TYPE_BLOCK)
 		forcedLevelChange = 1;
 	int spd = getPointSpeed(x, y, z);

@@ -113,7 +113,7 @@ void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 			break;
 		case MAP_POINT_TYPE_OPEN_HOLE:
 		case MAP_POINT_TYPE_CLOSED_HOLE:
-		case MAP_POINT_TYPE_CRATE:
+		case MAP_POINT_TYPE_GRATE:
 			itemNum = 11;
 			break;
 		}
@@ -155,10 +155,10 @@ BOOL CMapButton::OnCommand(WPARAM wParam, LPARAM lParam)
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_CLOSED_HOLE);
 	}
-	else if(wParam == ID_SHOWMAPOPTIONS_CRATE)
+	else if(wParam == ID_SHOWMAPOPTIONS_GRATE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_CRATE);
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_GRATE);
 	}
 	else if(wParam == ID_SHOWMAPOPTIONS_ROPE)
 	{

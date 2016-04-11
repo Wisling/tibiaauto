@@ -674,7 +674,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		{
 			time_t t1 = time(NULL) - firstCreatureAttackTM;
 			time_t t2 = time(NULL) - currentPosTM;
-			sprintf(buf, "State: attacking [since %d, distance %d; standing since %ds]", t1, creatureAttackDist, t2);
+			sprintf(buf, "State: attacking [since %d, distance %d; standing since %ds]", (int)t1, creatureAttackDist, (int)t2);
 			m_stateAttack.SetWindowText(buf);
 			break;
 		}

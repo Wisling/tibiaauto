@@ -278,11 +278,13 @@ void CToolItemConfig::ConfigToControls()
 	CreateGUITree(&m_itemsTree, TVI_ROOT, itemsTree);
 	m_itemsTree.SelectItem(m_itemsTree.GetRootItem());
 	m_itemsTree.SelectDropTarget(m_itemsTree.GetRootItem());//needed once to add blue hilighting for the rest of the tree's use
+	m_itemsTree.Invalidate();
+	m_itemsTree.RedrawWindow();
 }
 
 void CToolItemConfig::OnToolItemconfigRefresh()
 {
-	
+	CTibiaItem::itemListsFresh = 0;
 	CTibiaItem::refreshItemLists();
 	ConfigToControls();
 }

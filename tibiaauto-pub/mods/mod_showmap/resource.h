@@ -46,7 +46,7 @@
 #define IDB_MAP_STAIRS                  4008
 #define IDB_MAP_OPENHOLE                4009
 #define IDB_MAP_CLOSEDHOLE              4010
-#define IDB_MAP_CRATE                   4011
+#define IDB_MAP_GRATE                   4011
 #define IDB_MAP_DEPOT                   4012
 #define IDB_MAP_UNKTELE                 4013
 #define IDB_MAP_TELE                    4014
@@ -60,7 +60,7 @@
 #define IDB_MAP_STAIRS_LOCK             4022
 #define IDB_MAP_OPENHOLE_LOCK           4023
 #define IDB_MAP_CLOSEDHOLE_LOCK         4024
-#define IDB_MAP_CRATE_LOCK              4025
+#define IDB_MAP_GRATE_LOCK              4025
 #define IDB_MAP_DEPOT_LOCK              4026
 #define IDB_MAP_UNKTELE_LOCK            4027
 #define IDB_MAP_TELE_LOCK               4028
@@ -75,7 +75,7 @@
 #define ID_SHOWMAPOPTIONS_ROPE          32777
 #define ID_SHOWMAPOPTIONS_DOWN          32778
 #define ID_SHOWMAPOPTIONS_LADDER        32779
-#define ID_SHOWMAPOPTIONS_CRATE         32780
+#define ID_SHOWMAPOPTIONS_GRATE         32780
 #define ID_SHOWMAPOPTIONS_WALKABLE      32781
 #define ID_SHOWMAPOPTIONS_DEPOT         32782
 #define ID_SHOWMAPOPTIONS_TELE          32783
