@@ -76,9 +76,15 @@ char * IModuleInterface::saveConfigParam(const char *paramName)
 	return "";
 }
 
+
+static const char *configParamNames[] =
+{
+	NULL,
+};
+
 const char ** IModuleInterface::getConfigParamNames()
 {
-	return NULL;
+	return configParamNames;
 }
 
 int IModuleInterface::isMultiParam(const char *paramName)
