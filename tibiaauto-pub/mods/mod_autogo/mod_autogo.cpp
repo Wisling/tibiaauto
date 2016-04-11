@@ -480,6 +480,7 @@ void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC)
 
 	if (!png_ptr)
 	{
+		fclose(outfile);
 		AfxMessageBox("[write_png_file] png_create_write_struct failed");
 		return;
 	}
@@ -488,12 +489,16 @@ void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC)
 	info_ptr = png_create_info_struct(png_ptr);
 	if (!info_ptr)
 	{
+		png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+		fclose(outfile);
 		AfxMessageBox("[write_png_file] png_create_info_struct failed");
 		return;
 	}
 
 	if (setjmp(png_jmpbuf(png_ptr)))
 	{
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		fclose(outfile);
 		AfxMessageBox("[write_png_file] Error during init_io");
 		return;
 	}
@@ -504,6 +509,8 @@ void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC)
 	/* write header */
 	if (setjmp(png_jmpbuf(png_ptr)))
 	{
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		fclose(outfile);
 		AfxMessageBox("[write_png_file] Error during writing header");
 		return;
 	}
@@ -515,14 +522,17 @@ void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC)
 	png_write_info(png_ptr, info_ptr);
 
 
+	png_bytep* row_pointers = (png_bytep*)malloc(pbmi->bmiHeader.biHeight * sizeof(png_bytep));
 	/* write bytes */
 	if (setjmp(png_jmpbuf(png_ptr)))
 	{
+		free(row_pointers);
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		fclose(outfile);
 		AfxMessageBox("[write_png_file] Error during writing bytes");
 		return;
 	}
 
-	png_bytep* row_pointers = (png_bytep*)malloc(pbmi->bmiHeader.biHeight * sizeof(png_bytep));
 	for (int k = 0; k < pbmi->bmiHeader.biHeight; k++)
 	{
 		unsigned int linesize  = pbih->biSizeImage / pbih->biHeight;
@@ -536,11 +546,12 @@ void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC)
 		row_pointers[k] = (png_bytep) & (hp[linestart]);
 	}
 	png_write_image(png_ptr, row_pointers);
-	free(row_pointers);
 
 	/* end write */
 	if (setjmp(png_jmpbuf(png_ptr)))
 	{
+		png_destroy_write_struct(&png_ptr, &info_ptr);
+		fclose(outfile);
 		AfxMessageBox("[write_png_file] Error during end of write");
 		return;
 	}

@@ -113,7 +113,7 @@ IDB_MAP_MAGICROPE       BITMAP                  "res\\map_magicrope.bmp"
 IDB_MAP_STAIRS          BITMAP                  "res\\map_stairs.bmp"
 IDB_MAP_OPENHOLE        BITMAP                  "res\\map_openhole.bmp"
 IDB_MAP_CLOSEDHOLE      BITMAP                  "res\\map_closedhole.bmp"
-IDB_MAP_CRATE           BITMAP                  "res\\map_crate.bmp"
+IDB_MAP_GRATE           BITMAP                  "res\\map_grate.bmp"
 IDB_MAP_BLOCK           BITMAP                  "res\\map_blocked.bmp"
 IDB_MAP_DEPOT           BITMAP                  "res\\map_depot.bmp"
 IDB_MAP_UNKTELE         BITMAP                  "res\\map_unktele.bmp"
@@ -125,7 +125,7 @@ IDB_MAP_MAGICROPE_LOCK  BITMAP                  "res\\map_magicrope_lock.bmp"
 IDB_MAP_STAIRS_LOCK     BITMAP                  "res\\map_stairs_lock.bmp"
 IDB_MAP_OPENHOLE_LOCK   BITMAP                  "res\\map_openhole_lock.bmp"
 IDB_MAP_CLOSEDHOLE_LOCK BITMAP                  "res\\map_closedhole_lock.bmp"
-IDB_MAP_CRATE_LOCK      BITMAP                  "res\\map_crate_lock.bmp"
+IDB_MAP_GRATE_LOCK      BITMAP                  "res\\map_grate_lock.bmp"
 IDB_MAP_BLOCK_LOCK      BITMAP                  "res\\map_blocked_lock.bmp"
 IDB_MAP_DEPOT_LOCK      BITMAP                  "res\\map_depot_lock.bmp"
 IDB_MAP_UNKTELE_LOCK    BITMAP                  "res\\map_unktele_lock.bmp"
@@ -161,7 +161,7 @@ BEGIN
         BEGIN
             MENUITEM "Open hole",                   ID_SHOWMAPOPTIONS_OPENHOLE
             MENUITEM "Closed hole",                 ID_SHOWMAPOPTIONS_CLOSEDHOLE
-            MENUITEM "Grate",                       ID_SHOWMAPOPTIONS_CRATE
+            MENUITEM "Grate",                       ID_SHOWMAPOPTIONS_GRATE
         END
         MENUITEM SEPARATOR
         MENUITEM "Edit Tile Configuration(s)",  IDD_TOOL_MAPSHOW_CONFIG

@@ -214,9 +214,9 @@ void CToolMapShow::refreshVisibleMap()
 						// closed hole
 						changedToImage = locked ? IDB_MAP_CLOSEDHOLE_LOCK : IDB_MAP_CLOSEDHOLE;
 						break;
-					case MAP_POINT_TYPE_CRATE:
-						// crate
-						changedToImage = locked ? IDB_MAP_CRATE_LOCK : IDB_MAP_CRATE;
+					case MAP_POINT_TYPE_GRATE:
+						// grate
+						changedToImage = locked ? IDB_MAP_GRATE_LOCK : IDB_MAP_GRATE;
 						break;
 					case MAP_POINT_TYPE_ROPE:
 						// rope
@@ -453,7 +453,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 							else
 							{
 								if (tileData->requireUse)
-									tileType = MAP_POINT_TYPE_CRATE;
+									tileType = MAP_POINT_TYPE_GRATE;
 								else
 									tileType = MAP_POINT_TYPE_OPEN_HOLE;
 							}
