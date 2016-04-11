@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 
-#include "tibiaautoinject2.h"
 #include "stdio.h"
 #include "detours.h"
 #include "winsock2.h"
@@ -19,6 +18,9 @@
 #include <ModuleUtil.h>
 #include <MemReader.h>
 #include <MemUtil.h>
+#include "IPCPipeBack.h"
+
+CIPCPipeBack ipcPipeBack;
 
 int myInterceptEncrypt(int v1, int v2);
 int myInterceptDecrypt(int v1, int v2);
@@ -947,43 +949,6 @@ void hookCallback(int value)
 			ipcPipeBack.send(mess);
 		}
 	}
-}
-
-typedef void (*Proto_callback)(int value);
-volatile Proto_callback hookCallbackFun = hookCallback;
-
-LPCTSTR hooksFile = NULL;
-
-void ActivateHookCallback()
-{
-	int size = 128;
-	char mapFileBuf[1024];
-	HANDLE hMapFile;
-
-
-	wsprintf(mapFileBuf, "Global\\tibiaauto-mapfile-%d", ::GetCurrentProcessId());
-
-	hMapFile = CreateFileMapping(
-	        INVALID_HANDLE_VALUE,    // use paging file
-	        NULL,                    // default security
-	        PAGE_READWRITE,          // read/write access
-	        0,                       // max. object size
-	        size,                // buffer size
-	        mapFileBuf);                 // name of mapping object
-
-	if (hMapFile == NULL)
-		return;
-
-	hooksFile = (LPTSTR) MapViewOfFile(hMapFile,   // handle to map object
-	                                   FILE_MAP_ALL_ACCESS, // read/write permission
-	                                   0,
-	                                   0,
-	                                   size);
-
-	if (hooksFile == NULL)
-		return;
-
-	CopyMemory((PVOID)hooksFile, (PVOID)&hookCallbackFun, sizeof(void *));
 }
 
 int WINAPI Mine_send(SOCKET s, char* buf, int len, int flags)
@@ -2253,19 +2218,13 @@ BOOL APIENTRY DllMain(HINSTANCE hModule,
 		InitialiseDebugFile();
 		InitialiseTibiaState();
 		InitialiseHooks();
-		//InitialiseKBHooks();
 		InitialiseCommunication();
 		InitialisePlayerInfoHack();
 		InitialiseCreatureInfo();
 		//InitialiseTibiaMenu();
-		ActivateHookCallback();
 		break;
 	case DLL_PROCESS_DETACH:
-	{
-		if (hooksFile)
-			UnmapViewOfFile(hooksFile);
 		break;
-	}
 	case DLL_THREAD_ATTACH:
 		break;
 	case DLL_THREAD_DETACH:
