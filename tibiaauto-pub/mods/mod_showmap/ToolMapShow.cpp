@@ -36,6 +36,10 @@ CToolMapShow::CToolMapShow(CWnd* pParent /*=NULL*/)
 
 CToolMapShow::~CToolMapShow()
 {
+	KillTimer(1001);
+	KillTimer(1002);
+	KillTimer(1003);
+	KillTimer(1004);
 	for (int x = 0; x < 21; x++)
 	{
 		for (int y = 0; y < 21; y++)

@@ -36,6 +36,11 @@ CCharInfoDialog::CCharInfoDialog(CConfigData *configIn, CWnd* pParent /*=NULL*/)
 	config = configIn;
 }
 
+CCharInfoDialog::~CCharInfoDialog()
+{
+	KillTimer(1001);
+}
+
 void CCharInfoDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
