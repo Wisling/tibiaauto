@@ -379,25 +379,26 @@ int CMemReader::readBattleListMax()
 	return CMemUtil::getMemUtil().GetMemIntValue(m_memAddressBattleMax);
 }
 
+// Doesn't use memory cache because it can be called on multiple PIDs
 void CMemReader::GetLoggedChar(int processId, char* buf, int bufLen)
 {
 	long selfId;
 	int i;
 
-	CMemUtil::getMemUtil().GetMemIntValue(processId, m_memAddressSelfId, &selfId, 1);
+	CMemUtil::getMemUtil().GetMemIntValue(processId, m_memAddressSelfId, &selfId, true, false);
 	for (i = 0; i < m_memMaxCreatures; i++)
 	{
 		long creatureId, visible;
 		long offset = m_memAddressFirstCreature + i * m_memLengthCreature;
-		CMemUtil::getMemUtil().GetMemIntValue(processId, offset + 0, &creatureId, 1);
-		CMemUtil::getMemUtil().GetMemIntValue(processId, offset + 164, &visible, 1);
+		CMemUtil::getMemUtil().GetMemIntValue(processId, offset + 0, &creatureId, true, false);
+		CMemUtil::getMemUtil().GetMemIntValue(processId, offset + 164, &visible, true, false);
 		if (creatureId == 0)
 			break;
 		if (selfId == creatureId && visible)
 		{
 			char readBuf[32];
 			readBuf[31] = '\0';
-			CMemUtil::getMemUtil().GetMemRange(processId, offset + 4, offset + 4 + 31, readBuf, 1);
+			CMemUtil::getMemUtil().GetMemRange(processId, offset + 4, offset + 4 + 31, readBuf, true, false);
 			strncpy(buf, readBuf, bufLen);
 			return;
 		};

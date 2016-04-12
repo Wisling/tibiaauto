@@ -1,42 +1,20 @@
 #include <stdafx.h>
 #include <cstdio>
 
-#include "tibiaautoinject3.h"
-
 static HHOOK hhookKeyb;
 //keyboard hook functions
 int count = 0;
 
 typedef void (*Proto_callback)(int value);
 volatile Proto_callback hookCallbackFun = NULL;
+HINSTANCE hinstDLL = NULL;
+
 void setCallbackFun()
 {
-	int size = 16;
-
-	HANDLE hMapFile;
-	LPCTSTR pBuf;
-	char mapFileBuf[1024];
-
-	wsprintf(mapFileBuf, "Global\\tibiaauto-mapfile-%d", ::GetCurrentProcessId());
-
-	hMapFile = OpenFileMapping(
-	        FILE_MAP_ALL_ACCESS,          // read/write access
-	        FALSE,                        // do not inherit the name
-	        mapFileBuf);                      // name of mapping object
-
-	if (hMapFile == NULL)
+	hinstDLL = LoadLibrary((LPCTSTR) "tibiaautoinject2.dll");
+	if (hinstDLL == NULL)
 		return;
-
-	pBuf = (LPTSTR) MapViewOfFile(hMapFile, // handle to map object
-	                              FILE_MAP_ALL_ACCESS,  // read/write permission
-	                              0, 0, size);
-	if (pBuf == NULL)
-		return;
-
-	CopyMemory((PVOID)&hookCallbackFun, (PVOID)pBuf, sizeof(void *));
-
-	UnmapViewOfFile(pBuf);
-	CloseHandle(hMapFile);
+	hookCallbackFun = (Proto_callback)GetProcAddress(hinstDLL, "hookCallback");
 }
 
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
@@ -50,26 +28,12 @@ LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 		                      wParam, lParam);
 	if (nCode == HC_ACTION)
 	{
-		if (wParam == VK_PRIOR)  // Page Up
+		if (wParam == VK_PRIOR || wParam == VK_NEXT || wParam == VK_PAUSE)  // Page Up, Page Down, Pause/Break
 		{
 			if (!hookCallbackFun)
 				setCallbackFun();
-			else
-				hookCallbackFun(VK_PRIOR);
-		}
-		if (wParam == VK_NEXT)  // Page Down
-		{
-			if (!hookCallbackFun)
-				setCallbackFun();
-			else
-				hookCallbackFun(VK_NEXT);
-		}
-		if (wParam == VK_PAUSE)  // Pause/Break
-		{
-			if (!hookCallbackFun)
-				setCallbackFun();
-			else
-				hookCallbackFun(VK_PAUSE);
+			if (hookCallbackFun)
+				hookCallbackFun((int)wParam);
 		}
 	}
 

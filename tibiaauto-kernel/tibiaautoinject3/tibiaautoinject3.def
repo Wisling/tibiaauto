@@ -1,0 +1,3 @@
+LIBRARY tibiaautoinject3
+EXPORTS
+	KeyboardProc @1

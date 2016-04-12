@@ -1,0 +1,3 @@
+LIBRARY tibiaautoinject2
+EXPORTS
+	hookCallback @1

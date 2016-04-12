@@ -26,8 +26,10 @@
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tibiaautoinject3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tibiaautoinject3.def">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -19,12 +19,13 @@ class CCharInfoDialog : public MyDialog
 {
 // Construction
 public:
-	CConfigData *config;
 	CCharInfoDialog(CConfigData *configIn, CWnd* pParent = NULL);   // standard constructor
+	~CCharInfoDialog();
 	void configToControls(CConfigData *configData);
 	CConfigData * controlsToConfig();
 	void DoSetButtonSkin();
 
+	CConfigData *config;
 // Dialog Data
 	//{{AFX_DATA(CCharInfoDialog)
 	enum { IDD = IDD_CHARINFO };

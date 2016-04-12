@@ -53,9 +53,6 @@
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tibiaautoinject2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="deelx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -64,5 +61,10 @@
     <ResourceCompile Include="tibiaautoinject2.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tibiaautoinject2.def">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

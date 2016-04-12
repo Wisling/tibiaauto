@@ -1,3 +1,15 @@
+2.64.2 4.11.2015
+Enhancements:
+ Tibia Auto: Improved performance and reduced CPU usage
+ Python: Added takernel.setModuleParam and takernel.getModuleParam to automatically change parameters based on their name in a saved xml script
+ Python: Module functions used with takernel now take module name instead of a number. Added takernel.getModuleList function to replace "getModuleCount" and "getModuleName" functions
+ Map Hacks: Added option to show a manabar above your character
+Defects:
+ Tibia Auto: Fixed error message when opening sub-windows of TA
+ Python: Fixed tamap.mapSetPointItemId function when changing animated items to non-animated ones
+ Tibia Auto: Can exit TA and reassociate a new TA to a previously used Tibia window with more certainty.
+ Python: Prevented memory leak with tasender.printText function
+
 2.64.1 1.25.2015
 Enhancements:
  Map Hacks: Added option to show a manabar above your character
