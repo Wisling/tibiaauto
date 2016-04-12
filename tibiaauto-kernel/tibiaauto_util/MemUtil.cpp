@@ -229,10 +229,10 @@ int CMemUtil::writememory(DWORD processId, DWORD memAddress, int* value, DWORD s
 	DWORD bytesWritten;
 	DWORD alignedAddr = ((DWORD)ptr) & (0xFFFFFFFF - (MEMORY_CACHE_ENTRY_SIZE - 1));
 	DWORD alignOffset = ((DWORD)ptr) & (MEMORY_CACHE_ENTRY_SIZE - 1);
-	if (size + alignOffset <= MEMORY_CACHE_ENTRY_SIZE)
-	{
-		// Invalidate related cache entry
-		m_memoryCache[alignedAddr].expirationTime = 0;
+
+	for (int addrInd = alignedAddr; addrInd < alignedAddr + alignOffset + size; addrInd += MEMORY_CACHE_ENTRY_SIZE){
+		// Invalidate related cache entries
+		m_memoryCache[addrInd].expirationTime = 0;
 	}
 	if (WriteProcessMemory(dwHandle, ptr, value, size, &bytesWritten))
 	{

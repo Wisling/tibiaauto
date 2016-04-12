@@ -82,22 +82,23 @@ public:
 class creatureKey
 {
 private:
-	int tibiaId;
+	unsigned int tibiaId;
 public:
 	creatureKey()
 	{
 		tibiaId = 0;
 	};
 
-	creatureKey(int tibiaId)
+	creatureKey(unsigned int tibiaId)
 	{
 		this->tibiaId = tibiaId;
 	}
 
 	bool operator()(const creatureKey p1, const creatureKey p2) const
 	{
-		return p1.tibiaId - p2.tibiaId != 0;
+		return p1.tibiaId < p2.tibiaId;
 	}
+
 };
 
 int Monster_GetHp(char *name);

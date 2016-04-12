@@ -216,9 +216,9 @@ BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 	int transState   = (lParam >> 31) & 0x1;
 	int alt          = contextCode;
 
-	char buf[1111];
-	sprintf(buf, "rept %d,scan %d, xtend %d, rsvd %d, ctxt %d, keyst %d, transst %d, keyCode=%d", repeatCount, scanCode, extendedKey, reserved, contextCode, keyState, transState, wParam);
-	CPackSender::sendTAMessage(buf);
+	//char buf[1111];
+	//sprintf(buf, "rept %d,scan %d, xtend %d, rsvd %d, ctxt %d, keyst %d, transst %d, keyCode=%d", repeatCount, scanCode, extendedKey, reserved, contextCode, keyState, transState, wParam);
+	//CPackSender::sendTAMessage(buf);
 	if (wParam == 0x10)
 	{
 		shift = GetTickCount();
