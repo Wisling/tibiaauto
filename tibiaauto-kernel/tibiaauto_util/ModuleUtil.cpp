@@ -944,7 +944,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			if (pType == MAP_POINT_TYPE_USABLE_TELEPORT || pType == MAP_POINT_TYPE_TELEPORT)
 			{
 				// tp
-				if (pos == 0)
+				if (pos == 0 || (pos == 1 && pType == MAP_POINT_TYPE_USABLE_TELEPORT))
 				{
 					path[pos] |= STEP_TELEPORT;
 				}
