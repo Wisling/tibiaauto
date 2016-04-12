@@ -66,6 +66,8 @@ public:
 	static int GetPathTabCount(void);
 	static int RegexMatch(char *string, char *regex);
 private:
+	static int AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int radius, int pathFindZ, point &endPoint, int endSpecialLocation, int startX, int startY, int startZ);
+	static struct point AStarRetrievePath(int gotToEndPoint, point &endPoint, int startX, int startY, int startZ, uint8_t * path, int endX, int endY, int endZ);
 	static void findPathOnMapProcessPoint(CTibiaQueue<point> &pointsToAdd, int prevX, int prevY, int prevZ, int newX, int newY, int newZ);
 
 
