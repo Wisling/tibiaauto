@@ -466,7 +466,7 @@ void depotCheck(CConfigData *config)
 			 */
 
 			uint8_t path[15];
-			struct point nearestDepot = CModuleUtil::findPathOnMap(self.x, self.y, self.z, 0, 0, 0, 301, path);
+			struct point nearestDepot = CModuleUtil::findPathOnMap(self.x, self.y, self.z, 0, 0, 0, MAP_POINT_TYPE_DEPOT, path);
 			depotX = nearestDepot.x;
 			depotY = nearestDepot.y;
 			depotZ = nearestDepot.z;
@@ -512,13 +512,13 @@ void depotCheck(CConfigData *config)
 			uint8_t path[15];
 			if (config->debug)
 				registerDebug("findPathOnMap: depot walker");
-			CModuleUtil::findPathOnMap(self.x, self.y, self.z, depotX, depotY, depotZ, 301, path);
+			CModuleUtil::findPathOnMap(self.x, self.y, self.z, depotX, depotY, depotZ, MAP_POINT_TYPE_DEPOT, path);
 			if (!path[0] || !CTibiaMap::getTibiaMap().isPointAvailable(depotX, depotY, depotZ))
 			{
 				if (config->debug)
 					registerDebug("Path to the current depot not found: must find a new one");
 				// path to the current depot not found, must find a new depot
-				struct point nearestDepot = CModuleUtil::findPathOnMap(self.x, self.y, self.z, 0, 0, 0, 301, path);
+				struct point nearestDepot = CModuleUtil::findPathOnMap(self.x, self.y, self.z, 0, 0, 0, MAP_POINT_TYPE_DEPOT, path);
 				depotX = nearestDepot.x;
 				depotY = nearestDepot.y;
 				depotZ = nearestDepot.z;
@@ -556,7 +556,7 @@ void depotCheck(CConfigData *config)
 		CTibiaCharacter self;
 		reader.readSelfCharacter(&self);
 		uint8_t path[15];
-		struct point nearestDepot = CModuleUtil::findPathOnMap(self.x, self.y, self.z, 0, 0, 0, 301, path);
+		struct point nearestDepot = CModuleUtil::findPathOnMap(self.x, self.y, self.z, 0, 0, 0, MAP_POINT_TYPE_DEPOT, path);
 		depotX = nearestDepot.x;
 		depotY = nearestDepot.y;
 		depotZ = nearestDepot.z;
@@ -3580,7 +3580,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						registerDebug(buf);
 
 					int ticksStart  = GetTickCount();
-					point destPoint = CModuleUtil::findPathOnMap(self.x, self.y, self.z, waypointTargetX, waypointTargetY, waypointTargetZ, (depotX ? 301 : 0), path, (rand() % max(1, config->radius)) + 1);
+					point destPoint = CModuleUtil::findPathOnMap(self.x, self.y, self.z, waypointTargetX, waypointTargetY, waypointTargetZ, (depotX ? MAP_POINT_TYPE_DEPOT : 0), path, (rand() % max(1, config->radius)) + 1);
 					actualTargetX = destPoint.x;
 					actualTargetY = destPoint.y;
 					actualTargetZ = destPoint.z;

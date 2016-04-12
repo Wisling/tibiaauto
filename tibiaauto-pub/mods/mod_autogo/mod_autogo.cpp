@@ -29,6 +29,7 @@
 #include <PackSender.h>
 #include <IPCBackPipe.h>
 #include <TibiaItem.h>
+#include <TibiaMap.h>
 #include <ModuleUtil.h>
 #include <MMSystem.h>
 #include <Tlhelp32.h>
@@ -1391,7 +1392,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{        // Depot (Reasoned as, the safest position [because you are protected from attack])
 					int pathSize = 0;
 					uint8_t path[15];
-					struct point p = CModuleUtil::findPathOnMap(self.x, self.y, self.z, 0, 0, 0, 301, path);
+					struct point p = CModuleUtil::findPathOnMap(self.x, self.y, self.z, 0, 0, 0, MAP_POINT_TYPE_DEPOT, path);
 					for (; pathSize < 15 && path[pathSize]; pathSize++)
 						;
 					if (shouldKeepWalking())

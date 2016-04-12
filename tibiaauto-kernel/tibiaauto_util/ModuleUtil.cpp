@@ -612,10 +612,14 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 	int gotToEndPoint = 0;
 	point endPoint;
+#ifdef MAPDEBUG
 	int pqcountiter = 0;
+#endif // MAPDEBUG
 	while (pQueue.GetCount() && gotToEndPoint != 1)
 	{
+#ifdef MAPDEBUG
 		pqcountiter++;
+#endif // MAPDEBUG
 		pointNode* currentPoint = (pointNode*)pQueue.Remove();
 
 		int x  = currentPoint->x;
@@ -684,19 +688,6 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		/**
 		 * For each direction - check whether the next point is available on the map
 		 * and whether it has not been visited before.
-		 */
-
-		/**
-		 * 101 - open hole
-		 * 102 - closed hole--
-		 * 103 - grate--
-		 * 201 - rope--
-		 * 202 - magic rope
-		 * 203 - ladder--
-		 * 204 - stairs
-		 * 301 - depot
-		 * 302 - teleporter
-		 * 303 - permanent block
 		 */
 
 		int forcedLevelChange = 0, usedLevelChange = 0; // if set to 1 then going north, south, east, west is forbidden
@@ -777,7 +768,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		if (currentPointType == MAP_POINT_TYPE_TELEPORT || currentPointType == MAP_POINT_TYPE_USABLE_TELEPORT)
 		{
 			point dest = tibiaMap.getDestPoint(x, y, z);
-			pointsToAdd.Add(point(dest.x, dest.y, dest.z));
+			if (dest.x != 0 && dest.y != 0 && dest.z != 0)
+				pointsToAdd.Add(point(dest.x, dest.y, dest.z));
 #ifdef MAPDEBUG
 			mapDebug("go teleport");
 #endif // ifdef MAPDEBUG
@@ -850,15 +842,14 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			}
 		}
 	}
-	pqcountiter++;
 #ifdef MAPDEBUG
+	pqcountiter++;
 	char buf[1111];
 	sprintf(buf, "Ended loop count=%d gotToEndPoint=%d", pQueue.GetCount(), gotToEndPoint);
 	mapDebug(buf);
+	sprintf(buf,"%d",pqcountiter);
+	AfxMessageBox(buf);
 #endif // ifdef MAPDEBUG
-
-	//sprintf(buf,"%d",pqcountiter);
-	//AfxMessageBox(buf);
 	if (gotToEndPoint)
 	{
 		int pathPos     = 0;
@@ -961,7 +952,6 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				{
 					path[pos] = STEP_NULL; //undoes direction assignment - finishing the path
 				}
-				path[pos] = STEP_TELEPORT;
 				break;
 			}
 			else if (curZ - 1 == nextZ)
