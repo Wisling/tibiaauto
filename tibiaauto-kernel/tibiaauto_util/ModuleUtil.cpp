@@ -387,6 +387,7 @@ void CModuleUtil::findPathAllDirection(CTibiaQueue<point> &pointsToAdd, int x, i
 }
 
 #define MAX_PATH_LEN 10000
+// Caches whole searched path
 point pathTab[MAX_PATH_LEN];
 int pathTabLen;
 
@@ -520,12 +521,14 @@ int calcHeur(int startX, int startY, int startZ, int endX, int endY, int endZ)
 	return (abs(startX - endX) + abs(startY - endY) + abs(startZ - endZ)) * 100;
 }
 
+// Searches a path between 2 points on TA map 
+// Uses CTibiaMap global instance to store walking cost and as cache
+// Not thread safe
+// Set up to 15 walk steps in passed path variable 
+//
+// Returns: End point, or (0,0,0) if path not found
 struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation, uint8_t path[15], int radius /*= 1*/)
 {
-#ifdef MAPDEBUG
-	char bufD[2500];
-#endif // ifdef MAPDEBUG
-
 	memset(path, 0x00, sizeof(path[0]) * 15);
 	int closerEnd       = 0;
 	CTibiaMap &tibiaMap = CTibiaMap::getTibiaMap();
@@ -536,6 +539,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 
 #ifdef MAPDEBUG
+	char bufD[300];
 	sprintf(bufD, "SSS-findPathOnMap(startX=%d,startY=%d,startZ=%d,endX=%d,endY=%d,endZ=%d,endSpecialLocation=%d,radius=%d", startX, startY, startZ, endX, endY, endZ, endSpecialLocation, radius);
 	mapDebug(bufD);
 #endif // ifdef MAPDEBUG
@@ -571,12 +575,12 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	// If the destination is the same as before, use previously cached results
 	if (lastDestX == endX && lastDestY == endY && lastDestZ == endZ || lastSpecLoc == endSpecialLocation)
 	{
-		// Clear previous point in radius of 10 around start position
+		// Clear previous node in radius of 10 around start position
 		tibiaMap.clearLocalPrevPoint(startX, startY, startZ, 10);
 		pathFindX = lastEndPoint.x, pathFindY = lastEndPoint.y, pathFindZ = lastEndPoint.z;
 		point prevP(0, 0, 0);
 		int pathSize = 0;
-		// Move back from the last path end to the beggining, calculating path size 
+		// Move back from the last path end to the beginning, calculating path size if it's not exceeded 
 		while (true)
 		{
 			prevP.x = tibiaMap.getPrevPointX(pathFindX, pathFindY, pathFindZ);
@@ -603,18 +607,27 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	{
 		tibiaMap.clearPrevPoint();
 	}
-
-	CTibiaPriorityQueue pQueue;
-	pQueue.Add(1, (DWORD) new pointNode(startX, startY, startZ, startX, startY, startZ, 1, 0, 0));
-
-	tibiaMap.setPrevPoint(startX, startY, startZ, startX, startY, startZ);
-	tibiaMap.setPointDistance(startX, startY, startZ, 1);
-
-	int gotToEndPoint = 0;
+	
 	point endPoint;
+	int gotToEndPoint = AStarFindPath(closerEnd, pathFindX, pathFindY, radius, pathFindZ, endPoint, endSpecialLocation, startX, startY, startZ);
+	return AStarRetrievePath(gotToEndPoint, endPoint, startX, startY, startZ, path, endX, endY, endZ);
+}
+
+// Implements A* algorithm through X-Y-Z planes
+// Uses CTibiaMap global instance to store walking cost and as cache
+// Not thread safe
+int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int radius, int pathFindZ, point &endPoint, int endSpecialLocation, int startX, int startY, int startZ)
+{
 #ifdef MAPDEBUG
+	char bufD[300];
 	int pqcountiter = 0;
 #endif // MAPDEBUG
+	CTibiaPriorityQueue pQueue;
+	CTibiaMap &tibiaMap = CTibiaMap::getTibiaMap();
+	int gotToEndPoint = 0;
+	pQueue.Add(1, (DWORD) new pointNode(startX, startY, startZ, startX, startY, startZ, 1, 0, 0));
+	tibiaMap.setPrevPoint(startX, startY, startZ, startX, startY, startZ);
+	tibiaMap.setPointDistance(startX, startY, startZ, 1);
 	while (pQueue.GetCount() && gotToEndPoint != 1)
 	{
 #ifdef MAPDEBUG
@@ -622,15 +635,15 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 #endif // MAPDEBUG
 		pointNode* currentPoint = (pointNode*)pQueue.Remove();
 
-		int x  = currentPoint->x;
-		int y  = currentPoint->y;
-		int z  = currentPoint->z;
+		int x = currentPoint->x;
+		int y = currentPoint->y;
+		int z = currentPoint->z;
 		int px = currentPoint->px;
 		int py = currentPoint->py;
 		int pz = currentPoint->pz;
-		int g  = currentPoint->g;
-		int h  = currentPoint->h;
-		int f  = currentPoint->f;
+		int g = currentPoint->g;
+		int h = currentPoint->h;
+		int f = currentPoint->f;
 		delete currentPoint;
 
 
@@ -654,28 +667,28 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			if (max(abs(x - pathFindX), abs(y - pathFindY)) <= radius && z == pathFindZ)
 			{
 				gotToEndPoint = 1;//max(pQueueIter->size(),200);// found a path, but keep looking to find shortest path
-				endPoint.x    = x;
-				endPoint.y    = y;
-				endPoint.z    = z;
+				endPoint.x = x;
+				endPoint.y = y;
+				endPoint.z = z;
 			}
 			// standing by the depot
 			if (endSpecialLocation &&
-			    (tibiaMap.getPointType(x + 1, y, z) == endSpecialLocation ||
-			     tibiaMap.getPointType(x - 1, y, z) == endSpecialLocation ||
-			     tibiaMap.getPointType(x, y + 1, z) == endSpecialLocation ||
-			     tibiaMap.getPointType(x, y - 1, z) == endSpecialLocation))
+				(tibiaMap.getPointType(x + 1, y, z) == endSpecialLocation ||
+					tibiaMap.getPointType(x - 1, y, z) == endSpecialLocation ||
+					tibiaMap.getPointType(x, y + 1, z) == endSpecialLocation ||
+					tibiaMap.getPointType(x, y - 1, z) == endSpecialLocation))
 			{
 				// endSpecialLocation found - where we stand is our "end point"
 				gotToEndPoint = 1;//max(pQueueIter->size(),200);
-				endPoint.x    = x;
-				endPoint.y    = y;
-				endPoint.z    = z;
+				endPoint.x = x;
+				endPoint.y = y;
+				endPoint.z = z;
 			}
 		}
 		else if (x == pathFindX && y == pathFindY && z == pathFindZ)
 		{
 			gotToEndPoint = 1;
-			endPoint      = lastEndPoint;
+			endPoint = lastEndPoint;
 		}
 
 		if (gotToEndPoint)
@@ -777,9 +790,9 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 		//prevents the adding of squares around current square as possible next points except when standing on it(MAP_POINT_TYPE_BLOCK goes nowhere)
 		if ((currentPointType == MAP_POINT_TYPE_OPEN_HOLE ||
-		     currentPointType == MAP_POINT_TYPE_STAIRS ||
-		     currentPointType == MAP_POINT_TYPE_TELEPORT ||
-		     currentPointType == MAP_POINT_TYPE_BLOCK) && !(startX == x && startY == y && startZ == z))
+			currentPointType == MAP_POINT_TYPE_STAIRS ||
+			currentPointType == MAP_POINT_TYPE_TELEPORT ||
+			currentPointType == MAP_POINT_TYPE_BLOCK) && !(startX == x && startY == y && startZ == z))
 			forcedLevelChange = 1;
 
 		if (abs(x - px) > 1 || abs(y - py) > 1 || z != pz)
@@ -822,8 +835,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		while (pointsToAdd.GetCount())
 		{
 			point addPoint = pointsToAdd.Remove();
-			int newDist    = g + tibiaMap.calcDistance(x, y, z, addPoint.x, addPoint.y, addPoint.z);
-			int oldDist    = tibiaMap.getPointDistance(addPoint.x, addPoint.y, addPoint.z);
+			int newDist = g + tibiaMap.calcDistance(x, y, z, addPoint.x, addPoint.y, addPoint.z);
+			int oldDist = tibiaMap.getPointDistance(addPoint.x, addPoint.y, addPoint.z);
 			if (oldDist == 0 || newDist < oldDist)
 			{
 				tibiaMap.setPrevPoint(addPoint.x, addPoint.y, addPoint.z, x, y, z);
@@ -844,23 +857,37 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	}
 #ifdef MAPDEBUG
 	pqcountiter++;
-	char buf[1111];
-	sprintf(buf, "Ended loop count=%d gotToEndPoint=%d", pQueue.GetCount(), gotToEndPoint);
-	mapDebug(buf);
-	sprintf(buf,"%d",pqcountiter);
-	AfxMessageBox(buf);
+	sprintf(bufD, "Ended loop count=%d gotToEndPoint=%d", pQueue.GetCount(), gotToEndPoint);
+	mapDebug(bufD);
+	sprintf(bufD, "%d", pqcountiter);
+	AfxMessageBox(bufD);
 #endif // ifdef MAPDEBUG
+	// Path has been found, clean the priority queue
+	while (pQueue.GetCount())
+	{
+		pointNode* pn = (pointNode*)pQueue.Remove();
+		delete pn;
+	}
+	return gotToEndPoint;
+}
+
+struct point CModuleUtil::AStarRetrievePath(int gotToEndPoint, point &endPoint, int startX, int startY, int startZ, uint8_t * path, int endX, int endY, int endZ)
+{
+#ifdef MAPDEBUG
+	char bufD[2000];
+#endif // ifdef MAPDEBUG
+	CTibiaMap &tibiaMap = CTibiaMap::getTibiaMap();
 	if (gotToEndPoint)
 	{
-		int pathPos     = 0;
+		int pathPos = 0;
 		point currPoint = endPoint;
 		point tmpPoint;
 
 		while (currPoint.x != startX || currPoint.y != startY || currPoint.z != startZ)
 		{
-			tmpPoint.x         = currPoint.x;
-			tmpPoint.y         = currPoint.y;
-			tmpPoint.z         = currPoint.z;
+			tmpPoint.x = currPoint.x;
+			tmpPoint.y = currPoint.y;
+			tmpPoint.z = currPoint.z;
 			pathTab[pathPos].x = tmpPoint.x;
 			pathTab[pathPos].y = tmpPoint.y;
 			pathTab[pathPos].z = tmpPoint.z;
@@ -869,23 +896,15 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			currPoint.y = tibiaMap.getPrevPointY(tmpPoint.x, tmpPoint.y, tmpPoint.z);
 			currPoint.z = tibiaMap.getPrevPointZ(tmpPoint.x, tmpPoint.y, tmpPoint.z);
 #ifdef MAPDEBUG
-			sprintf(buf, "cur=(%d,%d,%d) new=(%d,%d,%d)", tmpPoint.x, tmpPoint.y, tmpPoint.z, currPoint.x, currPoint.y, currPoint.z);
-			//mapDebug(buf);
+			sprintf(bufD, "cur=(%d,%d,%d) new=(%d,%d,%d)", tmpPoint.x, tmpPoint.y, tmpPoint.z, currPoint.x, currPoint.y, currPoint.z);
+			//mapDebug(bufD);
 #endif // ifdef MAPDEBUG
 
 			pathPos++;
 
 			if (pathPos > MAX_PATH_LEN - 5)
-			{
-				while (pQueue.GetCount())
-				{
-					pointNode* pn = (pointNode*)pQueue.Remove();
-					delete pn;
-				}
 				return point(0, 0, 0);
-			}
 		}
-		;
 		pathTab[pathPos].x = startX;
 		pathTab[pathPos].y = startY;
 		pathTab[pathPos].z = startZ;
@@ -906,21 +925,21 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 #endif // ifdef MAPDEBUG
 
 #ifdef MAPDEBUG
-		sprintf(buf, "111 pathPos=%d", pathPos);
-		mapDebug(buf);
+		sprintf(bufD, "111 pathPos=%d", pathPos);
+		mapDebug(bufD);
 #endif // ifdef MAPDEBUG
 		int pos = 0;
 		for (pos = 0; pos < 10 && pos < pathPos - 1; pos++)
 		{
-			int curX  = pathTab[pathPos - pos - 1].x;
-			int curY  = pathTab[pathPos - pos - 1].y;
-			int curZ  = pathTab[pathPos - pos - 1].z;
+			int curX = pathTab[pathPos - pos - 1].x;
+			int curY = pathTab[pathPos - pos - 1].y;
+			int curZ = pathTab[pathPos - pos - 1].z;
 			int nextX = pathTab[pathPos - pos - 2].x;
 			int nextY = pathTab[pathPos - pos - 2].y;
 			int nextZ = pathTab[pathPos - pos - 2].z;
 #ifdef MAPDEBUG
-			sprintf(buf, "X cur=(%d,%d,%d) next=(%d,%d,%d)", curX, curY, curZ, nextX, nextY, nextZ);
-			mapDebug(buf);
+			sprintf(bufD, "X cur=(%d,%d,%d) next=(%d,%d,%d)", curX, curY, curZ, nextX, nextY, nextZ);
+			mapDebug(bufD);
 #endif // ifdef MAPDEBUG
 			path[pos] = STEP_NULL;
 			if (curX + 1 == nextX && curY == nextY)
@@ -983,47 +1002,34 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		}
 
 #ifdef MAPDEBUG
-		sprintf(buf, "XXX pos=%d pathPos=%d ", pos, pathPos);
+		sprintf(bufD, "XXX pos=%d pathPos=%d ", pos, pathPos);
 		int i;
 		for (i = 0; i < pos; i++)
 		{
 			char buf2[128];
 			sprintf(buf2, " (%d)", path[i]);
 			if (strlen(buf2) < 100)
-				strcat(buf, buf2);
+				strcat(bufD, buf2);
 		}
-		mapDebug(buf);
+		mapDebug(bufD);
 #endif // ifdef MAPDEBUG
 
 		//store param passed to findPathOnMap
-		lastDestX    = endX;
-		lastDestY    = endY;
-		lastDestZ    = endZ;
+		lastDestX = endX;
+		lastDestY = endY;
+		lastDestZ = endZ;
 		lastEndPoint = endPoint;//keep actual location we found a path to
 
 		pathTabLen = pathPos;
 #ifdef MAPDEBUG
-		sprintf(buf, "RETURN (%d,%d,%d)", endPoint.x, endPoint.y, endPoint.z);
-		mapDebug(buf);
+		sprintf(bufD, "RETURN (%d,%d,%d)", endPoint.x, endPoint.y, endPoint.z);
+		mapDebug(bufD);
 #endif // ifdef MAPDEBUG
-
-		while (pQueue.GetCount())
-		{
-			pointNode* pn = (pointNode*)pQueue.Remove();
-			delete pn;
-		}
-
 		return endPoint;
 	}
 
 	//reset stored information since no path was found
 	resetPathfinderData();
-
-	while (pQueue.GetCount())
-	{
-		pointNode* pn = (pointNode*)pQueue.Remove();
-		delete pn;
-	}
 	return point(0, 0, 0);
 }
 
