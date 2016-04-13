@@ -6,7 +6,7 @@
 using namespace std;
 
 #define MEMORY_CACHE_VALID_TIME 2 // Milliseconds
-#define MEMORY_CACHE_ENTRY_SIZE 512 // Bytes, must be a power of 2
+#define MEMORY_CACHE_ENTRY_SIZE 32 // Bytes, must be a power of 2
 struct MemoryCacheEntry
 {
 	LONGLONG expirationTime;

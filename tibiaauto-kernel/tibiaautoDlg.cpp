@@ -1620,7 +1620,7 @@ void CTibiaautoDlg::reportUsage()
 	{
 		time_t tm = time(NULL);
 		int checksum = tm % 177;
-		fprintf(f, "version=2.64.2 tm=%d,", tm);
+		fprintf(f, "version=2.65.0 tm=%d,", tm);
 		for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 		{
 			IModuleInterface* mod = it->second;
