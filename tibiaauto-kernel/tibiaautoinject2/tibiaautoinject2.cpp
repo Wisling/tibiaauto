@@ -180,7 +180,57 @@ int outSelfUHAvail    = 0;
 int outFluidManaAvail = 0;
 int outFluidLifeAvail = 0;
 
+//10.92
+int funAddr_tibiaPrintText =			0x4962C0;
+int funAddr_tibiaPlayerNameText =		0x52A440;
+int funAddr_tibiaDrawRect =             0x5D7AB0;
+int funAddr_tibiaInfoMiddleScreen =		0x5F1910;
+int funAddr_tibiaIsCreatureVisible =	0x4A9CA0;
+int funAddr_tibiaEncrypt =				0x607FF0;
+int funAddr_tibiaDecrypt =				0x608070;
+int funAddr_tibiaShouldParseRecv =		0x595770;//switch table contains "Are you sure you want to leave Tibia"
+int arrayPtr_recvStream =				0xB79F80-8;//look for this address near above location
+int funAddr_tibiaInfoMessageBox =		0x5F5880;
+int callAddr_DrawRect =                 0x581242;
+int callAddr_DrawBlackRect =            0x5811B3;
+int callAddr_PrintText01 =				0x48E91D;//...<addr>.*
+int callAddr_PrintText02 =				0x48E962;
+int callAddr_PrintText03 =				0x498499;
+int callAddr_PrintText04 =				0x58128F;
+int callAddr_PrintText05 =				0x5827E7;
+int callAddr_PlayerNameText01 =			0x44F9C5;
+int callAddr_PlayerNameText02 =			0x46188C;
+int callAddr_PlayerNameText03 =			0x4673E8;
+int callAddr_PlayerNameText04 =			0x4675D8;
+int callAddr_PlayerNameText05 =			0x46DB48;
+int callAddr_PlayerNameText06 =			0x4796BC;
+int callAddr_PlayerNameText07 =			0x49634C;
+int callAddr_PlayerNameText08 =			0x4CF6AA;
+int callAddr_PlayerNameText09 =			0x5820CF;
+int callAddr_PlayerNameText10 =			0x58C5CA;
+int callAddr_InfoMiddleScreen01 =		0x434EE8;
+int callAddr_InfoMiddleScreen02 =		0x493A29;
+int callAddr_InfoMiddleScreen03 =		0x4D658D;
+int callAddr_InfoMiddleScreen04 =		0x57EF4B;
+int callAddr_InfoMessageBox01 =			0x434774;
+int callAddr_InfoMessageBox02 =			0x45CC7F;
+int callAddr_InfoMessageBox03 =			0x5109BA;
+int callAddr_InfoMessageBox04 =			0x575C52;
+int callAddr_InfoMessageBox05 =			0x576447;
+int callAddr_InfoMessageBox06 =			0x5764ED;
+int callAddr_InfoMessageBox07 =			0x5F5705;
+int callAddr_InfoMessageBox08 =			0x5F60CC;
+int callAddr_InfoMessageBox09 =			0x5F61BB;
+int callAddr_InfoMessageBox10 =			0x5F63A2;
+int callAddr_InfoMessageBox11 =			0x5F6669;
+int callAddr_InfoMessageBox12 =			0x5F7175;
+int callAddr_InfoMessageBox13 =			0x5F71A5;
+int callAddr_Encrypt01 =				0x594EA3;
+int callAddr_Decrypt01 =				0x595499;
+int callAddr_ShouldParseRecv01 =		0x49B5A2;
+
 //10.90
+/*
 int funAddr_tibiaPrintText =			0x495E70;
 int funAddr_tibiaPlayerNameText =		0x529B50;
 int funAddr_tibiaInfoMiddleScreen =		0x5F03A0;
@@ -227,7 +277,7 @@ int callAddr_InfoMessageBox13 =			0x5F5C35;
 int callAddr_Encrypt01 =				0x593A93;
 int callAddr_Decrypt01 =				0x594089;
 int callAddr_ShouldParseRecv01 =		0x49B122;
-
+*/
 
 int(WINAPI * Real_send)(SOCKET s, char* buf, int len, int flags)               = NULL;
 int(WINAPI * Real_recv)(SOCKET s, char* buf, int len, int flags)               = NULL;
@@ -1175,7 +1225,7 @@ __declspec(noinline) int OUTmyDrawRect(int v1, int v2, int v3, int v4, int v5, i
 	int retvar;
 	typedef void(*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
 
-	Proto_fun fun = (Proto_fun)baseAdjust(0x5D6520);
+	Proto_fun fun = (Proto_fun)baseAdjust(funAddr_tibiaDrawRect);
 
 	__asm {
 			push v9 //nBlue
