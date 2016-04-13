@@ -183,7 +183,6 @@ int outFluidLifeAvail = 0;
 //10.92
 int funAddr_tibiaPrintText =			0x4962C0;
 int funAddr_tibiaPlayerNameText =		0x52A440;
-int funAddr_tibiaDrawRect =             0x5D7AB0;
 int funAddr_tibiaInfoMiddleScreen =		0x5F1910;
 int funAddr_tibiaIsCreatureVisible =	0x4A9CA0;
 int funAddr_tibiaEncrypt =				0x607FF0;
@@ -1220,32 +1219,32 @@ void InitialiseCreatureInfo()
 	}
 }
 
-__declspec(noinline) int OUTmyDrawRect(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9)
+__declspec(noinline) int OUTmyDrawRect(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, DWORD drawRectPtr)
 {
 	int retvar;
 	typedef void(*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
 
-	Proto_fun fun = (Proto_fun)baseAdjust(funAddr_tibiaDrawRect);
+	Proto_fun fun = (Proto_fun)(drawRectPtr);
 
 	__asm {
-			push v9 //nBlue
-			push v8 //nGreen
-			push v7 //nRed
-			push v6 //nHeight
-			push v5 //nWeight
-			push v4 //nY
-			push v3 //nX
-			push v2 //nSurface
-			mov ecx, v1 //unknown
-			call fun
-			add esp, 0x20
-			mov retvar, eax
+		push v9 //nBlue
+		push v8 //nGreen
+		push v7 //nRed
+		push v6 //nHeight
+		push v5 //nWeight
+		push v4 //nY
+		push v3 //nX
+		push v2 //nSurface
+		mov ecx, v1 //unknown
+		call fun
+		add esp, 0x20
+		mov retvar, eax
 	}
 	return retvar;
 
 }
 
-void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int nHeight, int nRed, int nGreen, int nBlue)
+void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int nHeight, int nRed, int nGreen, int nBlue, DWORD drawRectPtr)
 {
 	int creaturePointer = *(int*)(ebp - 0x5D6C);
 	char *creatureID = (char*)(creaturePointer);
@@ -1256,7 +1255,7 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 
 	if (strcmp(self.name, creatureID) == 0 && showManaBar)
 	{
-		OUTmyDrawRect(ecx, nSurface, nX, nY-5, nWeight, nHeight, nRed, nGreen, nBlue); //draw hp bar 5 pixels higher
+		OUTmyDrawRect(ecx, nSurface, nX, nY-5, nWeight, nHeight, nRed, nGreen, nBlue, drawRectPtr); //draw hp bar 5 pixels higher
 
 		if (!(!nRed && !nGreen && !nBlue)) //if it is not black bar being drawn
 		{
@@ -1297,14 +1296,14 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 
 			float myWeight = ((float)self.mana / (float)self.maxMana) * 0x1A; // "0x1A" is the maxWeight of colored bar
 
-			OUTmyDrawRect(ecx, nSurface, nX, nY, int(myWeight), nHeight, int(myRed), 0, int(myBlue));
+			OUTmyDrawRect(ecx, nSurface, nX, nY, int(myWeight), nHeight, int(myRed), 0, int(myBlue), drawRectPtr);
 		}
 		else
-			OUTmyDrawRect(ecx, nSurface, nX, nY, nWeight, nHeight, nRed, nGreen, nBlue);
+			OUTmyDrawRect(ecx, nSurface, nX, nY, nWeight, nHeight, nRed, nGreen, nBlue, drawRectPtr);
 			
 	}
 	else
-		OUTmyDrawRect(ecx, nSurface, nX, nY, nWeight, nHeight, nRed, nGreen, nBlue);
+		OUTmyDrawRect(ecx, nSurface, nX, nY, nWeight, nHeight, nRed, nGreen, nBlue, drawRectPtr);
 
 }
 
@@ -1314,6 +1313,7 @@ __declspec(naked) void INmyDrawRect() //(int v1, int v2, int v3, int v4, int v5,
 		mov ecx, dword ptr[ebp - 0x5D8C]
 		push ebp
 		mov ebp, esp
+		push[edx + 0x14]
 		push[ebp + 0x24]
 		push[ebp + 0x20]
 		push[ebp + 0x1C]
@@ -1326,7 +1326,6 @@ __declspec(naked) void INmyDrawRect() //(int v1, int v2, int v3, int v4, int v5,
 		push [ebp] // ebp is needed only to know which creatureID is being drawn
 		call myDrawRect
 		leave
-		ret 0x24
 	}
 }
 
@@ -1336,6 +1335,7 @@ __declspec(naked) void INmyDrawBlackRect() //(int v1, int v2, int v3, int v4, in
 		mov ecx, dword ptr[ebp - 0x5D4C]
 		push ebp
 		mov ebp, esp
+		push[edx + 0x14]
 		push[ebp + 0x24]
 		push[ebp + 0x20]
 		push[ebp + 0x1C]
@@ -1348,7 +1348,6 @@ __declspec(naked) void INmyDrawBlackRect() //(int v1, int v2, int v3, int v4, in
 		push [ebp] // ebp is needed only to know which creatureID is being drawn
 		call myDrawRect
 		leave
-		ret 0x24
 	}
 }
 
@@ -1632,7 +1631,7 @@ __declspec(naked) void INmyInterceptInfoMiddleScreen() //()
 		push ecx
 		call myInterceptInfoMiddleScreen
 		leave
-		    ret
+		ret
 	}
 }
 
@@ -2071,14 +2070,11 @@ void trapFun(HANDLE dwHandle, int addr, unsigned int targetFun)
 
 void hookDrawRect(HANDLE dwHandle, int addr, unsigned int targetFun)
 {
-	BYTE bytes[1] = { 0xE8 };
-	WriteProcessMemory(dwHandle, (void *)addr, bytes, sizeof(BYTE), NULL);
-	int targetAddr = targetFun - addr - 5;
-	int tmpAddr = addr + 1;
-	WriteProcessMemory(dwHandle, (void *)tmpAddr, &targetAddr, sizeof(long int), NULL);
-	BYTE bytes2[4] = { 0x90, 0x90, 0x90, 0x90 };
-	tmpAddr = tmpAddr + 4;
-	WriteProcessMemory(dwHandle, (void *)tmpAddr, bytes2, sizeof(long int), NULL);
+	// CALL, 32bit addr, 4x NOP
+	BYTE bytes[9] = { 0xE8, 0xFF, 0xFF, 0xFF, 0xFF, 0x90, 0x90, 0x90, 0x90 };
+	DWORD targetAddr = targetFun - addr - 5;
+	*(DWORD*)(bytes + 1) = targetAddr;
+	WriteProcessMemory(dwHandle, (void *)addr, bytes, 9, NULL);
 }
 
 void InitialisePlayerInfoHack()
