@@ -392,7 +392,7 @@ void CMemReader::GetLoggedChar(int processId, char* buf, int bufLen)
 		long offset = m_memAddressFirstCreature + i * m_memLengthCreature;
 		CMemUtil::getMemUtil().GetMemIntValue(processId, offset + 0, &creatureId, true, false);
 		CMemUtil::getMemUtil().GetMemIntValue(processId, offset + 164, &visible, true, false);
-		if (creatureId == 0)
+		if (creatureId == 0 || creatureId == 0xCCCCCCCC)
 			break;
 		if (selfId == creatureId && visible)
 		{
