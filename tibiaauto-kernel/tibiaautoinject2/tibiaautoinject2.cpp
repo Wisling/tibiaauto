@@ -1326,6 +1326,7 @@ __declspec(naked) void INmyDrawRect() //(int v1, int v2, int v3, int v4, int v5,
 		push [ebp] // ebp is needed only to know which creatureID is being drawn
 		call myDrawRect
 		leave
+		ret 0x24
 	}
 }
 
@@ -1348,6 +1349,7 @@ __declspec(naked) void INmyDrawBlackRect() //(int v1, int v2, int v3, int v4, in
 		push [ebp] // ebp is needed only to know which creatureID is being drawn
 		call myDrawRect
 		leave
+		ret 0x24
 	}
 }
 
