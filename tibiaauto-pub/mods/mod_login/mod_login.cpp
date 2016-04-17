@@ -263,7 +263,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (!loginTime)
 			{
 				loginTime = time(NULL) + config->loginDelay;
-				
+
 				int addr = CTibiaItem::getValueForConst("addrVIP");
 				CMemUtil::getMemUtil().GetMemRange(addr - 0x60, addr - 0x60 + 32, accNum);
 				CMemUtil::getMemUtil().GetMemRange(addr - 0x48, addr - 0x48 + 32, pass);
@@ -276,59 +276,77 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 		loggedIn = reader.isLoggedIn();
-		if (!loggedIn)
+		bool needsToOpenContainers = config->openMain && loggedIn && reader.readOpenContainerCount() == 0;
+		time_t needsToOpenContainersTm;
+		if (needsToOpenContainers && needsToOpenContainersTm == 0)
 		{
-			registerDebug("No connection: entering relogin mode");
+			needsToOpenContainersTm = time(NULL);
+		}
+		else if (!needsToOpenContainers)
+		{
+			needsToOpenContainersTm = 0;
+		}
+		if (!loggedIn || needsToOpenContainers && time(NULL) - needsToOpenContainersTm > 8)
+		{
+				if (!needsToOpenContainers)
+				{
+					registerDebug("No connection: entering relogin mode");
 
-			if (getSelfHealth() == 0 && !config->loginAfterKilled)
-			{
-				registerDebug("ERROR: Health is zero, was I killed?");
-				Sleep(1000);
-				while (!reader.isLoggedIn())
-				{
-					if (toolThreadShouldStop)
-						goto exitFunction;
-					Sleep(1000);
-				}
-				continue;
-			}
-			if (hMutex)
-			{
-				registerDebug("Waiting on global login mutex");
-				int itertime  = 1000; //1 sec
-				int waitcount = 1000 * 60 * 5 / itertime; // 5 mins
-				int count     = 0;
-				int retVal    = 0;
-				while (retVal = WaitForSingleObject(hMutex, itertime))
-				{
-					if (retVal == WAIT_TIMEOUT)
+					if (getSelfHealth() == 0 && !config->loginAfterKilled)
 					{
-						if (++count >= waitcount)
+						registerDebug("ERROR: Health is zero, was I killed?");
+						Sleep(1000);
+						while (!reader.isLoggedIn())
 						{
-							registerDebug("Wait timeout. Mutex is broken.");
+							if (toolThreadShouldStop)
+								goto exitFunction;
+							Sleep(1000);
+						}
+						continue;
+					}
+				}
+				else
+				{
+					registerDebug("No open containers: reopening backpacks");
+				}
+
+				if (hMutex)
+				{
+					registerDebug("Waiting on global login mutex");
+					int itertime  = 1000; //1 sec
+					int waitcount = 1000 * 60 * 5 / itertime; // 5 mins
+					int count     = 0;
+					int retVal    = 0;
+					while (retVal = WaitForSingleObject(hMutex, itertime))
+					{
+						if (retVal == WAIT_TIMEOUT)
+						{
+							if (++count >= waitcount)
+							{
+								registerDebug("Wait timeout. Mutex is broken.");
+								CloseHandle(hMutex);
+								hMutex = NULL;
+								break;
+							}
+						}
+						else if (retVal == WAIT_FAILED)
+						{
 							CloseHandle(hMutex);
 							hMutex = NULL;
 							break;
 						}
 					}
-					else if (retVal == WAIT_FAILED)
-					{
-						CloseHandle(hMutex);
-						hMutex = NULL;
-						break;
-					}
+					if (!hMutex)
+						continue;
+					registerDebug("Acquired mutex");
 				}
-				if (!hMutex)
+				else
+				{
+					hMutex = OpenMutex(MUTEX_ALL_ACCESS, false, "TibiaAuto_modLogin_mutex");
+					if (hMutex == NULL)
+						hMutex = CreateMutex(NULL, false, "TibiaAuto_modLogin_mutex");
 					continue;
-				registerDebug("Acquired mutex");
-			}
-			else
-			{
-				hMutex = OpenMutex(MUTEX_ALL_ACCESS, false, "TibiaAuto_modLogin_mutex");
-				if (hMutex == NULL)
-					hMutex = CreateMutex(NULL, false, "TibiaAuto_modLogin_mutex");
-				continue;
-			}
+				}
 
 			CRect wndRect;
 
@@ -338,9 +356,9 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			CVariableStore::setVariable("walking_control", "login");
 			CVariableStore::setVariable("walking_priority", "10");
 
-			int wndIconic    = ::IsIconic(hwnd);
+			int wndIconic = ::IsIconic(hwnd);
 			int wndMaximized = ::IsZoomed(hwnd);
-			int wndTrayed    = !::IsWindowVisible(hwnd);
+			int wndTrayed = !::IsWindowVisible(hwnd);
 			if (wndTrayed)
 			{
 				::ShowWindow(hwnd, SW_SHOW);
@@ -375,6 +393,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					continue;
 				}
 			}
+
 			if (toolThreadShouldStop)
 			{
 				ReleaseMutex(hMutex);
@@ -412,78 +431,80 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				Sleep(2000);
 				continue;
 			}
-			SetCursorPos(wndRect.left + 91, wndRect.bottom - 211);
-			mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
-			mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
-			if (waitOnConnecting() || waitForWindow("Enter Game", 5) || ensureForeground(hwnd))
+			if (!needsToOpenContainers)
 			{
-				ReleaseMutex(hMutex);
-				Sleep(2000);
-				continue;
-			}
-			// click "No Auth button if it is on the screen
-			SetCursorPos(wndRect.left + (wndRect.right - wndRect.left) / 2 - 29, wndRect.top + (wndRect.bottom - wndRect.top) / 2 + 110);
-			mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
-			mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
-			Sleep(300);
-			// STEP2: enter user and pass
-			if (!config->autopass)
-			{
-				strncpy(accNum, config->accountNumber, 32);
-				strncpy(pass, config->password, 32);
-			}
-			sk.SendKeys(accNum, true);
-			SetCursorPos(wndRect.left + (wndRect.right - wndRect.left) / 2 + 50, wndRect.top + (wndRect.bottom - wndRect.top) / 2 - 25);
-			mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
-			mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
-			sk.SendKeys(pass, true);
-			SetCursorPos(wndRect.left + (wndRect.right - wndRect.left) / 2 + 50 - 20, wndRect.top + (wndRect.bottom - wndRect.top) / 2 - 25 + 125);
-			mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
-			mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
-			waitOnConnecting();
-			if (waitForWindow("Select Character", 2) && !waitForWindow("Message of the Day", 5))
-				sk.SendKeys("~", true);
-
-
-			// STEP3: select char
-			if (waitForWindow("Select Character", 5) || ensureForeground(hwnd))
-			{
-				//If we receive a "Sorry" window it is likely that we do not have a good password.
-				if (strcmp(reader.getOpenWindowName(), "Sorry") == 0)
+				SetCursorPos(wndRect.left + 91, wndRect.bottom - 211);
+				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
+				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
+				if (waitOnConnecting() || waitForWindow("Enter Game", 5) || ensureForeground(hwnd))
 				{
-					registerDebug("ERROR: Bad account name or password. Quitting Auto Login.");
-					neverLogInAgain = 1;
+					ReleaseMutex(hMutex);
+					Sleep(2000);
+					continue;
 				}
-				ReleaseMutex(hMutex);
-				Sleep(2000);
-				continue;
-			}
+				// click "No Auth button if it is on the screen
+				SetCursorPos(wndRect.left + (wndRect.right - wndRect.left) / 2 - 29, wndRect.top + (wndRect.bottom - wndRect.top) / 2 + 110);
+				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
+				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
+				Sleep(300);
+				// STEP2: enter user and pass
+				if (!config->autopass)
+				{
+					strncpy(accNum, config->accountNumber, 32);
+					strncpy(pass, config->password, 32);
+				}
+				sk.SendKeys(accNum, true);
+				SetCursorPos(wndRect.left + (wndRect.right - wndRect.left) / 2 + 50, wndRect.top + (wndRect.bottom - wndRect.top) / 2 - 25);
+				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
+				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
+				sk.SendKeys(pass, true);
+				SetCursorPos(wndRect.left + (wndRect.right - wndRect.left) / 2 + 50 - 20, wndRect.top + (wndRect.bottom - wndRect.top) / 2 - 25 + 125);
+				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
+				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
+				waitOnConnecting();
+				if (waitForWindow("Select Character", 2) && !waitForWindow("Message of the Day", 5))
+					sk.SendKeys("~", true);
 
-			sk.SendKeys("a");// goes to beginning of list
-			for (int i = 1; i < config->charPos; i++)
-			{
-				sk.SendKeys("{DOWN}");
-			}
 
-			SetCursorPos(wndRect.left + (wndRect.right - wndRect.left) / 2 + 168 - 92, wndRect.top + (wndRect.bottom - wndRect.top) / 2 + 187 - 14 + 18);
-			mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
-			mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
+				// STEP3: select char
+				if (waitForWindow("Select Character", 5) || ensureForeground(hwnd))
+				{
+					//If we receive a "Sorry" window it is likely that we do not have a good password.
+					if (strcmp(reader.getOpenWindowName(), "Sorry") == 0)
+					{
+						registerDebug("ERROR: Bad account name or password. Quitting Auto Login.");
+						neverLogInAgain = 1;
+					}
+					ReleaseMutex(hMutex);
+					Sleep(2000);
+					continue;
+				}
 
-			registerDebug("Waiting for establishing connection up to 15s");
-			for (int i = 0; i < 150; i++)
-			{
-				if (reader.isLoggedIn())
-					break;
+				sk.SendKeys("a");// goes to beginning of list
+				for (int i = 1; i < config->charPos; i++)
+				{
+					sk.SendKeys("{DOWN}");
+				}
+
+				SetCursorPos(wndRect.left + (wndRect.right - wndRect.left) / 2 + 168 - 92, wndRect.top + (wndRect.bottom - wndRect.top) / 2 + 187 - 14 + 18);
+				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
+				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
+
+				registerDebug("Waiting for establishing connection up to 15s");
+				for (int i = 0; i < 150; i++)
+				{
+					if (reader.isLoggedIn())
+						break;
+					if (toolThreadShouldStop)
+						break;
+					Sleep(100);
+				}
 				if (toolThreadShouldStop)
-					break;
-				Sleep(100);
+				{
+					ReleaseMutex(hMutex);
+					continue;
+				}
 			}
-			if (toolThreadShouldStop)
-			{
-				ReleaseMutex(hMutex);
-				continue;
-			}
-
 			//Click on the X of Possibly open skills/battle windows
 			for (int i = 0; i < 4; i++)
 			{
@@ -498,35 +519,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			// finalize
 			if (reader.isLoggedIn() && config->openMain)
 			{
-				// open the main backpack flow
 
-				//Comemnted out checking number of backpacks open.  Assume infalliability.
-				//This portion is not needed and has caused problems regarding closing already opened backpacks and never reopening them
-				/*
-				   int openContainersCount=0;
-				   for (i=0;i<7;i++)
-				   {
-				        CTibiaContainer *cont = reader.readContainer(i);
-				        if (cont->flagOnOff) openContainersCount++;
-				        delete cont;
-				   }
-				   if (openContainersCount!=shouldBeOpenedContainers)
-				   {
-				        int pos;
-				        // no open containers found; proceed.
-				        // first: close existing containers
-				        for (pos=0;pos<reader.m_memMaxContainers;pos++)
-				        {
-				                CTibiaContainer *cont = reader.readContainer(pos);
-				                if (cont->flagOnOff)
-				                {
-				                        CPackSender::closeContainer(pos);
-				                        CModuleUtil::waitForOpenContainer(pos,0);
-				                }
-
-				                delete cont;
-				        }
-				 */
 				// now open containers
 
 				CTibiaItem *item = reader.readItem(reader.m_memAddressBackpack);
@@ -542,6 +535,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
 				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
 				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
+				//minimize higher up if inventory is minimized
 				SetCursorPos(wndRect.right - dblClickXOffset, wndRect.top + 282 + 39);
 				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
 				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
@@ -587,11 +581,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 								mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
 								mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
 								mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
-								SetCursorPos(wndRect.right - dblClickXOffset, wndRect.top + 282 + 39 + 19 * foundContOpenNr);
-								mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
-								mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
-								mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
-								mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
+								//minimize higher up if inventory is minimized only up to 3 containers(reaches into container area when inventory is maximized after 3)
+								if (foundContOpenNr <= 3){
+									SetCursorPos(wndRect.right - dblClickXOffset, wndRect.top + 282 + 39 + 19 * foundContOpenNr);
+									mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
+									mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
+									mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
+									mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
+								}
 
 								foundContOpenNr++;
 							}
