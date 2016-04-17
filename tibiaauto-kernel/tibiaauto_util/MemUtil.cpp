@@ -104,9 +104,6 @@ int CMemUtil::readmemory(DWORD processId, DWORD memAddress, char* result, DWORD 
 		ptr = (void *)(memAddress - 0x400000 + GetProcessBaseAddr(processId));
 	else
 		ptr = (void *)memAddress;
-	if ((int)ptr == -1){
-		int a = 0;
-	}
 	if (useCache)
 	{
 		DWORD alignedAddr = ((DWORD)ptr) & (0xFFFFFFFF - (MEMORY_CACHE_ENTRY_SIZE - 1));
