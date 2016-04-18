@@ -53,6 +53,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_AUTOPASS, m_autopass);
+	DDX_Control(pDX, IDC_LOGIN_ENABLE, m_loginEnable);
 	DDX_Control(pDX, IDC_LOGIN_AFTER_KILLED, m_loginAfterKilled);
 	//}}AFX_DATA_MAP
 }
@@ -65,6 +66,7 @@ ON_WM_TIMER()
 ON_WM_ERASEBKGND()
 ON_WM_CTLCOLOR()
 ON_BN_CLICKED(IDC_AUTOPASS, OnAutopass)
+ON_BN_CLICKED(IDC_LOGIN_ENABLE, OnLoginEnable)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -113,12 +115,12 @@ void CConfigDialog::disableControls()
 	m_openCont8.EnableWindow(false);
 	m_loginDelay.EnableWindow(false);
 	m_autopass.EnableWindow(false);
+	m_loginEnable.EnableWindow(false);
 	m_loginAfterKilled.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
 {
-	m_charPos.EnableWindow(true);
 	m_openMain.EnableWindow(true);
 	m_openCont1.EnableWindow(true);
 	m_openCont2.EnableWindow(true);
@@ -128,11 +130,9 @@ void CConfigDialog::enableControls()
 	m_openCont6.EnableWindow(true);
 	m_openCont7.EnableWindow(true);
 	m_openCont8.EnableWindow(true);
-	m_loginDelay.EnableWindow(true);
-	m_loginAfterKilled.EnableWindow(true);
 
-	m_autopass.EnableWindow(false);
-	OnAutopass();
+	m_loginEnable.EnableWindow(true);
+	OnLoginEnable();
 }
 
 void CConfigDialog::configToControls(CConfigData *configData)
@@ -160,7 +160,9 @@ void CConfigDialog::configToControls(CConfigData *configData)
 
 	m_autopass.SetCheck(0);// configData->autopass);
 	m_autopass.EnableWindow(false);
-	OnAutopass();
+
+	m_loginEnable.SetCheck(configData->loginEnable);
+	OnLoginEnable();
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -184,6 +186,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_loginDelay.GetWindowText(buf, 63);
 	newConfigData->loginDelay       = atoi(buf);
 	newConfigData->autopass         = 0;                               // m_autopass.GetCheck();
+	newConfigData->loginEnable = m_loginEnable.GetCheck();
 	newConfigData->loginAfterKilled = m_loginAfterKilled.GetCheck();
 
 	return newConfigData;
@@ -301,4 +304,20 @@ void CConfigDialog::OnAutopass()
 	int enable = m_autopass.GetCheck();
 	m_accountNumber.EnableWindow(!enable);
 	m_password.EnableWindow(!enable);
+}
+
+void CConfigDialog::OnLoginEnable()
+{
+	int enable = m_loginEnable.GetCheck();
+	m_accountNumber.EnableWindow(enable);
+	m_password.EnableWindow(enable);
+	m_charPos.EnableWindow(enable);
+	m_loginDelay.EnableWindow(enable);
+	m_loginAfterKilled.EnableWindow(enable);
+	m_accountNumber.EnableWindow(enable);
+	m_password.EnableWindow(enable);
+
+	m_autopass.EnableWindow(false); //enable);
+	if(enable)
+		OnAutopass();
 }

@@ -246,14 +246,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		hMutex = CreateMutex(NULL, false, "TibiaAuto_modLogin_mutex");
 	while (!toolThreadShouldStop)
 	{
-		Sleep(100);
+		Sleep(200);
 		ReleaseMutex(hMutex);
 
-		if (neverLogInAgain)
-			continue;
 		int loggedIn = reader.isLoggedIn();
+		if (!loggedIn && neverLogInAgain)
+			continue;
 
-		if (!loggedIn)
+		if (config->loginEnable && !loggedIn)
 		{
 			char buf[128];
 			sprintf(buf, "Connection Status Changed to:%d", reader.getConnectionState());
@@ -276,7 +276,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 		loggedIn = reader.isLoggedIn();
-		bool needsToOpenContainers = config->openMain && loggedIn && reader.readOpenContainerCount() == 0;
+		bool needsToLogIn = !loggedIn && config->loginEnable;
+		bool needsToOpenContainers = !needsToLogIn && config->openMain && loggedIn && reader.readOpenContainerCount() == 0;
 		time_t needsToOpenContainersTm;
 		if (needsToOpenContainers && needsToOpenContainersTm == 0)
 		{
@@ -286,67 +287,67 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		{
 			needsToOpenContainersTm = 0;
 		}
-		if (!loggedIn || needsToOpenContainers && time(NULL) - needsToOpenContainersTm > 8)
+		if (needsToLogIn || needsToOpenContainers && time(NULL) - needsToOpenContainersTm > 8)
 		{
-				if (!needsToOpenContainers)
-				{
-					registerDebug("No connection: entering relogin mode");
+			if (needsToLogIn)
+			{
+				registerDebug("No connection: entering relogin mode");
 
-					if (getSelfHealth() == 0 && !config->loginAfterKilled)
+				if (getSelfHealth() == 0 && !config->loginAfterKilled)
+				{
+					registerDebug("ERROR: Health is zero, was I killed?");
+					Sleep(1000);
+					while (!reader.isLoggedIn())
 					{
-						registerDebug("ERROR: Health is zero, was I killed?");
+						if (toolThreadShouldStop)
+							goto exitFunction;
 						Sleep(1000);
-						while (!reader.isLoggedIn())
-						{
-							if (toolThreadShouldStop)
-								goto exitFunction;
-							Sleep(1000);
-						}
-						continue;
 					}
+					continue;
 				}
-				else
-				{
-					registerDebug("No open containers: reopening backpacks");
-				}
+			}
+			else
+			{
+				registerDebug("No open containers: reopening backpacks");
+			}
 
-				if (hMutex)
+			if (hMutex)
+			{
+				registerDebug("Waiting on global login mutex");
+				int itertime = 1000; //1 sec
+				int waitcount = 1000 * 60 * 5 / itertime; // 5 mins
+				int count = 0;
+				int retVal = 0;
+				while (retVal = WaitForSingleObject(hMutex, itertime))
 				{
-					registerDebug("Waiting on global login mutex");
-					int itertime  = 1000; //1 sec
-					int waitcount = 1000 * 60 * 5 / itertime; // 5 mins
-					int count     = 0;
-					int retVal    = 0;
-					while (retVal = WaitForSingleObject(hMutex, itertime))
+					if (retVal == WAIT_TIMEOUT)
 					{
-						if (retVal == WAIT_TIMEOUT)
+						if (++count >= waitcount)
 						{
-							if (++count >= waitcount)
-							{
-								registerDebug("Wait timeout. Mutex is broken.");
-								CloseHandle(hMutex);
-								hMutex = NULL;
-								break;
-							}
-						}
-						else if (retVal == WAIT_FAILED)
-						{
+							registerDebug("Wait timeout. Mutex is broken.");
 							CloseHandle(hMutex);
 							hMutex = NULL;
 							break;
 						}
 					}
-					if (!hMutex)
-						continue;
-					registerDebug("Acquired mutex");
+					else if (retVal == WAIT_FAILED)
+					{
+						CloseHandle(hMutex);
+						hMutex = NULL;
+						break;
+					}
 				}
-				else
-				{
-					hMutex = OpenMutex(MUTEX_ALL_ACCESS, false, "TibiaAuto_modLogin_mutex");
-					if (hMutex == NULL)
-						hMutex = CreateMutex(NULL, false, "TibiaAuto_modLogin_mutex");
+				if (!hMutex)
 					continue;
-				}
+				registerDebug("Acquired mutex");
+			}
+			else
+			{
+				hMutex = OpenMutex(MUTEX_ALL_ACCESS, false, "TibiaAuto_modLogin_mutex");
+				if (hMutex == NULL)
+					hMutex = CreateMutex(NULL, false, "TibiaAuto_modLogin_mutex");
+				continue;
+			}
 
 			CRect wndRect;
 
@@ -431,7 +432,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				Sleep(2000);
 				continue;
 			}
-			if (!needsToOpenContainers)
+			if (needsToLogIn)
 			{
 				SetCursorPos(wndRect.left + 91, wndRect.bottom - 211);
 				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
@@ -508,10 +509,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			//Click on the X of Possibly open skills/battle windows
 			for (int i = 0; i < 4; i++)
 			{
-				SetCursorPos(wndRect.right - 15, wndRect.top + 387 + 39);//inventory maximized
+				SetCursorPos(wndRect.right - 15, wndRect.top + 387 + 34);//inventory maximized
 				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
 				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
-				SetCursorPos(wndRect.right - 15, wndRect.top + 382 + 39);//inventory minimized
+				SetCursorPos(wndRect.right - 15, wndRect.top + 382 + 34);//inventory minimized
 				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
 				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
 				Sleep(100);
@@ -530,13 +531,13 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 				//Double click on the main bar of the container
 				int dblClickXOffset = 87 + 69;
-				SetCursorPos(wndRect.right - dblClickXOffset, wndRect.top + 387 + 39);
+				SetCursorPos(wndRect.right - dblClickXOffset, wndRect.top + 386 + 34);
 				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
 				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
 				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
 				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
 				//minimize higher up if inventory is minimized
-				SetCursorPos(wndRect.right - dblClickXOffset, wndRect.top + 282 + 39);
+				SetCursorPos(wndRect.right - dblClickXOffset, wndRect.top + 284 + 34);
 				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
 				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
 				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
@@ -545,12 +546,12 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				CTibiaContainer *cont = reader.readContainer(0);
 				if (cont->flagOnOff)
 				{
-					int foundContNr     = 1;
+					int foundContNr = 1;
 					int foundContOpenNr = 1;
 					for (int pos = 0; pos < cont->itemsInside; pos++)
 					{
 						CTibiaItem *itemInside = (CTibiaItem *)cont->items.GetAt(pos);
-						CTibiaTile *itemTile   = CTileReader::getTileReader().getTile(itemInside->objectId);
+						CTibiaTile *itemTile = CTileReader::getTileReader().getTile(itemInside->objectId);
 						if (itemTile->isContainer)
 						{
 							int doOpen = 0;
@@ -576,14 +577,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 								CModuleUtil::waitForOpenContainer(foundContOpenNr, 1);
 
 								//Double click on main bar of open container(each container heign =19
-								SetCursorPos(wndRect.right - dblClickXOffset, wndRect.top + 387 + 39 + 19 * foundContOpenNr);
+								SetCursorPos(wndRect.right - dblClickXOffset, wndRect.top + 386 + 34 + 19 * foundContOpenNr);
 								mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
 								mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
 								mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
 								mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
 								//minimize higher up if inventory is minimized only up to 3 containers(reaches into container area when inventory is maximized after 3)
 								if (foundContOpenNr <= 3){
-									SetCursorPos(wndRect.right - dblClickXOffset, wndRect.top + 282 + 39 + 19 * foundContOpenNr);
+									SetCursorPos(wndRect.right - dblClickXOffset, wndRect.top + 284 + 34 + 19 * foundContOpenNr);
 									mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
 									mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
 									mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
@@ -795,23 +796,32 @@ char *CMod_loginApp::getVersion()
 
 int CMod_loginApp::validateConfig(int showAlerts)
 {
-	if (!m_configData->autopass && strlen(m_configData->accountNumber) == 0)
+	if (m_configData->loginEnable)
 	{
-		if (showAlerts)
-			AfxMessageBox("Account number must be filled in!");
-		return 0;
-	}
-	if (!m_configData->autopass && strlen(m_configData->password) == 0)
-	{
-		if (showAlerts)
-			AfxMessageBox("Password must be filled in!");
-		return 0;
-	}
-	if (m_configData->charPos <= 0 || m_configData->charPos > 20)
-	{
-		if (showAlerts)
-			AfxMessageBox("Character position must be between 1 and 20.");
-		return 0;
+		if (!m_configData->autopass && strlen(m_configData->accountNumber) == 0)
+		{
+			if (showAlerts)
+				AfxMessageBox("Account name must be filled in!");
+			return 0;
+		}
+		if (!m_configData->autopass && strlen(m_configData->password) == 0)
+		{
+			if (showAlerts)
+				AfxMessageBox("Password must be filled in!");
+			return 0;
+		}
+		if (m_configData->charPos <= 0 || m_configData->charPos > 20)
+		{
+			if (showAlerts)
+				AfxMessageBox("Character position must be between 1 and 20.");
+			return 0;
+		}
+		if (m_configData->loginDelay < 0)
+		{
+			if (showAlerts)
+				AfxMessageBox("Login delay must not be less than 0.");
+			return 0;
+		}
 	}
 	if (m_configData->openCont1 || m_configData->openCont2 || m_configData->openCont3 || m_configData->openCont4
 	    || m_configData->openCont5 || m_configData->openCont6 || m_configData->openCont7 || m_configData->openCont8)
@@ -823,14 +833,6 @@ int CMod_loginApp::validateConfig(int showAlerts)
 			return 0;
 		}
 	}
-	if (m_configData->loginDelay < 0)
-	{
-		if (showAlerts)
-			AfxMessageBox("Login delay must not be less than 0.");
-		return 0;
-	}
-
-
 	return 1;
 }
 
@@ -864,6 +866,8 @@ void CMod_loginApp::loadConfigParam(const char *paramName, char *paramValue)
 		m_configData->openCont7 = atoi(paramValue);
 	if (!strcmp(paramName, "open/cont8"))
 		m_configData->openCont8 = atoi(paramValue);
+	if (!strcmp(paramName, "loginEnable"))
+		m_configData->loginEnable = atoi(paramValue);
 	if (!strcmp(paramName, "loginDelay"))
 		m_configData->loginDelay = atoi(paramValue);
 	if (!strcmp(paramName, "autopass"))
@@ -872,6 +876,8 @@ void CMod_loginApp::loadConfigParam(const char *paramName, char *paramValue)
 		strncpy(m_configData->accountNumber, paramValue, 64);
 	if (!strcmp(paramName, "accountpass"))
 		strncpy(m_configData->password, paramValue, 64);
+	if (!strcmp(paramName, "charPos"))
+		m_configData->charPos = atoi(paramValue);
 	if (!strcmp(paramName, "loginAfterKilled"))
 		m_configData->loginAfterKilled = atoi(paramValue);
 }
@@ -899,6 +905,8 @@ char *CMod_loginApp::saveConfigParam(const char *paramName)
 		sprintf(buf, "%d", m_configData->openCont7);
 	if (!strcmp(paramName, "open/cont8"))
 		sprintf(buf, "%d", m_configData->openCont8);
+	if (!strcmp(paramName, "loginEnable"))
+		sprintf(buf, "%d", m_configData->loginEnable);
 	if (!strcmp(paramName, "loginDelay"))
 		sprintf(buf, "%d", m_configData->loginDelay);
 	if (!strcmp(paramName, "autopass"))
@@ -907,6 +915,8 @@ char *CMod_loginApp::saveConfigParam(const char *paramName)
 		sprintf(buf, "***censored***");
 	if (!strcmp(paramName, "accountpass"))
 		sprintf(buf, "***censored***");
+	if (!strcmp(paramName, "charPos"))
+		sprintf(buf, "%d", m_configData->charPos);
 	if (!strcmp(paramName, "loginAfterKilled"))
 		sprintf(buf, "%d", m_configData->loginAfterKilled);
 
@@ -924,10 +934,12 @@ static const char *configParamNames[] =
 	"open/cont6",
 	"open/cont7",
 	"open/cont8",
+	"loginEnable",
 	"loginDelay",
 	"autopass",
 	"accountname",
 	"accountpass",
+	"charPos",
 	"loginAfterKilled",
 	NULL,
 };

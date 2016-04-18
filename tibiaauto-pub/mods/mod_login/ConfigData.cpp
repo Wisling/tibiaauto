@@ -26,6 +26,7 @@ CConfigData::CConfigData()
 	loginAfterKilled = 0;
 	loginDelay       = 600;
 	autopass         = 0;
+	loginEnable      = 1;
 }
 
 CConfigData::~CConfigData()

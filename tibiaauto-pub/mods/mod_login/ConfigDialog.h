@@ -54,6 +54,7 @@ public:
 	CButtonST m_enable;
 	CButtonST m_OK;
 	CButton m_autopass;
+	CButton m_loginEnable;
 	CButton m_loginAfterKilled;
 	//}}AFX_DATA
 
@@ -78,6 +79,7 @@ protected:
 	afx_msg void OnTimer(UINT nIDEvent);
 	virtual BOOL OnInitDialog();
 	afx_msg void OnAutopass();
+	afx_msg void OnLoginEnable();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

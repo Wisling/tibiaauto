@@ -29,6 +29,7 @@ public:
 	int openCont8;
 	int loginDelay;
 	int autopass;
+	int loginEnable;
 	int loginAfterKilled;
 };
 
