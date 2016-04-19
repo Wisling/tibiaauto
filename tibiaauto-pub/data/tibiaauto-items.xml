@@ -3488,6 +3488,8 @@
     <item id="0xe8b" name="White Mushroom" time="108"/>
     <item id="0xe8f" name="Wood Mushroom" time="108"/>
     <item id="0x4431" name="Insectoid Eggs" time="120"/>
+    <item id="0x459c" name="Soft Cheese" time="180"/>
+    <item id="0x459d" name="Rat Cheese" time="144"/>
   </foods>
 
 </item-definitions>
