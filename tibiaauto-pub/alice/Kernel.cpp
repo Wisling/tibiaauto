@@ -11,6 +11,7 @@
 #include <iostream>
 #include <strstream>
 
+#include <InstallPath.h>
 #include "Match.h"
 #include "Utils.h"
 #include "Parser.h"
@@ -207,27 +208,11 @@ Nodemaster *Kernel::root = new Nodemaster();
 
 Kernel::Kernel()
 {
-	char installPath[1024];
-	unsigned long installPathLen = 1023;
-	installPath[0] = '\0';
-	HKEY hkey = NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
-	{
-		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
-		RegCloseKey(hkey);
-	}
-	if (!strlen(installPath))
-	{
-		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-		PostQuitMessage(1);
-		return;
-	}
-
 	new Substituter();
 	Handler::init();
 	Kernel::loadSubstitutions();
 	char pathBuf[2048];
-	sprintf(pathBuf, "%s\\data\\std-startup.xml", installPath);
+	sprintf(pathBuf, "%s\\data\\std-startup.xml", CInstallPath::getInstallPath().c_str());
 	if (!Kernel::load(pathBuf))
 	{
 		getStream("Console")->Write("Shutting down (cannot run without std-startup.xml file)");
@@ -393,24 +378,8 @@ void Kernel::loadTemporaryData()
 
 void Kernel::loadSubstitutions()
 {
-	char installPath[1024];
-	unsigned long installPathLen = 1023;
-	installPath[0] = '\0';
-	HKEY hkey = NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
-	{
-		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
-		RegCloseKey(hkey);
-	}
-	if (!strlen(installPath))
-	{
-		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-		PostQuitMessage(1);
-		return;
-	}
-
 	char pathBuf[2048];
-	sprintf(pathBuf, "%s\\data\\substitutions.xml", installPath);
+	sprintf(pathBuf, "%s\\data\\substitutions.xml", CInstallPath::getInstallPath().c_str());
 	ifstream fin;
 	PElement root;
 	fin.open(pathBuf, ios::in | ios::binary);

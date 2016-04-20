@@ -6,6 +6,7 @@
 #include "tibiaauto_util.h"
 #include "TileReader.h"
 #include "Util.h"
+#include "InstallPath.h"
 #include <time.h>
 
 #include <xercesc/util/PlatformUtils.hpp>
@@ -93,24 +94,9 @@ void CTileReader::loadTiles()
 	XercesDOMParser *parser = new XercesDOMParser();
 	try
 	{
-		char installPath[1024];
-		unsigned long installPathLen = 1023;
-		installPath[0] = '\0';
-		HKEY hkey = NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
-		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
-			RegCloseKey(hkey);
-		}
-		if (!strlen(installPath))
-		{
-			AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-			PostQuitMessage(-1);
-			return;
-		}
 		int rootNr;
 		char pathBuf[2048];
-		sprintf(pathBuf, "%s\\data\\tibiaauto-tiles.xml", installPath);
+		sprintf(pathBuf, "%s\\data\\tibiaauto-tiles.xml", CInstallPath::getInstallPath().c_str());
 		parser->parse(pathBuf);
 		DOMNode  *doc = parser->getDocument();
 		int rootCount = doc->getChildNodes()->getLength();
@@ -168,23 +154,9 @@ void CTileReader::loadTiles()
 void CTileReader::saveTiles()
 {
 	XercesDOMParser *parser      = new XercesDOMParser();
-	char installPath[1024]       = {'\0'};
-	unsigned long installPathLen = 1023;
-	HKEY hkey                    = NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
-	{
-		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
-		RegCloseKey(hkey);
-	}
-	if (!strlen(installPath))
-	{
-		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-		PostQuitMessage(-1);
-		return;
-	}
 	int rootNr;
 	char pathBuf[2048];
-	sprintf(pathBuf, "%s\\data\\tibiaauto-tiles.xml", installPath);
+	sprintf(pathBuf, "%s\\data\\tibiaauto-tiles.xml", CInstallPath::getInstallPath().c_str());
 	parser->parse(pathBuf);
 	DOMNode  *doc = parser->getDocument();
 	int rootCount = doc->getChildNodes()->getLength();

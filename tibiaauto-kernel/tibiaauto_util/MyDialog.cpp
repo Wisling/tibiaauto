@@ -6,6 +6,7 @@
 #include "Skin.h"
 #include "BtnST.h"
 #include "SkinLoader.h"
+#include "InstallPath.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -23,22 +24,8 @@ MyDialog::MyDialog(UINT nIDTemplate, CWnd* pParent)
 	//{{AFX_DATA_INIT(MyDialog)
 	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
-	char installPath[1024]       = {'\0'};
-	unsigned long installPathLen = 1023;
-	HKEY hkey                    = NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
-	{
-		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
-		RegCloseKey(hkey);
-	}
-	if (!strlen(installPath))
-	{
-		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-		PostQuitMessage(-1);
-		return;
-	}
 	char buf[2048];
-	sprintf(buf, "%s\\skins\\CurrentSkin.skin", installPath);
+	sprintf(buf, "%s\\skins\\CurrentSkin.skin", CInstallPath::getInstallPath().c_str());
 	CString currentPathBuf = buf;
 
 	skin = loadCurrentSkin(currentPathBuf);

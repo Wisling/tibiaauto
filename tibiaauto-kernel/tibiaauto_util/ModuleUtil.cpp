@@ -2253,27 +2253,9 @@ int CModuleUtil::findNextClosedContainer(int afterCont /*=-1*/)
 	return targetBag;
 }
 
-void CModuleUtil::getInstallPath(char path[2048])
+void CModuleUtil::getInstallPath(char* path)
 {
-	static char installPath[2048] = "";
-	if (installPath[0] == 0)
-	{
-		unsigned long installPathLen = 2047;
-		installPath[0] = '\0';
-		HKEY hkey = NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
-		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
-			RegCloseKey(hkey);
-		}
-		if (!strlen(installPath))
-		{
-			AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-			PostQuitMessage(-1);
-			return;
-		}
-	}
-	strcpy(path, installPath);
+	strcpy(path, CInstallPath::getInstallPath().c_str());
 }
 
 int CModuleUtil::getTASetting(const char* name)

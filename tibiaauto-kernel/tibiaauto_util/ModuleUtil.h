@@ -1,6 +1,7 @@
 #pragma once
 
 #include "tibiaauto_util.h"
+#include "InstallPath.h"
 #include <cstdint>
 class CTibiaItem;
 class CTibiaList;
