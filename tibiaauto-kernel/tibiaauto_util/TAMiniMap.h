@@ -50,7 +50,6 @@ private:
 	CTAMiniMap();
 	virtual ~CTAMiniMap();
 	CTAMiniMap(CTAMiniMap const&);
-	void operator=(CTAMiniMap const&);
 public:
 	static CTAMiniMap& getTAMiniMap()
 	{

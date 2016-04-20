@@ -267,17 +267,18 @@ int CTibiaMap::calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ
 	if (currentPointType == MAP_POINT_TYPE_OPEN_HOLE || 
 		currentPointType == MAP_POINT_TYPE_STAIRS ||
 		currentPointType == MAP_POINT_TYPE_TELEPORT ||
+		currentPointType == MAP_POINT_TYPE_ROPE ||
 		currentPointType == MAP_POINT_TYPE_USABLE_TELEPORT ||
 		currentPointType == MAP_POINT_TYPE_BLOCK)
 		forcedLevelChange = 1;
 	int spd = getPointSpeed(x, y, z);
 	if (spd == 0)
 	{
-		//char buf[111];
-		//sprintf(buf,"speed(%d,%d,%d) %d",x, y, z,spd);
-		//AfxMessageBox(buf);
+		spd = 130;
 	}
-	return spd * (isPointLonger(x, y, z, prevX, prevY, prevZ) ? 3 : 1) + forcedLevelChange * 10000;//return getPointSpeed(x, y, z)*(isPointLonger(x, y, z, prevX, prevY, prevZ)?3:1);
+	// Higher cost for level changing so TA won't make few-steps shortcuts by jumping through staircases/teleports
+	// Walking around a hole/stairs is usually not more than 5 steps, make 6 a threshold
+	return spd * (isPointLonger(x, y, z, prevX, prevY, prevZ) ? 3 : 1) + forcedLevelChange * spd * 6;
 }
 
 typedef CMap<point *, point *, pointData *, pointData *> CMyMap;
@@ -497,4 +498,11 @@ int CTibiaMap::isPointLocked(int x, int y, int z)
 		if (isPointAvailableNoProh(x, y, z))
 			return pd->locked;
 	return 0;
+}
+
+int CTibiaMap::heurDistance(int startX, int startY, int startZ, int endX, int endY, int endZ)
+{
+	if (endX == 0 || endY == 0)
+		return 0;
+	return (abs(startX - endX) + abs(startY - endY) + abs(startZ - endZ) * 3) * 100;
 }

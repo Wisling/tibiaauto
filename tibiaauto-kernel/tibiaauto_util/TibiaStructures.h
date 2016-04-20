@@ -28,38 +28,10 @@ public:
 	int pz;
 	int g;
 	int h;
-	int f;
-	AStarNode()
-	{
-	}
+	
+	AStarNode() {}
 
-	AStarNode(int x1, int y1, int z1)
-	{
-		x = x1;
-		y = y1;
-		z = z1;
-		px = 0;
-		py = 0;
-		pz = 0;
-		g = 0;
-		h = 0;
-		f = 0;
-	}
-
-	AStarNode(int x1, int y1, int z1, int px1, int py1, int pz1)
-	{
-		x = x1;
-		y = y1;
-		z = z1;
-		px = px1;
-		py = py1;
-		pz = pz1;
-		g = 0;
-		h = 0;
-		f = 0;
-	}
-
-	AStarNode(int x1, int y1, int z1, int px1, int py1, int pz1, int g1, int h1, int f1)
+	AStarNode(int x1, int y1, int z1, int px1 = 0, int py1 = 0, int pz1 = 0, int g1 = 0, int h1 = 0)
 	{
 		x = x1;
 		y = y1;
@@ -69,12 +41,11 @@ public:
 		pz = pz1;
 		g = g1;
 		h = h1;
-		f = f1;
 	}
 
 	AStarNode copy()
 	{
-		return AStarNode(x, y, z, px, py, pz, g, h, f);
+		return AStarNode(x, y, z, px, py, pz, g, h);
 	}
 
 	void copy(AStarNode& c)
@@ -87,23 +58,17 @@ public:
 		pz = c.pz;
 		g = c.g;
 		h = c.h;
-		f = c.f;
 	}
 
-	bool equals(AStarNode* a)
+	// Returns true if this node should be lower priority than the other
+	bool operator<(const AStarNode& other) const
 	{
-		return a->x == x && a->y == y && a->z == z;
+		// If the predicted total distance to target is higher, make it lower priority
+		return this->h > other.h;
 	}
 };
 
-struct AStarNodeComp {
-	bool operator() (const AStarNode& lhs, const AStarNode& rhs)
-	{
-		return lhs.h > rhs.h;
-	}
-};
-
-class AStarPriorityQueue : public priority_queue<AStarNode, vector<AStarNode>, AStarNodeComp> {
+class AStarPriorityQueue : public priority_queue<AStarNode, vector<AStarNode>> {
 public:
 	vector<AStarNode>* Container()
 	{

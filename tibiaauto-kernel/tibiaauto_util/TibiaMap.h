@@ -61,7 +61,6 @@ private:
 	CTibiaMap();
 	virtual ~CTibiaMap();
 	CTibiaMap(CTibiaMap const&);
-	void operator=(CTibiaMap const&);
 public:
 	static CTibiaMap& getTibiaMap()
 	{
@@ -100,7 +99,7 @@ public:
 	int calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ);
 	void setPointLocked(int x, int y, int z, int locked);
 	int isPointLocked(int x, int y, int z);
-
+	static int heurDistance(int startX, int startY, int startZ, int endX, int endY, int endZ);
 private:
 	void enlarge();
 	int prohCount;
