@@ -268,6 +268,9 @@
     <ClInclude Include="md5class.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="res\tibiaauto_util.rc2">

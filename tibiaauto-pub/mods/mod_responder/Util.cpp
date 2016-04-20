@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "Util.h"
-#include "PQI.h"
 
 #include "TibiaContainer.h"
 #include <PackSender.h>

@@ -93,7 +93,7 @@ int forwardBackDir     = 1;//forward and back direction
 time_t autolooterTm    = 0;
 DWORD lootThreadId;
 DWORD queueThreadId;
-CTibiaQueue<Corpse> corpseQueue;
+queue<Corpse> corpseQueue;
 
 const int CONTAINER_TIME_CUTOFF = 10;
 time_t containerTimes[32];//used to differentiate between carried containers and other containers
@@ -2095,15 +2095,15 @@ DWORD WINAPI queueThreadProc(LPVOID lpParam)
 			if (reader.getCharacterByTibiaId(&attackedCh, tibiaId))
 			{
 				CModuleUtil::waitForCreatureDisappear(attackedCh.nr);
-				corpseQueue.Add(Corpse(attackedCh.x, attackedCh.y, attackedCh.z, GetTickCount()));
+				corpseQueue.push(Corpse(attackedCh.x, attackedCh.y, attackedCh.z, GetTickCount()));
 			}
 		}
 	}
 	if (toolThreadShouldStop || !queueThreadId)  // only remove corpses from queue when stopping
 	{
-		while (corpseQueue.GetCount())
+		while (!corpseQueue.empty())
 		{
-			corpseQueue.Remove();
+			corpseQueue.pop();
 		}
 	}
 	queueThreadId = 0;
@@ -2123,9 +2123,9 @@ DWORD WINAPI lootThreadProc(LPVOID lpParam)
 	while (!toolThreadShouldStop && myID == lootThreadId)
 	{
 		Sleep(100);
-		while (corpseQueue.GetCount() && globalAutoAttackStateAttack != CToolAutoAttackStateAttack_macroPause)
+		while (!corpseQueue.empty() && globalAutoAttackStateAttack != CToolAutoAttackStateAttack_macroPause)
 		{
-			Corpse corpseCh = corpseQueue.Remove();
+			Corpse& corpseCh = corpseQueue.front();
 			if (GetTickCount() - corpseCh.tod > 1000 * 60)
 				continue;
 			int lootContNr[3];
@@ -2251,7 +2251,8 @@ DWORD WINAPI lootThreadProc(LPVOID lpParam)
 					//CPackSender::sendTAMessage(buf);
 				}
 			}
-			if (!corpseQueue.GetCount())
+			corpseQueue.pop();
+			if (corpseQueue.empty())
 				CVariableStore::setVariable("autolooterTm", "");
 		}
 		if (globalAutoAttackStateAttack == CToolAutoAttackStateAttack_macroPause)

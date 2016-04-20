@@ -2,8 +2,6 @@
 #include "tibiaauto_util.h"
 
 #include "TibiaItem.h"
-#include "PQI.h"
-
 
 #include <xercesc/util/PlatformUtils.hpp>
 

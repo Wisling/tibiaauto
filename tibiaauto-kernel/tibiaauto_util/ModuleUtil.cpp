@@ -350,13 +350,13 @@ void inline testDebug(char *s)
 	}
 }
 
-void CModuleUtil::findPathOnMapProcessPoint(CTibiaQueue<point> &pointsToAdd, int prevX, int prevY, int prevZ, int newX, int newY, int newZ)
+void CModuleUtil::findPathOnMapProcessPoint(queue<point> &pointsToAdd, int prevX, int prevY, int prevZ, int newX, int newY, int newZ)
 {
 	if (CTibiaMap::getTibiaMap().isPointAvailable(newX, newY, newZ))
-		pointsToAdd.Add(point(newX, newY, newZ));
+		pointsToAdd.push(point(newX, newY, newZ));
 }
 
-void CModuleUtil::findPathAllDirection(CTibiaQueue<point> &pointsToAdd, int x, int y, int z)
+void CModuleUtil::findPathAllDirection(queue<point> &pointsToAdd, int x, int y, int z)
 {
 	int randDir = rand() % 4;
 	//First piority points(sides)
@@ -440,79 +440,6 @@ int CModuleUtil::RegexMatch(char *string, char *regex)
 		return 0;
 	}
 }
-
-class pointNode
-{
-public:
-	int x;
-	int y;
-	int z;
-	int px;
-	int py;
-	int pz;
-	int g;
-	int h;
-	int f;
-	pointNode()
-	{
-	}
-
-	pointNode(int x1, int y1, int z1, int px1, int py1, int pz1)
-	{
-		x  = x1;
-		y  = y1;
-		z  = z1;
-		px = px1;
-		py = py1;
-		pz = pz1;
-		g  = 0;
-		h  = 0;
-		f  = 0;
-	}
-
-	pointNode(int x1, int y1, int z1, int px1, int py1, int pz1, int g1, int h1, int f1)
-	{
-		x  = x1;
-		y  = y1;
-		z  = z1;
-		px = px1;
-		py = py1;
-		pz = pz1;
-		g  = g1;
-		h  = h1;
-		f  = f1;
-	}
-
-	void copy(pointNode c)
-	{
-		x  = c.x;
-		y  = c.y;
-		z  = c.z;
-		px = c.px;
-		py = c.py;
-		pz = c.pz;
-		g  = c.g;
-		h  = c.h;
-		f  = c.f;
-	}
-
-	pointNode copy()
-	{
-		return pointNode(x, y, z, px, py, pz, g, h, f);
-	}
-
-	char* toString()
-	{
-		char* ret = (char*)malloc(100);
-		sprintf(ret, "(%d,%d,%d)", x, y, z);
-		return ret;
-	}
-
-	bool equals(pointNode* a)
-	{
-		return a->x == x && a->y == y && a->z == z;
-	}
-};
 
 int calcHeur(int startX, int startY, int startZ, int endX, int endY, int endZ)
 {
@@ -622,35 +549,21 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 	char bufD[300];
 	int pqcountiter = 0;
 #endif // MAPDEBUG
-	CTibiaPriorityQueue pQueue;
+	AStarPriorityQueue openNodes;
 	CTibiaMap &tibiaMap = CTibiaMap::getTibiaMap();
 	int gotToEndPoint = 0;
-	pQueue.Add(1, (DWORD) new pointNode(startX, startY, startZ, startX, startY, startZ, 1, 0, 0));
+	openNodes.push(AStarNode(startX, startY, startZ, startX, startY, startZ, 1, 0, 0));
 	tibiaMap.setPrevPoint(startX, startY, startZ, startX, startY, startZ);
 	tibiaMap.setPointDistance(startX, startY, startZ, 1);
-	while (pQueue.GetCount() && gotToEndPoint != 1)
+	while (!openNodes.empty() && gotToEndPoint != 1)
 	{
+		AStarNode currentPoint = openNodes.top();
+		openNodes.pop();
 #ifdef MAPDEBUG
 		pqcountiter++;
-#endif // MAPDEBUG
-		pointNode* currentPoint = (pointNode*)pQueue.Remove();
-
-		int x = currentPoint->x;
-		int y = currentPoint->y;
-		int z = currentPoint->z;
-		int px = currentPoint->px;
-		int py = currentPoint->py;
-		int pz = currentPoint->pz;
-		int g = currentPoint->g;
-		int h = currentPoint->h;
-		int f = currentPoint->f;
-		delete currentPoint;
-
-
-#ifdef MAPDEBUG
-		sprintf(bufD, "Processing Point: (%d,%d,%d) (%d,%d,%d) %d ", x, y, z, px, py, pz, g);
+		sprintf(bufD, "Processing Point: (%d,%d,%d) (%d,%d,%d) %d ", currentPoint.x, currentPoint.y, currentPoint.z, px, py, pz, g);
 		mapDebug(bufD);
-		pointNode* peeked = (pointNode*)pQueue.Peek();
+		AStarNode* peeked = (AStarNode*)pQueue.Peek();
 		if (peeked)
 		{
 			sprintf(bufD, "Next Will be: (%d,%d,%d) (%d,%d,%d) %d ", peeked->x, peeked->y, peeked->z, peeked->px, peeked->py, peeked->pz, peeked->g);
@@ -664,28 +577,28 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 		if (!closerEnd)
 		{
 			// Check if reached closerPoint, within radius of endPoint or 1 square away from an endSpecialLocation tile
-			if (max(abs(x - pathFindX), abs(y - pathFindY)) <= radius && z == pathFindZ)
+			if (max(abs(currentPoint.x - pathFindX), abs(currentPoint.y - pathFindY)) <= radius && currentPoint.z == pathFindZ)
 			{
 				gotToEndPoint = 1;//max(pQueueIter->size(),200);// found a path, but keep looking to find shortest path
-				endPoint.x = x;
-				endPoint.y = y;
-				endPoint.z = z;
+				endPoint.x = currentPoint.x;
+				endPoint.y = currentPoint.y;
+				endPoint.z = currentPoint.z;
 			}
 			// standing by the depot
 			if (endSpecialLocation &&
-				(tibiaMap.getPointType(x + 1, y, z) == endSpecialLocation ||
-					tibiaMap.getPointType(x - 1, y, z) == endSpecialLocation ||
-					tibiaMap.getPointType(x, y + 1, z) == endSpecialLocation ||
-					tibiaMap.getPointType(x, y - 1, z) == endSpecialLocation))
+				(tibiaMap.getPointType(currentPoint.x + 1, currentPoint.y, currentPoint.z) == endSpecialLocation ||
+					tibiaMap.getPointType(currentPoint.x - 1, currentPoint.y, currentPoint.z) == endSpecialLocation ||
+					tibiaMap.getPointType(currentPoint.x, currentPoint.y + 1, currentPoint.z) == endSpecialLocation ||
+					tibiaMap.getPointType(currentPoint.x, currentPoint.y - 1, currentPoint.z) == endSpecialLocation))
 			{
 				// endSpecialLocation found - where we stand is our "end point"
 				gotToEndPoint = 1;//max(pQueueIter->size(),200);
-				endPoint.x = x;
-				endPoint.y = y;
-				endPoint.z = z;
+				endPoint.x = currentPoint.x;
+				endPoint.y = currentPoint.y;
+				endPoint.z = currentPoint.z;
 			}
 		}
-		else if (x == pathFindX && y == pathFindY && z == pathFindZ)
+		else if (currentPoint.x == pathFindX && currentPoint.y == pathFindY && currentPoint.z == pathFindZ)
 		{
 			gotToEndPoint = 1;
 			endPoint = lastEndPoint;
@@ -704,17 +617,17 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 		 */
 
 		int forcedLevelChange = 0, usedLevelChange = 0; // if set to 1 then going north, south, east, west is forbidden
-		CTibiaQueue<point> pointsToAdd;
+		queue<point> pointsToAdd;
 
-		MapPointType currentPointType = tibiaMap.getPointType(x, y, z);
+		MapPointType currentPointType = tibiaMap.getPointType(currentPoint.x, currentPoint.y, currentPoint.z);
 
 		// we directly go up using rope, magic rope, ladder, stairs
 		// walk on the desired tile
 		if (currentPointType >= MAP_POINT_TYPE_ROPE && currentPointType < MAP_POINT_TYPE_DEPOT)
 		{
-			if (tibiaMap.isPointAvailableNoProh(x, y, z - 1))
+			if (tibiaMap.isPointAvailableNoProh(currentPoint.x, currentPoint.y, currentPoint.z - 1))
 			{
-				pointsToAdd.Add(point(x, y, z - 1));
+				pointsToAdd.push(point(currentPoint.x, currentPoint.y, currentPoint.z - 1));
 #ifdef MAPDEBUG
 				mapDebug("go up");
 #endif // ifdef MAPDEBUG
@@ -727,10 +640,10 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 					{
 						if (xl ^ yl)
 						{
-							MapPointType ptType = tibiaMap.getPointType(x + xl, y + yl, z - 1);
+							MapPointType ptType = tibiaMap.getPointType(currentPoint.x + xl, currentPoint.y + yl, currentPoint.z - 1);
 							if (ptType >= MAP_POINT_TYPE_OPEN_HOLE && ptType < MAP_POINT_TYPE_ROPE)
 							{
-								pointsToAdd.Add(point(x + xl, y + yl, z - 1));
+								pointsToAdd.push(point(currentPoint.x + xl, currentPoint.y + yl, currentPoint.z - 1));
 								xl = yl = 9999;
 #ifdef MAPDEBUG
 								mapDebug("go up oblong stairs");
@@ -746,9 +659,9 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 		// walk on the desired tile
 		if (currentPointType >= MAP_POINT_TYPE_OPEN_HOLE && currentPointType < MAP_POINT_TYPE_ROPE)
 		{
-			if (tibiaMap.isPointAvailableNoProh(x, y, z + 1))
+			if (tibiaMap.isPointAvailableNoProh(currentPoint.x, currentPoint.y, currentPoint.z + 1))
 			{
-				pointsToAdd.Add(point(x, y, z + 1));
+				pointsToAdd.push(point(currentPoint.x, currentPoint.y, currentPoint.z + 1));
 #ifdef MAPDEBUG
 				mapDebug("go down");
 #endif // ifdef MAPDEBUG
@@ -761,10 +674,10 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 					{
 						if (xl ^ yl)
 						{
-							MapPointType ptType = tibiaMap.getPointType(x + xl, y + yl, z + 1);
+							MapPointType ptType = tibiaMap.getPointType(currentPoint.x + xl, currentPoint.y + yl, currentPoint.z + 1);
 							if (ptType >= MAP_POINT_TYPE_ROPE && ptType < MAP_POINT_TYPE_DEPOT)
 							{
-								pointsToAdd.Add(point(x + xl, y + yl, z + 1));
+								pointsToAdd.push(point(currentPoint.x + xl, currentPoint.y + yl, currentPoint.z + 1));
 								xl = yl = 9999;
 #ifdef MAPDEBUG
 								mapDebug("go down oblong stairs");
@@ -780,9 +693,9 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 		// walk on the desired tile
 		if (currentPointType == MAP_POINT_TYPE_TELEPORT || currentPointType == MAP_POINT_TYPE_USABLE_TELEPORT)
 		{
-			point dest = tibiaMap.getDestPoint(x, y, z);
+			point dest = tibiaMap.getDestPoint(currentPoint.x, currentPoint.y, currentPoint.z);
 			if (dest.x != 0 && dest.y != 0 && dest.z != 0)
-				pointsToAdd.Add(point(dest.x, dest.y, dest.z));
+				pointsToAdd.push(point(dest.x, dest.y, dest.z));
 #ifdef MAPDEBUG
 			mapDebug("go teleport");
 #endif // ifdef MAPDEBUG
@@ -792,15 +705,15 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 		if ((currentPointType == MAP_POINT_TYPE_OPEN_HOLE ||
 			currentPointType == MAP_POINT_TYPE_STAIRS ||
 			currentPointType == MAP_POINT_TYPE_TELEPORT ||
-			currentPointType == MAP_POINT_TYPE_BLOCK) && !(startX == x && startY == y && startZ == z))
+			currentPointType == MAP_POINT_TYPE_BLOCK) && !(startX == currentPoint.x && startY == currentPoint.y && startZ == currentPoint.z))
 			forcedLevelChange = 1;
 
-		if (abs(x - px) > 1 || abs(y - py) > 1 || z != pz)
+		if (abs(currentPoint.x - currentPoint.px) > 1 || abs(currentPoint.y - currentPoint.py) > 1 || currentPoint.z != currentPoint.pz)
 			usedLevelChange = 1;
 
 		if (!forcedLevelChange || usedLevelChange)
 		{
-			findPathAllDirection(pointsToAdd, x, y, z);
+			findPathAllDirection(pointsToAdd, currentPoint.x, currentPoint.y, currentPoint.z);
 
 			int xShift = -2, yShift = -2;
 			while (!(xShift == 1 && yShift == 1))//simply goes in a 3x3 square
@@ -822,36 +735,36 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 				if (xShift == 0 && yShift == 0)
 					xShift++;                    //skip middle
 
-				MapPointType pointType = tibiaMap.getPointTypeNoProh(x + xShift, y + yShift, z);
+				MapPointType pointType = tibiaMap.getPointTypeNoProh(currentPoint.x + xShift, currentPoint.y + yShift, currentPoint.z);
 
 				// special going up if ladder busy
-				if ((pointType == MAP_POINT_TYPE_ROPE || pointType == MAP_POINT_TYPE_LADDER) && tibiaMap.isPointAvailableNoProh(x + xShift, y + yShift, z - 1))
-					pointsToAdd.Add(point(x + xShift, y + yShift, z - 1));
+				if ((pointType == MAP_POINT_TYPE_ROPE || pointType == MAP_POINT_TYPE_LADDER) && tibiaMap.isPointAvailableNoProh(currentPoint.x + xShift, currentPoint.y + yShift, currentPoint.z - 1))
+					pointsToAdd.push(point(currentPoint.x + xShift, currentPoint.y + yShift, currentPoint.z - 1));
 				// special going down if grate or hole busy
-				if ((pointType == MAP_POINT_TYPE_CLOSED_HOLE || pointType == MAP_POINT_TYPE_GRATE) && tibiaMap.isPointAvailableNoProh(x + xShift, y + yShift, z + 1))
-					pointsToAdd.Add(point(x + xShift, y + yShift, z + 1));
+				if ((pointType == MAP_POINT_TYPE_CLOSED_HOLE || pointType == MAP_POINT_TYPE_GRATE) && tibiaMap.isPointAvailableNoProh(currentPoint.x + xShift, currentPoint.y + yShift, currentPoint.z + 1))
+					pointsToAdd.push(point(currentPoint.x + xShift, currentPoint.y + yShift, currentPoint.z + 1));
 			}
 		}
-		while (pointsToAdd.GetCount())
+		while (!pointsToAdd.empty())
 		{
-			point addPoint = pointsToAdd.Remove();
-			int newDist = g + tibiaMap.calcDistance(x, y, z, addPoint.x, addPoint.y, addPoint.z);
+			point addPoint = pointsToAdd.front();
+			pointsToAdd.pop();
+			int newDist = currentPoint.g + tibiaMap.calcDistance(currentPoint.x, currentPoint.y, currentPoint.z, addPoint.x, addPoint.y, addPoint.z);
 			int oldDist = tibiaMap.getPointDistance(addPoint.x, addPoint.y, addPoint.z);
 			if (oldDist == 0 || newDist < oldDist)
 			{
-				tibiaMap.setPrevPoint(addPoint.x, addPoint.y, addPoint.z, x, y, z);
+				tibiaMap.setPrevPoint(addPoint.x, addPoint.y, addPoint.z, currentPoint.x, currentPoint.y, currentPoint.z);
 				tibiaMap.setPointDistance(addPoint.x, addPoint.y, addPoint.z, newDist);
-				pointNode* pn = new pointNode(addPoint.x, addPoint.y, addPoint.z, x, y, z, newDist, 0, 0);
 #ifdef MAPDEBUG
 				if (pn->x == -858993460)
 				{
 					char buf2[1111];
-					sprintf(buf2, "%d\n", pQueue.GetCount());
+					sprintf(buf2, "%d\n", openNodes.size());
 					mapDebug(buf2);
 					int a = 0;
 				}
 #endif // ifdef MAPDEBUG
-				pQueue.Add(pn->g, (DWORD)pn);
+				openNodes.push(AStarNode(addPoint.x, addPoint.y, addPoint.z, currentPoint.x, currentPoint.y, currentPoint.z, newDist, newDist, 0));
 			}
 		}
 	}
@@ -862,12 +775,6 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 	sprintf(bufD, "%d", pqcountiter);
 	AfxMessageBox(bufD);
 #endif // ifdef MAPDEBUG
-	// Path has been found, clean the priority queue
-	while (pQueue.GetCount())
-	{
-		pointNode* pn = (pointNode*)pQueue.Remove();
-		delete pn;
-	}
 	return gotToEndPoint;
 }
 
