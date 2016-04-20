@@ -36,12 +36,6 @@
     <ClCompile Include="LoadedModules.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="md5c.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="md5class.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OptionsDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -64,9 +58,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tibiaautoDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="webbrowser2.cpp">
@@ -109,12 +100,6 @@
     <ClInclude Include="LoadedModules.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MD5.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="md5class.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OptionsDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -140,9 +125,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tibiaautoDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="webbrowser2.h">

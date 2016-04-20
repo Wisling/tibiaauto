@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "tibiaauto.h"
 #include "ModuleLoader.h"
+#include "InstallPath.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -28,23 +29,7 @@ IModuleInterface* CModuleLoader::LoadModule(char *moduleName, int pathIsAbsolute
 	char path[128];
 	if (!pathIsAbsolute)
 	{
-		char installPath[1024];
-		unsigned long installPathLen = 1023;
-		installPath[0] = '\0';
-		HKEY hkey = NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
-		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
-			RegCloseKey(hkey);
-		}
-		if (!strlen(installPath))
-		{
-			AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-			PostQuitMessage(-1);
-			return NULL;
-		}
-
-		sprintf(path, "%s\\mods\\%s.dll", installPath, moduleName);
+		sprintf(path, "%s\\mods\\%s.dll", CInstallPath::getInstallPath().c_str(), moduleName);
 	}
 	else
 	{

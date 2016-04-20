@@ -207,8 +207,6 @@
     <ClCompile Include="ConfigDialogStatus.cpp" />
     <ClCompile Include="DonationDialog.cpp" />
     <ClCompile Include="LoadedModules.cpp" />
-    <ClCompile Include="md5c.cpp" />
-    <ClCompile Include="md5class.cpp" />
     <ClCompile Include="ModuleLoader.cpp" />
     <ClCompile Include="OptionsDialog.cpp" />
     <ClCompile Include="PythonEngine.cpp" />
@@ -226,7 +224,6 @@
     </ClCompile>
     <ClCompile Include="tibiaauto.cpp" />
     <ClCompile Include="tibiaautoDlg.cpp" />
-    <ClCompile Include="Util.cpp" />
     <ClCompile Include="webbrowser2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -241,8 +238,6 @@
     <ClInclude Include="DonationDialog.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="LoadedModules.h" />
-    <ClInclude Include="MD5.h" />
-    <ClInclude Include="md5class.h" />
     <ClInclude Include="ModuleLoader.h" />
     <ClInclude Include="OptionsDialog.h" />
     <ClInclude Include="PythonEngine.h" />
@@ -254,7 +249,6 @@
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="tibiaauto.h" />
     <ClInclude Include="tibiaautoDlg.h" />
-    <ClInclude Include="Util.h" />
     <ClInclude Include="webbrowser2.h" />
   </ItemGroup>
   <ItemGroup>

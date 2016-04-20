@@ -385,13 +385,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 	SetTimer(1001, 100, NULL);
 	SetTimer(1002, 100, NULL);
-
-
-	// this is needed to force loading tibiaauto_util.dll
-	CTibiaCharacter self;
-	reader.readSelfCharacter(&self);
-
-
+	
 	CPythonEngine pythonEngine;
 	pythonEngine.init();
 
@@ -682,23 +676,7 @@ void CTibiaautoDlg::InitialiseIPC()
 	}
 
 	HANDLE procHandle = OpenProcess(PROCESS_ALL_ACCESS, true, m_processId);
-
-	char installPath[1024];
-	unsigned long installPathLen = 1023;
-	installPath[0] = '\0';
-	HKEY hkey = NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
-	{
-		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
-		RegCloseKey(hkey);
-	}
-	if (!strlen(installPath))
-	{
-		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-		PostQuitMessage(-1);
-		return;
-	}
-	int status = setDllLoadDir(procHandle, installPath);
+	int status = setDllLoadDir(procHandle, CInstallPath::getInstallPath().c_str());
 	if (status != 0)
 	{
 		sprintf(buf, "DLL load dir setup failed. Ret: %d, lastError: %d", status, GetLastError());
