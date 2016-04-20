@@ -3,11 +3,13 @@
 #include "tibiaauto_util.h"
 #include "InstallPath.h"
 #include <cstdint>
+#include <memory>
+#include <queue>
+
+using namespace std;
+
 class CTibiaItem;
 class CTibiaList;
-template <class T> class CTibiaQueue;
-
-#include <memory>
 
 enum StepDirsEnum
 {
@@ -56,10 +58,10 @@ public:
 	static int waitForCreatureDisappear(int x, int y, int tibiaId, int &, int &);
 	static int calcLootChecksum(time_t tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags, int creatX, int creatY, int creatZ);
 	static void prepareProhPointList();
-	static void findPathAllDirection(CTibiaQueue<point> &pointsToAdd, int x, int y, int z);
+	static void findPathAllDirection(queue<point> &pointsToAdd, int x, int y, int z);
 	static int findNextClosedContainer(int afterCont = -1);
 	static void masterDebug(const char* fname, const char* buf1 = "", const char* buf2 = "", const char* buf3 = "", const char* buf4 = "", const char* buf5 = "", const char* buf6 = "");
-	static void getInstallPath(char path[2048]);
+	static void getInstallPath(char* path);
 	static void setTASetting(const char* name, int value);
 	static int getTASetting(const char* name);
 	static struct point GetPathTab(int);
@@ -68,7 +70,7 @@ public:
 private:
 	static int AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int radius, int pathFindZ, point &endPoint, int endSpecialLocation, int startX, int startY, int startZ);
 	static struct point AStarRetrievePath(int gotToEndPoint, point &endPoint, int startX, int startY, int startZ, uint8_t * path, int endX, int endY, int endZ);
-	static void findPathOnMapProcessPoint(CTibiaQueue<point> &pointsToAdd, int prevX, int prevY, int prevZ, int newX, int newY, int newZ);
+	static void findPathOnMapProcessPoint(queue<point> &pointsToAdd, int prevX, int prevY, int prevZ, int newX, int newY, int newZ);
 
 
 	CModuleUtil();

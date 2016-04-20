@@ -9,6 +9,7 @@
 #include "TibiaMapPoint.h"
 #include "TibiaMiniMap.h"
 #include "TibiaMiniMapPoint.h"
+#include "TibiaStructures.h"
 #include "PackSender.h"
 #include "MemReader.h"
 #include "MemUtil.h"
@@ -251,80 +252,9 @@ void CTAMiniMap::unloadMiniMaps()
 	taMiniMap.RemoveAll();
 }
 
-class PathFinderNode
-{
-public:
-	int x;
-	int y;
-	int z;
-	int px;
-	int py;
-	int pz;
-	int g;
-	int h;
-	int f;
-	PathFinderNode()
-	{
-	}
-
-	PathFinderNode(int x1, int y1, int z1)
-	{
-		x = x1;
-		y = y1;
-		z = z1;
-	}
-
-	PathFinderNode(int x1, int y1, int z1, int px1, int py1, int pz1, int g1, int h1, int f1)
-	{
-		x  = x1;
-		y  = y1;
-		z  = z1;
-		px = px1;
-		py = py1;
-		pz = pz1;
-		g  = g1;
-		h  = h1;
-		f  = f1;
-	}
-
-	void copy(PathFinderNode c)
-	{
-		x  = c.x;
-		y  = c.y;
-		z  = c.z;
-		px = c.px;
-		py = c.py;
-		pz = c.pz;
-		g  = c.g;
-		h  = c.h;
-		f  = c.f;
-	}
-
-	PathFinderNode copy()
-	{
-		return PathFinderNode(x, y, z, px, py, pz, g, h, f);
-	}
-};
-
-struct pComp {
-	bool operator() (const PathFinderNode lhs, const PathFinderNode rhs)
-	{
-		return lhs.h > rhs.h;
-	}
-};
-
-class PQI : public priority_queue<PathFinderNode, vector<PathFinderNode>, pComp> {
-public:
-	vector<PathFinderNode>* Container()
-	{
-		return &c;
-	}
-};
-
-//typedef priority_queue<PathFinderNode *, vector<PathFinderNode *>, pComp> PriorityQueue;
 // Get access to the underlying container.
 template<>
-AFX_INLINE UINT AFXAPI HashKey<PathFinderNode> (PathFinderNode key)
+AFX_INLINE UINT AFXAPI HashKey<AStarNode> (AStarNode key)
 {
 	return key.x * 191 + key.y * 257 + key.z * 317;
 }
@@ -336,7 +266,7 @@ void DebugPrint(const char* s, int a, int b = 0, int c = 0, int d = 0)
 	AfxMessageBox(buf);
 }
 
-typedef PathFinderNode LNode;
+typedef AStarNode LNode;
 template<>
 AFX_INLINE BOOL AFXAPI CompareElements<LNode, LNode>
         (const LNode* v1d, const LNode* v2d)
@@ -440,9 +370,9 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 {
 	//inits
 	CUIntArray *path = new CUIntArray();
-	PQI mOpen;
+	AStarPriorityQueue mOpen;
 	int direction[10][3] = {{0, 0, 1}, {1, 0, 0}, {1, -1, 0}, {0, -1, 0}, {-1, -1, 0}, {-1, 0, 0}, {-1, 1, 0}, {0, 1, 0}, {1, 1, 0}, {0, 0, -1}};
-	CMap<PathFinderNode, PathFinderNode, PathFinderNode, PathFinderNode> mClose;
+	CMap<AStarNode, AStarNode, AStarNode, AStarNode> mClose;
 	mClose.InitHashTable(20011);// 42,000 points used for Carlin-Thais
 
 	CTibiaMiniMapPoint* endPt = CMemReader::getMemReader().readMiniMapPoint(endX, endY, endZ);
@@ -458,7 +388,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 	mStop    = false;
 	mStopped = false;
 
-	PathFinderNode parentNode = PathFinderNode();
+	AStarNode parentNode = AStarNode();
 	parentNode.g  = 0;
 	parentNode.h  = 0;
 	parentNode.f  = parentNode.g + parentNode.h;
@@ -487,7 +417,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 
 		if (max(abs(parentNode.x - endX), abs(parentNode.y - endY)) <= endBlocked && parentNode.z == endZ)//can be 1 away if end is blocked
 		{
-			PathFinderNode addNode = parentNode;
+			AStarNode addNode = parentNode;
 			mClose.SetAt(addNode, addNode);
 
 			found = true;
@@ -498,7 +428,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 		CTibiaMiniMapPoint* mpPar = getMiniMapPoint(parentNode.x, parentNode.y, parentNode.z);
 		for (size_t i = 0; i < 10; i++)//0=down 1-8=surroundings 9=up
 		{
-			PathFinderNode newNode = PathFinderNode();
+			AStarNode newNode = AStarNode();
 			newNode.x = parentNode.x + direction[i][0];
 			newNode.y = parentNode.y + direction[i][1];
 			newNode.z = parentNode.z + direction[i][2];
@@ -534,7 +464,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 			newNode.f  = newNode.g + newNode.h;
 			//DebugPrint("newNode",newNode.x,newNode.y,newNode.z);
 
-			vector<PathFinderNode>* mOpenIter = mOpen.Container();
+			vector<AStarNode>* mOpenIter = mOpen.Container();
 			size_t j;
 			for (j = 0; j < mOpenIter->size(); j++)
 			{
@@ -549,7 +479,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 			}
 			mOpenIter = NULL;
 
-			PathFinderNode tmpNode;
+			AStarNode tmpNode;
 			if (mClose.Lookup(newNode, tmpNode))
 			{
 				if (newG < tmpNode.g)
@@ -569,16 +499,16 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 	//fout.close();
 	if (found)
 	{
-		PathFinderNode currNode = parentNode;
+		AStarNode currNode = parentNode;
 		//parentNode=NULL;
-		PathFinderNode tmpNode = PathFinderNode(currNode.px, currNode.py, currNode.pz);
+		AStarNode tmpNode = AStarNode(currNode.px, currNode.py, currNode.pz);
 
 /*
                 POSITION m = mClose.GetStartPosition();
    AfxMessageBox("loop");
                 while (m){
-                        PathFinderNode*	k1=NULL;
-                        PathFinderNode*	v1=NULL;
+                        AStarNode*	k1=NULL;
+                        AStarNode*	v1=NULL;
                         mClose.GetNextAssoc(m,k1,v1);
                         DebugPrint("currNode",k1->x,k1->y,k1->z);
                         DebugPrint("currNode's parent",v1->px,v1->py,v1->pz);
@@ -604,7 +534,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 			//DebugPrint("dir",dir,dx,dy,dz);
 			path->Add(dir);
 			currNode = parentNode;
-			tmpNode  = PathFinderNode(currNode.px, currNode.py, currNode.pz);
+			tmpNode  = AStarNode(currNode.px, currNode.py, currNode.pz);
 			mClose.Lookup(tmpNode, parentNode);
 		}
 		int endi = path->GetSize() - 1;

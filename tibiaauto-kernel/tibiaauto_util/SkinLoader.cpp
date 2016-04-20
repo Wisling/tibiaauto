@@ -29,6 +29,7 @@ static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif // ifdef _DEBUG
 
+using namespace std;
 
 CSkin loadCurrentSkin(CString currentPathBuf)
 {

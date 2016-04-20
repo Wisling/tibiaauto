@@ -310,6 +310,7 @@
     <ClInclude Include="TibiaTile.h" />
     <ClInclude Include="TibiaVIPEntry.h" />
     <ClInclude Include="TileReader.h" />
+    <ClInclude Include="Util.h" />
     <ClInclude Include="VariableStore.h" />
     <ClInclude Include="XTabCtrl.h" />
   </ItemGroup>

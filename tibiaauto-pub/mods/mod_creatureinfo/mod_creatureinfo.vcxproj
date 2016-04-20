@@ -227,7 +227,6 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release_Profiling|Win32'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mod_creatureinfo.def" />
@@ -245,7 +244,6 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SendStats.h" />
     <ClInclude Include="StdAfx.h" />
-    <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\tibiaauto-kernel\tibiaauto_util\tibiaauto_util.vcxproj">
