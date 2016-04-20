@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "tibiaauto_util.h"
 #include "CreaturesReader.h"
+#include "InstallPath.h"
 
 #include "creatures.h"
 
@@ -71,25 +72,10 @@ CCreaturesReader::CCreaturesReader()
 	// the database is ro and stays open forever
 	if (db == NULL)
 	{
-		char installPath[1024];
-		unsigned long installPathLen = 1023;
-		installPath[0] = '\0';
-		HKEY hkey = NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
-		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
-			RegCloseKey(hkey);
-		}
-		if (!strlen(installPath))
-		{
-			AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-			PostQuitMessage(-1);
-			return;
-		}
 		db = new Db(NULL, 0);
 		u_int32_t oFlags = DB_RDONLY;
 		char path[1024];
-		sprintf(path, "%s\\ta_creatures_c.db", installPath);
+		sprintf(path, "%s\\ta_creatures_c.db", CInstallPath::getInstallPath().c_str());
 		db->open(NULL, path, NULL, DB_BTREE, oFlags, 0);
 	}
 }

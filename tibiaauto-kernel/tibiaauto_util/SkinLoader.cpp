@@ -7,6 +7,7 @@
 #include "SkinLoader.h"
 #include "Util.h"
 #include "Skin.h"
+#include "InstallPath.h"
 
 #include <xercesc/util/PlatformUtils.hpp>
 
@@ -180,22 +181,8 @@ bool saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate)
 	{
 		FILE *f = NULL;
 		f = fopen(pathBuf.GetBuffer(200), "wb");
-		char installPath[1024]       = {'\0'};
-		unsigned long installPathLen = 1023;
-		HKEY hkey                    = NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
-		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
-			RegCloseKey(hkey);
-		}
-		if (!strlen(installPath))
-		{
-			AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-			PostQuitMessage(-1);
-			return false;
-		}
 		char currentPathBuf[2048];
-		sprintf(currentPathBuf, "%s\\skins\\CurrentSkin.skin", installPath);
+		sprintf(currentPathBuf, "%s\\skins\\CurrentSkin.skin", CInstallPath::getInstallPath().c_str());
 
 		parser->parse(pathBuf);
 		xercesc::DOMDocument* doc = NULL;

@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "TibiaStructures.h"
 #include "TibiaItem.h"
+#include "InstallPath.h"
 
 #include "Util.h"
 
@@ -547,22 +548,6 @@ void CTibiaItem::refreshItemLists()
 		xmlInitialised = 1;
 	}
 
-	char installPath[1024];
-	unsigned long installPathLen = 1023;
-	installPath[0] = '\0';
-	HKEY hkey = NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
-	{
-		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
-		RegCloseKey(hkey);
-	}
-	if (!strlen(installPath))
-	{
-		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-		PostQuitMessage(-1);
-		return;
-	}
-
 	XercesDOMParser *parser = new XercesDOMParser();
 	try
 	{
@@ -579,7 +564,7 @@ void CTibiaItem::refreshItemLists()
 		itemTree = new CTibiaTree(new CTibiaTreeBranchData("Root"));
 
 		char pathBuf[2048];
-		sprintf(pathBuf, "%s\\data\\tibiaauto-items.xml", installPath);
+		sprintf(pathBuf, "%s\\data\\tibiaauto-items.xml", CInstallPath::getInstallPath().c_str());
 		parser->parse(pathBuf);
 		DOMNode  *doc = parser->getDocument();
 		for (rootNr = 0; rootNr < (int)doc->getChildNodes()->getLength(); rootNr++)
@@ -737,7 +722,7 @@ void CTibiaItem::refreshItemLists()
 		if (lootList.GetCount() == 0)
 			traverseTreeForLootList(itemTree, &lootList);                      // get loot from tree if not loaded from file
 
-		sprintf(pathBuf, "%s\\data\\tibiaauto-consts.xml", installPath);
+		sprintf(pathBuf, "%s\\data\\tibiaauto-consts.xml", CInstallPath::getInstallPath().c_str());
 		OFSTRUCT lpOpen;
 		if (OpenFile(pathBuf, &lpOpen, OF_EXIST) != HFILE_ERROR)
 		{
@@ -870,27 +855,12 @@ void CTibiaItem::saveItemLists()
 		XMLPlatformUtils::Initialize();
 		xmlInitialised = 1;
 	}
-
-	char installPath[1024]       = { '\0' };
-	unsigned long installPathLen = 1023;
-	HKEY hkey                    = NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
-	{
-		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
-		RegCloseKey(hkey);
-	}
-	if (!strlen(installPath))
-	{
-		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-		PostQuitMessage(-1);
-		return;
-	}
 	XercesDOMParser *parser = new XercesDOMParser();
 	try
 	{
 		//int itemNr;
 		char pathBuf[2048];
-		sprintf(pathBuf, "%s\\data\\tibiaauto-items.xml", installPath);
+		sprintf(pathBuf, "%s\\data\\tibiaauto-items.xml", CInstallPath::getInstallPath().c_str());
 
 		DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation(XMLString::transcode("Core"));
 

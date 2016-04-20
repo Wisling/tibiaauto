@@ -132,26 +132,8 @@ BOOL CPythonScriptsDialog::OnInitDialog()
 
 	/** load all scripts **/
 	/*
-	   char installPath[1024];
-	   unsigned long installPathLen=1023;
-	   installPath[0]='\0';
-	   HKEY hkey=NULL;
-	   if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_READ,&hkey))
-	   {
-	        RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
-	        RegCloseKey(hkey);
-	   }
-	   if (!strlen(installPath))
-	   {
-	        ::MessageBox(0,"ERROR! Unable to read TA install directory! Please reinstall!","ERROR",0);
-	        PostQuitMessage(-1);
-	        return;
-	   }
-
-	   char pathBuf[2048];
-
 	   // now load all scripts from 'tascripts' subdirectory
-	   sprintf(pathBuf,"%s\\tascripts\\*.py",installPath);
+	   sprintf(pathBuf,"%s\\tascripts\\*.py",CInstallPath::getInstallPath().c_str());
 	   WIN32_FIND_DATA findFileData;
 	   HANDLE hFind = FindFirstFile(pathBuf,&findFileData);
 	   if (hFind!=INVALID_HANDLE_VALUE)

@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "alice", "tibiaauto-pub\alice\alice.vcxproj", "{EC3640A4-2B98-4ADC-A671-05DD06F60B15}"
+	ProjectSection(ProjectDependencies) = postProject
+		{585F1E97-1BF0-4D07-A047-CBD5643B7B0A} = {585F1E97-1BF0-4D07-A047-CBD5643B7B0A}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mod_addressfinder", "tibiaauto-pub\mods\mod_AddressFinder\mod_addressfinder.vcxproj", "{11C8DA9F-E04E-4280-9DAF-C9BDE2D6744D}"
 EndProject

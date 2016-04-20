@@ -18,7 +18,7 @@
 #include "tileReader.h"
 #include "CreaturesReader.h"
 #include "VariableStore.h"
-#include "../md5class.h"
+#include "md5class.h"
 
 
 #include "MemUtil.h"

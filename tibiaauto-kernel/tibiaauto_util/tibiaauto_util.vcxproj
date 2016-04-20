@@ -217,10 +217,11 @@
     <ClCompile Include="CreaturesReader.cpp" />
     <ClCompile Include="GroupBoxEx.cpp" />
     <ClCompile Include="IModuleInterface.cpp" />
+    <ClCompile Include="InstallPath.cpp" />
     <ClCompile Include="IPCBackPipe.cpp" />
-    <ClCompile Include="..\md5c.cpp" />
-    <ClCompile Include="..\md5class.cpp" />
     <ClCompile Include="IpcMessage.cpp" />
+    <ClCompile Include="md5c.cpp" />
+    <ClCompile Include="md5class.cpp" />
     <ClCompile Include="MemConstData.cpp" />
     <ClCompile Include="MemReader.cpp" />
     <ClCompile Include="MemUtil.cpp" />
@@ -275,8 +276,11 @@
     <ClInclude Include="CreaturesReader.h" />
     <ClInclude Include="GroupBoxEx.h" />
     <ClInclude Include="IModuleInterface.h" />
+    <ClInclude Include="InstallPath.h" />
     <ClInclude Include="IPCBackPipe.h" />
     <ClInclude Include="IpcMessage.h" />
+    <ClInclude Include="MD5.h" />
+    <ClInclude Include="md5class.h" />
     <ClInclude Include="MemConstData.h" />
     <ClInclude Include="MemReader.h" />
     <ClInclude Include="MemUtil.h" />
@@ -306,7 +310,6 @@
     <ClInclude Include="TibiaTile.h" />
     <ClInclude Include="TibiaVIPEntry.h" />
     <ClInclude Include="TileReader.h" />
-    <ClInclude Include="Util.h" />
     <ClInclude Include="VariableStore.h" />
     <ClInclude Include="XTabCtrl.h" />
   </ItemGroup>
