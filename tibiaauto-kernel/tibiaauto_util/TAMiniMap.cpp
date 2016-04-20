@@ -368,7 +368,7 @@ bool CTAMiniMap::isDownPoint(CTibiaMiniMapPoint* upper) //return true;
 //this gets around the need to update all g's for
 CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, int endX, int endY, int endZ)
 {
-	//inits
+	// inits
 	CUIntArray *path = new CUIntArray();
 	AStarPriorityQueue mOpen;
 	int direction[10][3] = {{0, 0, 1}, {1, 0, 0}, {1, -1, 0}, {0, -1, 0}, {-1, -1, 0}, {-1, 0, 0}, {-1, 1, 0}, {0, 1, 0}, {1, 1, 0}, {0, 0, -1}};
@@ -378,10 +378,9 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 	CTibiaMiniMapPoint* endPt = CMemReader::getMemReader().readMiniMapPoint(endX, endY, endZ);
 	int endBlocked            = endPt->speed == 255;
 	delete endPt;
-	//DebugPrint("endBlocked",endBlocked);
-	int mHEstimate   = 1;
-	int maxDistBreak = (int)(1.7 * (abs(startX - endX) + abs(startY - endY)) + 50 * abs(startZ - endZ));//will stop if looking farther away than 1.5x original distance
-	int minTimeBreak = 5;//always allows this much time before breaking 5 secs ~ radius of 50 sqm
+	// will stop if looking farther away than 2x original estimated distance
+	int maxDistBreak = 2 * CTibiaMap::heurDistance(startX, startY, startZ, endX, endY, endZ);
+	int minTimeBreak = 10;//always allows this much time before breaking, 5 secs ~ radius of 50 sqm
 	time_t timeStart = time(NULL);
 
 	bool found = false;
@@ -391,7 +390,6 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 	AStarNode parentNode = AStarNode();
 	parentNode.g  = 0;
 	parentNode.h  = 0;
-	parentNode.f  = parentNode.g + parentNode.h;
 	parentNode.x  = startX;
 	parentNode.y  = startY;
 	parentNode.z  = startZ;
@@ -408,10 +406,12 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 		//DebugPrint("dist,G",mOpen.top()->h,mOpen.top()->g);
 		parentNode = mOpen.top();
 		mOpen.pop();
-		mDistance = parentNode.h;
+		// Ignore current path weight
+		mDistance = parentNode.h - parentNode.g;
 		mOpenSize = mOpen.size();
-		if (mDistance && mDistance < 30)
-			maxDistBreak = 60;//readjust when close in case end is unreachable
+		// Readjust when closer than 50 steps, in case the end is unreachable - don't go away more than 10% (or 100 steps) of the initial distance anymore
+		if (mDistance && mDistance < (50*100))
+			maxDistBreak = max(maxDistBreak / 10, (100 * 100));
 		//fout << parentNode.x-endX << " " << parentNode.y-endY << " " << parentNode.z - endZ << "\n";
 
 
@@ -435,7 +435,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 
 			bool isAvailable = false;
 
-			//ensures it doesn't load an uneeded map into memory
+			//ensures it doesn't load an unneeded map into memory
 			CTibiaMiniMapPoint* mp = getMiniMapPoint(newNode.x, newNode.y, newNode.z);
 			if (i == 0 || i == 9)
 			{
@@ -453,15 +453,14 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 				delete mp;
 				continue;
 			}
-			int newG = parentNode.g + mp->speed * (i % 2 == 0 && i > 0 ? 3 : 1);//lower speed value = faster do x3 for diagonals
+			int newG = parentNode.g + mp->speed * (i % 2 == 0 && i > 0 ? 3 : 1);//lower speed value = faster, x3 cost for diagonals and floor changes
 			delete mp;
 
 			newNode.px = parentNode.x;
 			newNode.py = parentNode.y;
 			newNode.pz = parentNode.z;
 			newNode.g  = newG;
-			newNode.h  = mHEstimate * (abs(newNode.x - endX) + abs(newNode.y - endY) + abs(newNode.z - endZ));// + 50*abs(newNode.z - endZ)
-			newNode.f  = newNode.g + newNode.h;
+			newNode.h = newG + CTibiaMap::heurDistance(newNode.x, newNode.y, newNode.z, endX, endY, endZ);
 			//DebugPrint("newNode",newNode.x,newNode.y,newNode.z);
 
 			vector<AStarNode>* mOpenIter = mOpen.Container();
@@ -473,8 +472,12 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 			}
 			if (j < mOpenIter->size())
 			{
-				if (newG < mOpenIter->at(j).g)
+				if (newNode.h < mOpenIter->at(j).h)
+				{
 					mOpenIter->at(j).copy(newNode);
+					// Sort heap again
+					make_heap(mOpenIter->begin(), mOpenIter->end());
+				}
 				continue;
 			}
 			mOpenIter = NULL;
@@ -485,8 +488,6 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 				if (newG < tmpNode.g)
 					mClose.SetAt(newNode, newNode);           //this node is better, replace old one and take the hit on keeping accurate g-values
 				continue;
-				if (newG >= tmpNode.g)
-					continue;
 			}
 			mOpen.push(newNode);
 			//DebugPrint("newNode's parent",newNode->px,newNode->py,newNode->pz);

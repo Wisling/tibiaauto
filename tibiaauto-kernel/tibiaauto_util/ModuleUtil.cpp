@@ -320,7 +320,7 @@ void inline mapDebug(char *s)
 #ifndef MAPDEBUG
 	return;
 #endif // ifndef MAPDEBUG
-	FILE *f = fopen("C:/tibiaauto-debug-map.txt", "a+");
+	FILE *f = fopen("tibiaauto-debug-map.txt", "a+");
 	if (f)
 	{
 		char dateStr [15];
@@ -441,13 +441,6 @@ int CModuleUtil::RegexMatch(char *string, char *regex)
 	}
 }
 
-int calcHeur(int startX, int startY, int startZ, int endX, int endY, int endZ)
-{
-	if (endX == 0 && endY == 0 && endZ == 0)
-		return 0;
-	return (abs(startX - endX) + abs(startY - endY) + abs(startZ - endZ)) * 100;
-}
-
 // Searches a path between 2 points on TA map 
 // Uses CTibiaMap global instance to store walking cost and as cache
 // Not thread safe
@@ -552,7 +545,7 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 	AStarPriorityQueue openNodes;
 	CTibiaMap &tibiaMap = CTibiaMap::getTibiaMap();
 	int gotToEndPoint = 0;
-	openNodes.push(AStarNode(startX, startY, startZ, startX, startY, startZ, 1, 0, 0));
+	openNodes.push(AStarNode(startX, startY, startZ, startX, startY, startZ, 1, 0));
 	tibiaMap.setPrevPoint(startX, startY, startZ, startX, startY, startZ);
 	tibiaMap.setPointDistance(startX, startY, startZ, 1);
 	while (!openNodes.empty() && gotToEndPoint != 1)
@@ -561,17 +554,17 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 		openNodes.pop();
 #ifdef MAPDEBUG
 		pqcountiter++;
-		sprintf(bufD, "Processing Point: (%d,%d,%d) (%d,%d,%d) %d ", currentPoint.x, currentPoint.y, currentPoint.z, px, py, pz, g);
+		sprintf(bufD, "Point: (%d,%d,%d) (%d,%d,%d) %d, %d  ", currentPoint.x, currentPoint.y, currentPoint.z, currentPoint.px, currentPoint.py, currentPoint.pz, currentPoint.g, currentPoint.h);
 		mapDebug(bufD);
-		AStarNode* peeked = (AStarNode*)pQueue.Peek();
-		if (peeked)
+		if (openNodes.empty())
 		{
-			sprintf(bufD, "Next Will be: (%d,%d,%d) (%d,%d,%d) %d ", peeked->x, peeked->y, peeked->z, peeked->px, peeked->py, peeked->pz, peeked->g);
-			mapDebug(bufD);
+			mapDebug("Next: 0");
 		}
 		else
 		{
-			mapDebug("Next Will be: 0");
+			AStarNode peeked = openNodes.top();
+			sprintf(bufD, "Next: (%d,%d,%d) (%d,%d,%d) %d, %d ", peeked.x, peeked.y, peeked.z, peeked.px, peeked.py, peeked.pz, peeked.g, peeked.h);
+			mapDebug(bufD);
 		}
 #endif // ifdef MAPDEBUG
 		if (!closerEnd)
@@ -755,8 +748,9 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 			{
 				tibiaMap.setPrevPoint(addPoint.x, addPoint.y, addPoint.z, currentPoint.x, currentPoint.y, currentPoint.z);
 				tibiaMap.setPointDistance(addPoint.x, addPoint.y, addPoint.z, newDist);
+				int heurTotalDist = newDist + tibiaMap.heurDistance(addPoint.x, addPoint.y, addPoint.z, pathFindX, pathFindY, pathFindZ);
 #ifdef MAPDEBUG
-				if (pn->x == -858993460)
+				if (addPoint.x == 0xCCCCCCCC)
 				{
 					char buf2[1111];
 					sprintf(buf2, "%d\n", openNodes.size());
@@ -764,16 +758,34 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 					int a = 0;
 				}
 #endif // ifdef MAPDEBUG
-				openNodes.push(AStarNode(addPoint.x, addPoint.y, addPoint.z, currentPoint.x, currentPoint.y, currentPoint.z, newDist, newDist, 0));
+				AStarNode newNode(addPoint.x, addPoint.y, addPoint.z, currentPoint.x, currentPoint.y, currentPoint.z, newDist, heurTotalDist);
+				vector<AStarNode>* mOpenIter = openNodes.Container();
+				size_t j;
+				for (j = 0; j < mOpenIter->size(); j++)
+				{
+					if (newNode.x == mOpenIter->at(j).x && newNode.y == mOpenIter->at(j).y && newNode.z == mOpenIter->at(j).z)
+						break;
+				}
+				if (j < mOpenIter->size())
+				{
+					if (newNode.h < mOpenIter->at(j).h)
+					{
+						mOpenIter->at(j).copy(newNode);
+						// Sort heap again
+						make_heap(mOpenIter->begin(), mOpenIter->end());
+					}
+				}
+				else
+				{
+					openNodes.push(newNode);
+				}
 			}
 		}
 	}
 #ifdef MAPDEBUG
 	pqcountiter++;
-	sprintf(bufD, "Ended loop count=%d gotToEndPoint=%d", pQueue.GetCount(), gotToEndPoint);
+	sprintf(bufD, "Ended loop count=%d gotToEndPoint=%d pqcountiter=%d", openNodes.size(), gotToEndPoint, pqcountiter);
 	mapDebug(bufD);
-	sprintf(bufD, "%d", pqcountiter);
-	AfxMessageBox(bufD);
 #endif // ifdef MAPDEBUG
 	return gotToEndPoint;
 }
