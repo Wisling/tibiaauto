@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -13,13 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Polish resources
+// Polish (Poland) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
-#ifdef _WIN32
 LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 #pragma code_page(1250)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -27,18 +25,18 @@ LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
     "#define _AFX_NO_OLE_RESOURCES\r\n"
@@ -65,27 +63,21 @@ END
 //
 
 IDD_CONFIG DIALOGEX 0, 0, 204, 291
-STYLE DS_MODALFRAME | DS_NOFAILCREATE | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | DS_NOFAILCREATE | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: Spell Caster"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,76,270,50,14
-    CONTROL         "Tab2",IDC_TAB1,"SysTabControl32",TCS_MULTILINE | 
-                    WS_TABSTOP,7,7,191,216
-    CONTROL         "Disable 'Low Mana' Warnings",
-                    IDC_TOOL_SPELLCASTER_DISABLE_WARNING,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,225,165,11,
-                    WS_EX_TRANSPARENT
-    CONTROL         "Enable safe 10% variance in cast hp and mana",
-                    IDC_TOOL_SPELLCASTER_RANDOM_CAST,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,239,165,12,
-                    WS_EX_TRANSPARENT
-    CONTROL         "Enable spell caster",IDC_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,253,191,14
+    CONTROL         "Tab2",IDC_TAB1,"SysTabControl32",TCS_MULTILINE | WS_TABSTOP,7,7,191,216
+    CONTROL         "Disable 'Low Mana' Warnings",IDC_TOOL_SPELLCASTER_DISABLE_WARNING,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,225,165,11,WS_EX_TRANSPARENT
+    CONTROL         "Enable safe 10% variance in cast hp and mana",IDC_TOOL_SPELLCASTER_RANDOM_CAST,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,239,165,12,WS_EX_TRANSPARENT
+    CONTROL         "Enable spell caster",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,253,191,14
 END
 
-IDD_HEALLIST DIALOG DISCARDABLE  0, 0, 192, 177
-STYLE WS_CAPTION
+IDD_HEALLIST DIALOG 0, 0, 192, 177
+STYLE DS_SETFONT | WS_CAPTION
 CAPTION "Heal List"
 FONT 8, "MS Sans Serif"
 BEGIN
@@ -93,14 +85,10 @@ BEGIN
     LTEXT           "Name:",IDC_STATIC,34,19,22,8,SS_CENTERIMAGE
     LTEXT           "Maximum HP:",IDC_STATIC,12,35,44,8,SS_CENTERIMAGE
     LTEXT           "Heal if below:",IDC_STATIC,12,51,44,8,SS_CENTERIMAGE
-    EDITTEXT        IDC_HEALLIST_NAME,68,16,112,14,ES_AUTOHSCROLL | 
-                    ES_WANTRETURN
-    EDITTEXT        IDC_HEALLIST_MAX_HP,68,32,56,14,ES_AUTOHSCROLL | 
-                    ES_WANTRETURN
-    EDITTEXT        IDC_HEALLIST_TRIGGER_HP,68,48,56,14,ES_AUTOHSCROLL | 
-                    ES_WANTRETURN
-    CONTROL         "List1",IDC_HEALLIST_LIST,"SysListView32",LVS_REPORT | 
-                    LVS_SORTASCENDING | WS_BORDER | WS_TABSTOP,12,64,112,101
+    EDITTEXT        IDC_HEALLIST_NAME,68,16,112,14,ES_AUTOHSCROLL | ES_WANTRETURN
+    EDITTEXT        IDC_HEALLIST_MAX_HP,68,32,56,14,ES_AUTOHSCROLL | ES_WANTRETURN
+    EDITTEXT        IDC_HEALLIST_TRIGGER_HP,68,48,56,14,ES_AUTOHSCROLL | ES_WANTRETURN
+    CONTROL         "List1",IDC_HEALLIST_LIST,"SysListView32",LVS_REPORT | LVS_SORTASCENDING | WS_BORDER | WS_TABSTOP,12,64,112,101
     PUSHBUTTON      "Add",IDC_HEALLIST_ADD,130,64,50,14
     PUSHBUTTON      "Delete",IDC_HEALLIST_DELETE,130,94,50,14
     DEFPUSHBUTTON   "OK",IDOK,130,151,50,14
@@ -113,7 +101,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_CONFIG, DIALOG
     BEGIN
@@ -133,230 +121,162 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
-#endif    // Polish resources
+#endif    // Polish (Poland) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog
 //
 
-IDD_LIFE_DIALOG DIALOG DISCARDABLE  0, 0, 186, 189
-STYLE WS_CHILD | WS_VISIBLE
-FONT 8, "MS Sans Serif"
+IDD_LIFE_DIALOG DIALOGEX 0, 0, 186, 189
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Life",IDC_FRAME_LIFE,5,5,175,179
     LTEXT           "Mana Above",IDC_STATIC,129,12,42,8
     LTEXT           "Life Below",IDC_STATIC,82,12,34,8
     LTEXT           "Spell To Cast:",IDC_STATIC,30,103,70,14,SS_CENTERIMAGE
-    LTEXT           "Cast when life below:",IDC_STATIC,30,135,70,14,
-                    SS_CENTERIMAGE
+    LTEXT           "Cast when life below:",IDC_STATIC,30,135,70,14,SS_CENTERIMAGE
     LTEXT           "Damage/turn",IDC_STATIC,128,153,43,8
-    CONTROL         "Life",IDC_TOOL_SPELLCASTER_LIFE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,5,5,8,8
-    CONTROL         "Exura",IDC_TOOL_SPELLCASTER_EXURA,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,25,46,14
-    EDITTEXT        IDC_TOOL_SPELLCASTER_EXURA_LIFE,82,25,46,14,
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_SPELLCASTER_EXURA_MANA,129,25,46,14,
-                    ES_AUTOHSCROLL
-    CONTROL         "Exura Gran",IDC_TOOL_SPELLCASTER_GRAN,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,41,58,14
-    EDITTEXT        IDC_TOOL_SPELLCASTER_GRAN_LIFE,82,41,46,14,
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_SPELLCASTER_GRAN_MANA,129,41,46,14,
-                    ES_AUTOHSCROLL
-    CONTROL         "Exura Vita",IDC_TOOL_SPELLCASTER_VITA,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,57,58,14
-    EDITTEXT        IDC_TOOL_SPELLCASTER_VITA_LIFE,82,57,46,14,
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_SPELLCASTER_VITA_MANA,129,57,46,14,
-                    ES_AUTOHSCROLL
-    CONTROL         "Exura Sio",IDC_TOOL_SPELLCASTER_SIO,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,73,58,14
+    CONTROL         "",IDC_TOOL_SPELLCASTER_LIFE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,5,27,8,WS_EX_TRANSPARENT
+    CONTROL         "Exura",IDC_TOOL_SPELLCASTER_EXURA,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,25,46,14
+    EDITTEXT        IDC_TOOL_SPELLCASTER_EXURA_LIFE,82,25,46,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_EXURA_MANA,129,25,46,14,ES_AUTOHSCROLL
+    CONTROL         "Exura Gran",IDC_TOOL_SPELLCASTER_GRAN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,41,58,14
+    EDITTEXT        IDC_TOOL_SPELLCASTER_GRAN_LIFE,82,41,46,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_GRAN_MANA,129,41,46,14,ES_AUTOHSCROLL
+    CONTROL         "Exura Vita",IDC_TOOL_SPELLCASTER_VITA,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,57,58,14
+    EDITTEXT        IDC_TOOL_SPELLCASTER_VITA_LIFE,82,57,46,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_VITA_MANA,129,57,46,14,ES_AUTOHSCROLL
+    CONTROL         "Exura Sio",IDC_TOOL_SPELLCASTER_SIO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,73,58,14
     PUSHBUTTON      "Heal List",IDC_TOOL_SPELLCASTER_HEAL_LIST,82,73,46,14
-    EDITTEXT        IDC_TOOL_SPELLCASTER_SIO_MANA,129,73,46,14,
-                    ES_AUTOHSCROLL
-    CONTROL         "Custom Spell",IDC_TOOL_SPELLCASTER_CUSTOM,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,89,57,14
-    EDITTEXT        IDC_TOOL_SPELLCASTER_LIFE_SPELL,114,103,61,14,
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_SPELLCASTER_LIFE_SPELL_MANA,114,119,61,14,
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_SPELLCASTER_LIFE_HP,114,135,61,14,
-                    ES_AUTOHSCROLL
-    CONTROL         "Para exura",IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,153,50,14
+    EDITTEXT        IDC_TOOL_SPELLCASTER_SIO_MANA,129,73,46,14,ES_AUTOHSCROLL
+    CONTROL         "Custom Spell",IDC_TOOL_SPELLCASTER_CUSTOM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,89,57,14
+    EDITTEXT        IDC_TOOL_SPELLCASTER_LIFE_SPELL,114,103,61,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_LIFE_SPELL_MANA,114,119,61,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_LIFE_HP,114,135,61,14,ES_AUTOHSCROLL
+    CONTROL         "Para exura",IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,153,50,14
     CONTROL         "Para exura ico",IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS_ICO,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,60,153,66,14
     CONTROL         "Cure poison >= than:",IDC_TOOL_SPELLCASTER_HEAL_POISON,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,166,100,14
-    EDITTEXT        IDC_TOOL_SPELLCASTER_MIN_POISON_DAMAGE,128,166,46,14,
-                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_MIN_POISON_DAMAGE,128,166,46,14,ES_AUTOHSCROLL
     LTEXT           "Spell Mana:",IDC_STATIC,30,119,70,14,SS_CENTERIMAGE
 END
 
-IDD_MANA_DIALOG DIALOG DISCARDABLE  0, 0, 186, 189
-STYLE WS_CHILD | WS_VISIBLE
-FONT 8, "MS Sans Serif"
+IDD_MANA_DIALOG DIALOGEX 0, 0, 186, 189
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Mana",IDC_FRAME_MANA,5,5,176,43
     LTEXT           "Spell to cast:",IDC_STATIC,12,29,78,14,SS_CENTERIMAGE
-    LTEXT           "Cast when mana above:",IDC_STATIC,12,13,77,14,
-                    SS_CENTERIMAGE
-    CONTROL         "Mana",IDC_TOOL_SPELLCASTER_MANA,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,5,5,8,8
-    EDITTEXT        IDC_TOOL_SPELLCASTER_MANA_MANA,115,13,61,14,
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_SPELLCASTER_MANA_SPELL,115,29,61,14,
-                    ES_AUTOHSCROLL
+    LTEXT           "Cast when mana above:",IDC_STATIC,12,13,77,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_TOOL_SPELLCASTER_MANA,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,5,35,8,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_TOOL_SPELLCASTER_MANA_MANA,115,13,61,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_MANA_SPELL,115,29,61,14,ES_AUTOHSCROLL
 END
 
-IDD_SUMMON_DIALOG DIALOG DISCARDABLE  0, 0, 186, 189
-STYLE WS_CHILD | WS_VISIBLE
-FONT 8, "MS Sans Serif"
+IDD_SUMMON_DIALOG DIALOGEX 0, 0, 186, 189
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Summon control",IDC_FRAME_SUMMON_CONTROL,5,5,176,179
-    LTEXT           "Summon when less than:",IDC_STATIC,13,13,92,14,
-                    SS_CENTERIMAGE
-    LTEXT           "Creature to summon:",IDC_STATIC,13,45,78,14,
-                    SS_CENTERIMAGE
-    LTEXT           "Mana needed for summon:",IDC_STATIC,13,29,92,14,
-                    SS_CENTERIMAGE
-    CONTROL         "Summon control",IDC_TOOL_SPELLCASTER_SUMMON,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,5,5,8,8
-    EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_LESSTHAN,112,13,61,14,
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_MANA,112,29,61,14,
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_NAME,112,45,61,14,
-                    ES_AUTOHSCROLL
-    CONTROL         "List2",IDC_CREATURE_LIST,"SysListView32",LVS_SINGLESEL | 
-                    WS_BORDER | WS_TABSTOP,13,63,160,113
+    LTEXT           "Summon when less than:",IDC_STATIC,13,13,92,14,SS_CENTERIMAGE
+    LTEXT           "Creature to summon:",IDC_STATIC,13,45,78,14,SS_CENTERIMAGE
+    LTEXT           "Mana needed for summon:",IDC_STATIC,13,29,92,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_TOOL_SPELLCASTER_SUMMON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,5,85,8,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_LESSTHAN,112,13,61,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_MANA,112,29,61,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_NAME,112,45,61,14,ES_AUTOHSCROLL
+    CONTROL         "List2",IDC_CREATURE_LIST,"SysListView32",LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,13,63,160,113
 END
 
-IDD_STRIKE_DIALOG DIALOG DISCARDABLE  0, 0, 186, 189
-STYLE WS_CHILD | WS_VISIBLE
-FONT 8, "MS Sans Serif"
+IDD_STRIKE_DIALOG DIALOGEX 0, 0, 186, 189
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Strike Spells",IDC_FRAME_STRIKE_SPELLS,5,5,176,152
     GROUPBOX        "Mage",IDC_FRAME_MAGE_STRIKE,8,16,81,90
     GROUPBOX        "Paladin",IDC_FRAME_PALADIN_STRIKE,8,110,81,43
     GROUPBOX        "Knight",IDC_FRAME_KNIGHT_STRIKE,95,110,81,27
-    LTEXT           "Use when mana above:",IDC_STATIC,95,16,75,14,
-                    SS_CENTERIMAGE
+    LTEXT           "Use when mana above:",IDC_STATIC,95,16,75,14,SS_CENTERIMAGE
     LTEXT           "Default Spell:",IDC_STATIC,95,45,75,14,SS_CENTERIMAGE
-    LTEXT           "Target's HP above:",IDC_STATIC,95,76,75,14,
-                    SS_CENTERIMAGE
-    CONTROL         "Strike Spells",IDC_TOOL_SPELLCASTER_STRIKE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,5,5,8,8
-    CONTROL         "Exori Flam",IDC_TOOL_SPELLCASTER_FLAM,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,27,50,14
-    CONTROL         "Exori Frigo",IDC_TOOL_SPELLCASTER_FRIGO,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,43,50,14
-    CONTROL         "Exori Mort",IDC_TOOL_SPELLCASTER_MORT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,59,50,14
-    CONTROL         "Exori Tera",IDC_TOOL_SPELLCASTER_TERA,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,75,50,14
-    CONTROL         "Exori Vis",IDC_TOOL_SPELLCASTER_VIS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,91,50,14
-    CONTROL         "Exori Con",IDC_TOOL_SPELLCASTER_CON,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,123,50,14
-    CONTROL         "Exori San",IDC_TOOL_SPELLCASTER_SAN,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,137,50,14
-    EDITTEXT        IDC_TOOL_SPELLCASTER_STRIKE_MANA,115,30,61,14,
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT,115,61,61,14,
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT_HP_MIN,115,93,
-                    61,14,ES_AUTOHSCROLL
-    CONTROL         "Exori Hur",IDC_TOOL_SPELLCASTER_HUR,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,101,121,50,14
+    LTEXT           "Target's HP above:",IDC_STATIC,95,76,75,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_TOOL_SPELLCASTER_STRIKE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,5,69,8,WS_EX_TRANSPARENT
+    CONTROL         "Exori Flam",IDC_TOOL_SPELLCASTER_FLAM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,27,50,14
+    CONTROL         "Exori Frigo",IDC_TOOL_SPELLCASTER_FRIGO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,43,50,14
+    CONTROL         "Exori Mort",IDC_TOOL_SPELLCASTER_MORT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,59,50,14
+    CONTROL         "Exori Tera",IDC_TOOL_SPELLCASTER_TERA,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,75,50,14
+    CONTROL         "Exori Vis",IDC_TOOL_SPELLCASTER_VIS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,91,50,14
+    CONTROL         "Exori Con",IDC_TOOL_SPELLCASTER_CON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,123,50,14
+    CONTROL         "Exori San",IDC_TOOL_SPELLCASTER_SAN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,137,50,14
+    EDITTEXT        IDC_TOOL_SPELLCASTER_STRIKE_MANA,115,30,61,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT,115,61,61,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT_HP_MIN,115,93,61,14,ES_AUTOHSCROLL
+    CONTROL         "Exori Hur",IDC_TOOL_SPELLCASTER_HUR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,101,121,50,14
 END
 
-IDD_AOE_DIALOG DIALOG DISCARDABLE  0, 0, 186, 189
-STYLE WS_CHILD | WS_VISIBLE
-FONT 8, "MS Sans Serif"
+IDD_AOE_DIALOG DIALOGEX 0, 0, 186, 189
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     GROUPBOX        "AOE Spells",IDC_FRAME_AOE_SPELLS,5,5,176,167
     GROUPBOX        "Knight",IDC_FRAME_KNIGHT_AOE,96,93,81,58
     GROUPBOX        "Paladin",IDC_FRAME_PALADIN_AOE,9,125,81,26
     GROUPBOX        "Druid",IDC_FRAME_DRUID_AOE,96,16,81,74
-    LTEXT           "Number of creatures to affect:",IDC_STATIC,9,157,101,8,
-                    SS_CENTERIMAGE
+    LTEXT           "Number of creatures to affect:",IDC_STATIC,9,157,101,8,SS_CENTERIMAGE
     GROUPBOX        "Sorcerer",IDC_FRAME_SORCERER_AOE,9,16,81,107
-    CONTROL         "AOE Spells",IDC_TOOL_SPELLCASTER_AOE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,5,5,8,8
-    CONTROL         "Flame Wave",IDC_TOOL_SPELLCASTER_EXEVO_FLAM_HUR,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,15,26,61,14
-    CONTROL         "Energy Wave",IDC_TOOL_SPELLCASTER_EXEVO_VIS_HUR,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,15,42,61,14
-    CONTROL         "Energy Beam",IDC_TOOL_SPELLCASTER_EXEVO_VIS_LUX,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,15,58,70,14
-    CONTROL         "Gran Energy Beam",
-                    IDC_TOOL_SPELLCASTER_EXEVO_GRAN_VIS_LUX,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,15,74,73,14
+    CONTROL         "",IDC_TOOL_SPELLCASTER_AOE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,5,60,8,WS_EX_TRANSPARENT
+    CONTROL         "Flame Wave",IDC_TOOL_SPELLCASTER_EXEVO_FLAM_HUR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,26,61,14
+    CONTROL         "Energy Wave",IDC_TOOL_SPELLCASTER_EXEVO_VIS_HUR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,42,61,14
+    CONTROL         "Energy Beam",IDC_TOOL_SPELLCASTER_EXEVO_VIS_LUX,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,58,70,14
+    CONTROL         "Gran Energy Beam",IDC_TOOL_SPELLCASTER_EXEVO_GRAN_VIS_LUX,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,74,73,14
     CONTROL         "Hell's Core",IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FLAM,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,90,70,14
-    CONTROL         "Rage of the Skies",
-                    IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_VIS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,15,106,70,14
+    CONTROL         "Rage of the Skies",IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_VIS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,106,70,14
     CONTROL         "Divine Caldera",IDC_TOOL_SPELLCASTER_EXEVO_MAS_SAN,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,136,69,14
-    CONTROL         "Ice Wave",IDC_TOOL_SPELLCASTER_EXEVO_FRIGO_HUR,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,102,26,50,14
-    CONTROL         "Earth Wave",IDC_TOOL_SPELLCASTER_EXEVO_TERA_HUR,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,102,42,50,14
-    CONTROL         "Wrath of Nature",
-                    IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_TERA,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,102,58,70,14
-    CONTROL         "Eternal Winter",
-                    IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FRIGO,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,102,74,70,14
-    CONTROL         "Berserk",IDC_TOOL_SPELLCASTER_EXORI,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,104,104,50,14
-    CONTROL         "Fierce Berserk",IDC_TOOL_SPELLCASTER_EXORI_GRAN,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,104,120,63,14
-    CONTROL         "Groundshaker",IDC_TOOL_SPELLCASTER_EXORI_MAS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,104,136,66,14
-    EDITTEXT        IDC_TOOL_SPELLCASTER_AOE_AFFECT,116,154,61,14,
-                    ES_AUTOHSCROLL
+    CONTROL         "Ice Wave",IDC_TOOL_SPELLCASTER_EXEVO_FRIGO_HUR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,102,26,50,14
+    CONTROL         "Earth Wave",IDC_TOOL_SPELLCASTER_EXEVO_TERA_HUR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,102,42,50,14
+    CONTROL         "Wrath of Nature",IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_TERA,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,102,58,70,14
+    CONTROL         "Eternal Winter",IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FRIGO,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,102,74,70,14
+    CONTROL         "Berserk",IDC_TOOL_SPELLCASTER_EXORI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,104,104,50,14
+    CONTROL         "Fierce Berserk",IDC_TOOL_SPELLCASTER_EXORI_GRAN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,104,120,63,14
+    CONTROL         "Groundshaker",IDC_TOOL_SPELLCASTER_EXORI_MAS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,104,136,66,14
+    EDITTEXT        IDC_TOOL_SPELLCASTER_AOE_AFFECT,116,154,61,14,ES_AUTOHSCROLL
 END
 
-IDD_TIMED_DIALOG DIALOG DISCARDABLE  0, 0, 186, 189
-STYLE WS_CHILD | WS_VISIBLE
-FONT 8, "MS Sans Serif"
+IDD_TIMED_DIALOG DIALOGEX 0, 0, 186, 189
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Timed Spell",IDC_FRAM_TIMED_CASTING,5,5,176,179
     LTEXT           "Spell To Cast:",IDC_STATIC,13,16,47,14,SS_CENTERIMAGE
     LTEXT           "Cast Every:",IDC_STATIC,13,48,48,14,SS_CENTERIMAGE
     LTEXT           "seconds",IDC_STATIC,145,48,28,14,SS_CENTERIMAGE
     LTEXT           "Spell Mana:",IDC_STATIC,13,32,47,14,SS_CENTERIMAGE
-    CONTROL         "Timed Spell",IDC_TOOL_SPELLCASTER_TIMED,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,5,5,8,8
-    EDITTEXT        IDC_TOOL_SPELLCASTER_TIMED_SPELL,83,16,60,14,
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_SPELLCASTER_TIMED_SPELL_MANA,83,32,60,14,
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_SPELLCASTER_TIMED_SPELL_DELAY,83,48,60,14,
-                    ES_AUTOHSCROLL
-    CONTROL         "Use mana potions if needed",
-                    IDC_TOOL_SPELLCASTER_USE_POTIONS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,13,65,114,11
+    CONTROL         "",IDC_TOOL_SPELLCASTER_TIMED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,5,64,8,WS_EX_TRANSPARENT
+    EDITTEXT        IDC_TOOL_SPELLCASTER_TIMED_SPELL,83,16,60,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_TIMED_SPELL_MANA,83,32,60,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_TIMED_SPELL_DELAY,83,48,60,14,ES_AUTOHSCROLL
+    CONTROL         "Use mana potions if needed",IDC_TOOL_SPELLCASTER_USE_POTIONS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,65,114,11
     PUSHBUTTON      "&Add",IDC_TIMED_SPELL_ADD,13,79,50,14
     PUSHBUTTON      "&Delete",IDC_TIMED_SPELL_DELETE,83,79,50,14
-    CONTROL         "List1",IDC_TIMED_SPELL_LIST,"SysListView32",LVS_REPORT | 
-                    LVS_SORTASCENDING | WS_BORDER | WS_TABSTOP,12,98,161,78
+    CONTROL         "List1",IDC_TIMED_SPELL_LIST,"SysListView32",LVS_REPORT | LVS_SORTASCENDING | WS_BORDER | WS_TABSTOP,12,98,161,78
 END
 
 
@@ -366,7 +286,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_LIFE_DIALOG, DIALOG
     BEGIN
@@ -426,7 +346,6 @@ END
 #endif    // APSTUDIO_INVOKED
 
 
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
@@ -449,18 +368,13 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "Comments", "\0"
-            VALUE "CompanyName", "\0"
-            VALUE "FileDescription", "mod_spellcaster DLL\0"
-            VALUE "FileVersion", "1, 0, 0, 1\0"
-            VALUE "InternalName", "mod_spellcaster\0"
-            VALUE "LegalCopyright", "Copyright (C) 2005\0"
-            VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "mod_spellcaster.DLL\0"
-            VALUE "PrivateBuild", "\0"
-            VALUE "ProductName", "mod_spellcaster Dynamic Link Library\0"
-            VALUE "ProductVersion", "1, 0, 0, 1\0"
-            VALUE "SpecialBuild", "\0"
+            VALUE "FileDescription", "mod_spellcaster DLL"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "mod_spellcaster"
+            VALUE "LegalCopyright", "Copyright (C) 2005"
+            VALUE "OriginalFilename", "mod_spellcaster.DLL"
+            VALUE "ProductName", "mod_spellcaster Dynamic Link Library"
+            VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END
     BLOCK "VarFileInfo"
@@ -469,16 +383,14 @@ BEGIN
     END
 END
 
-#endif    // !_MAC
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Bitmap
 //
 
-IDB_CREATURES           BITMAP  DISCARDABLE     "Icons\\Creatures.bmp"
-#endif    // English (U.S.) resources
+IDB_CREATURES           BITMAP                  "Icons\\Creatures.bmp"
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
