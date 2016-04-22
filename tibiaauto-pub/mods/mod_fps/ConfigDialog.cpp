@@ -147,13 +147,12 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		//CPackSenderProxy sender;
 
 		char buf[128];
-		unsigned long ifpsCur[2];
+		double curFps;
 
 		addrFps = CMemUtil::getMemUtil().GetMemIntValue(CTibiaItem::getValueForConst("addrFps"));
 
-		ifpsCur[0] = CMemUtil::getMemUtil().GetMemIntValue(addrFps + 0x60, 0);//this address comes from Tibia itself and need not be shifted
-		ifpsCur[1] = CMemUtil::getMemUtil().GetMemIntValue(addrFps + 0x60 + 4, 0);//this address comes from Tibia itself and need not be shifted
-		sprintf(buf, "Current FPS rate: %d, %d", ifpsCur[0], ifpsCur[1]);
+		CMemUtil::getMemUtil().GetMemRange(addrFps + 0x60, addrFps + 0x68, (char*) &curFps, 0);//this address comes from Tibia itself and need not be shifted
+		sprintf(buf, "Current FPS rate: %f", curFps);
 		m_fpsRate.SetWindowText(buf);
 
 		if (hTibiaWnd)
