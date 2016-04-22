@@ -19,11 +19,7 @@ static char THIS_FILE[] = __FILE__;
 
 ModuleMap CModuleLoader::loadedModules;
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
-IModuleInterface* CModuleLoader::LoadModule(char *moduleName, int pathIsAbsolute)
+IModuleInterface* CModuleLoader::LoadModule(const char *moduleName, int pathIsAbsolute)
 {
 	// load module
 	char path[128];
@@ -41,7 +37,7 @@ IModuleInterface* CModuleLoader::LoadModule(char *moduleName, int pathIsAbsolute
 		char errorMsg[128];
 		sprintf(errorMsg, "ERROR! Unable to load module %s.", moduleName);
 		AfxMessageBox(errorMsg);
-		return NULL;		
+		return NULL;
 	}
 
 	typedef IModuleInterface *(*FactoryFunProto)();
@@ -62,4 +58,23 @@ IModuleInterface* CModuleLoader::LoadModule(char *moduleName, int pathIsAbsolute
 	// 30 is the current kernel version
 	ret->activate(30);
 	return ret;
+}
+
+bool CModuleLoader::IsCavebotOn()
+{
+	IModuleInterface* caveBotPtr = GetLoadedModule("mod_cavebot");
+	if (caveBotPtr)
+		if (caveBotPtr->isStarted())
+			return true;
+		else
+			return false;
+	return false;
+}
+
+IModuleInterface* CModuleLoader::GetLoadedModule(const char* moduleName)
+{
+	ModuleMap::iterator it = loadedModules.find(moduleName);
+	if (it == loadedModules.end())
+		return NULL;
+	else return it->second;
 }

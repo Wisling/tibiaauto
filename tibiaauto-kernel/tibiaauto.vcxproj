@@ -207,7 +207,6 @@
     <ClCompile Include="ConfigDialogStatus.cpp" />
     <ClCompile Include="DonationDialog.cpp" />
     <ClCompile Include="LoadedModules.cpp" />
-    <ClCompile Include="ModuleLoader.cpp" />
     <ClCompile Include="OptionsDialog.cpp" />
     <ClCompile Include="PythonEngine.cpp" />
     <ClCompile Include="PythonEngine_fun.cpp" />
@@ -238,7 +237,6 @@
     <ClInclude Include="DonationDialog.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="LoadedModules.h" />
-    <ClInclude Include="ModuleLoader.h" />
     <ClInclude Include="OptionsDialog.h" />
     <ClInclude Include="PythonEngine.h" />
     <ClInclude Include="PythonEngine_fun.h" />

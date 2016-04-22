@@ -126,6 +126,9 @@
     <ClCompile Include="RepeatButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="InstallPath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -260,6 +263,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InstallPath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MD5.h">

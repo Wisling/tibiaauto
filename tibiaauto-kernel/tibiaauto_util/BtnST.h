@@ -81,7 +81,6 @@
 
 class TIBIAAUTOUTIL_API CButtonST : public CButton
 {
-	friend class CModuleLoader;
 public:
 	CButtonST();
 	~CButtonST();

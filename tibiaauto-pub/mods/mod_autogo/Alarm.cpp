@@ -127,12 +127,12 @@ void Alarm::setTrigger(int triggerType, CString trig)
 	trigger.setTriggerText(trig);
 }
 
-void Alarm::setStartModules(list<CString> beginModules)
+void Alarm::setStartModules(list<CString>& beginModules)
 {
 	startModules = beginModules;
 }
 
-void Alarm::setStopModules(list<CString> endModules)
+void Alarm::setStopModules(list<CString>& endModules)
 {
 	stopModules = endModules;
 }
