@@ -26,6 +26,7 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
+#include <ModuleLoader.h>
 #include <MemReader.h>
 #include <PackSender.h>
 #include <TibiaItem.h>
@@ -57,7 +58,6 @@ int depositGold();
 int changeGold();
 int withdrawGold(CConfigData *config, int suggestedWithdrawAmount);
 int isDepositing();
-int isCavebotOn();
 int countAllItemsOfType(int, bool);
 int shouldBank(CConfigData *);
 int canBank(CConfigData *);
@@ -600,37 +600,6 @@ int changeGold()
 		retval = 1;
 
 	return retval;
-}
-
-int isCavebotOn()
-{
-	HANDLE hSnap;
-	hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetCurrentProcessId());
-	if (hSnap)
-	{
-		MODULEENTRY32 lpModule;
-		lpModule.dwSize = sizeof(MODULEENTRY32);
-
-		Module32First(hSnap, &lpModule);
-		do
-		{
-			if (_strcmpi(lpModule.szModule, "mod_cavebot.dll") == 0)
-			{
-				FARPROC isStarted;
-				isStarted = GetProcAddress(lpModule.hModule, "isStarted");
-				if (isStarted)
-				{
-					if (isStarted())
-						return 1;
-					else
-						return 0;
-				}
-			}
-		}
-		while (Module32Next(hSnap, &lpModule));
-		CloseHandle(hSnap);
-	}
-	return -1;
 }
 
 int isDepositing()

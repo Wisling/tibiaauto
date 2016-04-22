@@ -212,6 +212,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ModuleLoader.cpp" />
     <ClCompile Include="BtnST.cpp" />
     <ClCompile Include="ComboBoxSuper.cpp" />
     <ClCompile Include="CreaturesReader.cpp" />
@@ -271,6 +272,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ModuleLoader.h" />
     <ClInclude Include="BtnST.h" />
     <ClInclude Include="ComboBoxSuper.h" />
     <ClInclude Include="CreaturesReader.h" />

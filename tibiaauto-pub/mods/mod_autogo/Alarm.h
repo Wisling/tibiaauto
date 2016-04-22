@@ -39,8 +39,8 @@ public:
 	void setCondition(int);
 	void setAttribute(int);
 	void setType(int);
-	void setStartModules(list<CString>);
-	void setStopModules(list<CString>);
+	void setStartModules(list<CString>& beginModules);
+	void setStopModules(list<CString>& endModules);
 	void setLogEvents(bool);
 	void setAudioAlarm(CString);
 	void setWindowAction(int);

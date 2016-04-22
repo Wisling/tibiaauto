@@ -25,6 +25,7 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
+#include <ModuleLoader.h>
 #include <MemReader.h>
 #include <PackSender.h>
 #include <IPCBackPipe.h>
@@ -151,67 +152,26 @@ int actionShutdownSystem()
 
 bool actionSuspend(CString module)
 {
-	bool retval = false;
 	masterDebug("actionSuspend");
 	masterDebug("actionSuspend", "Time to stop module");
-	HANDLE hSnap;
-	hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetCurrentProcessId());
-	if (hSnap)
-	{
-		MODULEENTRY32 lpModule;
-		lpModule.dwSize = sizeof(MODULEENTRY32);
-
-		Module32First(hSnap, &lpModule);
-		do
-		{
-			if (lpModule.szModule == module)
-			{
-				FARPROC isStarted;
-				isStarted = GetProcAddress(lpModule.hModule, "isStarted");
-				if (isStarted && isStarted())
-				{
-					GetProcAddress(lpModule.hModule, "stop")();
-					retval = true;
-				}
-				break;
-			}
-		}
-		while (Module32Next(hSnap, &lpModule));
-		CloseHandle(hSnap);
-	}
-	return retval;
+	IModuleInterface* modPtr = CModuleLoader::GetLoadedModule(CT2CA(module));
+	if (modPtr && modPtr->isStarted())
+		modPtr->stop();
+	else
+		return false;
+	return true;
 }
 
 bool actionStart(CString module)
 {
-	bool retval = false;
 	masterDebug("actionStart");
 	masterDebug("actionStart", "Time to start module", module);
-	HANDLE hSnap;
-	hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetCurrentProcessId());
-	if (hSnap)
-	{
-		MODULEENTRY32 lpModule;
-		lpModule.dwSize = sizeof(MODULEENTRY32);
-
-		Module32First(hSnap, &lpModule);
-		do
-		{
-			if (lpModule.szModule == module)
-			{
-				FARPROC isStarted;
-				isStarted = GetProcAddress(lpModule.hModule, "isStarted");
-				if (isStarted && !isStarted())
-				{
-					GetProcAddress(lpModule.hModule, "start")();
-					retval = true;
-				}
-			}
-		}
-		while (Module32Next(hSnap, &lpModule));
-		CloseHandle(hSnap);
-	}
-	return retval;
+	IModuleInterface* modPtr = CModuleLoader::GetLoadedModule(CT2CA(module));
+	if (modPtr && !modPtr->isStarted())
+		modPtr->start();
+	else
+		return false;
+	return true;
 }
 
 int OnList(char whiteList[100][32], char name[])

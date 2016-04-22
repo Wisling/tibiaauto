@@ -5,6 +5,7 @@
 #include "mod_autogo.h"
 #include "AlarmDialog.h"
 #include "CustomSpellDialog.h"
+#include <ModuleLoader.h>
 #include <TibiaItem.h>
 #include <MemReader.h>
 #include <ModuleUtil.h>
@@ -599,30 +600,12 @@ BOOL CAlarmDialog::OnInitDialog()
 	m_modules.AddString("<Deselect All>");
 	m_modules2.AddString("<Select All>");
 	m_modules2.AddString("<Deselect All>");
-	HANDLE hSnap;
-	hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetCurrentProcessId());
-	if (hSnap)
+	for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 	{
-		MODULEENTRY32 lpModule;
-		lpModule.dwSize = sizeof(MODULEENTRY32);
-
-		Module32First(hSnap, &lpModule);
-		do
-		{
-			if (_strcmpi(lpModule.szModule, "mod_autogo.dll") != 0 && _strcmpi(lpModule.szModule, "mod_playerinfo.dll") != 0)
-			{
-				if (!_strcmpi(strtok(lpModule.szModule, "_."), "mod"))
-				{
-					char *buf;
-					buf    = strtok(NULL, "_.");
-					buf[0] = toupper(buf[0]);
-					m_modules.AddString(buf);
-					m_modules2.AddString(buf);
-				}
-			}
-		}
-		while (Module32Next(hSnap, &lpModule));
-		CloseHandle(hSnap);
+		if (!it->first.compare("mod_playerinfo") || !it->first.compare("mod_autogo"))
+			continue;
+		m_modules.AddString(it->first.c_str());
+		m_modules2.AddString(it->first.c_str());
 	}
 	// Spell List Mana Costs
 	for (int i = 0; i < spellInfoCount; i++)
@@ -1848,7 +1831,7 @@ Alarm* CAlarmDialog::addToList()
 				continue;     // 0 is special and need not be added
 			m_modules2.GetText(ind, text);
 			text.MakeLower();
-			beginModules.push_back("mod_" + text + ".dll");
+			beginModules.push_back(text);
 		}
 		temp->setStartModules(beginModules);
 	}
@@ -1866,7 +1849,7 @@ Alarm* CAlarmDialog::addToList()
 				continue;     // 0 is special and need not be added
 			m_modules.GetText(ind, text);
 			text.MakeLower();
-			endModules.push_back("mod_" + text + ".dll");
+			endModules.push_back(text);
 		}
 		temp->setStopModules(endModules);
 	}
@@ -1985,15 +1968,14 @@ void CAlarmDialog::OnAlarmEdit()
 		m_modules2.SelItemRange(0, 0, m_modules2.GetCount());
 		list<CString> temp              = alarmItr->getStartModules();
 		list<CString>::iterator modsItr = temp.begin();
-		CString prefix("mod_");
-		CString postfix(".dll");
 		while (modsItr != temp.end())
 		{
-			*modsItr = modsItr->Mid(prefix.GetLength(), modsItr->GetLength() - prefix.GetLength() - postfix.GetLength());//remove "mod_" and ".dll"
-			CString a = *modsItr;
-			int sel   = m_modules2.FindStringExact(-1, *modsItr);
-			if (sel != -1)
-				m_modules2.SetSel(sel);
+			if (CModuleLoader::GetLoadedModule(T2CA(*modsItr)))
+			{
+				int sel = m_modules2.FindStringExact(-1, *modsItr);
+				if (sel != -1)
+					m_modules2.SetSel(sel);
+			}
 			modsItr++;
 		}
 		m_actionSuspend.SetCheck(alarmItr->getStopModules().size());
@@ -2003,10 +1985,12 @@ void CAlarmDialog::OnAlarmEdit()
 		modsItr = temp.begin();
 		while (modsItr != temp.end())
 		{
-			*modsItr = modsItr->Mid(prefix.GetLength(), modsItr->GetLength() - prefix.GetLength() - postfix.GetLength());//remove "mod_" and ".dll"//remove "mod_" and ".dll"
-			int sel = m_modules.FindStringExact(-1, *modsItr);
-			if (sel != -1)
-				m_modules.SetSel(sel);
+			if (CModuleLoader::GetLoadedModule(T2CA(*modsItr)))
+			{
+				int sel = m_modules.FindStringExact(-1, *modsItr);
+				if (sel != -1)
+					m_modules.SetSel(sel);
+			}
 			modsItr++;
 		}
 		memAlarmList.erase(alarmItr);

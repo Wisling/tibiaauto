@@ -68,7 +68,6 @@ int sellItems(CConfigData *, int);
 int buyItems(CConfigData *, int);
 int isDepositing();
 int spaceAvailable();
-int isCavebotOn();
 int countAllItemsOfType(int objectId, bool includeSlots = 0);
 bool shouldGo(CConfigData *);
 int individualShouldGo(CConfigData *, int);
@@ -1189,37 +1188,6 @@ int buyItems(CConfigData *config, int traderNum)
 		}
 	}
 	return done == 1 ? 1 : 0;
-}
-
-int isCavebotOn()
-{
-	HANDLE hSnap;
-	hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetCurrentProcessId());
-	if (hSnap)
-	{
-		MODULEENTRY32 lpModule;
-		lpModule.dwSize = sizeof(MODULEENTRY32);
-
-		Module32First(hSnap, &lpModule);
-		do
-		{
-			if (_strcmpi(lpModule.szModule, "mod_cavebot.dll") == 0)
-			{
-				FARPROC isStarted;
-				isStarted = GetProcAddress(lpModule.hModule, "isStarted");
-				if (isStarted)
-				{
-					if (isStarted())
-						return 1;
-					else
-						return 0;
-				}
-			}
-		}
-		while (Module32Next(hSnap, &lpModule));
-		CloseHandle(hSnap);
-	}
-	return -1;
 }
 
 int isDepositing()

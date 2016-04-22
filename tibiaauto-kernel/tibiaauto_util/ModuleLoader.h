@@ -7,10 +7,12 @@
 using namespace std;
 
 typedef map<string, IModuleInterface*> ModuleMap;
-class CModuleLoader
+class TIBIAAUTOUTIL_API CModuleLoader
 {
 public:
-	static IModuleInterface* LoadModule(char *moduleName, int pathIsAbsolute);
+	static IModuleInterface* LoadModule(const char *moduleName, int pathIsAbsolute);
+	static bool IsCavebotOn();
+	static IModuleInterface* GetLoadedModule(const char* moduleName);
 	static ModuleMap loadedModules;
 private:
 	CModuleLoader() {};
