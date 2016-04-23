@@ -629,43 +629,10 @@ void CPythonEngine::loadScript(char *path)
 		}
 		//AfxMessageBox(buf);
 		PyRun_SimpleString(buf);
-		//AfxMessageBox("2");
-		/*
-		   AfxMessageBox("1");
-		   fseek(f,0,SEEK_END);
-		   int fileSize = ftell(f);
-		   fseek(f,0,SEEK_SET);
-		   char *fileBuf = (char *)malloc(fileSize+1);
-		   memset(fileBuf,0,fileSize+1);
-		   AfxMessageBox("2");
-		   int l=fread(fileBuf,1,fileSize,f);
-		   char bbb[128];
-		   sprintf(bbb,"len=%d/fileSize=%d/delta=%d",l,fileSize,fileSize-l);
-		   AfxMessageBox(bbb);
-		   FILE *ff=fopen("a.txt","a+");
-		   fwrite(fileBuf,1,fileSize,ff);
-		   fclose(ff);
-
-		   AfxMessageBox("3");
-
-
-		   int ret=PyRun_SimpleString(fileBuf);
-		   AfxMessageBox("4");
-		   if (ret==-1)
-		   {
-		        char buf[1024];
-		        sprintf(buf,"Loading script failed: python error (%s)!",path);
-		        AfxMessageBox(buf);
-		   }
-
-		   free(fileBuf);
-		   fclose(f);
-		 */
-
 		if (registerPluginCount == oldRegisterPluginCount)
 		{
 			char buf[1024];
-			sprintf(buf, "Loading script failed: there must be a call to tibiaauto.registerPlugin() (%d/%d)!", registerPluginCount, oldRegisterPluginCount);
+			sprintf(buf, "Loading script failed: %s!", path);
 			AfxMessageBox(buf);
 		}
 		else
