@@ -1259,8 +1259,8 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 
 		if (!(!nRed && !nGreen && !nBlue)) //if it is not black bar being drawn
 		{
-			float myRed = ((1 - ((float)self.mana / (float)self.maxMana)) * 0xC0);
-			float myBlue = ((float)self.mana / (float)self.maxMana) * 0xC0;
+			float myRed = 0x20;
+			float myBlue = 0xC0;
 			float hpPorc = ((float)self.hp / (float)self.maxHp);
 
 			int luminosity;
@@ -1273,17 +1273,6 @@ void myDrawRect(int ebp, int ecx, int nSurface, int nX, int nY, int nWeight, int
 			{
 				luminosity = 0xC0 - nRed;
 			}
-					
-			if (myBlue < 0x30) // minimum blue color
-			{
-				myBlue = 0x30;
-			}
-
-			if (myRed < 0x20) // minimum red color
-			{
-				myRed = 0x20;
-			}
-
 
 			if ((myBlue - luminosity) > 0) //adjust blue color to light
 				myBlue = myBlue - (float)luminosity / (float)1.5;
