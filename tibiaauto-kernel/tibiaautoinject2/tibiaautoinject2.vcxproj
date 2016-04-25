@@ -208,6 +208,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SystemHooks.cpp" />
     <ClCompile Include="IPCPipeBack.cpp" />
     <ClCompile Include="MyMenu.cpp" />
     <ClCompile Include="MyMenuData.cpp" />
@@ -221,15 +222,19 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release_Profiling|Win32'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="tibiaautoinject2.cpp" />
+    <ClCompile Include="TibiaHooks.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="deelx.h" />
+    <ClInclude Include="SystemHooks.h" />
     <ClInclude Include="IPCPipeBack.h" />
     <ClInclude Include="MyMenu.h" />
     <ClInclude Include="MyMenuData.h" />
     <ClInclude Include="protocol.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="tibiaautoinject2.h" />
+    <ClInclude Include="TibiaHooks.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="tibiaautoinject2.rc" />

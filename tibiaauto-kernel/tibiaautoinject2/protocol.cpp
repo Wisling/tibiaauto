@@ -546,7 +546,6 @@ void Protocol::parsePacketIn(NetworkMessage &msg)
 	}
 }
 
-extern void sendTAMessage(char* message);
 void Protocol::parsePacketOut(NetworkMessage &msg)
 {
 	CMemReader& reader = CMemReader::getMemReader();
