@@ -1,14 +1,25 @@
-2.65.1 4.19.2015
+2.66.0 5.14.2016
+Enhancements:
+ Tibia Auto: Updated for Tibia 10.93
+ Tibia Auto: Removed dependence on TA registry install path and infers installation location from tibiaauto.exe path
+ Spellcaster & others: Made frame names clickable for enabling tabs
+ Auto Login: Added automatic backpack opener that opens indicated backpacks when no backpacks are open for 8 seconds
+Defects:
+ Tibia Auto: Updated for Tibia 10.93
+ Trade Monitor: Trade monitor text now shows up in window
+ Auto Login: Fixed TA not minimizing more than 4 backpacks
+
+2.65.1 4.19.2016
 Defects:
  Tibia Auto: Fixed crashing on loading(but those using OpenGL will still not see a health bar above their character)
 
-2.65.0 4.12.2015
+2.65.0 4.12.2016
 Enhancements:
  Tibia Auto: Updated for Tibia 10.92
 Defects:
  Cavebot: Fixed Pause/Break key pausing cavebot
 
-2.64.2 4.11.2015
+2.64.2 4.11.2016
 Enhancements:
  Tibia Auto: Improved performance and reduced CPU usage
  Python: Added takernel.setModuleParam and takernel.getModuleParam to automatically change parameters based on their name in a saved xml script
@@ -20,14 +31,14 @@ Defects:
  Tibia Auto: Can exit TA and reassociate a new TA to a previously used Tibia window with more certainty.
  Python: Prevented memory leak with tasender.printText function
 
-2.64.1 1.25.2015
+2.64.1 1.25.2016
 Enhancements:
  Map Hacks: Added option to show a manabar above your character
 Defects:
  Python: Fixed tasender.printText function
  Cavebot: Fixed loot from floor bug causing cavebot to stop working
 
-2.64.0 1.2.2015
+2.64.0 1.2.2016
 Enhancements:
  Tibia Auto: Updated for Tibia 10.90
  tiles.xml: Updated for Tibia 10.90

@@ -196,9 +196,9 @@ BOOL CConfigDialog::OnInitDialog()
 
 int pressed(unsigned int tm)
 {
-	char buf[1111];
-	sprintf(buf, "tm %d", GetTickCount() - tm);
-	CPackSender::sendTAMessage(buf);
+	//char buf[1111];
+	//sprintf(buf, "tm %d", GetTickCount() - tm);
+	//CPackSender::sendTAMessage(buf);
 	return GetTickCount() - tm < 300;
 }
 
