@@ -350,6 +350,42 @@ void inline testDebug(char *s)
 	}
 }
 
+point inline dirToPoint(uint8_t stepDir){
+	int x = 0, y = 0;
+	switch (stepDir)
+	{
+	case STEP_EAST:
+		x++;
+		break;
+	case STEP_WEST:
+		x--;
+		break;
+	case STEP_SOUTH:
+		y++;
+		break;
+	case STEP_NORTH:
+		y--;
+		break;
+	case STEP_SOUTHEAST:
+		y++;
+		x++;
+		break;
+	case STEP_SOUTHWEST:
+		y++;
+		x--;
+		break;
+	case STEP_NORTHEAST:
+		y--;
+		x++;
+		break;
+	case STEP_NORTHWEST:
+		y--;
+		x--;
+		break;
+	}
+	return point(x, y, 0);
+}
+
 void CModuleUtil::findPathOnMapProcessPoint(queue<point> &pointsToAdd, int prevX, int prevY, int prevZ, int newX, int newY, int newZ)
 {
 	if (CTibiaMap::getTibiaMap().isPointAvailable(newX, newY, newZ))
@@ -879,12 +915,18 @@ struct point CModuleUtil::AStarRetrievePath(int gotToEndPoint, point &endPoint, 
 				path[pos] = STEP_NORTHWEST;
 
 			MapPointType pType = tibiaMap.getPointType(curX, curY, curZ);
-			if (pType == MAP_POINT_TYPE_USABLE_TELEPORT || pType == MAP_POINT_TYPE_TELEPORT)
+			if (pType == MAP_POINT_TYPE_TELEPORT)
 			{
 				// tp
-				if (pos == 0 || (pos == 1 && pType == MAP_POINT_TYPE_USABLE_TELEPORT))
+				path[pos] |= STEP_TELEPORT; // make last step moving into a teleporter
+				break;
+			}
+			else if (pType == MAP_POINT_TYPE_USABLE_TELEPORT)
+			{
+				// switch, gate chains, etc
+				if (pos == 0)
 				{
-					path[pos] |= STEP_TELEPORT;
+					path[pos] |= STEP_USABLE_TELEPORT;
 				}
 				else
 				{
@@ -1606,7 +1648,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, uint8_t path[1
 						}
 						else
 						{
-							stepDir = path[0] & 0xF;
+							stepDir = path[0] & 0x0F;
 							CPackSender::stepMulti(&stepDir, 1);
 						}
 						Sleep(CModuleUtil::randomFormula(1100, 300));
@@ -1673,7 +1715,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, uint8_t path[1
 				break;
 			}         // switch pointType
 		}
-		case STEP_TELEPORT:
+		case STEP_USABLE_TELEPORT:
 			if (!onSpot)
 			{
 				int topItemId = CMemReader::getMemReader().itemOnTopCode(modX - self.x, modY - self.y);
@@ -1683,24 +1725,20 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, uint8_t path[1
 			}
 			break;
 		} // switch path[0] & 0xF0
-
-		if (path[0] != STEP_TELEPORT)
+		//wait for major position change of level
+		int iterCount = 60;
+		while (iterCount-- > 0)
 		{
-			//wait for change of level
-			int iterCount = 60;
-			while (iterCount-- > 0)
+			CTibiaCharacter selfTmp;
+			CMemReader::getMemReader().readSelfCharacter(&selfTmp);
+			if (selfTmp.z != self.z || abs(selfTmp.x-self.x) > 1 || abs(selfTmp.y-self.y) > 1)
 			{
-				CTibiaCharacter selfTmp;
-				CMemReader::getMemReader().readSelfCharacter(&selfTmp);
-				if (selfTmp.z != self.z)
-				{
-					break;
-				}
-				Sleep(50);
+				break;
 			}
+			Sleep(50);
 		}
 	}
-	else if (pathSize == 2 && (path[1] & 0xF0) == STEP_TELEPORT)
+	else if (pathSize == 2 && (path[1] & 0xF0) == STEP_USABLE_TELEPORT) // unsure what situation this accounts for?
 	{
 		int topItemId = CMemReader::getMemReader().itemOnTopCode(modX - self.x, modY - self.y);
 		if (topItemId)
@@ -1760,76 +1798,19 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, uint8_t path[1
 
 			for (int i = 0; i < pathSize; i++)
 			{
+				point stepPoint = dirToPoint(path[i]);
 				//Finds the position (offset) we need to start from in case we moved since the path was found
 				if (self.x != x1 || self.y != y1)
 				{
 					offset++;
-					switch (path[i])
-					{
-					case STEP_EAST:
-						x1++;
-						break;
-					case STEP_WEST:
-						x1--;
-						break;
-					case STEP_SOUTH:
-						y1++;
-						break;
-					case STEP_NORTH:
-						y1--;
-						break;
-					case STEP_SOUTHEAST:
-						y1++;
-						x1++;
-						break;
-					case STEP_SOUTHWEST:
-						y1++;
-						x1--;
-						break;
-					case STEP_NORTHEAST:
-						y1--;
-						x1++;
-						break;
-					case STEP_NORTHWEST:
-						y1--;
-						x1--;
-						break;
-					}
+					x1 += stepPoint.x;
+					y1 += stepPoint.y;
 				}
 
 				//Finds endX and endY, the endpoint of multisteps normally sent by the Tibia client
 				int prevlastEndX = lastEndX, prevlastEndY = lastEndY;
-				switch (path[i])
-				{
-				case STEP_EAST:
-					lastEndX++;
-					break;
-				case STEP_WEST:
-					lastEndX--;
-					break;
-				case STEP_SOUTH:
-					lastEndY++;
-					break;
-				case STEP_NORTH:
-					lastEndY--;
-					break;
-				case STEP_SOUTHEAST:
-					lastEndY++;
-					lastEndX++;
-					break;
-				case STEP_SOUTHWEST:
-					lastEndY++;
-					lastEndX--;
-					break;
-				case STEP_NORTHEAST:
-					lastEndY--;
-					lastEndX++;
-					break;
-				case STEP_NORTHWEST:
-					lastEndY--;
-					lastEndX--;
-					break;
-				}
+				lastEndX += stepPoint.x;
+				lastEndY += stepPoint.y;
 				if (abs(x1 - lastEndX) > 8 || abs(y1 - lastEndY) > 6)
 				{
 					lastEndX = prevlastEndX;
