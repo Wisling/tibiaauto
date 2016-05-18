@@ -386,6 +386,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 	bool found = false;
 	mStop    = false;
 	mStopped = false;
+	int DISTANCE_TO_SPEED_FACTOR = 100;
 
 	AStarNode parentNode = AStarNode();
 	parentNode.g  = 0;
@@ -407,11 +408,11 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 		parentNode = mOpen.top();
 		mOpen.pop();
 		// Ignore current path weight
-		mDistance = parentNode.h - parentNode.g;
+		mDistance = (parentNode.h - parentNode.g)/DISTANCE_TO_SPEED_FACTOR;
 		mOpenSize = mOpen.size();
 		// Readjust when closer than 50 steps, in case the end is unreachable - don't go away more than 10% (or 100 steps) of the initial distance anymore
-		if (mDistance && mDistance < (50*100))
-			maxDistBreak = max(maxDistBreak / 10, (100 * 100));
+		if (mDistance && mDistance < 50)
+			maxDistBreak = max(maxDistBreak / 10, 100);
 		//fout << parentNode.x-endX << " " << parentNode.y-endY << " " << parentNode.z - endZ << "\n";
 
 
@@ -453,14 +454,14 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 				delete mp;
 				continue;
 			}
-			int newG = parentNode.g + mp->speed * (i % 2 == 0 && i > 0 ? 3 : 1);//lower speed value = faster, x3 cost for diagonals and floor changes
+			int newG = parentNode.g + mp->speed * (i % 2 == 0 && i > 0 ? 3 : 1);//lower speed value = faster, x3 cost for diagonals
 			delete mp;
 
 			newNode.px = parentNode.x;
 			newNode.py = parentNode.y;
 			newNode.pz = parentNode.z;
 			newNode.g  = newG;
-			newNode.h = newG + CTibiaMap::heurDistance(newNode.x, newNode.y, newNode.z, endX, endY, endZ);
+			newNode.h = newG + CTibiaMap::heurDistance(newNode.x, newNode.y, newNode.z, endX, endY, endZ)*DISTANCE_TO_SPEED_FACTOR;
 			//DebugPrint("newNode",newNode.x,newNode.y,newNode.z);
 
 			vector<AStarNode>* mOpenIter = mOpen.Container();
