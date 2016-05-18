@@ -687,7 +687,7 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 		if (currentPointType == MAP_POINT_TYPE_TELEPORT || currentPointType == MAP_POINT_TYPE_USABLE_TELEPORT)
 		{
 			point dest = tibiaMap.getDestPoint(currentPoint.x, currentPoint.y, currentPoint.z);
-			if (dest.x != 0 && dest.y != 0 && dest.z != 0)
+			if (dest.x != 0 || dest.y != 0 || dest.z != 0)
 				pointsToAdd.push(point(dest.x, dest.y, dest.z));
 #ifdef MAPDEBUG
 			mapDebug("go teleport");
