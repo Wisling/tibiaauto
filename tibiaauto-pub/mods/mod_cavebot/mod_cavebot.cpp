@@ -2126,6 +2126,7 @@ DWORD WINAPI lootThreadProc(LPVOID lpParam)
 		while (!corpseQueue.empty() && globalAutoAttackStateAttack != CToolAutoAttackStateAttack_macroPause)
 		{
 			Corpse& corpseCh = corpseQueue.front();
+			corpseQueue.pop();
 			if (GetTickCount() - corpseCh.tod > 1000 * 60)
 				continue;
 			int lootContNr[3];
@@ -2251,7 +2252,6 @@ DWORD WINAPI lootThreadProc(LPVOID lpParam)
 					//CPackSender::sendTAMessage(buf);
 				}
 			}
-			corpseQueue.pop();
 			if (corpseQueue.empty())
 				CVariableStore::setVariable("autolooterTm", "");
 		}

@@ -1841,7 +1841,6 @@ __declspec(naked) void INmyInterceptDecrypt() //<eax>(int v1<ecx>, int v2<edx>)
    }}
  */
 
-//wiz
 //This captured function is what Tibia uses to decrypt the packet
 // and determine which action types it contains in order to parse it properly
 // The function returns the action type and Tibia then parses the stream.

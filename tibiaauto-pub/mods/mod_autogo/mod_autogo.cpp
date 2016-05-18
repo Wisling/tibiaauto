@@ -472,7 +472,6 @@ void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC)
 		AfxMessageBox(errormsg);
 		return;
 	}
-	//wiz:
 	png_structp png_ptr;
 	png_infop info_ptr;
 
