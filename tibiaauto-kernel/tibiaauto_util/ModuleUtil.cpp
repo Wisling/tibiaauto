@@ -1739,6 +1739,13 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, uint8_t path[1
 			Sleep(50);
 		}
 	}
+	else if (pathSize == 2 && (path[1] & 0xF0) == STEP_USABLE_TELEPORT) // unsure what situation this accounts for?
+	{
+		int topItemId = CMemReader::getMemReader().itemOnTopCode(modX - self.x, modY - self.y);
+		if (topItemId)
+			CPackSender::useItemOnFloor(topItemId, modX, modY, self.z);
+		Sleep(CModuleUtil::randomFormula(500, 100));
+	}
 	else
 	{
 		/**
