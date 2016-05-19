@@ -134,7 +134,7 @@ void CTibiaMap::enlarge()
 
 int CTibiaMap::isPointLonger(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
-	return x != prevX && y != prevY || z != prevZ;
+	return getPointType(x, y, z) != MAP_POINT_TYPE_USABLE_TELEPORT && (x != prevX && y != prevY || z != prevZ);
 }
 
 struct point CTibiaMap::getRandomPoint()
@@ -262,13 +262,7 @@ void CTibiaMap::setPointDistance(int x, int y, int z, int dist)
 
 int CTibiaMap::calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
-	MapPointType currentPointType = getPointType(x, y, z);
-	int forcedLevelChange = 0;
-	if (currentPointType == MAP_POINT_TYPE_OPEN_HOLE || 
-		currentPointType == MAP_POINT_TYPE_STAIRS ||
-		currentPointType == MAP_POINT_TYPE_TELEPORT ||
-		currentPointType == MAP_POINT_TYPE_BLOCK)
-		forcedLevelChange = 1;
+	int longFloorChange = abs(x - prevX) > 1 || abs(y - prevY) > 1 || z != prevZ;
 	int spd = getPointSpeed(x, y, z);
 	if (spd == 0)
 	{
@@ -279,7 +273,7 @@ int CTibiaMap::calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ
 	}
 	// Higher cost for level changing so TA won't make few-steps shortcuts by jumping through staircases/teleports
 	// Walking around a hole/stairs is usually not more than 5 steps, make 6 a threshold
-	return spd * ((isPointLonger(x, y, z, prevX, prevY, prevZ) ? 3 : 1) + forcedLevelChange * 6);
+	return spd * ((isPointLonger(x, y, z, prevX, prevY, prevZ) ? 3 : 1) + longFloorChange * 6);
 }
 
 typedef CMap<point *, point *, pointData *, pointData *> CMyMap;

@@ -683,11 +683,10 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 				}
 			}
 		}
-
-		// we go directly down using open hole, closed hole, grate
-		// walk on the desired tile
-		if (currentPointType >= MAP_POINT_TYPE_OPEN_HOLE && currentPointType < MAP_POINT_TYPE_ROPE)
+		else if (currentPointType >= MAP_POINT_TYPE_OPEN_HOLE && currentPointType < MAP_POINT_TYPE_ROPE)
 		{
+			// we go directly down using open hole, closed hole, grate
+			// walk on the desired tile
 			if (tibiaMap.isPointAvailableNoProh(currentPoint.x, currentPoint.y, currentPoint.z + 1))
 			{
 				pointsToAdd.push(point(currentPoint.x, currentPoint.y, currentPoint.z + 1));
@@ -717,11 +716,10 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 				}
 			}
 		}
-
-		// we go directly to teleporter position
-		// walk on the desired tile
-		if (currentPointType == MAP_POINT_TYPE_TELEPORT || currentPointType == MAP_POINT_TYPE_USABLE_TELEPORT)
+		else if (currentPointType == MAP_POINT_TYPE_TELEPORT || currentPointType == MAP_POINT_TYPE_USABLE_TELEPORT)
 		{
+			// we go directly to teleporter position
+			// walk on the desired tile
 			point dest = tibiaMap.getDestPoint(currentPoint.x, currentPoint.y, currentPoint.z);
 			if (dest.x != 0 || dest.y != 0 || dest.z != 0)
 				pointsToAdd.push(point(dest.x, dest.y, dest.z));
@@ -734,6 +732,7 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 		if ((currentPointType == MAP_POINT_TYPE_OPEN_HOLE ||
 			currentPointType == MAP_POINT_TYPE_STAIRS ||
 			currentPointType == MAP_POINT_TYPE_TELEPORT ||
+			currentPointType == MAP_POINT_TYPE_USABLE_TELEPORT || //make this forced level change as the algorithm "steps" on it as a commitment to taking it(and they are usually unwalkable)
 			currentPointType == MAP_POINT_TYPE_BLOCK) && !(startX == currentPoint.x && startY == currentPoint.y && startZ == currentPoint.z))
 			forcedLevelChange = 1;
 
@@ -772,13 +771,16 @@ int CModuleUtil::AStarFindPath(int closerEnd, int pathFindX, int pathFindY, int 
 				// special going down if grate or hole busy
 				if ((pointType == MAP_POINT_TYPE_CLOSED_HOLE || pointType == MAP_POINT_TYPE_GRATE) && tibiaMap.isPointAvailableNoProh(currentPoint.x + xShift, currentPoint.y + yShift, currentPoint.z + 1))
 					pointsToAdd.push(point(currentPoint.x + xShift, currentPoint.y + yShift, currentPoint.z + 1));
+				// special using usable teleporter since we use it from 1 space away and (usually) cannot walk on it
+				if (pointType == MAP_POINT_TYPE_USABLE_TELEPORT)
+					pointsToAdd.push(point(currentPoint.x + xShift, currentPoint.y + yShift, currentPoint.z));
 			}
 		}
 		while (!pointsToAdd.empty())
 		{
 			point addPoint = pointsToAdd.front();
 			pointsToAdd.pop();
-			int newDist = currentPoint.g + tibiaMap.calcDistance(currentPoint.x, currentPoint.y, currentPoint.z, addPoint.x, addPoint.y, addPoint.z);
+			int newDist = currentPoint.g + tibiaMap.calcDistance(addPoint.x, addPoint.y, addPoint.z, currentPoint.x, currentPoint.y, currentPoint.z);
 			int oldDist = tibiaMap.getPointDistance(addPoint.x, addPoint.y, addPoint.z);
 			if (oldDist == 0 || newDist < oldDist)
 			{
@@ -915,13 +917,12 @@ struct point CModuleUtil::AStarRetrievePath(int gotToEndPoint, point &endPoint, 
 				path[pos] = STEP_NORTHWEST;
 
 			MapPointType pType = tibiaMap.getPointType(curX, curY, curZ);
-			if (pType == MAP_POINT_TYPE_TELEPORT)
+			MapPointType pTypeNext = tibiaMap.getPointType(nextX, nextY, nextZ);
+			if (pTypeNext == MAP_POINT_TYPE_TELEPORT)
 			{
-				// tp
-				path[pos] |= STEP_TELEPORT; // make last step moving into a teleporter
-				break;
+				break; //make teleport last step
 			}
-			else if (pType == MAP_POINT_TYPE_USABLE_TELEPORT)
+			else if (pTypeNext == MAP_POINT_TYPE_USABLE_TELEPORT || pType == MAP_POINT_TYPE_USABLE_TELEPORT && (abs(curX - nextX) > 1 || abs(curY - nextY) > 1 || curZ != nextZ))
 			{
 				// switch, gate chains, etc
 				if (pos == 0)
@@ -1737,13 +1738,6 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, uint8_t path[1
 			}
 			Sleep(50);
 		}
-	}
-	else if (pathSize == 2 && (path[1] & 0xF0) == STEP_USABLE_TELEPORT) // unsure what situation this accounts for?
-	{
-		int topItemId = CMemReader::getMemReader().itemOnTopCode(modX - self.x, modY - self.y);
-		if (topItemId)
-			CPackSender::useItemOnFloor(topItemId, modX, modY, self.z);
-		Sleep(CModuleUtil::randomFormula(500, 100));
 	}
 	else
 	{
