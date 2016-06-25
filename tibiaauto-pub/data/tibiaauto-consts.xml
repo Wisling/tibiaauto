@@ -1,4 +1,4 @@
-<!-- Tibia constants for Tibia 10.94 -->
+<!-- Tibia constants for Tibia 10.95 -->
 <const-definitions>
 	<consts>
 		<!-- item codes -->
@@ -44,10 +44,10 @@
 		<const code="addrOffset" value="0"/>
 
 		<const code="addrMCInject" value="0"/> <!--D7 3D B7 -->
-		<const code="addrXRay1" value="0x56C85C"/> <!-- 07000000????????02000000-->
-		<const code="addrXRay2" value="0x56C864"/>
-		<const code="addrFunRevealCName1" value="0x588AA7"/> <!-- replace 1 search (84 C0) 75 (?0E?) and (3B F8) 75 (?34?) -->
-		<const code="addrFunRevealCName2" value="0x588AC5"/> <!-- replace 1 -->
+		<const code="addrXRay1" value="0x56C36C"/> <!-- 07000000????????02000000-->
+		<const code="addrXRay2" value="0x56C374"/>
+		<const code="addrFunRevealCName1" value="0x5885F7"/> <!-- replace 1 search (84 C0) 75 (?0E?) and (3B F8) 75 (?34?) -->
+		<const code="addrFunRevealCName2" value="0x588615"/> <!-- replace 1 -->
 		<const code="addrFunRevealCName3" value="0"/>
 		<const code="addrFunRevealCName4" value="0"/>
 		<const code="addrSelfPosX" value="0"/>
@@ -94,61 +94,61 @@
 		<const code="addrHPMax" value="0xAD9048"/>
 		<const code="addrGoX" value="0xAD904C"/>
 		<const code="addrSelfId" value="0xAD9050"/>
-		<const code="addrFps" value="0xB268B0"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
-		<const code="addrVocation" value="0xB1B9FC"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
+		<const code="addrFps" value="0xB267A8"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
+		<const code="addrVocation" value="0xB1B8F4"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
 		<const code="addrPacketCount" value="0xAD9EE0"/> <!-- cat0 -->
-		<const code="addrFirstCreature" value="0xB353D0"/> <!-- cat1 -->
-		<const code="addrSlotArrow" value="0xB7B450"/> <!-- cat2 count-4 -->
-		<const code="addrMapStart" value="0xB7B5C0"/> <!-- is a pointer to visible map -->
-		<const code="addrFirstContainer" value="0xB81854"/> <!-- cat2 pointer to cont number -0xC-->
-		<const code="addrCurrentTm" value="0xB823E0"/> <!-- cat2 -->
+		<const code="addrFirstCreature" value="0xB352C0"/> <!-- cat1 -->
+		<const code="addrSlotArrow" value="0xB7B350"/> <!-- cat2 count-4 -->
+		<const code="addrMapStart" value="0xB7B4BC"/> <!-- is a pointer to visible map -->
+		<const code="addrFirstContainer" value="0xB81744"/> <!-- cat2 pointer to cont number -0xC-->
+		<const code="addrCurrentTm" value="0xB822D0"/> <!-- cat2 -->
 
-		<const code="addrFunTibiaPrintText" value="0x496560"/>
-		<const code="addrFunTibiaPlayerNameText" value="0x52B8A0"/>
-		<const code="addrFunTibiaInfoMiddleScreen" value="0x5F2C30"/>
-		<const code="addrFunTibiaIsCreatureVisible" value="0x4A9F30"/>
-		<const code="addrFunTibiaEncrypt" value="0x609190"/>
-		<const code="addrFunTibiaDecrypt" value="0x609210"/>
-		<const code="addrFunTibiaShouldParseRecv" value="0x596A60"/> <!-- switch table contains "Are you sure you want to leave Tibia" -->
-		<const code="addrFunTibiaInfoMessageBox" value="0x5F6BD0"/>
-		<const code="addrArrayPtrRecvStream" value="0xB7A454"/> <!-- look for this address near above location -->
-		<const code="addrCallDrawRect" value="0x582542"/>
-		<const code="addrCallDrawBlackRect" value="0x5824B3"/>
-		<const code="addrCallPrintText01" value="0x48EB9D"/><!-- //...<addr>.*  -->
-		<const code="addrCallPrintText02" value="0x48EBE2"/>
-		<const code="addrCallPrintText03" value="0x498739"/>
-		<const code="addrCallPrintText04" value="0x58258F"/>
-		<const code="addrCallPrintText05" value="0x583AE7"/>
-		<const code="addrCallPlayerNameText01" value="0x44FBB5"/>
-		<const code="addrCallPlayerNameText02" value="0x461A8C"/>
-		<const code="addrCallPlayerNameText03" value="0x4675F8"/>
-		<const code="addrCallPlayerNameText04" value="0x4677E8"/>
-		<const code="addrCallPlayerNameText05" value="0x46DD58"/>
-		<const code="addrCallPlayerNameText06" value="0x47992C"/>
-		<const code="addrCallPlayerNameText07" value="0x4965EC"/>
-		<const code="addrCallPlayerNameText08" value="0x4CF95A"/>
-		<const code="addrCallPlayerNameText09" value="0x5833CF"/>
-		<const code="addrCallPlayerNameText10" value="0x58D8BA"/>
-		<const code="addrCallInfoMiddleScreen01" value="0x434EE8"/>
-		<const code="addrCallInfoMiddleScreen02" value="0x493CB9"/>
-		<const code="addrCallInfoMiddleScreen03" value="0x4D683D"/>
-		<const code="addrCallInfoMiddleScreen04" value="0x58024B"/>
-		<const code="addrCallInfoMessageBox01" value="0x434774"/>
-		<const code="addrCallInfoMessageBox02" value="0x45CE7F"/>
-		<const code="addrCallInfoMessageBox03" value="0x511E1A"/>
-		<const code="addrCallInfoMessageBox04" value="0x576F12"/>
-		<const code="addrCallInfoMessageBox05" value="0x577707"/>
-		<const code="addrCallInfoMessageBox06" value="0x5777AD"/>
-		<const code="addrCallInfoMessageBox07" value="0x5F6A55"/>
-		<const code="addrCallInfoMessageBox08" value="0x5F741C"/>
-		<const code="addrCallInfoMessageBox09" value="0x5F750B"/>
-		<const code="addrCallInfoMessageBox10" value="0x5F76F2"/>
-		<const code="addrCallInfoMessageBox11" value="0x5F79B9"/>
-		<const code="addrCallInfoMessageBox12" value="0x5F84C5"/>
-		<const code="addrCallInfoMessageBox13" value="0x5F84F5"/>
-		<const code="addrCallEncrypt01" value="0x596193"/>
-		<const code="addrCallDecrypt01" value="0x596789"/>
-		<const code="addrCallShouldParseRecv01" value="0x49B812"/>
+		<const code="addrFunTibiaPrintText" value="0x498B50"/>
+		<const code="addrFunTibiaPlayerNameText" value="0x52E310"/>
+		<const code="addrFunTibiaInfoMiddleScreen" value="0x5F5150"/>
+		<const code="addrFunTibiaIsCreatureVisible" value="0x4AC820"/>
+		<const code="addrFunTibiaEncrypt" value="0x60B640"/>
+		<const code="addrFunTibiaDecrypt" value="0x60B6C0"/>
+		<const code="addrFunTibiaShouldParseRecv" value="0x599070"/> <!-- switch table contains -->
+		<const code="addrFunTibiaInfoMessageBox" value="0x5F90C0"/>
+		<const code="addrArrayPtrRecvStream" value="0xB80034"/> <!-- look for this address near above location -->
+		<const code="addrCallDrawRect" value="0x584B32"/>
+		<const code="addrCallDrawBlackRect" value="0x584AA3"/>
+		<const code="addrCallPrintText01" value="0x4911AD"/><!-- //...<addr>.* -->
+		<const code="addrCallPrintText02" value="0x4911F2"/>
+		<const code="addrCallPrintText03" value="0x49AD29"/>
+		<const code="addrCallPrintText04" value="0x584B7F"/>
+		<const code="addrCallPrintText05" value="0x5860D7"/>
+		<const code="addrCallPlayerNameText01" value="0x450825"/>
+		<const code="addrCallPlayerNameText02" value="0x4626EC"/>
+		<const code="addrCallPlayerNameText03" value="0x468248"/>
+		<const code="addrCallPlayerNameText04" value="0x468438"/>
+		<const code="addrCallPlayerNameText05" value="0x46E9A8"/>
+		<const code="addrCallPlayerNameText06" value="0x47A52C"/>
+		<const code="addrCallPlayerNameText07" value="0x498BDC"/>
+		<const code="addrCallPlayerNameText08" value="0x4D22FA"/>
+		<const code="addrCallPlayerNameText09" value="0x5859BF"/>
+		<const code="addrCallPlayerNameText10" value="0x58FEAA"/>
+		<const code="addrCallInfoMiddleScreen01" value="0x435048"/>
+		<const code="addrCallInfoMiddleScreen02" value="0x4962B9"/>
+		<const code="addrCallInfoMiddleScreen03" value="0x4D91DD"/>
+		<const code="addrCallInfoMiddleScreen04" value="0x58282B"/>
+		<const code="addrCallInfoMessageBox01" value="0x4348D4"/>
+		<const code="addrCallInfoMessageBox02" value="0x45DADF"/>
+		<const code="addrCallInfoMessageBox03" value="0x51488A"/>
+		<const code="addrCallInfoMessageBox04" value="0x579502"/>
+		<const code="addrCallInfoMessageBox05" value="0x579CF7"/>
+		<const code="addrCallInfoMessageBox06" value="0x579D9D"/>
+		<const code="addrCallInfoMessageBox07" value="0x5F8F45"/>
+		<const code="addrCallInfoMessageBox08" value="0x5F990C"/>
+		<const code="addrCallInfoMessageBox09" value="0x5F99FB"/>
+		<const code="addrCallInfoMessageBox10" value="0x5F9BE2"/>
+		<const code="addrCallInfoMessageBox11" value="0x5F9EB9"/>
+		<const code="addrCallInfoMessageBox12" value="0x5FA9C5"/>
+		<const code="addrCallInfoMessageBox13" value="0x5FA9F5"/>
+		<const code="addrCallEncrypt01" value="0x5987A3"/>
+		<const code="addrCallDecrypt01" value="0x598D99"/>
+		<const code="addrCallShouldParseRecv01" value="0x49DE02"/>
 
 		<const code="lengthContainer" value="492"/>
 		<const code="lengthItem" value="32"/>
