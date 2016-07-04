@@ -1,3 +1,8 @@
+2.68.0 04.07.2016
+Enhancements:
+ Tibia Auto: Updated for Tibia 10.95
+
+
 2.67.0 1.6.2016
 Enhancements:
  Tibia Auto: Updated for Tibia 10.94
