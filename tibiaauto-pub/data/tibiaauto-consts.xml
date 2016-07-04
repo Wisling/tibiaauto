@@ -111,7 +111,7 @@
 		<const code="addrFunTibiaDecrypt" value="0x60B6C0"/>
 		<const code="addrFunTibiaShouldParseRecv" value="0x599070"/> <!-- switch table contains -->
 		<const code="addrFunTibiaInfoMessageBox" value="0x5F90C0"/>
-		<const code="addrArrayPtrRecvStream" value="0xB80034"/> <!-- look for this address near above location -->
+		<const code="addrArrayPtrRecvStream" value="0xB8002C"/> <!-- look for this address near above location -->
 		<const code="addrCallDrawRect" value="0x584B32"/>
 		<const code="addrCallDrawBlackRect" value="0x584AA3"/>
 		<const code="addrCallPrintText01" value="0x4911AD"/><!-- //...<addr>.* -->
