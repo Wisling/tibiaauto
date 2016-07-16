@@ -75,7 +75,7 @@ CMemConstData::CMemConstData()
 	m_memAddressFunTibiaDecrypt = offset + CTibiaItem::getValueForConst("addrFunTibiaDecrypt");
 	m_memAddressFunTibiaShouldParseRecv = offset + CTibiaItem::getValueForConst("addrFunTibiaShouldParseRecv");
 	m_memAddressFunTibiaInfoMessageBox = offset + CTibiaItem::getValueForConst("addrFunTibiaInfoMessageBox");
-	m_memAddressArrayPtrRecvStream = offset + CTibiaItem::getValueForConst("addrArrayPtrRecvStream");
+	m_memAddressArrayPtrRecvStream = offset + CTibiaItem::getValueForConst("addrArrayPtrRecvStream")-8;
 	m_memAddressCallDrawRect = offset + CTibiaItem::getValueForConst("addrCallDrawRect");
 	m_memAddressCallDrawBlackRect = offset + CTibiaItem::getValueForConst("addrCallDrawBlackRect");
 	m_memAddressCallPrintText01 = offset + CTibiaItem::getValueForConst("addrCallPrintText01");

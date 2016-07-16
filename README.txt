@@ -1,11 +1,5 @@
-2.68.0 04.07.2016
+2.69.0 7.16.2016
 Enhancements:
- Tibia Auto: Updated for Tibia 10.95
-
-
-2.67.0 1.6.2016
-Enhancements:
- Tibia Auto: Updated for Tibia 10.94
- Cavebot: Doubled pathfinding efficiency
- Cavebot/Automap: Can manually set 'Usable Teleporter' for things like switches or minecarts in kazordoon.
+ Tibia Auto: Updated for Tibia 10.96
+ consts.xml: Migrated all version updating addresses to the const.xml. This is the only file that needs changing between TA versions aside from advanced changes.
 Defects:

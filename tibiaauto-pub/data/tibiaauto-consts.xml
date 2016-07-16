@@ -1,4 +1,4 @@
-<!-- Tibia constants for Tibia 10.95 -->
+<!-- Tibia constants for Tibia 10.96 -->
 <const-definitions>
 	<consts>
 		<!-- item codes -->
@@ -55,36 +55,36 @@
 		<const code="addrSelfPosZ" value="0"/>
 		<const code="addrBattleMin" value="0"/><!-- Tibia now assumes this to be 0 -->
 
-		<const code="addrCurrentTileToGo" value="0x93B6B8"/><!--counts up to addrTileToGo-->
-		<const code="addrSelfFlags" value="0x93B6BC"/> <!-- cat1 -->
-		<const code="addrPathToGo" value="0x93B708"/>
-		<const code="addrFollowedCreature" value="0x93B734"/>
-		<const code="addrXor" value="0x93B740"/>
-		<const code="addrManaMax" value="0x93B744"/>
-		<const code="addrExp" value="0x93B748"/>
-		<const code="addrBattleMax" value="0x93B754"/>
-		<const code="addrLvl" value="0x93B758"/>
-		<const code="addrSoulPoints" value="0x93B75C"/>
-		<const code="addrMlvl" value="0x93B760"/>
-		<const code="addrMlvlPercLeft" value="0x93B76C"/>
-		<const code="addrAttackedCreature" value="0x93B770"/>
-		<const code="addrMana" value="0x93B774"/>
-		<const code="addrTilesToGo" value="0x93B778"/>
-		<const code="addrSkillFistPercLeft" value="0x93B77C"/>
-		<const code="addrStamina" value="0x93B7C0"/>
-		<const code="addrCurrentWindow" value="0x93BA2C"/> <!-- cat2 -->
-		<const code="addrModeFollow" value="0x94C79C"/>
-		<const code="addrModePVP" value="0x94C8AC"/>
-		<const code="addrModeAttackPlayers" value="0x94C9D6"/> <!-- cat3 -->
-		<const code="addrModeAttackType" value="0x94C9DC"/> <!-- cat3 -->
-		<const code="addrConnectionState" value="0x94D244"/> <!-- cat4 -->
-		<const code="addrWhiteMessage" value="0x98EE80"/>
-		<const code="addrTradeCountSelf" value="0x993220"/>
-		<const code="addrTradeFirstItemSelf" value="0x993224"/>
-		<const code="addrTradeCountPartner" value="0x993ED0"/>
-		<const code="addrTradeFirstItemPartner" value="0x993ED4"/> <!-- cat2 -->
-		<const code="addrMiniMapStart" value="0x994B60"/> <!-- begins at x,y map tile cat2 -->
-		<const code="addrVIP" value="0xAD6070"/> <!-- cat0 -->
+		<const code="addrCurrentTileToGo" value="0x93B6D8"/><!--counts up to addrTileToGo-->
+		<const code="addrSelfFlags" value="0x93B6DC"/> <!-- cat1 -->
+		<const code="addrPathToGo" value="0x93B728"/>
+		<const code="addrFollowedCreature" value="0x93B754"/>
+		<const code="addrXor" value="0x93B760"/>
+		<const code="addrManaMax" value="0x93B764"/>
+		<const code="addrExp" value="0x93B768"/>
+		<const code="addrBattleMax" value="0x93B774"/>
+		<const code="addrLvl" value="0x93B778"/>
+		<const code="addrSoulPoints" value="0x93B77C"/>
+		<const code="addrMlvl" value="0x93B780"/>
+		<const code="addrMlvlPercLeft" value="0x93B78C"/>
+		<const code="addrAttackedCreature" value="0x93B790"/>
+		<const code="addrMana" value="0x93B794"/>
+		<const code="addrTilesToGo" value="0x93B798"/>
+		<const code="addrSkillFistPercLeft" value="0x93B79C"/>
+		<const code="addrStamina" value="0x93B7E0"/>
+		<const code="addrCurrentWindow" value="0x93BA4C"/> <!-- cat2 -->
+		<const code="addrModeFollow" value="0x94C7BC"/>
+		<const code="addrModePVP" value="0x94C8CC"/>
+		<const code="addrModeAttackPlayers" value="0x94C9F6"/> <!-- cat3 -->
+		<const code="addrModeAttackType" value="0x94C9FC"/> <!-- cat3 -->
+		<const code="addrConnectionState" value="0x94D264"/> <!-- cat4 -->
+		<const code="addrWhiteMessage" value="0x98EEA0"/>
+		<const code="addrTradeCountSelf" value="0x993240"/>
+		<const code="addrTradeFirstItemSelf" value="0x993244"/>
+		<const code="addrTradeCountPartner" value="0x993EF0"/>
+		<const code="addrTradeFirstItemPartner" value="0x993EF4"/> <!-- cat2 -->
+		<const code="addrMiniMapStart" value="0x994B80"/> <!-- begins at x,y map tile cat2 -->
+		<const code="addrVIP" value="0xAD6090"/> <!-- cat0 -->
 		<const code="addrHP" value="0xAD9000"/>
 		<const code="addrGoZ" value="0xAD9008"/>
 		<const code="addrSkillFist" value="0xAD900C"/>
@@ -94,14 +94,14 @@
 		<const code="addrHPMax" value="0xAD9048"/>
 		<const code="addrGoX" value="0xAD904C"/>
 		<const code="addrSelfId" value="0xAD9050"/>
-		<const code="addrFps" value="0xB267A8"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
-		<const code="addrVocation" value="0xB1B8F4"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
-		<const code="addrPacketCount" value="0xAD9EE0"/> <!-- cat0 -->
-		<const code="addrFirstCreature" value="0xB352C0"/> <!-- cat1 -->
-		<const code="addrSlotArrow" value="0xB7B350"/> <!-- cat2 count-4 -->
-		<const code="addrMapStart" value="0xB7B4BC"/> <!-- is a pointer to visible map -->
-		<const code="addrFirstContainer" value="0xB81744"/> <!-- cat2 pointer to cont number -0xC-->
-		<const code="addrCurrentTm" value="0xB822D0"/> <!-- cat2 -->
+		<const code="addrFps" value="0xB24D68"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
+		<const code="addrVocation" value="0xB1A1E4"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
+		<const code="addrPacketCount" value="0xAD9E20"/> <!-- cat0 -->
+		<const code="addrFirstCreature" value="0xB33790"/> <!-- cat1 -->
+		<const code="addrSlotArrow" value="0xB79820"/> <!-- cat2 count-4 -->
+		<const code="addrMapStart" value="0xB7998C"/> <!-- is a pointer to visible map -->
+		<const code="addrFirstContainer" value="0xB7FA4C"/> <!-- cat2 pointer to cont number -0xC-->
+		<const code="addrCurrentTm" value="0xB80528"/> <!-- cat2 -->
 
 		<const code="addrFunTibiaPrintText" value="0x498B50"/>
 		<const code="addrFunTibiaPlayerNameText" value="0x52E310"/>
@@ -111,7 +111,7 @@
 		<const code="addrFunTibiaDecrypt" value="0x60B6C0"/>
 		<const code="addrFunTibiaShouldParseRecv" value="0x599070"/> <!-- switch table contains -->
 		<const code="addrFunTibiaInfoMessageBox" value="0x5F90C0"/>
-		<const code="addrArrayPtrRecvStream" value="0xB8002C"/> <!-- look for this address near above location -->
+		<const code="addrArrayPtrRecvStream" value="0xB7E504"/> <!-- look for this address near above location -->
 		<const code="addrCallDrawRect" value="0x584B32"/>
 		<const code="addrCallDrawBlackRect" value="0x584AA3"/>
 		<const code="addrCallPrintText01" value="0x4911AD"/><!-- //...<addr>.* -->
