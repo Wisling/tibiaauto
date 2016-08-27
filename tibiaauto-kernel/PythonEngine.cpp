@@ -907,7 +907,7 @@ void CPythonEngine::backpipeInpacketTick()
 		}
 		else     //everything is OK
 		{
-			sprintf(buf, "One packet took %dms", GetTickCount() - tm);
+			sprintf(buf, "One packet took %dms", (int)(GetTickCount() - tm));
 			//if (GetTickCount() - tm>20) MessageBox(NULL, buf,"huaeotnre",0);
 			CPythonScript *pythonScript = NULL;
 			for (int scriptNr = 0; (pythonScript = CPythonScript::getScriptByNr(scriptNr)); scriptNr++)

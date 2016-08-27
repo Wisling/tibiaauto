@@ -754,28 +754,28 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	else if (!_strcmpi(tagName, "timehaste"))
 	{
 		if (playerInfo.spell[SPELL_HASTE].remaining > 0)
-			sprintf(svalue, "%d", playerInfo.spell[SPELL_HASTE].remaining);
+			sprintf(svalue, "%lld", playerInfo.spell[SPELL_HASTE].remaining);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "timestronghaste"))
 	{
 		if (playerInfo.spell[SPELL_STRONGHASTE].remaining > 0)
-			sprintf(svalue, "%d", playerInfo.spell[SPELL_STRONGHASTE].remaining);
+			sprintf(svalue, "%lld", playerInfo.spell[SPELL_STRONGHASTE].remaining);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "timeinvisible"))
 	{
 		if (playerInfo.spell[SPELL_INVISIBLE].remaining > 0)
-			sprintf(svalue, "%d", playerInfo.spell[SPELL_INVISIBLE].remaining);
+			sprintf(svalue, "%lld", playerInfo.spell[SPELL_INVISIBLE].remaining);
 		else
 			lstrcpy(svalue, "");
 	}
 	else if (!_strcmpi(tagName, "timeshield"))
 	{
 		if (playerInfo.spell[SPELL_SHIELD].remaining > 0)
-			sprintf(svalue, "%d", playerInfo.spell[SPELL_SHIELD].remaining);
+			sprintf(svalue, "%lld", playerInfo.spell[SPELL_SHIELD].remaining);
 		else
 			lstrcpy(svalue, "");
 		//V: creature statisticsx
@@ -1445,7 +1445,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							int r        = rand();
 							int checksum = (int)(r * 15 + tm + ch.tibiaId * 3 + ch.x * 5 + ch.y * 7 + ch.z * 11 + strlen(statChName) * 13 + ch.walkSpeed * 17);
 							//int checksum=r*15+tm+ch.tibiaId*3+ch.x*5+ch.y*7+ch.z*11+strlen(statChName)*13;
-							fprintf(f, "%d,%d,%d,%d,%d,", tm, ch.tibiaId, ch.x, ch.y, ch.z);
+							fprintf(f, "%lld,%d,%d,%d,%d,", tm, ch.tibiaId, ch.x, ch.y, ch.z);
 							fprintf(f, "'%s',%d,%d,%d\n", statChName, ch.walkSpeed, r, checksum);
 							fclose(f);
 						}

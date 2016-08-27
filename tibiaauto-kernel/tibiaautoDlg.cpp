@@ -406,7 +406,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 				ffBoxDisplay = 0;
 		}
 		char buf[128];
-		sprintf(buf, "%d", time(NULL));
+		sprintf(buf, "%lld", time(NULL));
 		RegSetValueEx(hkey, TEXT("FFcheck"), 0, REG_SZ, (const unsigned char *)buf, strlen(buf) + 1);
 		RegCloseKey(hkey);
 	}
@@ -1598,7 +1598,7 @@ void CTibiaautoDlg::reportUsage()
 	{
 		time_t tm = time(NULL);
 		int checksum = tm % 177;
-		fprintf(f, "version=2.69.0 tm=%d,", tm);
+		fprintf(f, "version=2.69.0 tm=%lld,", tm);
 		for (ModuleMap::iterator it = CModuleLoader::loadedModules.begin(); it != CModuleLoader::loadedModules.end(); ++it)
 		{
 			IModuleInterface* mod = it->second;

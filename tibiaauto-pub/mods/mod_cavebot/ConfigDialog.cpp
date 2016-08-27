@@ -674,7 +674,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		{
 			time_t t1 = time(NULL) - firstCreatureAttackTM;
 			time_t t2 = time(NULL) - currentPosTM;
-			sprintf(buf, "State: attacking [since %d, distance %d; standing since %ds]", (int)t1, creatureAttackDist, (int)t2);
+			sprintf(buf, "State: attacking [since %lld, distance %d; standing since %llds]", t1, creatureAttackDist, t2);
 			m_stateAttack.SetWindowText(buf);
 			break;
 		}
@@ -741,7 +741,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		case CToolAutoAttackStateWalker_standing:
 			if (walkerStandingEndTm - time(NULL) < 0)
 				break;
-			sprintf(buf, "State: standing for %d more seconds", walkerStandingEndTm ? walkerStandingEndTm - time(NULL) : 0);
+			sprintf(buf, "State: standing for %d more seconds", (int)(walkerStandingEndTm ? walkerStandingEndTm - time(NULL) : 0));
 			m_stateWalker.SetWindowText(buf);
 			if (currentWaypointNr != m_waypointList.GetCurSel())
 				m_waypointList.SetCurSel(currentWaypointNr);
@@ -866,7 +866,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 					SetTimer(1001, 100, NULL);
 					CDialog::OnTimer(nIDEvent);
 					char buf[512];
-					sprintf(buf, "Successfully completed researching map in %d seconds.\nRemember to enable extended map reseach to changing levels and avoid new obstacles.", time(NULL) - startTime + 1);
+					sprintf(buf, "Successfully completed researching map in %d seconds.\nRemember to enable extended map reseach to changing levels and avoid new obstacles.", (int)(time(NULL) - startTime + 1));
 					AfxMessageBox(buf);
 					return;
 				}

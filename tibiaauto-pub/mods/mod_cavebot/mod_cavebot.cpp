@@ -1390,7 +1390,7 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 	if (config->trainingActivate)
 	{
 		char buf[256];
-		sprintf(buf, "Training check: attackedCr=%d, alien=%d, #attacking=%d, lastHpDrop=%d, attackMode=%d", currentlyAttackedCreatureNr, alienFound, attackingCreatures, time(NULL) - lastAttackedCreatureBloodHit, *attackMode);
+		sprintf(buf, "Training check: attackedCr=%d, alien=%d, #attacking=%d, lastHpDrop=%d, attackMode=%d", currentlyAttackedCreatureNr, alienFound, attackingCreatures, (int)(time(NULL) - lastAttackedCreatureBloodHit), *attackMode);
 		if (config->debug)
 			registerDebug(buf);
 
@@ -1430,7 +1430,7 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 			globalAutoAttackStateTraining = CToolAutoAttackStateTraining_training;
 			if (config->bloodHit)
 			{
-				sprintf(buf, "Training: inside blood hit control (%d-%d=%d)", time(NULL), lastAttackedCreatureBloodHit, time(NULL) - lastAttackedCreatureBloodHit);
+				sprintf(buf, "Training: inside blood hit control (%lld-%lld=%lld)", time(NULL), lastAttackedCreatureBloodHit, time(NULL) - lastAttackedCreatureBloodHit);
 				if (config->debug)
 					registerDebug(buf);
 				if (time(NULL) - lastAttackedCreatureBloodHit > 20)
@@ -1933,6 +1933,11 @@ int maxDist(int x1, int y1, int x2, int y2)
 int taxiDist(int x1, int y1, int x2, int y2)
 {
 	return abs(x2 - x1) + abs(y2 - y1) - 2 + (x1 == x2) + (y1 == y2);
+}
+
+bool isOnScreen(int dx, int dy, int dz)
+{
+	return (abs(dx) <= 7 && abs(dy) <= 5 && dz == 0);
 }
 
 // will eventually use the minimap to determine if path is ok
@@ -2653,9 +2658,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		else if (currentlyAttackedCreatureNr != -1 && (self.cap > config->capacityLimit || config->eatFromCorpse || config->dropNotLooted) && (config->lootFood || config->lootGp || config->lootWorms || config->lootCustom || config->eatFromCorpse || config->dropNotLooted))
 		{
 			// now 's see whether creature is still alive or not
-			if (!attackedCh.hpPercLeft &&
-			    abs(attackedCh.x - self.x) + abs(attackedCh.y - self.y) <= 10 &&
-			    attackedCh.z == self.z)
+			if (!attackedCh.visible && isOnScreen(attackedCh.x - self.x, attackedCh.y - self.y, attackedCh.z - self.z))
 			{
 				if (config->debug)
 					registerDebug("Looter: Creature is dead.");
@@ -2705,7 +2708,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						char buf[30];
 						memset(buf, 0, 30);
 						autolooterTm = time(NULL) + 10;
-						sprintf(buf, "%d %d", attackedCh.tibiaId, autolooterTm);
+						sprintf(buf, "%d %lld", attackedCh.tibiaId, autolooterTm);
 						CVariableStore::setVariable("autolooterTm", buf);
 
 						if (config->debug)
@@ -2810,7 +2813,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 												checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), 100 + itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), config->lootInBags && contNr == lootContNr[1], attackedCh.x, attackedCh.y, attackedCh.z);
 												if (checksum < 0)
 													checksum *= -1;
-												fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, config->lootInBags && contNr == lootContNr[1], attackedCh.x, attackedCh.y, attackedCh.z, checksum);
+												fprintf(lootStatsFile, "%lld,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, config->lootInBags && contNr == lootContNr[1], attackedCh.x, attackedCh.y, attackedCh.z, checksum);
 											}
 										}
 										deleteAndNull(lootCont);
@@ -2953,7 +2956,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		}
 		// if client thinks we are not attacking anything, then
 		// send "attack new target" to it and increment failed attack for creatureNr by 1
-		if (reader.getAttackedCreature() == 0 && currentlyAttackedCreatureNr != -1 && (attackedCh.initialized && attackedCh.hpPercLeft))
+		if (reader.getAttackedCreature() == 0 && currentlyAttackedCreatureNr != -1 && (attackedCh.initialized && attackedCh.visible))
 		{
 			char buf[256];
 			sprintf(buf, "Resetting attacked creature to %d,%d,%d [1]", currentlyAttackedCreatureNr, reader.getAttackedCreature(), attackedCh.hpPercLeft);
@@ -2991,7 +2994,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				creatureList[currentlyAttackedCreatureNr].failedAttacks++;
 				AttackCreature(config, creatureList[currentlyAttackedCreatureNr].tibiaId);
 				char buf[256];
-				sprintf(buf, "Incrementing failed attempts for not reaching target in time. time:%d lastPosChange:%d, %d", time(NULL), currentPosTM, time(NULL) - currentPosTM > (2.5 + .5 * creatureList[currentlyAttackedCreatureNr].failedAttacks));
+				sprintf(buf, "Incrementing failed attempts for not reaching target in time. time:%lld lastPosChange:%lld, %d", time(NULL), currentPosTM, time(NULL) - currentPosTM > (2.5 + .5 * creatureList[currentlyAttackedCreatureNr].failedAttacks));
 				if (config->debug)
 					registerDebug(buf);
 			}
@@ -3016,57 +3019,62 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			 * creature ID for creature number has changed,
 			 * so new creature is occupying the slot already
 			 */
-			if (creatureList[crNr].tibiaId != ch.tibiaId && currentlyAttackedCreatureNr != crNr)
+			int updatedCreatureId = 0;
+			if (creatureList[crNr].tibiaId != ch.tibiaId)
 			{
-				time_t keepAttackTm = creatureList[crNr].lastAttackTm;
-				creatureList[crNr]              = Creature();
-				creatureList[crNr].lastAttackTm = keepAttackTm;
-				creatureList[crNr].tibiaId      = ch.tibiaId;
-
-				int monstListNr;
-				//Get name and take care of monsters numbered by TA's creature info
-				int i, len;
-				char statChName[128];
-				for (i = 0, strcpy(statChName, ch.name), len = strlen(statChName); i < len; i++)
+				updatedCreatureId = 1;
+				if (currentlyAttackedCreatureNr != crNr)
 				{
-					if (statChName[i] == '[')
-						statChName[i] = '\0';
-				}
-				strcpy(creatureList[crNr].name, statChName);
+					time_t keepAttackTm = creatureList[crNr].lastAttackTm;
+					creatureList[crNr] = Creature();
+					creatureList[crNr].lastAttackTm = keepAttackTm;
+					creatureList[crNr].tibiaId = ch.tibiaId;
 
-				// if attackAllMonsters set default priority to lowest and overwrite with actual priority
-				if (config->attackAllMonsters && ch.tibiaId >= 0x40001000)
-					creatureList[crNr].listPriority = 1;
-				// scan creature list to find its priority
-				for (monstListNr = 0; monstListNr < config->monsterCount && monstListNr < MAX_MONSTERLISTCOUNT; monstListNr++)
-				{
-					if (config->monsterList[monstListNr][0] == 0)
+					int monstListNr;
+					//Get name and take care of monsters numbered by TA's creature info
+					int i, len;
+					char statChName[128];
+					for (i = 0, strcpy(statChName, ch.name), len = strlen(statChName); i < len; i++)
 					{
-						break;
+						if (statChName[i] == '[')
+							statChName[i] = '\0';
 					}
-					else if (!_strcmpi(config->monsterList[monstListNr], creatureList[crNr].name))
-					{
-						creatureList[crNr].listPriority = config->monsterCount - monstListNr + 1;//2 is last item in list, 1 is for 'attackAllMonster' monsters, 0 means not in attack list
-						break;
-					}
-				}
+					strcpy(creatureList[crNr].name, statChName);
 
-				// scan ignore list
-				for (monstListNr = 0; monstListNr < min(MAX_IGNORECOUNT, config->ignoreCount); monstListNr++)
-				{
-					if (!_strcmpi(config->ignoreList[monstListNr], creatureList[crNr].name))
+					// if attackAllMonsters set default priority to lowest and overwrite with actual priority
+					if (config->attackAllMonsters && ch.tibiaId >= 0x40001000)
+						creatureList[crNr].listPriority = 1;
+					// scan creature list to find its priority
+					for (monstListNr = 0; monstListNr < config->monsterCount && monstListNr < MAX_MONSTERLISTCOUNT; monstListNr++)
 					{
-						if (config->debug && creatureList[crNr].isIgnoredUntil - time(NULL) < 9999)
-							registerDebug("Creature found on ignore list");
-						creatureList[crNr].isIgnoredUntil = 1555555555;//ignore forever
+						if (config->monsterList[monstListNr][0] == 0)
+						{
+							break;
+						}
+						else if (!_strcmpi(config->monsterList[monstListNr], creatureList[crNr].name))
+						{
+							creatureList[crNr].listPriority = config->monsterCount - monstListNr + 1;//2 is last item in list, 1 is for 'attackAllMonster' monsters, 0 means not in attack list
+							break;
+						}
 					}
-				}
 
-				//ignore self forever
-				if (ch.tibiaId == self.tibiaId)
-					creatureList[crNr].isIgnoredUntil = 1555555555;                      //ignore forever
+					// scan ignore list
+					for (monstListNr = 0; monstListNr < min(MAX_IGNORECOUNT, config->ignoreCount); monstListNr++)
+					{
+						if (!_strcmpi(config->ignoreList[monstListNr], creatureList[crNr].name))
+						{
+							if (config->debug && creatureList[crNr].isIgnoredUntil - time(NULL) < 9999)
+								registerDebug("Creature found on ignore list");
+							creatureList[crNr].isIgnoredUntil = 1555555555;//ignore forever
+						}
+					}
+
+					//ignore self forever
+					if (ch.tibiaId == self.tibiaId)
+						creatureList[crNr].isIgnoredUntil = 1555555555;                      //ignore forever
+				}
 			}
-			if (ch.visible == 0 || abs(self.x - ch.x) > 7 || abs(self.y - ch.y) > 5 || ch.z != self.z)
+			if (ch.visible == 0 || !isOnScreen(ch.x - self.x, ch.y - self.y, ch.z - self.z))
 			{
 				creatureList[crNr].isOnscreen      = 0;
 				creatureList[crNr].isWithinMargins = ch.visible && ch.z == self.z;
@@ -3093,7 +3101,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					creatureList[crNr].isAttacking = 1;
 					char buf[256];
-					sprintf(buf, "lastAttackTm change for %d: was %d/%d is %d/%d", creatureList[crNr].tibiaId, creatureList[crNr].lastAttackTm, ch.tibiaId, ch.lastAttackTm);
+					sprintf(buf, "lastAttackTm change for %d: was %lld is %d/%lld", creatureList[crNr].tibiaId, creatureList[crNr].lastAttackTm, ch.tibiaId, ch.lastAttackTm);
 					if (config->debug)
 						registerDebug(buf);
 				}
@@ -3107,7 +3115,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				creatureList[crNr].z               = ch.z;
 				creatureList[crNr].isOnscreen      = 1;
 				creatureList[crNr].isWithinMargins = 1;
-				creatureList[crNr].isDead          = (ch.hpPercLeft == 0);
+				creatureList[crNr].isDead = !updatedCreatureId && creatureList[crNr].isOnscreen && !ch.visible;
 				creatureList[crNr].hpPercLeft      = ch.hpPercLeft;
 				creatureList[crNr].isIgnoredUntil  = (creatureList[crNr].isIgnoredUntil < time(NULL)) ? 0 : creatureList[crNr].isIgnoredUntil;
 				//outfit type&& head color==0 <=> creature is invisible
@@ -3169,7 +3177,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (config->debug && modRuns % 10 == 0 && creatureList[crNr].isOnscreen)
 			{
 				char buf[256];
-				sprintf(buf, "%s, nr=%d, isatta=%d, isonscreen=%d, iswithinmargins=%d, atktm=%d ID=%d ignore=%d,x=%d,y=%d,z=%d", crNr != self.nr ? creatureList[crNr].name : "****", crNr, creatureList[crNr].isAttacking, creatureList[crNr].isOnscreen, creatureList[crNr].isWithinMargins, creatureList[crNr].lastAttackTm, creatureList[crNr].tibiaId, creatureList[crNr].isIgnoredUntil ? creatureList[crNr].isIgnoredUntil - time(NULL) : 0, creatureList[crNr].x, creatureList[crNr].y, creatureList[crNr].z);
+				sprintf(buf, "%s, nr=%d, isatta=%d, isonscreen=%d, iswithinmargins=%d, atktm=%lld ID=%d ignore=%d,x=%d,y=%d,z=%d", crNr != self.nr ? creatureList[crNr].name : "****", crNr, creatureList[crNr].isAttacking, creatureList[crNr].isOnscreen, creatureList[crNr].isWithinMargins, creatureList[crNr].lastAttackTm, creatureList[crNr].tibiaId, (int)(creatureList[crNr].isIgnoredUntil ? creatureList[crNr].isIgnoredUntil - time(NULL) : 0), creatureList[crNr].x, creatureList[crNr].y, creatureList[crNr].z);
 				registerDebug(buf);
 			}
 		}//end for
@@ -3316,7 +3324,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
                         }
  */
 			char buf[256];
-			sprintf(buf, "Nr=%d, name=%s\t isAttacking=%d, Prio=%d, fail#=%d, hp%%=%d, Id=%d, Onscreen=%d, Invis=%d, Dead=%d, lastAttackTm=%d, IgnoredUntil=%d, shouldAttack=%d, dist=%d", crNr, creatureList[crNr].name, creatureList[crNr].isAttacking, creatureList[crNr].listPriority, creatureList[crNr].failedAttacks, creatureList[crNr].hpPercLeft, creatureList[crNr].tibiaId, creatureList[crNr].isOnscreen, creatureList[crNr].isInvisible, creatureList[crNr].isDead, creatureList[crNr].lastAttackTm, creatureList[crNr].isIgnoredUntil, crNr == bestCreatureNr, taxiDist(self.x, self.y, creatureList[crNr].x, creatureList[crNr].y));
+			sprintf(buf, "Nr=%d, name=%s\t isAttacking=%d, Prio=%d, fail#=%d, hp%%=%d, Id=%d, Onscreen=%d, Invis=%d, Dead=%d, lastAttackTm=%lld, IgnoredUntil=%lld, shouldAttack=%d, dist=%d", crNr, creatureList[crNr].name, creatureList[crNr].isAttacking, creatureList[crNr].listPriority, creatureList[crNr].failedAttacks, creatureList[crNr].hpPercLeft, creatureList[crNr].tibiaId, creatureList[crNr].isOnscreen, creatureList[crNr].isInvisible, creatureList[crNr].isDead, creatureList[crNr].lastAttackTm, creatureList[crNr].isIgnoredUntil, crNr == bestCreatureNr, taxiDist(self.x, self.y, creatureList[crNr].x, creatureList[crNr].y));
 			if (config->debug)
 				registerDebug(buf);
 		}
@@ -3354,7 +3362,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				}
 			}
 		}
-		else if (creatureList[currentlyAttackedCreatureNr].hpPercLeft != 0)
+		else if (!creatureList[currentlyAttackedCreatureNr].isDead)//keep currentlyAttackedCreatureNr intact when creature is dead
 		{
 			//if no best creature, then something probably ran away.quickly
 			currentlyAttackedCreatureNr = -1;
@@ -3384,7 +3392,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		CTibiaCharacter attackCh;
 		reader.readVisibleCreature(&attackCh, currentlyAttackedCreatureNr);
 		//perform server visible tasks if we have something to attack
-		if (currentlyAttackedCreatureNr != -1 && attackCh.hpPercLeft)//uses most recent hpPercLeft to prevent crash??
+		if (currentlyAttackedCreatureNr != -1 && attackCh.visible)
 		{
 			CIpcMessage mess;
 			while (CIPCBackPipe::readFromPipe(&mess, 1103))
@@ -3418,7 +3426,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (config->debug)
 			{
 				char buf[256];
-				sprintf(buf, "Attacking Nr=%d name=%s point=%d,%d,%d id=%d ignore=%d hp%%=%d", bestCreatureNr, creatureList[bestCreatureNr].name, creatureList[bestCreatureNr].x, creatureList[bestCreatureNr].y, creatureList[bestCreatureNr].z, creatureList[bestCreatureNr].tibiaId, creatureList[bestCreatureNr].isIgnoredUntil, attackCh.hpPercLeft);
+				sprintf(buf, "Attacking Nr=%d name=%s point=%d,%d,%d id=%d ignore=%lld hp%%=%d", bestCreatureNr, creatureList[bestCreatureNr].name, creatureList[bestCreatureNr].x, creatureList[bestCreatureNr].y, creatureList[bestCreatureNr].z, creatureList[bestCreatureNr].tibiaId, creatureList[bestCreatureNr].isIgnoredUntil, attackCh.hpPercLeft);
 				registerDebug(buf);
 			}
 		}

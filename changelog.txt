@@ -1,3 +1,8 @@
+2.69.1 8.27.2016
+Enhancements:
+Defects:
+ Cavebot & Autolooter: fixed TA not opening creatures
+
 2.69.0 7.16.2016
 Enhancements:
  Tibia Auto: Updated for Tibia 10.96

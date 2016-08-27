@@ -205,9 +205,9 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			{
 				char buf[128];
 				if (loginTime - time(NULL) >= 0)
-					sprintf(buf, "Connection status: waiting to log in %d seconds.", loginTime - time(NULL));
+					sprintf(buf, "Connection status: waiting to log in %d seconds.", (int)(loginTime - time(NULL)));
 				else
-					sprintf(buf, "Connection status: trying to log in for %d seconds.", time(NULL) - loginTime);
+					sprintf(buf, "Connection status: trying to log in for %d seconds.", (int)(time(NULL) - loginTime));
 				m_status.SetWindowText(buf);
 				break;
 			}

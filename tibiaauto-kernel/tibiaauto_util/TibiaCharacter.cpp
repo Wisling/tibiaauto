@@ -20,6 +20,7 @@ CTibiaCharacter::CTibiaCharacter()
 	initialized = false;
 	visible = 0;
 	name[0] = 0x00;
+	voc[0] = 0x00;
 	hp = -1;
 	mana = -1;
 }

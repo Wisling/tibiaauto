@@ -327,8 +327,8 @@ void CMemReader::readVisibleCreature(CTibiaCharacter* ch, int nr)
 
 	ch->moving = *((int*)(memcharinfo + 80));
 	//ch->lastMovedLookDirection=*((int*)(memcharinfo+84));
-	//ch->???min=*((int*)(memcharinfo+88));
-	//ch->???max=*((int*)(memcharinfo+92));
+	ch->onscreenMin=*((int*)(memcharinfo+88));
+	ch->onscreenMax=*((int*)(memcharinfo+92));
 
 	ch->monsterType = *((int*)(memcharinfo + 96));
 	ch->colorHead   = *((int*)(memcharinfo + 100));

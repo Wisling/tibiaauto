@@ -253,7 +253,7 @@ DWORD WINAPI sendFileThread(LPVOID lpParam)
 		char fnameGz[1024];
 		sprintf(fnameGz, "%s\\%s.gz", installPath, filename);
 		char remoteFileName[128];
-		sprintf(remoteFileName, "incoming/%s-%d-%d.gz", filename, time(NULL), rand());
+		sprintf(remoteFileName, "incoming/%s-%lld-%d.gz", filename, time(NULL), rand());
 		file_compress(fname, "wb");
 		CInternetSession session;
 		CFtpConnection *ftpConnection = session.GetFtpConnection("upload.tibiaauto.net", "anonymous", "tibiaauto@tibiaauto.net", 21, true);
@@ -298,7 +298,7 @@ DWORD WINAPI sendMapsThread(LPVOID lpParam)
 				sprintf(fname, "%s\\%s", path, data.cFileName);
 				sprintf(fnameGz, "%s\\%s.gz", path, data.cFileName);
 				char remoteFileName[128];
-				sprintf(remoteFileName, "incoming/%s-%d-%d.gz", data.cFileName, t, r);
+				sprintf(remoteFileName, "incoming/%s-%lld-%d.gz", data.cFileName, t, r);
 				file_compress(fname, "wb");
 
 				ftpConnection->PutFile(fnameGz, remoteFileName);
@@ -503,7 +503,7 @@ sendFiles:
 				sprintf(fname, "%s\\tascripts\\%s", path, data.cFileName);
 				sprintf(fnameGz, "%s\\tascripts\\%s.gz", path, data.cFileName);
 				char remoteFileName[128];
-				sprintf(remoteFileName, "incoming/%s-%d-%u.gz", data.cFileName, t, r);
+				sprintf(remoteFileName, "incoming/%s-%lld-%u.gz", data.cFileName, t, r);
 				file_compress(fname, "wb");
 
 				ftpConnection->PutFile(fnameGz, remoteFileName);

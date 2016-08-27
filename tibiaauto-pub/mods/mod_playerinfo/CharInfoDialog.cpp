@@ -339,7 +339,7 @@ void CCharInfoDialog::dataCalc()
 		playerInfo.spell[i].remaining = max(playerInfo.spell[i].lasts - (time(NULL) - playerInfo.spell[i].start), 0);
 		if (playerInfo.spell[i].remaining > 0 && ((playerInfo.spell[i].remaining <= WARNING1 && !(playerInfo.spell[i].warning & 0x01)) || (playerInfo.spell[i].remaining <= WARNING2 && !(playerInfo.spell[i].warning & 0x02))))
 		{
-			sprintf(buffer, "%s will wear off in %d seconds.", spellName[i], playerInfo.spell[i].remaining);
+			sprintf(buffer, "%s will wear off in %lld seconds.", spellName[i], playerInfo.spell[i].remaining);
 			if (config->enableTimers)
 				CPackSender::sendTAMessage(buffer);
 			if (playerInfo.spell[i].remaining <= WARNING1)
@@ -413,7 +413,7 @@ void CCharInfoDialog::dataShow()
 
 	for (int i = 0; i < 4; i++)
 	{
-		sprintf(buffer, "%d seconds remaining", playerInfo.spell[i].remaining);
+		sprintf(buffer, "%lld seconds remaining", playerInfo.spell[i].remaining);
 		if (config->enableTimers)
 			spellCtrl[i]->SetWindowText(buffer);
 	}

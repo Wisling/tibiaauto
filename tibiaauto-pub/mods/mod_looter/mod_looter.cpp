@@ -142,13 +142,13 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 		/*** killed monster opening part ***/
-		if (config->m_autoOpen && lastAttackedMonster && (!attackedCh.initialized || attackedCh.hpPercLeft == 0))
+		if (config->m_autoOpen && lastAttackedMonster && (!attackedCh.initialized || !attackedCh.visible && (abs(attackedCh.x - self.x) <= 7 && abs(attackedCh.y - self.y) <= 5 && attackedCh.z == self.z)))
 		{
 			//::MessageBox(NULL,"x 1","x",0);
 
 			if (attackedCh.initialized)
 			{
-				if (!attackedCh.hpPercLeft && abs(self.x - attackedCh.x) <= 1 && abs(self.y - attackedCh.y) <= 1 && self.z == attackedCh.z)
+				if (!attackedCh.visible && abs(self.x - attackedCh.x) <= 1 && abs(self.y - attackedCh.y) <= 1 && self.z == attackedCh.z)
 				{
 					//Sleep(1000);
 					// the creature is dead and we can try to open its corpse
@@ -238,7 +238,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 											checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), 0, attackedCh.x, attackedCh.y, attackedCh.z);
 											if (checksum < 0)
 												checksum *= -1;
-											fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 0, attackedCh.x, attackedCh.y, attackedCh.z, checksum);
+											fprintf(lootStatsFile, "%lld,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 0, attackedCh.x, attackedCh.y, attackedCh.z, checksum);
 										}
 
 
@@ -253,7 +253,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 												checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), 100 + itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), 1, attackedCh.x, attackedCh.y, attackedCh.z);
 												if (checksum < 0)
 													checksum *= -1;
-												fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 1, attackedCh.x, attackedCh.y, attackedCh.z, checksum);
+												fprintf(lootStatsFile, "%lld,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 1, attackedCh.x, attackedCh.y, attackedCh.z, checksum);
 											}
 										}
 										if (cont[2])
@@ -267,7 +267,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 												checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(attackedCh.name), 100 + itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), 2, attackedCh.x, attackedCh.y, attackedCh.z);
 												if (checksum < 0)
 													checksum *= -1;
-												fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, attackedCh.name, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 2, attackedCh.x, attackedCh.y, attackedCh.z, checksum);
+												fprintf(lootStatsFile, "%lld,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, attackedCh.name, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 2, attackedCh.x, attackedCh.y, attackedCh.z, checksum);
 											}
 										}
 
@@ -291,7 +291,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 			lastAttackedMonster = 0;
 		}
-		if (attackedCh.initialized && attackedCh.hpPercLeft != 0 && lastAttackedMonster || !lastAttackedMonster)
+		if (attackedCh.initialized && attackedCh.visible && lastAttackedMonster || !lastAttackedMonster)
 			lastAttackedMonster = reader.getAttackedCreature();
 		/*** moving part ***/
 

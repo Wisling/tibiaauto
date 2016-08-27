@@ -87,7 +87,7 @@ int init_jalice(int argc, char **argv)
 		return 0;
 	}
 	char str[1024];
-	sprintf(str, "Total time to startup: %dms\n", totalTime);
+	sprintf(str, "Total time to startup: %ldms\n", totalTime);
 	getStream("Console")->Write(str);
 
 	return 0;

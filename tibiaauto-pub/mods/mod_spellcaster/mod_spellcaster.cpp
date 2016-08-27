@@ -235,7 +235,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 			else if (!config->disableWarning)
 			{
-				//sprintf(text, "Time since warning: %dseconds\nLast Warning: %d\nCurrent Time: %d", time(NULL) - lastWarning/1000, lastWarning, time(NULL));
+				//sprintf(text, "Time since warning: %dseconds\nLast Warning: %lld\nCurrent Time: %lld", (int)(time(NULL) - lastWarning/1000), lastWarning, time(NULL));
 				//AfxMessageBox(text);
 				if (time(NULL) - lastWarning >= 15 || !lastWarning)
 				{

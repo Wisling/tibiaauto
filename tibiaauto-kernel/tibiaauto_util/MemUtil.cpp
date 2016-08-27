@@ -140,7 +140,7 @@ int CMemUtil::readmemory(DWORD processId, DWORD memAddress, char* result, DWORD 
 		if (::GetLastError() == ERROR_INVALID_HANDLE)
 		{
 			//FILE *f=fopen("C:/out.txt","a+");
-			//fprintf(f,"time %d old %d,",time(NULL),dwHandle);
+			//fprintf(f,"time %lld old %d,",time(NULL),dwHandle);
 			dwHandle = NULL;
 			for (int iter = 1000; iter > 0; iter--)
 			{
@@ -257,7 +257,7 @@ int CMemUtil::writememory(DWORD processId, DWORD memAddress, int* value, DWORD s
 		if (::GetLastError() == ERROR_INVALID_HANDLE)
 		{
 			//FILE *f=fopen("C:/out.txt","a+");
-			//fprintf(f,"time %d old %d,",time(NULL),dwHandle);
+			//fprintf(f,"time %lld old %d,",time(NULL),dwHandle);
 			dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, m_prevProcessId);
 			//fprintf(f,"new %d\n",dwHandle);
 			//fclose(f);

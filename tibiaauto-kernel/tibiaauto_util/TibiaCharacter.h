@@ -58,5 +58,7 @@ public:
 	int warIcon;
 	int blocking;
 	char voc[3];
+	int onscreenMin;
+	int onscreenMax;
 };
 

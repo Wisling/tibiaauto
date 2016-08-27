@@ -161,7 +161,7 @@ DWORD WINAPI sendFileThread(LPVOID lpParam)
 		char fnameGz[128];
 		sprintf(fnameGz, "%s.gz", fname);
 		char remoteFileName[128];
-		sprintf(remoteFileName, "incoming/%s-%d-%d.gz", fname, time(NULL), rand());
+		sprintf(remoteFileName, "incoming/%s-%lld-%d.gz", fname, time(NULL), rand());
 		file_compress(fname, "wb");
 		CInternetSession session;
 		CFtpConnection *ftpConnection = session.GetFtpConnection("upload.tibiaauto.net", "anonymous", "tibiaauto@tibiaauto.net", 21, true);
