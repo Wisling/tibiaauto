@@ -1400,7 +1400,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			continue;
 		}
 		// Suspend Modules  ************
-		if (alarmItr->getStopModules().size())
+		//need to make actionStart function create a thread to start modules to prevent hangs
+		if (false && alarmItr->getStopModules().size())
 		{
 			list<CString> temp                 = alarmItr->getStopModules();
 			list<CString>::iterator modulesItr = temp.begin();
@@ -1412,7 +1413,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		}// ****************************
 
 		// Start Modules ***************
-		if (alarmItr->getStartModules().size())
+		if (false && alarmItr->getStartModules().size())
 		{
 			list<CString> temp                 = alarmItr->getStartModules();
 			list<CString>::iterator modulesItr = temp.begin();

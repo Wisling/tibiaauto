@@ -100,8 +100,8 @@ void InitialiseTibiaHooks()
 	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
 	CMemReader& memReader = CMemReader::getMemReader();
 
-	hookDrawRect(dwHandle, baseAdjust(memReader.m_memAddressCallDrawBlackRect - 6), (unsigned int)INmyDrawBlackRect); // first layer black bar
-	hookDrawRect(dwHandle, baseAdjust(memReader.m_memAddressCallDrawRect - 6), (unsigned int)INmyDrawRect); // second layer colored bar
+//	hookDrawRect(dwHandle, baseAdjust(memReader.m_memAddressCallDrawBlackRect - 6), (unsigned int)INmyDrawBlackRect); // first layer black bar
+//	hookDrawRect(dwHandle, baseAdjust(memReader.m_memAddressCallDrawRect - 6), (unsigned int)INmyDrawRect); // second layer colored bar
 
 	trapFun(dwHandle, baseAdjust(memReader.m_memAddressCallPrintText03 + 1), (unsigned int)INmyPrintText);
 	trapFun(dwHandle, baseAdjust(memReader.m_memAddressCallPrintText04 + 1), (unsigned int)INmyPrintText);

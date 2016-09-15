@@ -462,13 +462,12 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				SetCursorPos(wndRect.left + (wndRect.right - wndRect.left) / 2 + 50 - 20, wndRect.top + (wndRect.bottom - wndRect.top) / 2 - 25 + 125);
 				mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
 				mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
-				waitOnConnecting();
-				if (waitForWindow("Select Character", 2) && !waitForWindow("Message of the Day", 5))
-					sk.SendKeys("~", true);
 
-
+				waitForWindow("Connecting", 10);
+				waitOnConnecting(); // waits for connecting window to disappear
+				
 				// STEP3: select char
-				if (waitForWindow("Select Character", 5) || ensureForeground(hwnd))
+				if (waitForWindow("Select Character", 5, 1) || ensureForeground(hwnd))
 				{
 					//If we receive a "Sorry" window it is likely that we do not have a good password.
 					if (strcmp(reader.getOpenWindowName(), "Sorry") == 0)
