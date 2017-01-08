@@ -307,16 +307,17 @@ void CCharDialog::OnToolInjectmc()
 				// Search for MCText within file
 				BYTE* tibiacontents_ind = tibiacontents;
 				bool isFound = FALSE;
-				while (!isFound && size_t(tibiacontents_ind - tibiacontents) < filesize-3)
+				while (!isFound && size_t(tibiacontents_ind - tibiacontents) < filesize-4)
 				{
 					if (tibiacontents_ind[0] == (BYTE)0xD7)
 						if (tibiacontents_ind[1] == (BYTE)0x3D)
 							if (tibiacontents_ind[2] == (BYTE)0xB7 || tibiacontents_ind[2] == (BYTE)0xFF)
-							{
+								if (tibiacontents_ind[3] == (BYTE)0x00)
+								{
 								isFound = TRUE;
 								tibiacontents_ind+=2;
 								break;
-							}
+								}
 					tibiacontents_ind++;
 				}
 				if (isFound){
